@@ -14,6 +14,11 @@ jobs:
       IMAGE_PUSH_ENABLED: ${{ secrets.NO_DOCKER_IMAGE == null }}
 
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - uses: actions/checkout@v4
 
@@ -41,7 +46,7 @@ jobs:
         id: web-patron-tags
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY_HOST }}/${{ github.repository_owner }}/web-patron
+          images: ${{ env.REGISTRY_HOST }}/${{ github.repository_owner }}/ekirjasto-web-patron
           tags: |
             type=semver,pattern={{major}}.{{minor}},priority=10
             type=semver,pattern={{version}},priority=20
@@ -55,3 +60,5 @@ jobs:
           file: ./Dockerfile
           push: ${{ env.IMAGE_PUSH_ENABLED }}
           tags: ${{ steps.web-patron-tags.outputs.tags }}
+          labels: |
+            org.opencontainers.image.source=${{ github.event.repository.html_url }}
