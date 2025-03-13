@@ -62,3 +62,4 @@ jobs:
           tags: ${{ steps.web-patron-tags.outputs.tags }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
+          platforms: linux/amd64,linux/arm64
