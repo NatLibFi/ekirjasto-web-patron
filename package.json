@@ -30,7 +30,7 @@
     "@bugsnag/plugin-react": "^7.19.0",
     "@csstools/normalize.css": "^10.1.0",
     "@emotion/react": "^11.11.4",
-    "@nypl/design-system-react-components": "^0.7.2",
+    "@nypl/design-system-react-components": "^3.6.1",
     "@nypl/dgx-svg-icons": "^0.3.12",
     "@theme-ui/color": "^0.16.2",
     "@theme-ui/components": "^0.16.2",
