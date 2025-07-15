@@ -31,7 +31,12 @@ export type OpenEbooksConfig = {
   defaultLibrary: string;
 };
 
-export type MediaSupportConfig = DirectMediaSupport & IndirectMediaSupport;
+export type MediaSupportConfig = Partial<DefaultMediaSupport> &
+  DirectMediaSupport &
+  IndirectMediaSupport;
+type DefaultMediaSupport = {
+  default: MediaSupportLevel;
+};
 export type DirectMediaSupport = Partial<
   Record<OPDS1.AnyBookMediaType, MediaSupportLevel>
 >;
@@ -82,15 +87,29 @@ export interface ClientBasicMethod extends OPDS1.BasicAuthMethod {
   id: string;
 }
 
+export interface ClientBasicTokenMethod extends OPDS1.BasicTokenAuthMethod {
+  id: string;
+}
+
 // auth methods once they have been processed for the app
 export type AppAuthMethod =
   | ClientCleverMethod
   | ClientBasicMethod
+  | ClientBasicTokenMethod
   | ClientSamlMethod;
+
+export type Token = {
+  basicToken: string | undefined;
+  bearerToken: string | null;
+  expirationDate: Date;
+};
+
+export type AuthCredentialsToken = string | Token | undefined;
 
 export interface AuthCredentials {
   methodType: AppAuthMethod["type"];
-  token: string;
+  token: AuthCredentialsToken;
+  authenticationUrl?: string;
 }
 
 export interface LibraryData {
@@ -119,8 +138,10 @@ export type FulfillmentLink = {
   supportLevel: MediaSupportLevel;
 };
 
+export type AudioBookMedium = "http://bib.schema.org/Audiobook";
+
 export type BookMedium =
-  | "http://bib.schema.org/Audiobook"
+  | AudioBookMedium
   | "http://schema.org/EBook"
   | "http://schema.org/Book";
 
@@ -160,12 +181,16 @@ export type Book<Status = EmptyObject> = Readonly<
     publisher?: string;
     published?: string;
     categories?: string[];
+    providerName?: string;
     language?: string;
     relatedUrl: string | null;
     raw?: any;
+    format?: BookFormat;
     trackOpenBookUrl: string | null;
   }
 >;
+
+export type BookFormat = "Audiobook" | "PDF" | "ePub";
 
 export type BorrowableBook = Book<{
   status: "borrowable";
@@ -254,6 +279,27 @@ export interface LinkData {
   url: string;
   id?: string | null;
   type?: string;
+}
+
+/**
+ * Xml2js
+ */
+interface XMLAttribute {
+  local?: string;
+  name?: string;
+  prefix?: string;
+  uri?: string;
+  value?: string;
+}
+
+interface XMLNamespace {
+  uri?: string;
+  local?: string;
+}
+
+export interface XMLTagWithAttributes {
+  $?: XMLAttribute;
+  $ns?: XMLNamespace;
 }
 
 /**
