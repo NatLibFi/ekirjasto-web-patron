@@ -78,9 +78,11 @@ export type IndirectAcquisitionType =
 export const EpubMediaType = "application/epub+zip";
 export const KepubMediaType = "application/kepub+zip";
 export const PdfMediaType = "application/pdf";
+export const AudioMpegMediaType = "audio/mpeg";
 export const MobiPocketMediaType = "application/x-mobipocket-ebook";
 export const Mobi8Mediatype = "application/x-mobi8-ebook";
 export const AudiobookMediaType = "application/audiobook+json";
+export const LcpAudioBookMediaType = "application/audiobook+lcp";
 export const ExternalReaderMediaType =
   'text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media"';
 export const OverdriveAudiobookMediaType =
@@ -94,10 +96,25 @@ export const AccessRestrictionAudiobookMediaType =
 export const FindawayAudiobookMediaType =
   "application/vnd.librarysimplified.findaway.license+json";
 
+export const EPUB_MEDIA_TYPES = [
+  AxisNowWebpubMediaType,
+  EpubMediaType,
+  KepubMediaType
+];
+
 export type ReadOnlineMediaType =
   | typeof ExternalReaderMediaType
   | typeof AxisNowWebpubMediaType
   | typeof OverdriveEbookMediaType;
+
+export type EpubFormatType = typeof EPUB_MEDIA_TYPES[number];
+
+export type PdfFormatType = typeof PdfMediaType;
+
+export type BookFormatType =
+  | ReadOnlineMediaType
+  | EpubFormatType
+  | PdfFormatType;
 
 export type DownloadMediaType =
   | typeof EpubMediaType
@@ -155,6 +172,8 @@ export interface AuthDocumentLink extends Link {
 }
 
 export const BasicAuthType = "http://opds-spec.org/auth/basic";
+export const BasicTokenAuthType =
+  "http://thepalaceproject.org/authtype/basic-token";
 export const SamlAuthType = "http://librarysimplified.org/authtype/SAML-2.0";
 export const CleverAuthType =
   "http://librarysimplified.org/authtype/OAuth-with-intermediary";
@@ -164,6 +183,7 @@ export const PasswordCredentialsAuthType =
 
 export type AnyAuthType =
   | typeof BasicAuthType
+  | typeof BasicTokenAuthType
   | typeof SamlAuthType
   | typeof CleverAuthType
   | typeof ImplicitGrantAuthType
@@ -193,6 +213,12 @@ export interface BasicAuthMethod extends AuthMethod<typeof BasicAuthType> {
   };
 }
 
+// TODO: This may need adjustment when we actually implement BasicTokenAuth.
+//  In the mean time, we'll borrow some properties from BasicAuthMethod.
+export interface BasicTokenAuthMethod
+  extends Omit<BasicAuthMethod, "type">,
+    AuthMethod<typeof BasicTokenAuthType> {}
+
 export interface AuthInput {
   keyboard?: Keyboard;
 }
@@ -207,6 +233,7 @@ export enum Keyboard {
 export type ServerAuthMethod =
   | CleverAuthMethod
   | BasicAuthMethod
+  | BasicTokenAuthMethod
   | ServerSamlMethod;
 
 export interface Announcement {
