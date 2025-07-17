@@ -2,11 +2,11 @@ import React from "react";
 import Page from "components/Page";
 import { NextPage, GetStaticPaths, GetStaticProps } from "next";
 import withAppProps, { AppProps } from "dataflow/withAppProps";
-import { AXISNOW_DECRYPT } from "utils/env";
+//import { AXISNOW_DECRYPT } from "utils/env";
 import ErrorComponent from "components/Error";
 import dynamic from "next/dynamic";
 
-const Viewer = AXISNOW_DECRYPT
+/*const Viewer = AXISNOW_DECRYPT
   ? dynamic(() => import("components/WebpubViewer"))
   : undefined;
 
@@ -30,7 +30,7 @@ const ReaderPage: NextPage<AppProps> = ({ library, error }) => {
 };
 
 export default ReaderPage;
-
+*/
 export const getStaticProps: GetStaticProps = withAppProps();
 
 export const getStaticPaths: GetStaticPaths = async () => {
