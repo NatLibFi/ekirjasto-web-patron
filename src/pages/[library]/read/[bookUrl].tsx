@@ -1,6 +1,6 @@
 import React from "react";
-import Page from "components/Page";
-import { NextPage, GetStaticPaths, GetStaticProps } from "next";
+//import Page from "components/Page";
+//import { NextPage, GetStaticPaths, GetStaticProps } from "next";
 import withAppProps, { AppProps } from "dataflow/withAppProps";
 //import { AXISNOW_DECRYPT } from "utils/env";
 import ErrorComponent from "components/Error";
@@ -30,7 +30,7 @@ const ReaderPage: NextPage<AppProps> = ({ library, error }) => {
 };
 
 export default ReaderPage;
-*/
+
 export const getStaticProps: GetStaticProps = withAppProps();
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -39,3 +39,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: true
   };
 };
+*/
