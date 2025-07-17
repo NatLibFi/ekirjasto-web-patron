@@ -2,6 +2,7 @@
 
 ### UNRELEASED CHANGES
 
+- Use config.yml
 - Add arm64 target to github actions
 - Added basePath option
 - Log auth document URL when Catalog Root link missing. (PP-1209)
