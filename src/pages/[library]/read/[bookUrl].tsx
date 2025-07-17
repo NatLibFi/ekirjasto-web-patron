@@ -1,10 +1,10 @@
 import React from "react";
 //import Page from "components/Page";
 //import { NextPage, GetStaticPaths, GetStaticProps } from "next";
-import withAppProps, { AppProps } from "dataflow/withAppProps";
+//import withAppProps, { AppProps } from "dataflow/withAppProps";
 //import { AXISNOW_DECRYPT } from "utils/env";
-import ErrorComponent from "components/Error";
-import dynamic from "next/dynamic";
+//import ErrorComponent from "components/Error";
+//import dynamic from "next/dynamic";
 
 /*const Viewer = AXISNOW_DECRYPT
   ? dynamic(() => import("components/WebpubViewer"))
