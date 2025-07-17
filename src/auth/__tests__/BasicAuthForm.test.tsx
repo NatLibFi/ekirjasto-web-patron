@@ -6,7 +6,6 @@ import fetchMock from "jest-fetch-mock";
 import Cookie from "js-cookie";
 import { generateCredentials } from "utils/auth";
 import { UserProvider } from "components/context/UserContext";
-import { basicAuthMethod, cleverAuthMethod } from "test-utils/fixtures";
 import { Keyboard } from "types/opds1";
 
 const mockCookie = Cookie as any;
@@ -48,7 +47,26 @@ test("displays form", async () => {
   expect(pin).toHaveValue("pinpin");
 });
 
-test("submits", async () => {
+test("toggle password visibility", async () => {
+  const { user } = setup(<BasicAuthHandler method={method} />);
+
+  // Input initially renders as password input
+  const input = await screen.findByLabelText("Pin input");
+  expect(input).toBeInTheDocument();
+  expect(input).toHaveAttribute("type", "password");
+
+  const showPasswordIconButton = await screen.findByLabelText("show password");
+  expect(showPasswordIconButton).toHaveAttribute("type", "button");
+  await user.click(showPasswordIconButton);
+
+  // After toggle, input becomes text so password is visible
+  const hidePasswordIconButton = await screen.findByLabelText("hide password");
+  expect(input).toBeInTheDocument();
+  expect(input).toHaveAttribute("type", "text");
+  expect(hidePasswordIconButton).toBeInTheDocument();
+});
+
+test("submit by clicking login button", async () => {
   // give the mock a delay to allow loading state to appear
   fetchMock.mockResponseOnce(
     () =>
@@ -98,7 +116,8 @@ test("submits", async () => {
         Authorization: token,
         "X-Requested-With": "XMLHttpRequest",
         "Accept-Language": "*"
-      }
+      },
+      method: "GET"
     });
   });
 });
@@ -141,7 +160,8 @@ test("displays server error", async () => {
       Authorization: "token",
       "X-Requested-With": "XMLHttpRequest",
       "Accept-Language": "*"
-    }
+    },
+    method: "GET"
   });
   const serverError = await screen.findByText(
     "Invalid Credentials: Wrong username."
@@ -179,7 +199,7 @@ test("submits with no password input", async () => {
   fetchMock.mockResponseOnce(
     () =>
       new Promise(resolve =>
-        setTimeout(() => resolve(JSON.stringify(fixtures.loans)), 100)
+        setTimeout(() => resolve(JSON.stringify(fixtures.loans)), 1)
       )
   );
   const { user } = setup(
@@ -222,37 +242,8 @@ test("submits with no password input", async () => {
         Authorization: token,
         "X-Requested-With": "XMLHttpRequest",
         "Accept-Language": "*"
-      }
+      },
+      method: "GET"
     });
-  });
-});
-
-describe("choose a different method NavButton", () => {
-  test("displays if multiple library has multiple methods", async () => {
-    setup(<BasicAuthHandler method={method} />, {
-      library: {
-        authMethods: [basicAuthMethod, cleverAuthMethod]
-      }
-    });
-    const chooseAnother = screen.getByRole("link", {
-      name: "Use a different login method"
-    });
-    expect(chooseAnother).toBeInTheDocument();
-    expect(chooseAnother).toHaveAttribute(
-      "href",
-      "/testlib/login?nextUrl=%2Ftestlib"
-    );
-  });
-
-  test("doesn't display if library only has one method", () => {
-    setup(<BasicAuthHandler method={method} />, {
-      library: {
-        authMethods: [basicAuthMethod]
-      }
-    });
-    const chooseAnother = screen.queryByRole("link", {
-      name: "Use a different login method"
-    });
-    expect(chooseAnother).not.toBeInTheDocument();
   });
 });

@@ -112,7 +112,26 @@ test("extracts basic book info", () => {
       name: "Fake Series",
       position: 2
     },
-    language: "en"
+    language: "en",
+    unparsed: {
+      "bibframe:distribution": [
+        {
+          $: {
+            "bibframe:ProviderName": {
+              name: "bibframe:ProviderName",
+              value: "Standard Ebooks",
+              prefix: "bibframe",
+              local: "ProviderName",
+              uri: "http://bibframe.org/vocab/"
+            }
+          },
+          $ns: {
+            uri: "http://bibframe.org/vocab/",
+            local: "distribution"
+          }
+        }
+      ]
+    }
   });
 
   const acquisitionFeed = factory.acquisitionFeed({
@@ -168,7 +187,8 @@ const basicInfo = {
   authors: [factory.contributor({ name: "Clive Cussler" })],
   contributors: [factory.contributor({ name: "Contrib" })],
   categories: [factory.category({ label: "label" })],
-  summary: "summary"
+  summary: "summary",
+  unparsed: {}
 };
 test("doesn't include borrow links without supported formats", () => {
   mockConfig({
@@ -338,6 +358,23 @@ describe("FulfillableBook", () => {
 
     expect(book.status).toBe("fulfillable");
     expect(book.revokeUrl).toBe("/revoke");
+  });
+
+  test("infers book format from fulfillable book acquisition link", () => {
+    mockConfig();
+    const fulfillmentLink = factory.acquisitionLink({
+      rel: OPDSAcquisitionLink.GENERIC_REL,
+      type: OPDS1.EpubMediaType,
+      href: "/epub"
+    });
+    const entry = factory.entry({
+      ...basicInfo,
+      links: [fulfillmentLink, detailLink]
+    });
+
+    const book = entryToBook(entry, "http://test-url.com");
+
+    expect(book.format).toBe("ePub");
   });
 });
 
@@ -607,4 +644,64 @@ test("extracts top-level links", () => {
     "http://test-url.com/terms"
   ]);
   expect(types).toEqual(["about", "terms-of-service"]);
+});
+
+test("extracts inferred eBook format from indirect acquisition links", () => {
+  mockConfig();
+  const borrowLink = factory.acquisitionLink({
+    href: "http://example.com/borrow",
+    rel: OPDSAcquisitionLink.BORROW_REL,
+    availability: { status: "unavailable" },
+    indirectAcquisitions: [
+      {
+        type: OPDS1.AxisNowWebpubMediaType,
+        indirectAcquisitions: [
+          {
+            type: OPDS1.EpubMediaType,
+            href: "/epub"
+          }
+        ]
+      },
+      {
+        type: OPDS1.PdfMediaType
+      }
+    ]
+  });
+
+  const entry = factory.entry({
+    ...basicInfo,
+    links: [detailLink, borrowLink]
+  });
+
+  const book = entryToBook(entry, "http://test-url.com");
+  expect(book.format).toBe("ePub");
+});
+
+test("extracts inferred Audiobook format from indirect acquisition links", () => {
+  mockConfig();
+  const borrowLink = factory.acquisitionLink({
+    href: "http://example.com/borrow",
+    rel: OPDSAcquisitionLink.BORROW_REL,
+    availability: { status: "unavailable" },
+    indirectAcquisitions: [
+      {
+        type: OPDS1.AudiobookMediaType
+      }
+    ]
+  });
+
+  const entry = factory.entry({
+    ...basicInfo,
+    unparsed: {
+      $: {
+        "schema:additionalType": {
+          value: "http://bib.schema.org/Audiobook"
+        }
+      }
+    },
+    links: [detailLink, borrowLink]
+  });
+
+  const book = entryToBook(entry, "http://test-url.com");
+  expect(book.format).toBe("Audiobook");
 });

@@ -1,5 +1,6 @@
 import {
   ClientBasicMethod,
+  ClientBasicTokenMethod,
   ClientCleverMethod,
   ClientSamlMethod,
   CollectionData
@@ -8,7 +9,14 @@ import { OPDS1 } from "interfaces";
 import { makeFulfillableBooks } from "test-utils/fixtures/book";
 
 export const basicAuthId = "http://opds-spec.org/auth/basic";
+export const basicTokenAuthId =
+  "http://thepalaceproject.org/authtype/basic-token";
 export const samlAuthId = "http://librarysimplified.org/authtype/SAML-2.0";
+
+export const basicTokenAuthenticationUrl =
+  "https://exmple.com/patrons/me/token/";
+
+export const unsupportedAuthId = "http://opds-spec.org/auth/oauth/implicit";
 
 export const basicAuthMethod: ClientBasicMethod = {
   id: "client-basic",
@@ -18,11 +26,27 @@ export const basicAuthMethod: ClientBasicMethod = {
   },
   type: basicAuthId,
   description: "Library Barcode",
-  // inputs: {
-  //   login: { keyboard: "Default" },
-  //   password: { keyboard: "Default" }
-  // },
   links: [
+    {
+      href: "https://example.com/LoginButton280.png",
+      rel: "logo"
+    }
+  ]
+};
+
+export const basicTokenAuthMethod: ClientBasicTokenMethod = {
+  id: "client-basic-token",
+  labels: {
+    login: "Barcode",
+    password: "Pin"
+  },
+  type: basicTokenAuthId,
+  description: "Library Barcode",
+  links: [
+    {
+      rel: "authenticate",
+      href: basicTokenAuthenticationUrl
+    },
     {
       href: "https://example.com/LoginButton280.png",
       rel: "logo"
@@ -63,6 +87,18 @@ export function createSamlMethod(num: number): ClientSamlMethod {
     ]
   };
 }
+
+export const unsupportedAuthMethod = {
+  id: "unsupported-auth-method",
+  description: "Unsupported auth method",
+  links: [
+    {
+      rel: "authenticate",
+      href: "https://example.com/oauth"
+    }
+  ],
+  type: unsupportedAuthId
+};
 
 export const loans: CollectionData = {
   id: "loans-id",
