@@ -25,8 +25,8 @@ const RELEASE_STAGE =
   NODE_ENV === "production" && GIT_BRANCH === "production"
     ? "production"
     : NODE_ENV === "production" && GIT_BRANCH === "qa"
-    ? "qa"
-    : "development";
+      ? "qa"
+      : "development";
 
 const BUILD_ID = `${APP_VERSION}-${GIT_BRANCH}.${GIT_COMMIT_SHA}`;
 
@@ -48,17 +48,15 @@ log(`BUILD_ID: ${BUILD_ID}`);
 log(`Companion App: ${APP_CONFIG.companionApp}`);
 log(`Show Medium: ${APP_CONFIG.showMedium ? "enabled" : "disabled"}`);
 log(
-  `Google Tag Manager: ${
-    APP_CONFIG.gtmId
-      ? `enabled - ${APP_CONFIG.gtmId}`
-      : "disabled (no gtm_id in config file)"
+  `Google Tag Manager: ${APP_CONFIG.gtmId
+    ? `enabled - ${APP_CONFIG.gtmId}`
+    : "disabled (no gtm_id in config file)"
   }`
 );
 log(
-  `Bugsnag: ${
-    APP_CONFIG.bugsnagApiKey
-      ? `enabled - ${APP_CONFIG.bugsnagApiKey}`
-      : "disabled (no bugsnag_api_key in config file)"
+  `Bugsnag: ${APP_CONFIG.bugsnagApiKey
+    ? `enabled - ${APP_CONFIG.bugsnagApiKey}`
+    : "disabled (no bugsnag_api_key in config file)"
   }`
 );
 log(`Open eBooks Config: `, APP_CONFIG.openebooks);
@@ -81,8 +79,7 @@ const config = {
   webpack: (config, { dev, isServer, _defaultLoaders, webpack }) => {
     console.log(
       chalk.cyan("info  -"),
-      `Building ${isServer ? "server" : "client"} files using Webpack version ${
-        webpack.version
+      `Building ${isServer ? "server" : "client"} files using Webpack version ${webpack.version
       }.`
     );
     // Perform customizations to webpack config
@@ -126,6 +123,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true"
 });
 module.exports = {
+  basePath: '/web',
   ...withTM(withBundleAnalyzer(config)),
   distDir: "_next",
   generateBuildId: async () => {
