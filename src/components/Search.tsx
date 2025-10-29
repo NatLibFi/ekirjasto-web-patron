@@ -14,7 +14,6 @@ import useCollection from "hooks/useCollection";
 import { fetchSearchData } from "dataflow/opds1/fetch";
 import ApplicationError from "errors";
 import { SearchData } from "interfaces";
-import { borderRadius } from "styled-system";
 
 interface SearchProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 

@@ -125,10 +125,7 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
       ) : isLoading ? (
         <Button loading />
       ) : (
-        <NavButton 
-        style={{ borderRadius: '30px' }} 
-        color="ui.ekirjastogreen" 
-        href={baseLoginUrl}>
+        <NavButton style={{ borderRadius: '30px' }} color="ui.ekirjastogreen" href={baseLoginUrl}>
           Sign In
         </NavButton>
       )}
