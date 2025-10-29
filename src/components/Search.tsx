@@ -14,6 +14,7 @@ import useCollection from "hooks/useCollection";
 import { fetchSearchData } from "dataflow/opds1/fetch";
 import ApplicationError from "errors";
 import { SearchData } from "interfaces";
+import { borderRadius } from "styled-system";
 
 interface SearchProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
@@ -81,17 +82,28 @@ const Search: React.FC<SearchProps> = ({ className, ...props }) => {
         onChange={e => setValue(e.target.value)}
         sx={{
           borderRight: "none",
-          borderTopRightRadius: 0,
-          borderBottomRightRadius: 0
+          borderTopLeftRadius: 30,
+          borderBottomLeftRadius: 30,
+          letterSpacing: 0.4,
+          padding: 15,
+          fontSize: 16,
+          fontFamily: "Asap-Regular"
         }}
         {...props}
       />
       <Button
         type="submit"
-        color="ui.black"
+        color="ui.ekirjastogreen"
+        aria-label="Search content"
         sx={{
           height: "initial",
-          flex: "1 0 auto"
+          flex: "1 0 auto",
+          letterSpacing: "0.4px",
+          borderTopRightRadius: "30px",
+          borderBottomRightRadius: "30px",
+          fontFamily: "Asap-Regular",
+          padding: "15px, 30px, 15px, 30px",
+          fontSize: "16px"
         }}
         iconLeft={SvgSearch}
       >
