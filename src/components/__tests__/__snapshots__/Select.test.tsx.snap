@@ -17,7 +17,7 @@ exports[`select matches snapshot 1`] = `
   padding-bottom: 4px;
   border: 1px solid #bdbdbd;
   border-radius: 2px;
-  font-family: 'Open Sans',Helvetica,Arial,sans-serif;
+  font-family: Asap,sans-serif;
   font-size: 0.875rem;
   font-weight: 300;
   line-height: 1.5;
