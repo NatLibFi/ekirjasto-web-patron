@@ -16,7 +16,7 @@ const styles = {
     body: "Asap,sans-serif",
     heading: "Asap,sans-serif",
     monospace: "Menlo, monospace"
-  },
+  }
 };
 
 export default styles;
