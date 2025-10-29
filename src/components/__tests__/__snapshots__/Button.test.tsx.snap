@@ -2,7 +2,7 @@
 
 exports[`LinkButton renders correct element 1`] = `
 .emotion-0 {
-  font-family: 'Open Sans',Helvetica,Arial,sans-serif;
+  font-family: Asap,sans-serif;
   font-size: 0.875rem;
   font-weight: 300;
   line-height: 1.5;
@@ -71,7 +71,7 @@ exports[`NavButton renders correct element 1`] = `
   -webkit-text-decoration: none;
   text-decoration: none;
   color: var(--theme-ui-colors-ui-white);
-  font-family: 'Open Sans',Helvetica,Arial,sans-serif;
+  font-family: Asap,sans-serif;
   font-size: 0.875rem;
   font-weight: 300;
   line-height: 1.5;
@@ -140,7 +140,7 @@ exports[`NavButton renders correct element 1`] = `
 
 exports[`variants filled (default) 1`] = `
 .emotion-0 {
-  font-family: 'Open Sans',Helvetica,Arial,sans-serif;
+  font-family: Asap,sans-serif;
   font-size: 0.875rem;
   font-weight: 300;
   line-height: 1.5;
@@ -206,7 +206,7 @@ exports[`variants filled (default) 1`] = `
 
 exports[`variants ghost 1`] = `
 .emotion-0 {
-  font-family: 'Open Sans',Helvetica,Arial,sans-serif;
+  font-family: Asap,sans-serif;
   font-size: 0.875rem;
   font-weight: 700;
   line-height: 1.5;
@@ -286,7 +286,7 @@ exports[`variants link 1`] = `
   -webkit-text-decoration: underline;
   text-decoration: underline;
   background-color: transparent;
-  font-family: 'Open Sans',Helvetica,Arial,sans-serif;
+  font-family: Asap,sans-serif;
   font-size: 1rem;
   font-weight: 300;
   line-height: 1.5;
