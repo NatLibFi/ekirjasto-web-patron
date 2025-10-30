@@ -1,4 +1,3 @@
-import FulfillmentButton from "components/FulfillmentButton";
 import { fetchBearerToken, fetchBook } from "dataflow/opds1/fetch";
 import ApplicationError from "errors";
 import {
@@ -8,9 +7,9 @@ import {
   OPDS1
 } from "interfaces";
 import {
-          DownloadMediaType,
-          LcpDrmMediaType,
-          ExternalReaderMediaType
+  DownloadMediaType,
+  LcpDrmMediaType,
+  ExternalReaderMediaType
 } from "types/opds1";
 import { bookIsAudiobook } from "utils/book";
 import { APP_CONFIG } from "utils/env";
@@ -101,10 +100,10 @@ export function getFulfillmentFromLink(link: FulfillmentLink): AnyFullfillment {
       switch (indirectionType) {
         case OPDS1.AdobeDrmMediaType:
           modifier = "Adobe ";
-          break
+          break;
         case OPDS1.LcpDrmMediaType:
           modifier = "LCP ";
-          break
+          break;
         default:
           modifier = "";
       }
@@ -181,14 +180,13 @@ const constructGetLocation = (
 
     case OPDS1.LcpDrmMediaType:
       //read online
-      if (contentType == ExternalReaderMediaType) {
+      if (contentType === ExternalReaderMediaType) {
         return await resolveLcpDrm(url, token);
       }
       //download
       else {
-        return {url, token, lcpContentType: LcpDrmMediaType };
+        return {url, token, lcpContentType: LcpDrmMediaType};
       }
-
     default:
       // No indirection — return as-is
       return { url, token };
@@ -219,7 +217,7 @@ async function resolveOpdsEntry(
         "Indirect OPDS Entry did not contain the correct acquisition link."
     });
   }
-  return {url: fulfillmentLink, token  };
+  return {url: fulfillmentLink, token};
 }
 
 async function resolveBearerToken(
