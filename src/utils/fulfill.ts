@@ -237,7 +237,6 @@ async function resolveBearerToken(
   return { url: fulfillmentLink, token: fulfillmentToken };
 }
 //url is fullfillmentlink.url
-//
 async function resolveLcpDrm(
   url: string,
   token: string | undefined
@@ -255,7 +254,9 @@ async function resolveLcpDrm(
     if (!response.ok) throw new Error(response.statusText);
 
     const body = await response.json();
-    const link = body.links.find(link => link.rel === "ellibs");
+    const link = body.links.find(
+      link => link.rel === "http://ellibs.com/webreader/link"
+    );
     return { url: link.href, token };
   } catch (err: any) {
     console.error("ERROR:", err.message);
