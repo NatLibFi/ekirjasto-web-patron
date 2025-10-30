@@ -2,6 +2,7 @@ const ui = {
   black: "#000000",
   white: "#ffffff",
   error: "#97272c",
+  ekirjastogreen: "#0C797D", //yes, i'm back
   link: {
     primary: "#0576d3",
     secondary: "#004b98"
