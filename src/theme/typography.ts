@@ -1,7 +1,7 @@
 const typography = {
   fonts: {
-    body: "'Open Sans',Helvetica,Arial,sans-serif",
-    heading: "'Open Sans',Helvetica,Arial,sans-serif",
+    body: "Asap,sans-serif",
+    heading: "Asap,sans-serif",
     monospace: "Menlo, monospace"
   },
   fontSizes: {
