@@ -185,7 +185,7 @@ const constructGetLocation = (
       }
       //download
       else {
-        return {url, token, lcpContentType: LcpDrmMediaType};
+        return { url, token, lcpContentType: LcpDrmMediaType };
       }
     default:
       // No indirection — return as-is
@@ -204,7 +204,7 @@ async function resolveOpdsEntry(
     throw new ApplicationError({
       title: "Fetch Error",
       detail: "Fetching book failed"
-    })
+    });
   }
   const fulfillmentLink = book.fulfillmentLinks?.find(
     link => link.contentType === contentType
@@ -217,7 +217,7 @@ async function resolveOpdsEntry(
         "Indirect OPDS Entry did not contain the correct acquisition link."
     });
   }
-  return {url: fulfillmentLink, token};
+  return { url: fulfillmentLink, token };
 }
 
 async function resolveBearerToken(
@@ -231,16 +231,16 @@ async function resolveBearerToken(
       detail: "Could not retrieve bearer token."
     });
   }
-  const fulfillmentLink =  bearerToken.location;
+  const fulfillmentLink = bearerToken.location;
   const fulfillmentToken = `${bearerToken.token_type} ${bearerToken.access_token}`;
 
-  return {url: fulfillmentLink, token: fulfillmentToken  };
-} 
+  return { url: fulfillmentLink, token: fulfillmentToken };
+}
 //url is fullfillmentlink.url
 //
 async function resolveLcpDrm(
   url: string,
-  token: string | undefined,
+  token: string | undefined
 ): Promise<AuthorizedLocation> {
   if (!token) {
     throw new ApplicationError({
@@ -249,16 +249,15 @@ async function resolveLcpDrm(
     });
   }
 
-  const headers = { 'Authorization': token };
+  const headers = { Authorization: token };
   try {
     const response = await fetch(url, { method: "GET", headers });
     if (!response.ok) throw new Error(response.statusText);
 
     const body = await response.json();
     const link = body.links.find(link => link.rel === "ellibs");
-    return { url: link.href, token};
-  }
-  catch (err: any) {
+    return { url: link.href, token };
+  } catch (err: any) {
     console.error("ERROR:", err.message);
     throw err;
   }
