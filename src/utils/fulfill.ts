@@ -7,8 +7,11 @@ import {
   MediaSupportLevel,
   OPDS1
 } from "interfaces";
-import { headers } from "next/headers";
-import { DownloadMediaType, LcpDrmMediaType, ExternalReaderMediaType} from "types/opds1";
+import {
+          DownloadMediaType,
+          LcpDrmMediaType,
+          ExternalReaderMediaType
+} from "types/opds1";
 import { bookIsAudiobook } from "utils/book";
 import { APP_CONFIG } from "utils/env";
 import { typeMap } from "utils/file";
@@ -94,17 +97,27 @@ export function getFulfillmentFromLink(link: FulfillmentLink): AnyFullfillment {
     case OPDS1.MobiPocketMediaType:
     case OPDS1.EpubMediaType:
       const typeName = typeMap[contentType].name;
-      const drm = (indirectionType === OPDS1.LcpDrmMediaType ? "LCP " : "");
+      let modifier = "";
+      switch (indirectionType) {
+        case OPDS1.AdobeDrmMediaType:
+          modifier = "Adobe ";
+          break
+        case OPDS1.LcpDrmMediaType:
+          modifier = "LCP ";
+          break
+        default:
+          modifier = "";
+      }
 
       return {
         id: link.url,
         getLocation: constructGetLocation(
           indirectionType,
           contentType,
-          link.url,
+          link.url
         ),
         type: "download",
-        buttonLabel: `Download ${drm}${typeName}`,
+        buttonLabel: `Download ${modifier}${typeName}`,
         contentType
       };
 
@@ -115,7 +128,7 @@ export function getFulfillmentFromLink(link: FulfillmentLink): AnyFullfillment {
         getLocation: constructGetLocation(
           indirectionType,
           contentType,
-          link.url,
+          link.url
         ),
         buttonLabel: "Read Online"
       };
@@ -157,9 +170,8 @@ type GetLocationWithIndirection = (
 const constructGetLocation = (
   indirectionType: OPDS1.IndirectAcquisitionType | undefined,
   contentType: OPDS1.AnyBookMediaType,
-  url: string,
+  url: string
 ): GetLocationWithIndirection => async (catalogUrl: string, token?: string) => {
-
   switch (indirectionType) {
     case OPDS1.OPDSEntryMediaType:
       return await resolveOpdsEntry(url, catalogUrl, token, contentType);
@@ -296,4 +308,3 @@ export function shouldRedirectToCompanionApp(
     return false;
   }, false);
 }
-

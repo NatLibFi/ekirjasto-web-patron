@@ -155,7 +155,7 @@ const DownloadButton: React.FC<{
       const {
         url: downloadUrl,
         token: downloadToken,
-        lcpContentType,
+        lcpContentType
       } = await details.getLocation(catalogUrl, token);
 
       const downloadContentType = lcpContentType ?? details?.contentType;
