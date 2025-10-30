@@ -1,3 +1,4 @@
+import FulfillmentButton from "components/FulfillmentButton";
 import { fetchBearerToken, fetchBook } from "dataflow/opds1/fetch";
 import ApplicationError from "errors";
 import {
@@ -6,7 +7,8 @@ import {
   MediaSupportLevel,
   OPDS1
 } from "interfaces";
-import { DownloadMediaType } from "types/opds1";
+import { headers } from "next/headers";
+import { DownloadMediaType, LcpDrmMediaType, ExternalReaderMediaType} from "types/opds1";
 import { bookIsAudiobook } from "utils/book";
 import { APP_CONFIG } from "utils/env";
 import { typeMap } from "utils/file";
@@ -29,6 +31,7 @@ import { typeMap } from "utils/file";
 export type AuthorizedLocation = {
   url: string;
   token?: string;
+  lcpContentType?: DownloadMediaType;
 };
 
 export type DownloadFulfillment = {
@@ -84,23 +87,24 @@ export function getFulfillmentFromLink(link: FulfillmentLink): AnyFullfillment {
   ) {
     return { type: "unsupported" };
   }
+
   switch (contentType) {
     case OPDS1.PdfMediaType:
     case OPDS1.Mobi8Mediatype:
     case OPDS1.MobiPocketMediaType:
     case OPDS1.EpubMediaType:
       const typeName = typeMap[contentType].name;
-      const modifier =
-        indirectionType === OPDS1.AdobeDrmMediaType ? "Adobe " : "";
+      const drm = (indirectionType === OPDS1.LcpDrmMediaType ? "LCP " : "");
+
       return {
         id: link.url,
         getLocation: constructGetLocation(
           indirectionType,
           contentType,
-          link.url
+          link.url,
         ),
         type: "download",
-        buttonLabel: `Download ${modifier}${typeName}`,
+        buttonLabel: `Download ${drm}${typeName}`,
         contentType
       };
 
@@ -111,7 +115,7 @@ export function getFulfillmentFromLink(link: FulfillmentLink): AnyFullfillment {
         getLocation: constructGetLocation(
           indirectionType,
           contentType,
-          link.url
+          link.url,
         ),
         buttonLabel: "Read Online"
       };
@@ -149,48 +153,106 @@ type GetLocationWithIndirection = (
   catalogUrl: string,
   token?: string
 ) => Promise<AuthorizedLocation>;
+
 const constructGetLocation = (
   indirectionType: OPDS1.IndirectAcquisitionType | undefined,
   contentType: OPDS1.AnyBookMediaType,
-  url: string
+  url: string,
 ): GetLocationWithIndirection => async (catalogUrl: string, token?: string) => {
-  /**
-   * If there is OPDS Entry Indirection, we fetch the actual link
-   * from within an entry
-   */
-  if (indirectionType === OPDS1.OPDSEntryMediaType) {
-    const book = (await fetchBook(url, catalogUrl, token)) as FulfillableBook;
-    const resolvedUrl = book.fulfillmentLinks?.find(
-      link => link.contentType === contentType
-    )?.url;
-    if (!resolvedUrl) {
-      throw new ApplicationError({
-        title: "OPDS Error",
-        detail:
-          "Indirect OPDS Entry did not contain the correct acquisition link."
-      });
-    }
-    return {
-      url: resolvedUrl,
-      token
-    };
+
+  switch (indirectionType) {
+    case OPDS1.OPDSEntryMediaType:
+      return await resolveOpdsEntry(url, catalogUrl, token, contentType);
+
+    case OPDS1.BearerTokenMediaType:
+      return await resolveBearerToken(url, token);
+
+    case OPDS1.LcpDrmMediaType:
+      //read online
+      if (contentType == ExternalReaderMediaType) {
+        return await resolveLcpDrm(url, token);
+      }
+      //download
+      else {
+        return {url, token, lcpContentType: LcpDrmMediaType };
+      }
+
+    default:
+      // No indirection — return as-is
+      return { url, token };
   }
-
-  if (indirectionType === OPDS1.BearerTokenMediaType) {
-    const bearerToken = await fetchBearerToken(url, token);
-
-    return {
-      url: bearerToken.location,
-      token: `${bearerToken.token_type} ${bearerToken.access_token}`
-    };
-  }
-
-  // otherwise there is no indirection, just return the url and token.
-  return {
-    url,
-    token
-  };
 };
+
+async function resolveOpdsEntry(
+  url: string,
+  catalogUrl: string,
+  token: string | undefined,
+  contentType: OPDS1.AnyBookMediaType
+): Promise<AuthorizedLocation> {
+  const book = (await fetchBook(url, catalogUrl, token)) as FulfillableBook;
+  if (!book) {
+    throw new ApplicationError({
+      title: "Fetch Error",
+      detail: "Fetching book failed"
+    })
+  }
+  const fulfillmentLink = book.fulfillmentLinks?.find(
+    link => link.contentType === contentType
+  )?.url;
+
+  if (!fulfillmentLink) {
+    throw new ApplicationError({
+      title: "OPDS Error",
+      detail:
+        "Indirect OPDS Entry did not contain the correct acquisition link."
+    });
+  }
+  return {url: fulfillmentLink, token  };
+}
+
+async function resolveBearerToken(
+  url: string,
+  token: string | undefined
+): Promise<AuthorizedLocation> {
+  const bearerToken = await fetchBearerToken(url, token);
+  if (!bearerToken) {
+    throw new ApplicationError({
+      title: "Bearer Token Error",
+      detail: "Could not retrieve bearer token."
+    });
+  }
+  const fulfillmentLink =  bearerToken.location;
+  const fulfillmentToken = `${bearerToken.token_type} ${bearerToken.access_token}`;
+
+  return {url: fulfillmentLink, token: fulfillmentToken  };
+} 
+//url is fullfillmentlink.url
+//
+async function resolveLcpDrm(
+  url: string,
+  token: string | undefined,
+): Promise<AuthorizedLocation> {
+  if (!token) {
+    throw new ApplicationError({
+      title: "token not found",
+      detail: "Could not retrieve token."
+    });
+  }
+
+  const headers = { 'Authorization': token };
+  try {
+    const response = await fetch(url, { method: "GET", headers });
+    if (!response.ok) throw new Error(response.statusText);
+
+    const body = await response.json();
+    const link = body.links.find(link => link.rel === "ellibs");
+    return { url: link.href, token};
+  }
+  catch (err: any) {
+    console.error("ERROR:", err.message);
+    throw err;
+  }
+}
 
 export function dedupeLinks(links: readonly FulfillmentLink[]) {
   return links.reduce<FulfillmentLink[]>((uniqueArr, current) => {
@@ -209,7 +271,6 @@ export function getAppSupportLevel(
   const { mediaSupport } = APP_CONFIG;
   const defaultSupportLevel: MediaSupportLevel =
     mediaSupport?.default ?? "unsupported";
-
   // if there is indirection, we search through the dictionary nested inside the
   // indirectionType
   if (indirectionType) {
@@ -235,3 +296,4 @@ export function shouldRedirectToCompanionApp(
     return false;
   }, false);
 }
+

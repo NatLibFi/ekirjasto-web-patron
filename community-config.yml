@@ -14,35 +14,41 @@ instance_name: Patron Web Catalog - Community Demo
 # will not be visible in the app.
 media_support:
   # standard download types
-  application/epub+zip: show
-  application/kepub+zip: show
-  application/pdf: show
-  application/x-mobipocket-ebook: show
-  application/x-mobi8-ebook: show
-  application/vnd.overdrive.circulation.api+json;profile=ebook: show
+  #application/epub+zip: show
+  #application/kepub+zip: show
+  #application/pdf: show
+  #application/x-mobipocket-ebook: show
+  #application/x-mobi8-ebook: show
+  #application/vnd.overdrive.circulation.api+json;profile=ebook: show
   # External read online type (Like Overdrive)
-  text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media": show
+  #text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media": show
   # AxisNow document (read online in Webpub Viewer) - not supported in community version
   # application/vnd.librarysimplified.axisnow+json: show
   # Audiobooks
-  application/audiobook+json: redirect
-  application/vnd.overdrive.circulation.api+json;profile=audiobook: redirect
-  application/audiobook+json;profile="http://www.feedbooks.com/audiobooks/access-restriction": redirect
-  application/vnd.librarysimplified.findaway.license+json: redirect
+  #application/audiobook+json: redirect
+  #application/vnd.overdrive.circulation.api+json;profile=audiobook: redirect
+  #application/audiobook+json;profile="http://www.feedbooks.com/audiobooks/access-restriction": redirect
+  #application/vnd.librarysimplified.findaway.license+json: redirect
 
   ### INDIRECT TYPES
   # OPDS Entry Indirection type
-  application/atom+xml;type=entry;profile=opds-catalog:
-    text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media": show
+  #application/atom+xml;type=entry;profile=opds-catalog:
+  #  text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media": show
 
   # Adobe Encryption
-  application/vnd.adobe.adept+xml:
-    application/epub+zip: redirect-and-show
+  #application/vnd.adobe.adept+xml:
+  #  application/epub+zip: redirect-and-show
 
   # Bearer Token Exchange
-  application/vnd.librarysimplified.bearer-token+json:
-    application/pdf: show
+  #application/vnd.librarysimplified.bearer-token+json:
+  #  application/pdf: show
+  #  application/epub+zip: show
+
+  application/vnd.readium.lcp.license.v1.0+json:
+    application/pdf: show 
     application/epub+zip: show
+    application/audiobook+lcp: show
+    text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media": show
 
 # defines the companion app for the instance. Can be "simplye" or "openebooks"
 # default is "simplye"
@@ -66,4 +72,6 @@ companion_app: simplye
 # Or define the catalog root and shortname for each library on this instance.
 # the homepage of the library will then be at https://domain.com/:library/
 libraries:
+  ellibs: https://circulation-beta.ellibs.com/ellibs-test/authentication_document
+  library-simplified: https://circulation.librarysimplified.org/authentication_document
   main-street-city: https://demo.thepalaceproject.org/GA0000/authentication_document

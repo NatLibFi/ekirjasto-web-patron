@@ -58,6 +58,7 @@ export const OPDSEntryMediaType =
  * decrypted by us, so just download them and let the user open it in an app
  * that can deal with it.
  */
+export const LcpDrmMediaType = "application/vnd.readium.lcp.license.v1.0+json";
 export const AdobeDrmMediaType = "application/vnd.adobe.adept+xml";
 // there was an issue with incorrect Adept media types being sent.
 export const IncorrectAdobeDrmMediaType = "vnd.adobe/adept+xml";
@@ -68,6 +69,7 @@ export const BearerTokenMediaType =
 
 export type IndirectAcquisitionType =
   | typeof OPDSEntryMediaType
+  | typeof LcpDrmMediaType
   | typeof AdobeDrmMediaType
   | typeof BearerTokenMediaType;
 
@@ -83,7 +85,7 @@ export const MobiPocketMediaType = "application/x-mobipocket-ebook";
 export const Mobi8Mediatype = "application/x-mobi8-ebook";
 export const AudiobookMediaType = "application/audiobook+json";
 export const LcpAudioBookMediaType = "application/audiobook+lcp";
-export const ExternalReaderMediaType =
+export const ExternalReaderMediaType = 
   'text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media"';
 export const OverdriveAudiobookMediaType =
   "application/vnd.overdrive.circulation.api+json;profile=audiobook";
@@ -117,6 +119,7 @@ export type BookFormatType =
   | PdfFormatType;
 
 export type DownloadMediaType =
+  | typeof LcpDrmMediaType
   | typeof EpubMediaType
   | typeof KepubMediaType
   | typeof PdfMediaType
