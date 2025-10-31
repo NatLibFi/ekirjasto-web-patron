@@ -116,6 +116,7 @@ async function parseConfig(raw) {
   // otherwise assume the file is properly structured.
   return {
     instanceName: unparsed.instance_name || "Patron Web Catalog",
+    basePath: unparsed.basePath || "/",
     libraries,
     mediaSupport: unparsed.media_support || {},
     bugsnagApiKey: unparsed.bugsnag_api_key || null,
