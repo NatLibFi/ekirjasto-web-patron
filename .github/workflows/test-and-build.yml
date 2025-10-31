@@ -3,10 +3,10 @@ name: Test and Build
 on:
   push:
     paths-ignore:
-      - '**/README.md'
-      - '**/LICENSE'
-      - '**/.gitignore'
-      - 'CHANGELOG.md'
+      - "**/README.md"
+      - "**/LICENSE"
+      - "**/.gitignore"
+      - "CHANGELOG.md"
 
 concurrency:
   group: test-build-${{ github.ref_name }}-${{ github.event_name }}
@@ -198,3 +198,35 @@ jobs:
           tags: ${{ steps.docker-image-tags.outputs.tags }}
           cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:build-cache
           cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:build-cache,mode=max
+
+      - name: Smoke test (start container and check HTTP 200)
+        if: always()
+        run: |
+          # Build and start services with Docker Compose (use local docker engine)
+          docker compose -f docker-compose.yml up -d --build
+
+          # Poll the app until it returns HTTP 200 or timeout
+          start_time=$(date +%s)
+          timeout=120
+          url=http://localhost:3000/
+          status=000
+          while true; do
+            status=$(curl -s -o /dev/null -w "%{http_code}" "$url" || echo "000")
+            if [ "$status" -eq 200 ]; then
+              echo "Smoke test: app responded 200"
+              break
+            fi
+            now=$(date +%s)
+            if [ $((now - start_time)) -ge "$timeout" ]; then
+              echo "Smoke test FAILED: timeout waiting for app (last status: $status)"
+              echo "--- Container logs (last 200 lines) ---"
+              docker compose -f docker-compose.yml logs --no-color --timestamps --tail=200 || true
+              docker compose -f docker-compose.yml down -v || true
+              exit 1
+            fi
+            sleep 2
+          done
+
+      - name: Tear down smoke services
+        if: always()
+        run: docker compose -f docker-compose.yml down -v || true

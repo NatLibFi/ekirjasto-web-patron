@@ -37,6 +37,19 @@ const APP_CONFIG = JSON.parse(
   })
 );
 
+// read raw from APP_CONFIG (may be undefined)
+const rawBasePath = (APP_CONFIG.basePath || "").toString().trim();
+
+// normalize only if a non-empty, non-root value is provided.
+// We explicitly treat "/" as not-configured because config docs say not to set "/".
+let normalizedBasePath = "";
+if (rawBasePath && rawBasePath !== "/") {
+  normalizedBasePath = `/${rawBasePath.replace(/^\/+|\/+$/g, "")}`;
+} else if (rawBasePath === "/") {
+  // Config docs discourage using '/' explicitly; warn to avoid confusion.
+  console.warn("config.yml: basePath set to '/' — this is discouraged. Treating as no basePath.");
+}
+
 // log some info to the console for the record.
 log(`Instance Name: ${APP_CONFIG.instanceName}`);
 log(`CONFIG_FILE: ${CONFIG_FILE}`);
@@ -122,15 +135,20 @@ const config = {
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true"
 });
-module.exports = {
-  basePath: '/web',
-  ...withTM(withBundleAnalyzer(config)),
-  distDir: "_next",
-  generateBuildId: async () => {
-    if (process.env.BUILD_ID) {
-      return process.env.BUILD_ID;
-    } else {
-      return `${new Date().getTime()}`;
-    }
+// Build the final config object. Only set `basePath` when a non-root
+// value is configured in `config.yml`. Next.js treats an absent `basePath`
+// differently than an empty string, so avoid adding the property for root.
+const finalConfig = withTM(withBundleAnalyzer(config));
+if (normalizedBasePath) {
+  finalConfig.basePath = normalizedBasePath;
+}
+finalConfig.distDir = "_next";
+finalConfig.generateBuildId = async () => {
+  if (process.env.BUILD_ID) {
+    return process.env.BUILD_ID;
+  } else {
+    return `${new Date().getTime()}`;
   }
 };
+
+module.exports = finalConfig;
