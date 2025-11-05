@@ -19,7 +19,7 @@ COPY . ./
 # Set some standard ENV
 ENV PORT=3000 \
     NODE_ENV=production \
-    CONFIG_FILE=/app/community-config.yml
+    CONFIG_FILE=community-config.yml
 EXPOSE $PORT
 
 # Let Docker probe the container to determine readiness.

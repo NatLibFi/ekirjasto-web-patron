@@ -4,7 +4,7 @@ services:
     container_name: web-patron
     build: ./
     environment:
-      CONFIG_FILE: /app/community-config.yml
+      CONFIG_FILE: community-config.yml
       NODE_ENV: production
     volumes:
       - ./config:/app/config
