@@ -3,6 +3,9 @@ FROM node:20.18.1-alpine AS builder
 
 RUN apk add --no-cache git curl
 
+# Set the working directory
+WORKDIR /app
+
 # we first copy just the package.json and run npm ci
 # to take advantage of layer caching
 ENV NPM_CONFIG_LOGLEVEL=warn
@@ -15,7 +18,8 @@ COPY . ./
 
 # Set some standard ENV
 ENV PORT=3000 \
-    NODE_ENV=production
+    NODE_ENV=production \
+    CONFIG_FILE=/app/community-config.yml
 EXPOSE $PORT
 
 # Let Docker probe the container to determine readiness.
