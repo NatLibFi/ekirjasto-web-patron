@@ -8,3 +8,11 @@ wallaby.js
 .vscode
 dist
 lib
+.next
+.gitignore
+README.md
+.eslintcache
+coverage
+.env*.local
+Dockerfile
+docker-compose.yml
