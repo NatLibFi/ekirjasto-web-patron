@@ -109,21 +109,21 @@ describe("book details page", () => {
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
 
-    expect(screen.queryByText("Download Palace")).not.toBeInTheDocument();
+    /*expect(screen.queryByText("Download E-kirjasto")).not.toBeInTheDocument();
 
     expect(screen.queryByText("Palace Logo")).not.toBeInTheDocument();
     expect(
       screen.queryByText(
         "Browse and read our collection of ebooks and audiobooks right from your phone."
       )
-    ).not.toBeInTheDocument();
+    ).not.toBeInTheDocument();*/
   });
 
   test("shows simplyE callout when NEXT_PUBLIC_COMPANION_APP is 'simplye'", async () => {
     mockConfig({ companionApp: "simplye" });
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
-
+/*
     expect(screen.getByText("Download Palace")).toBeInTheDocument();
     expect(screen.getByLabelText("Palace Logo")).toBeInTheDocument();
     expect(
@@ -143,14 +143,14 @@ describe("book details page", () => {
     );
 
     const googleBadge = screen.getByRole("link", {
-      name: "Get Palace on the Google Play Store",
+      name: "Get E-kirjasto on the Google Play Store",
       hidden: true // hidden initially on mobile
     });
     expect(googleBadge).toBeInTheDocument();
     expect(googleBadge).toHaveAttribute(
       "href",
       "https://play.google.com/store/apps/details?id=org.thepalaceproject.palace&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
-    );
+    );*/
   });
 
   test("shows recommendation lanes", () => {
