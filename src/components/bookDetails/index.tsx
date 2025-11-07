@@ -127,7 +127,7 @@ const Summary: React.FC<{ book: AnyBook; className?: string }> = ({
 // TODO replace palace logo PalaceLogo sx= with E-kirjasto E
 // Or even remove the section as patron can read online
 const SimplyECallout: React.FC<{ className?: "string" }> = ({ className }) => {
-  /*return (
+  return (
     <section
       aria-label="Download E-kirjasto Mobile App"
       sx={{
@@ -151,7 +151,7 @@ const SimplyECallout: React.FC<{ className?: "string" }> = ({ className }) => {
         <GooglePlayBadge />
       </div>
     </section>
-  );*/
+  );
 };
 
 export default BookDetails;

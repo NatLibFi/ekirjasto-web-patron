@@ -123,8 +123,7 @@ describe("book details page", () => {
     mockConfig({ companionApp: "simplye" });
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
-/*
-    expect(screen.getByText("Download Palace")).toBeInTheDocument();
+    expect(screen.getByText("Download E-kirjasto")).toBeInTheDocument();
     expect(screen.getByLabelText("Palace Logo")).toBeInTheDocument();
     expect(
       screen.getByText(
@@ -133,13 +132,13 @@ describe("book details page", () => {
     ).toBeInTheDocument();
 
     const iosBadge = screen.getByRole("link", {
-      name: "Download Palace on the Apple App Store",
+      name: "Download E-kirjasto on the Apple App Store",
       hidden: true // it is initially hidden by a media query, only displayed on desktop
     });
     expect(iosBadge).toBeInTheDocument();
     expect(iosBadge).toHaveAttribute(
       "href",
-      "https://apps.apple.com/us/app/the-palace-project/id1574359693"
+      "https://apps.apple.com/fi/app/e-kirjasto/id6471490203"
     );
 
     const googleBadge = screen.getByRole("link", {
@@ -149,8 +148,8 @@ describe("book details page", () => {
     expect(googleBadge).toBeInTheDocument();
     expect(googleBadge).toHaveAttribute(
       "href",
-      "https://play.google.com/store/apps/details?id=org.thepalaceproject.palace&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
-    );*/
+      "https://play.google.com/store/apps/details?id=fi.kansalliskirjasto.ekirjasto"
+    );
   });
 
   test("shows recommendation lanes", () => {
