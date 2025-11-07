@@ -73,4 +73,4 @@ companion_app: simplye
 # Or define the catalog root and shortname for each library on this instance.
 # the homepage of the library will then be at https://domain.com/:library/
 libraries:
-  main-street-city: https://demo.thepalaceproject.org/GA0000/authentication_document
+  E-kirjasto: https://lib-dev.e-kirjasto.fi/authentication_document

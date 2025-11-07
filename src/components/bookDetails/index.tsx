@@ -124,11 +124,12 @@ const Summary: React.FC<{ book: AnyBook; className?: string }> = ({
     />
   </div>
 );
-
+// TODO replace palace logo PalaceLogo sx= with E-kirjasto E
+// Or even remove the section as patron can read online
 const SimplyECallout: React.FC<{ className?: "string" }> = ({ className }) => {
-  return (
+  /*return (
     <section
-      aria-label="Download the Palace Mobile App"
+      aria-label="Download E-kirjasto Mobile App"
       sx={{
         mt: 4,
         bg: "ui.gray.lightWarm",
@@ -140,7 +141,7 @@ const SimplyECallout: React.FC<{ className?: "string" }> = ({ className }) => {
       className={className}
     >
       <PalaceLogo sx={{ mt: 3, height: "120px" }} />
-      <H3 sx={{ mt: 0 }}>Download Palace</H3>
+      <H3 sx={{ mt: 0 }}>Download E-kirjasto</H3>
       <Text>
         Browse and read our collection of ebooks and audiobooks right from your
         phone.
@@ -150,7 +151,7 @@ const SimplyECallout: React.FC<{ className?: "string" }> = ({ className }) => {
         <GooglePlayBadge />
       </div>
     </section>
-  );
+  );*/
 };
 
 export default BookDetails;
