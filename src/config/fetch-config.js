@@ -113,6 +113,17 @@ async function parseConfig(raw) {
       ? await fetchLibrariesFromRegistry(unparsed.libraries)
       : makeLibrariesConfig(unparsed.libraries);
 
+  /**
+   * BASE PATH HANDLING
+   * 
+   * The basePath allows deploying the app under a URL prefix (e.g., /web).
+   * - If not set in config, defaults to "/"
+   * - The value "/" will be normalized to empty string in next.config.js
+   * - Non-root paths like "/web" will be normalized (slashes trimmed) in next.config.js
+   * - See next.config.js for the full normalization logic
+   */
+  const basePath = unparsed.basePath || "/";
+
   // otherwise assume the file is properly structured.
   return {
     instanceName: unparsed.instance_name || "Patron Web Catalog",

@@ -68,6 +68,31 @@ To deploy the application, there are a few configuration variables that need to 
 
 The production configuration is defined in a YAML config file. You can find more details on the options in the `./community-config.yml` file. To run the app, you must tell it where to find the config file. This is done via the `CONFIG_FILE` environment variable. If you don't set anything, the sample config is used. See [environment variables](#environment-variables) below for more information.
 
+### Base Path Configuration
+
+The `basePath` setting in the configuration file allows you to deploy the application under a URL prefix. This is a Next.js configuration that affects all routes in the application.
+
+**Examples:**
+
+- Setting `basePath: /web` will make the app available at `https://yourdomain.com/web`
+- Leaving it unset will serve the app at the root: `https://yourdomain.com`
+
+**Important Notes:**
+
+- Do NOT explicitly set `basePath: /` in your config file - this is discouraged. Instead, leave it unset or omit it entirely.
+- Leading and trailing slashes are handled automatically - you can use `/catalog` or `catalog` interchangeably.
+- This setting is useful when running the app behind a reverse proxy at a specific path, or when deploying alongside other applications on the same domain.
+
+**Configuration Example:**
+
+```yaml
+# Deploy app at https://yourdomain.com/web
+basePath: /web
+
+# OR deploy at root (leave unset or comment out)
+# basePath:
+```
+
 ## Environment Variables
 
 The main app configuration is done in the [config file](#configuration-file), but where to find that file is defined as an environment variable, along with some other optional variables that may be useful for development. These can either be set at the command line when running the application, or in a `.env.local` file.
@@ -122,7 +147,7 @@ Once the dependencies are installed and application environments configured, the
 - `npm run build` - This will build both the server and the client code into `./next`. You can then run `npm run start` to start the server.
 - `npm run storybook` - This will run the storybook application to preview and develop components in isolation.
 
-The application will start at the base URL of `localhost:3000`. (NOTE: `npm run dev:https` will also make the site available using your computer's IP address. For example, https://192.168.1.15:3000.)
+The application will start at the base URL of `localhost:3000`. (NOTE: `npm run dev:https` will also make the site available using your computer's IP address. For example, <https://192.168.1.15:3000>.)
 
 ### ENV Vars and Building
 
@@ -257,6 +282,7 @@ If you would like to use a `SIMPLIFIED_CATALOG_BASE` or `REGISTRY_BASE`, or prov
 ### Helpful commands
 
 - For debugging purposes, you can run the container and skip the command to start the app, instead launching it directly into a shell. To do so, use this command:
+
   ```
   docker run -it --name webpatron -v $PATH_TO_LOCAL_VOLUME:/config --rm --entrypoint=/bin/sh webpatron
   ```

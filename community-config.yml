@@ -1,7 +1,24 @@
 # Set an instance name to be used in bug tracking and for other debugging purposes.
 # This is not patron-facing, so call it something that will be meaningful to you when
 # reviewing bugs, especially if you operate multiple instances.
-instance_name: Patron Web Catalog - Community Demo
+instance_name: E-kirjasto web -demo
+
+# BASE PATH CONFIGURATION
+# The basePath setting allows you to deploy the application under a URL prefix.
+# For example, setting basePath to "/web" will make the app available at
+# https://yourdomain.com/web instead of https://yourdomain.com
+#
+# Important notes:
+# - If not set or set to "/", the app will be served at the root of your domain
+# - Do NOT set this to "/" explicitly - leave it unset or use a specific path
+#
+# When to use basePath:
+# - When running the app behind a reverse proxy at a specific path
+# - When deploying alongside other applications on the same domain
+# - When you need to organize multiple services under different URL paths
+#
+
+basePath: /web
 
 # APP MEDIA SUPPORT
 # Each entry has a setting of "show", "redirect" or "show-and-redirect".
@@ -43,10 +60,10 @@ media_support:
   application/vnd.librarysimplified.bearer-token+json:
     application/pdf: show
     application/epub+zip: show
-  
+
   # LCP DRM
   application/vnd.readium.lcp.license.v1.0+json:
-    application/pdf: show 
+    application/pdf: show
     application/epub+zip: show
     application/audiobook+lcp: show
     text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media": show

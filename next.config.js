@@ -37,6 +37,25 @@ const APP_CONFIG = JSON.parse(
   })
 );
 
+/**
+ * BASE PATH CONFIGURATION
+ * 
+ * The basePath setting from config.yml allows deploying the app under a URL prefix.
+ * For example, basePath: "/web" makes the app available at https://domain.com/web
+ * 
+ * Processing steps:
+ * 1. Read raw value from APP_CONFIG.basePath (may be undefined, empty, or have slashes)
+ * 2. Normalize by trimming whitespace
+ * 3. If non-empty and not "/", normalize to "/prefix" format (remove leading/trailing slashes, then add leading slash)
+ * 4. If explicitly set to "/", warn and treat as no basePath (Next.js best practice)
+ * 5. Only set finalConfig.basePath if a valid non-root path was provided
+ * 
+ * Why we handle "/" specially:
+ * - Next.js treats absent basePath differently than empty string or "/"
+ * - Setting basePath to "/" is discouraged in Next.js documentation
+ * - For root deployment, it's better to not set basePath at all
+ */
+
 // read raw from APP_CONFIG (may be undefined)
 const rawBasePath = (APP_CONFIG.basePath || "").toString().trim();
 
@@ -44,6 +63,8 @@ const rawBasePath = (APP_CONFIG.basePath || "").toString().trim();
 // We explicitly treat "/" as not-configured because config docs say not to set "/".
 let normalizedBasePath = "";
 if (rawBasePath && rawBasePath !== "/") {
+  // Remove all leading and trailing slashes, then add a single leading slash
+  // This ensures "/web", "web/", and "web" all become "/web"
   normalizedBasePath = `/${rawBasePath.replace(/^\/+|\/+$/g, "")}`;
 } else if (rawBasePath === "/") {
   // Config docs discourage using '/' explicitly; warn to avoid confusion.
@@ -135,9 +156,15 @@ const config = {
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true"
 });
-// Build the final config object. Only set `basePath` when a non-root
-// value is configured in `config.yml`. Next.js treats an absent `basePath`
-// differently than an empty string, so avoid adding the property for root.
+
+/**
+ * FINAL CONFIG ASSEMBLY
+ * 
+ * Build the final Next.js config object. Only set `basePath` when a non-root
+ * value is configured in `config.yml`. Next.js treats an absent `basePath`
+ * differently than an empty string, so we conditionally add the property
+ * only when we have a valid path prefix to use.
+ */
 const finalConfig = withTM(withBundleAnalyzer(config));
 if (normalizedBasePath) {
   finalConfig.basePath = normalizedBasePath;
