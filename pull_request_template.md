@@ -2,16 +2,19 @@
 
 <!--- Describe your changes -->
 
-## Motivation and Context
+## How Can This Be Tested?
 
-<!--- Why is this change required? What problem does it solve? -->
-<!--- If it fixes an open issue, please link to the issue here. -->
+- [ ] This change cannot be tested visually
+<!--- Please describe in detail how one can test this -->
 
-## How Has This Been Tested?
+<!--- Leave a comment if your change affects other areas of the code-->
 
-<!--- Please describe in detail how you tested your changes. -->
-<!--- Include details of your testing environment, and the tests you ran to -->
-<!--- see how your change affects other areas of the code, etc. -->
+- [ ] Tested locally
+- [ ] Tested on a mobile device
+- [ ] Tested with Firefox
+- [ ] Tested with Chrome
+- [ ] Tested with Edge
+- [ ] Tested with Safari
 
 ## Checklist:
 
@@ -20,3 +23,4 @@
 
 - [ ] I have updated the documentation accordingly.
 - [ ] All new and existing tests passed.
+- [ ] Review added atleast to E-kirjasto maintainers +1
