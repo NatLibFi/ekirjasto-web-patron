@@ -2,9 +2,10 @@
 
 <!--- Describe your changes -->
 
-## How Has This Been Tested?
+## How Can This Be Tested?
 
-<!--- Please describe in detail how you tested your changes. -->
+- [ ] This change cannot be tested visually
+<!--- Please describe in detail how one can test this -->
 
 <!--- Leave a comment if your change affects other areas of the code-->
 
@@ -22,4 +23,4 @@
 
 - [ ] I have updated the documentation accordingly.
 - [ ] All new and existing tests passed.
-- [ ] Review added atleast to Joona and another dev
+- [ ] Review added atleast to E-kirjasto maintainers +1
