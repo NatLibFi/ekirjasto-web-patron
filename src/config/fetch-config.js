@@ -115,7 +115,6 @@ async function parseConfig(raw) {
 
   /**
    * BASE PATH HANDLING
-   * 
    * The basePath allows deploying the app under a URL prefix (e.g., /web).
    * - If not set in config, defaults to "/"
    * - The value "/" will be normalized to empty string in next.config.js
@@ -127,7 +126,7 @@ async function parseConfig(raw) {
   // otherwise assume the file is properly structured.
   return {
     instanceName: unparsed.instance_name || "Patron Web Catalog",
-    basePath: unparsed.basePath || "/",
+    basePath,
     libraries,
     mediaSupport: unparsed.media_support || {},
     bugsnagApiKey: unparsed.bugsnag_api_key || null,
