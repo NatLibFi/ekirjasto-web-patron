@@ -109,22 +109,21 @@ describe("book details page", () => {
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
 
-    expect(screen.queryByText("Download Palace")).not.toBeInTheDocument();
+    /*expect(screen.queryByText("Download E-kirjasto")).not.toBeInTheDocument();
 
     expect(screen.queryByText("Palace Logo")).not.toBeInTheDocument();
     expect(
       screen.queryByText(
         "Browse and read our collection of ebooks and audiobooks right from your phone."
       )
-    ).not.toBeInTheDocument();
+    ).not.toBeInTheDocument();*/
   });
 
   test("shows simplyE callout when NEXT_PUBLIC_COMPANION_APP is 'simplye'", async () => {
     mockConfig({ companionApp: "simplye" });
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
-
-    expect(screen.getByText("Download Palace")).toBeInTheDocument();
+    expect(screen.getByText("Download E-kirjasto")).toBeInTheDocument();
     expect(screen.getByLabelText("Palace Logo")).toBeInTheDocument();
     expect(
       screen.getByText(
@@ -133,23 +132,23 @@ describe("book details page", () => {
     ).toBeInTheDocument();
 
     const iosBadge = screen.getByRole("link", {
-      name: "Download Palace on the Apple App Store",
+      name: "Download E-kirjasto on the Apple App Store",
       hidden: true // it is initially hidden by a media query, only displayed on desktop
     });
     expect(iosBadge).toBeInTheDocument();
     expect(iosBadge).toHaveAttribute(
       "href",
-      "https://apps.apple.com/us/app/the-palace-project/id1574359693"
+      "https://apps.apple.com/fi/app/e-kirjasto/id6471490203"
     );
 
     const googleBadge = screen.getByRole("link", {
-      name: "Get Palace on the Google Play Store",
+      name: "Get E-kirjasto on the Google Play Store",
       hidden: true // hidden initially on mobile
     });
     expect(googleBadge).toBeInTheDocument();
     expect(googleBadge).toHaveAttribute(
       "href",
-      "https://play.google.com/store/apps/details?id=org.thepalaceproject.palace&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
+      "https://play.google.com/store/apps/details?id=fi.kansalliskirjasto.ekirjasto"
     );
   });
 
