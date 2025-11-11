@@ -18,7 +18,7 @@ instance_name: E-kirjasto web -demo
 # - When you need to organize multiple services under different URL paths
 #
 
-basePath: /web
+#basePath: /web
 
 # APP MEDIA SUPPORT
 # Each entry has a setting of "show", "redirect" or "show-and-redirect".
@@ -90,4 +90,4 @@ companion_app: simplye
 # Or define the catalog root and shortname for each library on this instance.
 # the homepage of the library will then be at https://domain.com/:library/
 libraries:
-  main-street-city: https://demo.thepalaceproject.org/GA0000/authentication_document
+  ekirjasto: https://lib-dev.e-kirjasto.fi/authentication_document
