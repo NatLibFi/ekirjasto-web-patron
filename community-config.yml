@@ -18,7 +18,7 @@ instance_name: E-kirjasto web -demo
 # - When you need to organize multiple services under different URL paths
 #
 
-#basePath: /web
+basePath: /web
 
 # APP MEDIA SUPPORT
 # Each entry has a setting of "show", "redirect" or "show-and-redirect".
