@@ -124,7 +124,9 @@ describe("book details page", () => {
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
     expect(screen.getByText("Download E-kirjasto")).toBeInTheDocument();
-    expect(screen.getByLabelText("Palace Logo")).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Image of the E-library logo")
+    ).toBeInTheDocument();
     expect(
       screen.getByText(
         "Browse and read our collection of ebooks and audiobooks right from your phone."
