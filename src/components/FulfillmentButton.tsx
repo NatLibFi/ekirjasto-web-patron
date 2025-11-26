@@ -11,7 +11,7 @@ import {
 import { FulfillableBook } from "interfaces";
 import track from "analytics/track";
 import SvgDownload from "icons/Download";
-import SvgExternalLink from "icons/ExternalOpen";
+import ArrowForward from "icons/ArrowForward";
 import { useRouter } from "next/router";
 import { Text } from "components/Text";
 import Button from "components/Button";
@@ -93,8 +93,7 @@ const ReadOnlineExternal: React.FC<{
 
       // we are about to open the book, so send a track event
       track.openBook(trackOpenBookUrl);
-      setLoading(false);
-      window.open(externalReaderUrl, "__blank");
+      window.open(externalReaderUrl, "_self");
     } catch (e) {
       setLoading(false);
       handleError(e);
@@ -105,7 +104,7 @@ const ReadOnlineExternal: React.FC<{
     <>
       <Button
         {...getButtonStyles(isPrimaryAction)}
-        iconLeft={SvgExternalLink}
+        iconLeft={ArrowForward}
         onClick={open}
         loading={loading}
         loadingText="Opening..."
