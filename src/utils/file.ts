@@ -24,6 +24,10 @@ export const typeMap: Record<
   "application/x-mobi8-ebook": {
     extension: ".azw3",
     name: "Mobi8"
+  },
+  "application/vnd.readium.lcp.license.v1.0+json": {
+    extension: ".lcpl",
+    name: "LCPL"
   }
 };
 

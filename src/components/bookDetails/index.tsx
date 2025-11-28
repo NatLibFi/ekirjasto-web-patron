@@ -16,7 +16,7 @@ import ReportProblem from "./ReportProblem";
 import Head from "next/head";
 import { H1, H2, H3, Text } from "components/Text";
 import MediumIndicator from "components/MediumIndicator";
-import PalaceLogo from "components/PalaceLogo";
+import EkirjastoBookDetailsLogo from "components/ekirjastoLogos/EkirjastoBookDetailsLogo";
 import IosBadge from "components/storeBadges/IosBadge";
 import GooglePlayBadge from "components/storeBadges/GooglePlayBadge";
 import { useRouter } from "next/router";
@@ -124,11 +124,10 @@ const Summary: React.FC<{ book: AnyBook; className?: string }> = ({
     />
   </div>
 );
-
 const SimplyECallout: React.FC<{ className?: "string" }> = ({ className }) => {
   return (
     <section
-      aria-label="Download the Palace Mobile App"
+      aria-label="Download E-kirjasto Mobile App"
       sx={{
         mt: 4,
         bg: "ui.gray.lightWarm",
@@ -139,8 +138,8 @@ const SimplyECallout: React.FC<{ className?: "string" }> = ({ className }) => {
       }}
       className={className}
     >
-      <PalaceLogo sx={{ mt: 3, height: "120px" }} />
-      <H3 sx={{ mt: 0 }}>Download Palace</H3>
+      <EkirjastoBookDetailsLogo sx={{ mt: 3, mb: 3, height: "90px" }} />
+      <H3 sx={{ mt: 0 }}>Download E-kirjasto</H3>
       <Text>
         Browse and read our collection of ebooks and audiobooks right from your
         phone.

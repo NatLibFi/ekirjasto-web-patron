@@ -123,7 +123,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true"
 });
 module.exports = {
-  basePath: '/web',
   ...withTM(withBundleAnalyzer(config)),
   distDir: "_next",
   generateBuildId: async () => {
