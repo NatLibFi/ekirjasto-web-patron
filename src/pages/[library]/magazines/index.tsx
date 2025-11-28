@@ -121,17 +121,13 @@ const MagazinesFixedContent: React.FC = () => {
 const MagazinesFixedPage: NextPage<AppProps> = ({ library, error }) => {
   return (
     <LayoutPage library={library} error={error} hideFooter>
-      <div
-        sx={{
-          flex: 1
-        }}
-      >
+      <>
         <Head>
           <title>Lehdet - E-kirjasto</title>
         </Head>
         <BreadcrumbBar currentLocation="Lehdet" />
         <MagazinesFixedContent />
-      </div>
+      </>
     </LayoutPage>
   );
 };
