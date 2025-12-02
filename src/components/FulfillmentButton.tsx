@@ -153,13 +153,15 @@ const DownloadButton: React.FC<{
     try {
       const {
         url: downloadUrl,
-        token: downloadToken
+        token: downloadToken,
+        lcpContentType
       } = await details.getLocation(catalogUrl, token);
 
+      const downloadContentType = lcpContentType ?? details?.contentType;
       await downloadFile(
         downloadUrl,
         title,
-        details.contentType,
+        downloadContentType,
         downloadToken
       );
     } catch (e) {

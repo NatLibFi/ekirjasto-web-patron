@@ -43,6 +43,7 @@ __To have your library added to the demo, register it with NYPL's Library Regist
   - [Manager, Registry, and Application Configurations](#manager--registry--and-application-configurations)
 - [Development](#development)
   - [Contributing](#contributing)
+    - [GPG signed commit](#gpg-signed-commit)
   - [Installing Dependencies](#installing-dependencies)
   - [Running the Application](#running-the-application)
     - [ENV Vars and Building](#env-vars-and-building)
@@ -107,7 +108,10 @@ The default branch of the repository is `main`. This is where PRs with developme
 
 - An entry in the `CHANGELOG` under `UNRELEASED CHANGES`
 - New/updated tests as appropriate
-<!-- - A link to the associated ticket in [NYPL's JIRA](https://nypl.jira.org) when possible -->
+
+### GPG signed commit
+
+All commit must be GPG signed. See instructions in [Github documentation](https://docs.github.com/en/authentication/managing-commit-signature-verification) on how to check for existing keys, create a new one, how to add a key to you GitHub account and how to tell Git about your key.
 
 ## Installing Dependencies
 

@@ -1,7 +1,7 @@
 # Set an instance name to be used in bug tracking and for other debugging purposes.
 # This is not patron-facing, so call it something that will be meaningful to you when
 # reviewing bugs, especially if you operate multiple instances.
-instance_name: Patron Web Catalog - Community Demo
+instance_name: E-kirjasto web -dev
 
 # APP MEDIA SUPPORT
 # Each entry has a setting of "show", "redirect" or "show-and-redirect".
@@ -43,6 +43,13 @@ media_support:
   application/vnd.librarysimplified.bearer-token+json:
     application/pdf: show
     application/epub+zip: show
+  
+  # LCP DRM
+  application/vnd.readium.lcp.license.v1.0+json:
+    application/pdf: show 
+    application/epub+zip: show
+    application/audiobook+lcp: show
+    text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media": show
 
 # defines the companion app for the instance. Can be "simplye" or "openebooks"
 # default is "simplye"
@@ -66,4 +73,4 @@ companion_app: simplye
 # Or define the catalog root and shortname for each library on this instance.
 # the homepage of the library will then be at https://domain.com/:library/
 libraries:
-  main-street-city: https://demo.thepalaceproject.org/GA0000/authentication_document
+  ekirjasto: https://lib-dev.e-kirjasto.fi/ekirjasto/authentication_document
