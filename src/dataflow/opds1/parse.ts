@@ -289,6 +289,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
   const book: Book = {
     id: entry.id,
     title: entry.title,
+    accessibility: entry.accessibility,
     series: entry.series,
     authors: authors,
     contributors: contributors,
