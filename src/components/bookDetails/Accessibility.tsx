@@ -21,11 +21,14 @@ const Accessibility: React.FC<{ book: AnyBook; className?: string }> = ({
         Accessibility
       </H3>
 
-      <DetailField heading="Conformance" details="conformsTo" />
+      <DetailField
+        heading="Conformance"
+        details={book.accessibility?.conformance?.conformsTo}
+      />
 
       <DetailField
         heading="Ways of reading"
-        details="feature, feature, feature"
+        details={book.accessibility?.waysOfReading?.features?.join(", ")}
       />
 
       <Text>
