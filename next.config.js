@@ -123,6 +123,19 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true"
 });
 module.exports = {
+  //adds transifex here
+  i18n: {
+    // These are all the locales you want to support in
+    // your application
+    locales: ['en', 'fi', 'sv'],
+    // This is the default locale you want to be used when visiting
+    // a non-locale prefixed path e.g. `/hello`
+    defaultLocale: 'fi',
+    localeDetection: false,
+  },
+  publicRuntimeConfig: {
+    TxNativePublicToken: 'YOUR-PUBLIC-TX-NATIVE-TOKEN',
+  },
   ...withTM(withBundleAnalyzer(config)),
   distDir: "_next",
   generateBuildId: async () => {
