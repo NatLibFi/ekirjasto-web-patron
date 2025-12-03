@@ -29,7 +29,7 @@ import { APP_CONFIG } from "utils/env";
 import { getAuthors } from "utils/book";
 import { useState } from "react";
 import { T, UT } from "@transifex/react"
-import { getServerSideTranslations, setServerSideTranslations } from "./i18n";
+import { getServerSideTranslations, setServerSideTranslations } from "../../../i18n";
 
 export const BookDetails: React.FC = () => {
   const { query } = useRouter();
