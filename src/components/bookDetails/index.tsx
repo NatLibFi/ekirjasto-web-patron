@@ -27,6 +27,9 @@ import useUser from "components/context/UserContext";
 import useBreadcrumbContext from "components/context/BreadcrumbContext";
 import { APP_CONFIG } from "utils/env";
 import { getAuthors } from "utils/book";
+import { useState } from "react";
+import { T, UT } from "@transifex/react"
+import { getServerSideTranslations, setServerSideTranslations } from "./i18n";
 
 export const BookDetails: React.FC = () => {
   const { query } = useRouter();
@@ -141,8 +144,8 @@ const SimplyECallout: React.FC<{ className?: "string" }> = ({ className }) => {
       <EkirjastoBookDetailsLogo sx={{ mt: 3, mb: 3, height: "90px" }} />
       <H3 sx={{ mt: 0 }}>Download E-kirjasto</H3>
       <Text>
-        Browse and read our collection of ebooks and audiobooks right from your
-        phone.
+        <T _str="Browse and read our collection of ebooks and audiobooks right from your
+        phone."/>
       </Text>
       <div sx={{ maxWidth: 140, mx: "auto", mt: 3 }}>
         <IosBadge sx={{ m: "6%" }} />
@@ -151,5 +154,14 @@ const SimplyECallout: React.FC<{ className?: "string" }> = ({ className }) => {
     </section>
   );
 };
+
+export async function getServerSideProps(context) {
+  const data = await getServerSideTranslations(context)
+  return {
+    props: {
+      ...data, // { locale, locales, translations }
+    }
+  }
+}
 
 export default BookDetails;
