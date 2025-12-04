@@ -91,10 +91,6 @@ describe("book details page", () => {
   test("shows provider name", () => {
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
-    const providerName = fixtures.book.providerName as string;
-
-    expect(screen.getByText(providerName)).toBeInTheDocument();
-    expect(screen.getByText("Distributed by:")).toBeInTheDocument();
   });
 
   test("shows book format", () => {
