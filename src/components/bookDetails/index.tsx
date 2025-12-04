@@ -48,7 +48,7 @@ export const BookDetails: React.FC = () => {
   if (!book) return <PageLoader />;
 
   return (
-    <section aria-label="Book details">
+    <section aria-label={<T _str="Book details" />}>
       <Head>
         <title>{book.title}</title>
       </Head>
@@ -78,7 +78,7 @@ export const BookDetails: React.FC = () => {
               display: "flex",
               flexDirection: "column"
             }}
-            aria-label="Book info"
+            aria-label={<T _str="Book info" />}
           >
             <H1 sx={{ m: 0 }}>
               {book.title}
@@ -93,17 +93,38 @@ export const BookDetails: React.FC = () => {
             <FulfillmentCard book={book} sx={{ mt: 3 }} />
             <Summary book={book} />
             <div sx={{ mt: 2 }}>
-              <DetailField heading="Publisher" details={book.publisher} />
-              <DetailField heading="Published" details={book.published} />
+              <DetailField heading={<T _str="Publisher" />}
+              details={book.publisher} />
+              <DetailField heading={<T _str="Published" />}
+              details={book.published} 
+              />
               <DetailField
-                heading="Categories"
+                heading={<T _str="Categories" />}
                 details={book.categories?.join(", ")}
+                aria-label={`Categories ${book.categories}`}
               />
               <DetailField
                 heading="Distributed by"
                 details={book.providerName}
               />
-              <DetailField heading="Book format" details={book.format} />
+              <div>
+                {/* Label for the book format */}
+                <span id="book-format-label">
+                  <T _str="Book format" />
+                  </span>
+
+                  {/* Value for the book format */}
+                  <span id="book-format-value">
+                    {book.format}
+                    </span>
+
+                    {/* DetailField component with aria-labelledby */}
+                    <DetailField
+                    heading={<T _str="Book format" />}
+                    details={book.format}
+                    aria-labelledby="book-format-label book-format-value"
+                    />
+                    </div>
             </div>
             <ReportProblem book={book} />
           </div>
@@ -118,8 +139,11 @@ const Summary: React.FC<{ book: AnyBook; className?: string }> = ({
   book,
   className
 }) => (
-  <div sx={{ my: 2 }} className={className} aria-label="Book summary">
-    <H2 sx={{ mb: 2, variant: "text.headers.tertiary" }}>Summary</H2>
+  <div sx={{ my: 2 }} className={className} aria-label={
+  <T _str="Book summary" />
+  }
+  >
+    <H2 sx={{ mb: 2, variant: "text.headers.tertiary" }}><T _str="Summary"/></H2>
     <div
       dangerouslySetInnerHTML={{
         __html: book.summary ?? "Summary not provided."
@@ -130,7 +154,9 @@ const Summary: React.FC<{ book: AnyBook; className?: string }> = ({
 const SimplyECallout: React.FC<{ className?: "string" }> = ({ className }) => {
   return (
     <section
-      aria-label="Download E-kirjasto Mobile App"
+      aria-label={
+      <T _str="Download E-kirjasto Mobile App"/>
+    }
       sx={{
         mt: 4,
         bg: "ui.gray.lightWarm",
@@ -142,7 +168,9 @@ const SimplyECallout: React.FC<{ className?: "string" }> = ({ className }) => {
       className={className}
     >
       <EkirjastoBookDetailsLogo sx={{ mt: 3, mb: 3, height: "90px" }} />
-      <H3 sx={{ mt: 0 }}>Download E-kirjasto</H3>
+      <H3 sx={{ mt: 0 }}>
+        <T _str="Download E-kirjasto" />
+        </H3>
       <Text>
         <T _str="Browse and read our collection of ebooks and audiobooks right from your
         phone."/>
