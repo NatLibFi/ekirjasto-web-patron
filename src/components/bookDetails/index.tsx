@@ -103,10 +103,6 @@ export const BookDetails: React.FC = () => {
                 details={book.categories?.join(", ")}
                 aria-label={`Categories ${book.categories}`}
               />
-              <DetailField
-                heading="Distributed by"
-                details={book.providerName}
-              />
               <div>
                 {/* Label for the book format */}
                 <span id="book-format-label">
