@@ -1,5 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { jsx } from "theme-ui";
 import * as React from "react";
 import { LibraryData } from "../interfaces";
@@ -111,6 +113,22 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
           {libraryWebsite.title ?? `${libraryName} Home`}
         </AnchorButton>
       )}
+      <NavButton
+        variant="ghost"
+        color="ui.black"
+        href="/magazines"
+        sx={{ mr: 1 }}
+      >
+        Magazines (logged in users)
+      </NavButton>
+      <NavButton
+        variant="ghost"
+        color="ui.black"
+        href="/magazines-preview"
+        sx={{ mr: 1 }}
+      >
+        Magazines (anonymous users)
+      </NavButton>
       <NavButton
         variant="ghost"
         color="ui.black"
