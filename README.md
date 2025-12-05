@@ -138,7 +138,9 @@ This project uses [Theme UI](https://theme-ui.com/) which provides a simple Java
 
 ### Useful Scripts
 
-- `npm run test` - This will launch the test runner (jest) and run all tests.
+- `npm run test` - This will launch the test runner (jest) and run tests.
+- `npm run test:ci` - This will run tests and will lint
+- `npm run build` - Will lint first and proceeds to build flow if success
 - `npm run dev:axe` - Will run the dev script with react-axe enabled for viewing accessibility issues.
 - `npm run lint` - Will lint all code and show errors/warnings in the console.
 - `npm run lint:ts:fix` - Will lint the ts and tsx files and apply automatic fixes where possible.
