@@ -10,12 +10,11 @@ import useSWR from "swr";
 import mockConfig from "test-utils/mockConfig";
 import { BreadcrumbContext } from "components/context/BreadcrumbContext";
 
-jest.mock('next/config', () => () => ({
+jest.mock("next/config", () => () => ({
   publicRuntimeConfig: {
     // Add any necessary configuration values here
-  },
+  }
 }));
-
 
 jest.mock("swr");
 
