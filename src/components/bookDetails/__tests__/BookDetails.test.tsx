@@ -98,7 +98,6 @@ describe("book details page", () => {
   test("shows provider name", () => {
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
-    const providerName = fixtures.book.providerName as string;
   });
 
   test("shows book format", () => {
