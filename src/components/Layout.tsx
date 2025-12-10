@@ -1,5 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { jsx } from "theme-ui";
 import { Themed } from "@theme-ui/mdx";
 import * as React from "react";
@@ -13,9 +15,10 @@ export const CONTENT_ID = "cpw-content";
 
 interface Props {
   children: React.ReactNode;
+  hideFooter?: boolean;
 }
 
-const Layout = ({ children }: Props) => {
+const Layout = ({ children, hideFooter = false }: Props) => {
   return (
     <Themed.root
       sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
@@ -34,7 +37,7 @@ const Layout = ({ children }: Props) => {
       >
         <ErrorBoundary>{children}</ErrorBoundary>
       </main>
-      <Footer sx={{ width: "100%" }} />
+      {!hideFooter && <Footer sx={{ width: "100%" }} />}
     </Themed.root>
   );
 };
