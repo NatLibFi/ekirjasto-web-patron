@@ -83,6 +83,18 @@ export const book: Book = {
   categories: ["Children", "10-12", "Fiction", "Adventure", "Fantasy"],
   providerName: "Overdrive",
   format: "ePub",
+  accessibility: {
+    conformance: {
+      conformsTo: "This publication meets accepted accessibility standards"
+    },
+    waysOfReading: {
+      features: [
+        "Appearance can be modified",
+        "Has alternative text",
+        "Not fully readable in read aloud or dynamic braille"
+      ]
+    }
+  },
   raw: {
     $: { "schema:additionalType": { value: "http://schema.org/EBook" } },
     category: [
