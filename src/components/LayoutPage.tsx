@@ -5,12 +5,20 @@ import { AppProps } from "dataflow/withAppProps";
 
 /* LayoutPage is a Page with Header and Footer from Layout, this should be used to wrap pages within the app with sitewide navigation. */
 
-type AppPropsWithChildren = AppProps & { children?: React.ReactNode };
+type AppPropsWithChildren = AppProps & {
+  children?: React.ReactNode;
+  hideFooter?: boolean;
+};
 
-const LayoutPage = ({ children, library, error }: AppPropsWithChildren) => {
+const LayoutPage = ({
+  children,
+  library,
+  error,
+  hideFooter
+}: AppPropsWithChildren) => {
   return (
     <Page library={library} error={error}>
-      <Layout>{children}</Layout>
+      <Layout hideFooter={hideFooter}>{children}</Layout>
     </Page>
   );
 };
