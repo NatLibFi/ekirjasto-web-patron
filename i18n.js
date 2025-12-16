@@ -5,6 +5,8 @@ import getConfig from 'next/config';
 
 const { publicRuntimeConfig } = getConfig();
 
+const TRANSLATIONS_TTL_SEC = 60 * 60 * 24; // 24H
+
 /**
  * Used by SSR to pass translation to browser
  *
@@ -22,6 +24,19 @@ export async function getServerSideTranslations({ locale, locales }) {
 
   // load translations over-the-air
   await tx.fetchTranslations(txLocale);
+
+    // bind a helper object in the Native instance for auto-refresh
+    tx._autorefresh = tx._autorefresh || {};
+    if (!tx._autorefresh[txLocale]) {
+      tx._autorefresh[txLocale] = Date.now();
+    }
+  
+    // check for stale content in the background
+    if (Date.now() - tx._autorefresh[txLocale] > TRANSLATIONS_TTL_SEC * 1000) {
+      tx._autorefresh[txLocale] = Date.now();
+      tx.fetchTranslations(txLocale, { refresh: true });
+    }
+
   return {
     locale,
     locales,
