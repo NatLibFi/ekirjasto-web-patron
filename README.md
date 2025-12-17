@@ -132,6 +132,8 @@ The application will start at the base URL of `localhost:3000`. (NOTE: `npm run 
 
 When building for production using `npm run build`, the env vars are set at build time. This means whatever you have in your `.env` or `.env.local` or set in the command line when running `npm run build` will be taken as the env for the app when you run it. Overriding env vars like this `CONFIG_FILE=config.yml npm run start` will not work, you have to set them at build time.
 
+Set your public transifex token
+
 ### Theme UI
 
 This project uses [Theme UI](https://theme-ui.com/) which provides a simple JavaScript-based method with which to apply visual styles to your components. During development, you should use preset values from the site's theme (src/theme/theme.ts) whenever possible. [Learn more](https://theme-ui.com/getting-started) about Theme UI.

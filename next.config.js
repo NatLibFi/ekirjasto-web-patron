@@ -134,7 +134,7 @@ module.exports = {
     localeDetection: false,
   },
   publicRuntimeConfig: {
-    TxNativePublicToken: 'YOUR-PUBLIC-TX-NATIVE-TOKEN',
+    TxNativePublicToken: process.env.TX_NATIVE_PUBLIC_TOKEN || 'YOUR-PUBLIC-TX-NATIVE-TOKEN',
   },
   ...withTM(withBundleAnalyzer(config)),
   distDir: "_next",
