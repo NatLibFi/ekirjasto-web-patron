@@ -44,7 +44,7 @@ test("extracts basic book info", () => {
   const borrowLink = factory.acquisitionLink({
     href: "http://example.com/borrow",
     rel: OPDSAcquisitionLink.BORROW_REL,
-    availability: { availability: "unavailable" },
+    availability: {},
     holds: { total: 20, position: 5 },
     copies: { total: 2, available: 0 },
     indirectAcquisitions: [
