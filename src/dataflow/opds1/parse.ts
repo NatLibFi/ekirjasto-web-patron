@@ -279,7 +279,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
 
   // Get the availability, holds and copies from the borrow link, and if there is no
   // borrow link, get it from the first possible acquisition link
-  const { availability, holds, copies } = borrowLink ?? acquisitionLinks[0]
+  const { availability, holds, copies } = borrowLink ?? acquisitionLinks[0];
 
   const format = bookIsAudiobook({ ...entry.unparsed, raw: entry.unparsed })
     ? "Audiobook"

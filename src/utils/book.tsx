@@ -44,19 +44,20 @@ export function availabilityString(book: AnyBook) {
   const status = book.status;
   const availableCopies = book.copies?.available;
   const totalCopies = book.copies?.total;
-  const queue =
-        typeof book.holds?.total === "number" ? book.holds.total : null;
+  const queue = typeof book.holds?.total === "number" ? book.holds.total : null;
 
   switch (status) {
     case "borrowable":
       return typeof availableCopies === "number" &&
         typeof totalCopies === "number"
-        ? `${availableCopies} out of ${totalCopies} copies available.`: null;
+        ? `${availableCopies} out of ${totalCopies} copies available.`
+        : null;
     case "reservable":
-     return typeof availableCopies === "number" &&
+      return typeof availableCopies === "number" &&
         typeof totalCopies === "number"
         ? `${availableCopies} out of ${totalCopies} copies available.${
-            queue !== null ? ` ${queue} patrons in the queue.`: ""}`
+            queue !== null ? ` ${queue} patrons in the queue.` : ""
+          }`
         : null;
 
     case "reserved":
@@ -92,30 +93,32 @@ export function availabilityString(book: AnyBook) {
 }
 
 function daysUntilLoanExpiry(expiryDateString) {
-    // Parse the expiry date and current date in millis
-    const expiryDateInMillis = new Date(expiryDateString).getTime();
-    const currentDateInMillis = new Date().getTime();
-    
-    // Calculate the difference
-    const differenceInMillis = expiryDateInMillis - currentDateInMillis;
-    
-    // Convert to days
-    const differenceInDays = Math.floor(differenceInMillis / (1000 * 60 * 60 * 24));
+  // Parse the expiry date and current date in millis
+  const expiryDateInMillis = new Date(expiryDateString).getTime();
+  const currentDateInMillis = new Date().getTime();
 
-    // If there is less than a day of time, show it in hours
-    if(differenceInDays < 1) {
-      const differenceInHours = Math.floor(differenceInMillis / (1000 * 60 * 60));
+  // Calculate the difference
+  const differenceInMillis = expiryDateInMillis - currentDateInMillis;
 
-      // if there is less than an hour of loan time, show it
-      if(differenceInHours < 1) {
-        return "less than an hour";
-      }
+  // Convert to days
+  const differenceInDays = Math.floor(
+    differenceInMillis / (1000 * 60 * 60 * 24)
+  );
 
-      // Return number of hours left
-      return `${differenceInHours} hours`;
+  // If there is less than a day of time, show it in hours
+  if (differenceInDays < 1) {
+    const differenceInHours = Math.floor(differenceInMillis / (1000 * 60 * 60));
+
+    // if there is less than an hour of loan time, show it
+    if (differenceInHours < 1) {
+      return "less than an hour";
     }
-    // Return number of days left
-    return `${differenceInDays} days`;
+
+    // Return number of hours left
+    return `${differenceInHours} hours`;
+  }
+  // Return number of days left
+  return `${differenceInDays} days`;
 }
 
 export function queueString(book: AnyBook) {
