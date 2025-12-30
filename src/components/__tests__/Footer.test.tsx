@@ -79,7 +79,7 @@ describe("toggling SimplyE Branding", () => {
   });
 
   test("shows simplyE callout when NEXT_PUBLIC_COMPANION_APP is 'simplye'", () => {
-    mockConfig({ companionApp: "simplye" });
+    mockConfig({ companionApp: "E-kirjasto" });
 
     const utils = render(<Footer />);
 
