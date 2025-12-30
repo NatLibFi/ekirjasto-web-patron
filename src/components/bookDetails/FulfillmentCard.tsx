@@ -94,7 +94,6 @@ const AccessCard: React.FC<{
         id={book.id}
         text="Return"
       />
-      # In E-kirjasto, for now, this condition is never true
       {isFulfillable && redirectUser && (
         <Text variant="text.body.italic">
           If you would rather read on your computer, you can:
