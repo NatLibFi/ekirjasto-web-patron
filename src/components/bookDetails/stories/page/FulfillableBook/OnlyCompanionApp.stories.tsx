@@ -28,7 +28,7 @@ const redirectExternal = {
 export const Basic = Template.bind({});
 Basic.parameters = {
   config: {
-    companionApp: "openebooks"
+    companionApp: "E-kirjasto"
   },
   swr: {
     data: {
@@ -41,7 +41,7 @@ Basic.parameters = {
 export const WithAvailability = Template.bind({});
 WithAvailability.parameters = {
   config: {
-    companionApp: "openebooks"
+    companionApp: "E-kirjasto"
   },
   swr: {
     data: {

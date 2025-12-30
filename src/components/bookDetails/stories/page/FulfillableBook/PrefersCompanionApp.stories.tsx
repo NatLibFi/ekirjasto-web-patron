@@ -51,7 +51,7 @@ const redirectPdf = {
 export const DownloadEpub = Template.bind({});
 DownloadEpub.parameters = {
   config: {
-    companionApp: "openebooks"
+    companionApp: "E-kirjasto"
   },
   swr: {
     data: {
@@ -64,7 +64,7 @@ DownloadEpub.parameters = {
 export const WithAvailability = Template.bind({});
 WithAvailability.parameters = {
   config: {
-    companionApp: "openebooks"
+    companionApp: "E-kirjasto"
   },
   swr: {
     data: {

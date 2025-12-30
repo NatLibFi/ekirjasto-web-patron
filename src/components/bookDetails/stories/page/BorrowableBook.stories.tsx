@@ -13,7 +13,7 @@ const Template: StoryFn = args => <BookPage {...args} />;
 export const BorrowableBook = Template.bind({});
 BorrowableBook.parameters = {
   config: {
-    companionApp: "openebooks"
+    companionApp: "E-kirjasto"
   },
   swr: {
     data: borrowableBook
@@ -23,7 +23,7 @@ BorrowableBook.parameters = {
 export const WithAvailability = Template.bind({});
 WithAvailability.parameters = {
   config: {
-    companionApp: "openebooks"
+    companionApp: "E-kirjasto"
   },
   swr: {
     data: {

@@ -47,38 +47,7 @@ test("shows external links when present in state w/ apropriate attributes", () =
 });
 
 describe("toggling SimplyE Branding", () => {
-  test("does not show simplyE callout when NEXT_PUBLIC_COMPANION_APP is 'openebooks'", () => {
-    mockConfig({ companionApp: "openebooks" });
-
-    const utils = render(<Footer />);
-
-    expect(utils.queryByText(/download E-kirjasto/i)).not.toBeInTheDocument();
-
-    expect(
-      utils.queryByText(
-        "Our mobile app lets you browse, borrow and read from our whole collection of ebooks, audiobooks and magazines right on your phone!"
-      )
-    ).not.toBeInTheDocument();
-
-    // badges
-    const iosbadge = utils.queryByText(
-      /download E-kirjasto on the apple app store/i
-    );
-
-    expect(iosbadge).not.toBeInTheDocument();
-
-    const googleBadge = utils.queryByText(
-      /get E-kirjasto on the google play store/
-    );
-    expect(googleBadge).not.toBeInTheDocument();
-
-    // my books nav link
-    const myBooks = utils.queryByText(/my books/i);
-    expect(myBooks).toBeInTheDocument();
-    expect(myBooks).toHaveAttribute("href", "/testlib/loans");
-  });
-
-  test("shows simplyE callout when NEXT_PUBLIC_COMPANION_APP is 'simplye'", () => {
+  test("shows E-kirjasto callout when NEXT_PUBLIC_COMPANION_APP is 'E-kirjasto'", () => {
     mockConfig({ companionApp: "E-kirjasto" });
 
     const utils = render(<Footer />);
