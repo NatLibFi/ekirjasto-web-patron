@@ -101,7 +101,7 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
         </FooterList>
       </div>
       <div sx={{ flex: "1 1 0" }} />
-      {APP_CONFIG.companionApp === "simplye" && <DownloadSimplyECallout />}
+      {APP_CONFIG.companionApp === "E-kirjasto" && <DownloadSimplyECallout />}
     </footer>
   );
 };

@@ -53,7 +53,7 @@ media_support:
 
 # defines the companion app for the instance. Can be "simplye" or "openebooks"
 # default is "simplye"
-companion_app: simplye
+companion_app: E-kirjasto
 
 # BUGSNAG: defines the bugsnag api key to integrate error tracking
 # bugsnag_api_key: xxx

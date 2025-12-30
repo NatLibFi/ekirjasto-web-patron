@@ -100,8 +100,8 @@ describe("book details page", () => {
     expect(screen.getByText("ePub")).toBeInTheDocument();
   });
 
-  test("does not show simplyE callout when NEXT_PUBLIC_COMPANION_APP is 'openebooks'", () => {
-    mockConfig({ companionApp: "openebooks" });
+  test("does not show E-kirjasto callout when NEXT_PUBLIC_COMPANION_APP is ''", () => {
+    mockConfig({ companionApp: "" });
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
 
@@ -115,8 +115,8 @@ describe("book details page", () => {
     ).not.toBeInTheDocument();*/
   });
 
-  test("shows simplyE callout when NEXT_PUBLIC_COMPANION_APP is 'simplye'", async () => {
-    mockConfig({ companionApp: "simplye" });
+  test("shows E-kirjasto callout when NEXT_PUBLIC_COMPANION_APP is 'E-kirjasto'", async () => {
+    mockConfig({ companionApp: "E-kirjasto" });
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
     expect(screen.getByText("Download E-kirjasto")).toBeInTheDocument();
