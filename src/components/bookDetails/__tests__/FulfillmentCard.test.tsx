@@ -311,7 +311,7 @@ describe("reserved", () => {
 });
 
 describe("FulfillableBook", () => {
-  beforeEach(() => mockConfig({ companionApp: "simplye" }));
+  beforeEach(() => mockConfig({ companionApp: "E-kirjasto" }));
 
   const downloadableBook = mergeBook<FulfillableBook>({
     status: "fulfillable",

@@ -100,8 +100,8 @@ describe("book details page", () => {
     expect(screen.getByText("ePub")).toBeInTheDocument();
   });
 
-  test("does not show E-kirjasto callout when NEXT_PUBLIC_COMPANION_APP is ''", () => {
-    mockConfig({ companionApp: "" });
+  test("shows E-kirjasto callout when NEXT_PUBLIC_COMPANION_APP is ''", () => {
+    mockConfig({ companionApp: "E-kirjasto" });
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
 
