@@ -48,7 +48,7 @@ media_support:
   application/vnd.readium.lcp.license.v1.0+json:
     application/pdf: show 
     application/epub+zip: show
-    application/audiobook+lcp: show
+    application/audiobook+lcp: redirect
     text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media": show
 
 # defines the companion app for the instance. Can be "simplye" or "openebooks"
