@@ -13,6 +13,11 @@ import LoadingIndicator from "../LoadingIndicator";
 import Select, { Label } from "../Select";
 import { H1 } from "components/Text";
 import { getReportUrl } from "utils/libraryLinks";
+import { T, useT } from "@transifex/react"; // eslint-disable-line @typescript-eslint/no-unused-vars
+import {
+  getServerSideTranslations,
+  setServerSideTranslations // eslint-disable-line @typescript-eslint/no-unused-vars
+} from "../../../i18n";
 
 const getDisplayType = (type: string) =>
   type
@@ -25,6 +30,7 @@ const getDisplayType = (type: string) =>
 type ComplaintFormData = Required<ComplaintData>;
 
 const ReportProblem: React.FC<{ book: AnyBook }> = ({ book }) => {
+  const t = useT();
   const { state, dialog, dispatch, postComplaint } = useComplaints(book);
 
   const hasReportUrl = Boolean(getReportUrl(book.raw));
@@ -60,10 +66,10 @@ const ReportProblem: React.FC<{ book: AnyBook }> = ({ book }) => {
         {state.success ? (
           <div sx={{ display: "flex", flexDirection: "column" }}>
             <H1 sx={{ fontSize: 3, textAlign: "center" }}>
-              Your problem was reported. Thank you!
+              {<T _str="Your problem was reported. Thank you!" />}
             </H1>
             <Button sx={{ alignSelf: "flex-end" }} onClick={cancel}>
-              Done
+              {<T _str="Done" _comment="User has completed problem report" />}
             </Button>
           </div>
         ) : state.isPosting ? (
@@ -84,12 +90,14 @@ const ReportProblem: React.FC<{ book: AnyBook }> = ({ book }) => {
             }}
           >
             <H1 sx={{ alignSelf: "center", fontSize: [3, 4] }}>
-              Report a problem
+              {<T _str="Report a problem" />}
             </H1>
-            <Label htmlFor="complaint-type">Complaint Type</Label>
+            <Label htmlFor="complaint-type">
+              {<T _str="Complaint Type" />}
+            </Label>
             <Select
               id="complaint-type"
-              {...register("type", { required: "Please choose a type" })}
+              {...register("type", { required: t("Please choose a type") })}
               aria-describedby="complaint-type-error"
             >
               {state.types.map(type => (
@@ -103,14 +111,14 @@ const ReportProblem: React.FC<{ book: AnyBook }> = ({ book }) => {
                 id="complaint-type-error"
                 sx={{ color: "ui.error", fontStyle: "italic" }}
               >
-                Error: {errors.type.message}
+                {<T _str="Error:" />} {errors.type.message}
               </span>
             )}
-            <label htmlFor="complaint-body">Details</label>
+            <label htmlFor="complaint-body">{<T _str="Details" />}</label>
             <TextArea
               id="complaint-body"
               {...register("detail", {
-                required: "Please enter details about the problem."
+                required: t("Please enter details about the problem.")
               })}
               sx={{ alignSelf: "stretch", maxWidth: "100%" }}
               aria-describedby="complaint-body-error"
@@ -120,14 +128,14 @@ const ReportProblem: React.FC<{ book: AnyBook }> = ({ book }) => {
                 id="complaint-body-error"
                 sx={{ color: "ui.error", fontStyle: "italic" }}
               >
-                Error: {errors.detail.message}
+                {<T _str="Error:" />} {errors.detail.message}
               </span>
             )}
             <div sx={{ mt: 3, "&>button": { ml: 2 }, alignSelf: "flex-end" }}>
               <Button variant="ghost" onClick={cancel}>
-                Cancel
+                {<T _str="Cancel" />}
               </Button>
-              <Button type="submit">Submit</Button>
+              <Button type="submit">{<T _str="Submit" />}</Button>
             </div>
           </form>
         )}
@@ -142,10 +150,19 @@ const ReportProblem: React.FC<{ book: AnyBook }> = ({ book }) => {
         color="ui.gray.extraDark"
         sx={{ fontStyle: "italic", alignSelf: "flex-start", my: 2 }}
       >
-        Report a problem
+        {<T _str="Report a problem" />}
       </DialogDisclosure>
     </React.Fragment>
   );
 };
+
+export async function getServerSideProps(context) {
+  const data = await getServerSideTranslations(context);
+  return {
+    props: {
+      ...data // { locale, locales, translations }
+    }
+  };
+}
 
 export default ReportProblem;
