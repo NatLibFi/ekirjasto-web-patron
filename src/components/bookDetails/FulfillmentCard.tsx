@@ -30,7 +30,7 @@ import {
 const FulfillmentCard: React.FC<{ book: AnyBook }> = ({ book }) => {
   return (
     <div
-      aria-label={<T _str="Borrow and download card" />}
+      aria-label="Borrow and download card" // to be translated
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -59,8 +59,8 @@ const FulfillmentContent: React.FC<{
     return (
       <CancelOrReturn
         url={book.revokeUrl}
-        text="Cancel Reservation"
-        loadingText="Cancelling..."
+        text="Cancel Reservation" // to be translated
+        loadingText="Cancelling..." // to be translated
         id={book.id}
       />
     );
@@ -73,7 +73,9 @@ const FulfillmentContent: React.FC<{
   }
   return (
     <Text>
-      {<T _str="This title is not supported in this application, please try another." />}
+      {
+        <T _str="This title is not supported in this application, please try another." />
+      }
     </Text>
   );
 };
@@ -95,9 +97,9 @@ const AccessCard: React.FC<{
     <>
       <CancelOrReturn
         url={book.revokeUrl}
-        loadingText="Returning..."
+        loadingText="Returning..." // to be translated
         id={book.id}
-        text="Return"
+        text="Return" // to be translated
       />
       {isFulfillable && redirectUser && (
         <Text variant="text.body.italic">
