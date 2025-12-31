@@ -11,6 +11,11 @@ import { AnyBook } from "interfaces";
 import { fetchCollection } from "dataflow/opds1/fetch";
 import useSWR from "swr";
 import useUser from "components/context/UserContext";
+import { T, UT } from "@transifex/react"; // eslint-disable-line @typescript-eslint/no-unused-vars
+import {
+  getServerSideTranslations,
+  setServerSideTranslations // eslint-disable-line @typescript-eslint/no-unused-vars
+} from "../../../i18n";
 
 const Recommendations: React.FC<{ book: AnyBook }> = ({ book }) => {
   const relatedUrl = book.relatedUrl;
@@ -38,7 +43,7 @@ const Recommendations: React.FC<{ book: AnyBook }> = ({ book }) => {
 
   return (
     <section
-      aria-label="Recommendations"
+      aria-label={<T _str="Recommendations" />}
       sx={{ bg: "ui.gray.lightWarm", py: 4 }}
     >
       <H2
@@ -49,7 +54,7 @@ const Recommendations: React.FC<{ book: AnyBook }> = ({ book }) => {
           color: isLoading ? "ui.gray.dark" : "ui.black"
         }}
       >
-        Recommendations{" "}
+        {<T _str="Recommendations" />}{" "}
         {isLoading && <LoadingIndicator size="1.75rem" color="ui.gray.dark" />}
       </H2>
       <ul sx={{ listStyle: "none", m: 0, p: 0 }}>
@@ -69,4 +74,12 @@ const Recommendations: React.FC<{ book: AnyBook }> = ({ book }) => {
   );
 };
 
+export async function getServerSideProps(context) {
+  const data = await getServerSideTranslations(context);
+  return {
+    props: {
+      ...data // { locale, locales, translations }
+    }
+  };
+}
 export default Recommendations;
