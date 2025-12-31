@@ -21,11 +21,16 @@ import {
 import BookStatus from "components/BookStatus";
 import { AnyBook, FulfillableBook, FulfillmentLink } from "interfaces";
 import CancelOrReturn from "components/CancelOrReturn";
+import { T } from "@transifex/react"; // eslint-disable-line @typescript-eslint/no-unused-vars
+import {
+  getServerSideTranslations,
+  setServerSideTranslations // eslint-disable-line @typescript-eslint/no-unused-vars
+} from "../../../i18n";
 
 const FulfillmentCard: React.FC<{ book: AnyBook }> = ({ book }) => {
   return (
     <div
-      aria-label="Borrow and download card"
+      aria-label={<T _str="Borrow and download card" />}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -68,7 +73,7 @@ const FulfillmentContent: React.FC<{
   }
   return (
     <Text>
-      This title is not supported in this application, please try another.
+      {<T _str="This title is not supported in this application, please try another." />}
     </Text>
   );
 };
@@ -96,7 +101,7 @@ const AccessCard: React.FC<{
       />
       {isFulfillable && redirectUser && (
         <Text variant="text.body.italic">
-          If you would rather read on your computer, you can:
+          {<T _str="If you would rather read on your computer, you can:" />}
         </Text>
       )}
       {isFulfillable && (
@@ -114,5 +119,14 @@ const AccessCard: React.FC<{
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  const data = await getServerSideTranslations(context);
+  return {
+    props: {
+      ...data // { locale, locales, translations }
+    }
+  };
+}
 
 export default withErrorBoundary(FulfillmentCard);
