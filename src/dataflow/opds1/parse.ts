@@ -250,8 +250,6 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
 
   const borrowLink = getBorrowLink(acquisitionLinks);
 
-  const { availability, holds, copies } = borrowLink ?? {};
-
   const openAccessLinks: FulfillmentLink[] = acquisitionLinks
     .filter(link => {
       return link.rel === OPDSAcquisitionLink.OPEN_ACCESS_REL;
@@ -279,6 +277,11 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
     link => link.supportLevel !== "unsupported"
   );
 
+  // Get the availability, holds and copies from the borrow link, and if there is no
+  // borrow link, get it from the first possible acquisition link
+  const { availability, holds, copies } =
+    borrowLink ?? acquisitionLinks[0] ?? {};
+
   const format = bookIsAudiobook({ ...entry.unparsed, raw: entry.unparsed })
     ? "Audiobook"
     : inferEBookFormat(fulfillmentLinks, borrowLink);
@@ -300,10 +303,11 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
     summary: entry.summary.content && DOMPurify.sanitize(entry.summary.content),
     imageUrl: imageUrl,
     availability: {
-      ...availability,
       // we type cast status because our internal types
       // are stricter than those in OPDSFeedParser.
-      status: availability?.status as BookAvailability
+      status: availability?.status as BookAvailability,
+      since: availability?.since,
+      until: availability?.until
     },
     holds: holds,
     copies: copies,

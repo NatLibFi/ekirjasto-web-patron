@@ -259,7 +259,9 @@ describe("ReservedBook", () => {
     });
     setup(<BookListItem book={reservedBookWithQueue} />);
     expect(
-      screen.getByText("5 patrons ahead of you in the queue.")
+      screen.getByText(
+        "You are in position 5 out of 23 in the queue. 0 out of 13 copies available."
+      )
     ).toBeInTheDocument();
   });
 });
@@ -321,7 +323,7 @@ describe("FulfillableBook", () => {
   test("displays correct title and subtitle and view details", () => {
     setup(<BookListItem book={downloadableBook} />);
     expect(
-      screen.getByText(`You have this book on loan until ${MOCK_DATE_STRING}.`)
+      screen.getByText(/You have this book on loan for /)
     ).toBeInTheDocument();
     expectReadMore();
   });

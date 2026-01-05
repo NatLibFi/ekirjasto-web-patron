@@ -305,8 +305,11 @@ describe("reserved", () => {
       }
     });
     setup(<FulfillmentCard book={reservedBookWithQueue} />);
-    expect(screen.getByText("5 patrons ahead of you in the queue."))
-      .toBeInTheDocument;
+    expect(
+      screen.getByText(
+        "You are in position 5 out of 23 in the queue. 0 out of 13 copies available."
+      )
+    ).toBeInTheDocument;
   });
 });
 
@@ -411,7 +414,7 @@ describe("FulfillableBook", () => {
     setup(<FulfillmentCard book={downloadableBook} />);
     expect(screen.getByText("Ready to Read!")).toBeInTheDocument();
     expect(
-      screen.getByText(`You have this book on loan until ${MOCK_DATE_STRING}.`)
+      screen.getByText(/You have this book on loan for /)
     ).toBeInTheDocument();
     expect(
       screen.queryByText("Ready to Read in Palace!")

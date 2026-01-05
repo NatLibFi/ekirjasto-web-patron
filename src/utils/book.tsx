@@ -42,26 +42,31 @@ export function getAuthorsString(book: AnyBook): string {
 
 export function availabilityString(book: AnyBook) {
   const status = book.status;
+  const availableCopies = book.copies?.available;
+  const totalCopies = book.copies?.total;
+  const queue = typeof book.holds?.total === "number" ? book.holds.total : null;
 
   switch (status) {
     case "borrowable":
+      return typeof availableCopies === "number" &&
+        typeof totalCopies === "number"
+        ? `${availableCopies} out of ${totalCopies} copies available.`
+        : null;
     case "reservable":
-      const availableCopies = book.copies?.available;
-      const totalCopies = book.copies?.total;
-      const queue =
-        typeof book.holds?.total === "number" ? book.holds.total : null;
-
       return typeof availableCopies === "number" &&
         typeof totalCopies === "number"
         ? `${availableCopies} out of ${totalCopies} copies available.${
-            queue ? ` ${queue} patrons in the queue.` : ""
+            queue !== null ? ` ${queue} patrons in the queue.` : ""
           }`
         : null;
 
     case "reserved":
       const position = book.holds?.position;
+      const queueReserved =
+        typeof book.holds?.total === "number" ? book.holds.total : null;
+
       if (!position || isNaN(position)) return null;
-      return `${position} patrons ahead of you in the queue.`;
+      return `You are in position ${position} out of ${queueReserved} in the queue. ${availableCopies} out of ${totalCopies} copies available.`;
 
     case "on-hold":
       const until = book.availability?.until
@@ -74,17 +79,46 @@ export function availabilityString(book: AnyBook) {
       }.`;
 
     case "fulfillable":
-      const availableUntil = book.availability?.until
-        ? new Date(book.availability.until).toDateString()
+      const availableFor = book.availability?.until
+        ? daysUntilLoanExpiry(book.availability?.until)
         : "NaN";
 
-      return availableUntil !== "NaN"
-        ? `You have this book on loan until ${availableUntil}.`
+      return availableFor !== "NaN"
+        ? `You have this book on loan for ${availableFor}.`
         : null;
 
     case "unsupported":
       return null;
   }
+}
+
+function daysUntilLoanExpiry(expiryDateString) {
+  // Parse the expiry date and current date in millis
+  const expiryDateInMillis = new Date(expiryDateString).getTime();
+  const currentDateInMillis = new Date().getTime();
+
+  // Calculate the difference
+  const differenceInMillis = expiryDateInMillis - currentDateInMillis;
+
+  // Convert to days
+  const differenceInDays = Math.floor(
+    differenceInMillis / (1000 * 60 * 60 * 24)
+  );
+
+  // If there is less than a day of time, show it in hours
+  if (differenceInDays < 1) {
+    const differenceInHours = Math.floor(differenceInMillis / (1000 * 60 * 60));
+
+    // if there is less than an hour of loan time, show it
+    if (differenceInHours < 1) {
+      return "less than an hour";
+    }
+
+    // Return number of hours left
+    return `${differenceInHours} hours`;
+  }
+  // Return number of days left
+  return `${differenceInDays} days`;
 }
 
 export function queueString(book: AnyBook) {
