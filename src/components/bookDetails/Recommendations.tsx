@@ -12,10 +12,7 @@ import { fetchCollection } from "dataflow/opds1/fetch";
 import useSWR from "swr";
 import useUser from "components/context/UserContext";
 import { T, UT } from "@transifex/react"; // eslint-disable-line @typescript-eslint/no-unused-vars
-import {
-  getServerSideTranslations,
-  setServerSideTranslations // eslint-disable-line @typescript-eslint/no-unused-vars
-} from "../../../i18n";
+import { getServerSideTranslations } from "../../../i18n"; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 const Recommendations: React.FC<{ book: AnyBook }> = ({ book }) => {
   const relatedUrl = book.relatedUrl;

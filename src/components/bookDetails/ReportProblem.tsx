@@ -14,10 +14,7 @@ import Select, { Label } from "../Select";
 import { H1 } from "components/Text";
 import { getReportUrl } from "utils/libraryLinks";
 import { T, useT } from "@transifex/react"; // eslint-disable-line @typescript-eslint/no-unused-vars
-import {
-  getServerSideTranslations,
-  setServerSideTranslations // eslint-disable-line @typescript-eslint/no-unused-vars
-} from "../../../i18n";
+import { getServerSideTranslations } from "../../../i18n"; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 const getDisplayType = (type: string) =>
   type

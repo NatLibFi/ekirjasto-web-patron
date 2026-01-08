@@ -22,10 +22,7 @@ import BookStatus from "components/BookStatus";
 import { AnyBook, FulfillableBook, FulfillmentLink } from "interfaces";
 import CancelOrReturn from "components/CancelOrReturn";
 import { T } from "@transifex/react"; // eslint-disable-line @typescript-eslint/no-unused-vars
-import {
-  getServerSideTranslations,
-  setServerSideTranslations // eslint-disable-line @typescript-eslint/no-unused-vars
-} from "../../../i18n";
+import { getServerSideTranslations } from "../../../i18n"; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 const FulfillmentCard: React.FC<{ book: AnyBook }> = ({ book }) => {
   return (

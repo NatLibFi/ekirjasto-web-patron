@@ -22,6 +22,12 @@ import * as fetch from "dataflow/opds1/fetch";
 import { ServerError } from "errors";
 import { MOCK_DATE_STRING } from "test-utils/mockToDateString";
 
+jest.mock("next/config", () => () => ({
+  publicRuntimeConfig: {
+    // Add any necessary configuration values here
+  }
+}));
+
 jest.mock("downloadjs");
 window.open = jest.fn();
 
