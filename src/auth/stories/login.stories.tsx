@@ -28,6 +28,6 @@ const Template: StoryFn = ({ children, ...rest }) => (
 export const Basic = Template.bind({});
 Basic.parameters = {
   config: {
-    companionApp: "openebooks"
+    companionApp: "E-kirjasto"
   }
 };

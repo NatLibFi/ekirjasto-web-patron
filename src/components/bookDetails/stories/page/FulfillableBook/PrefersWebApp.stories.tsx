@@ -31,7 +31,7 @@ const Template: StoryFn = args => <BookPage {...args} />;
 export const DownloadEpub = Template.bind({});
 DownloadEpub.parameters = {
   config: {
-    companionApp: "openebooks"
+    companionApp: "E-kirjasto"
   },
   swr: {
     data: fulfillableBook
@@ -41,7 +41,7 @@ DownloadEpub.parameters = {
 export const WithAvailability = Template.bind({});
 WithAvailability.parameters = {
   config: {
-    companionApp: "openebooks"
+    companionApp: "E-kirjasto"
   },
   swr: {
     data: {

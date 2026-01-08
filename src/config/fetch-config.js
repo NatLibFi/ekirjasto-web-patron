@@ -99,7 +99,7 @@ async function parseConfig(raw) {
   const unparsed = YAML.parse(raw);
   // specifically set defaults for a couple values.
   const companionApp =
-    unparsed.companion_app === "openebooks" ? "openebooks" : "simplye";
+    unparsed.companion_app === "E-kirjasto" ? "E-kirjasto" : "E-kirjasto";
 
   const showMedium = unparsed.show_medium !== false;
 

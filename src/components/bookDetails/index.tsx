@@ -65,7 +65,7 @@ export const BookDetails: React.FC = () => {
           <div sx={{ flex: ["1 1 auto", 0.33], mr: [0, 4], mb: [3, 0] }}>
             <BookCover book={book} sx={{ maxWidth: [180, "initial"] }} />
 
-            {APP_CONFIG.companionApp === "simplye" && (
+            {APP_CONFIG.companionApp === "E-kirjasto" && (
               <SimplyECallout sx={{ display: ["none", "block"] }} />
             )}
           </div>

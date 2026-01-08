@@ -4,7 +4,7 @@ export const config: AppConfig = {
   instanceName: "Test Instance",
   gtmId: null,
   bugsnagApiKey: null,
-  companionApp: "simplye",
+  companionApp: "E-kirjasto",
   showMedium: true,
   openebooks: null,
   libraries: {

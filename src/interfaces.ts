@@ -20,7 +20,7 @@ export type AppConfig = {
   instanceName: string;
   mediaSupport: MediaSupportConfig;
   libraries: LibrariesConfig;
-  companionApp: "simplye" | "openebooks";
+  companionApp: "E-kirjasto";
   showMedium: boolean;
   gtmId: string | null;
   bugsnagApiKey: string | null;

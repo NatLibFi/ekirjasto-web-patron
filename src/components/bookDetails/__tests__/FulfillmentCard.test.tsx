@@ -314,7 +314,7 @@ describe("reserved", () => {
 });
 
 describe("FulfillableBook", () => {
-  beforeEach(() => mockConfig({ companionApp: "simplye" }));
+  beforeEach(() => mockConfig({ companionApp: "E-kirjasto" }));
 
   const downloadableBook = mergeBook<FulfillableBook>({
     status: "fulfillable",
@@ -433,22 +433,24 @@ describe("FulfillableBook", () => {
   });
   test("correct title and subtitle with companion app redirect", () => {
     mockConfig({
-      companionApp: "simplye"
+      companionApp: "E-kirjasto"
     });
     setup(<FulfillmentCard book={bookWithRedirect} />);
     expect(screen.queryByText("Ready to Read!")).not.toBeInTheDocument();
-    expect(screen.getByText("Ready to Read in Palace!")).toBeInTheDocument();
+    expect(
+      screen.getByText("Ready to Read in the E-kirjasto App!")
+    ).toBeInTheDocument();
     expect(
       screen.getByText("If you would rather read on your computer, you can:")
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Download EPUB" }));
   });
 
-  test("correct title and subtitle when COMPANION_APP is set to openebooks", () => {
-    mockConfig({ companionApp: "openebooks" });
+  test("correct title and subtitle when COMPANION_APP is set to E-kirjasto", () => {
+    mockConfig({ companionApp: "E-kirjasto" });
     setup(<FulfillmentCard book={bookWithRedirect} />);
     expect(
-      screen.getByText("Ready to Read in Open eBooks!")
+      screen.getByText("Ready to Read in the E-kirjasto App!")
     ).toBeInTheDocument();
   });
 

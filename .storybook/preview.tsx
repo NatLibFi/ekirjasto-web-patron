@@ -29,11 +29,10 @@ export const globalTypes = {
   companionApp: {
     name: "Companion App",
     description: "Companion App",
-    defaultValue: "simplye",
+    defaultValue: "E-kirjasto",
     toolbar: {
       items: [
-        { value: "simplye", title: "SimplyE" },
-        { value: "openebooks", title: "Open eBooks" }
+        { value: "E-kirjasto", title: "E-kirjasto" }
       ]
     }
   }

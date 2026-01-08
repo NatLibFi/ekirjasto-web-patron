@@ -13,7 +13,7 @@ const Template: StoryFn = args => <BookPage {...args} />;
 export const ReservableBook = Template.bind({});
 ReservableBook.parameters = {
   config: {
-    companionApp: "openebooks"
+    companionApp: "E-kirjasto"
   },
   swr: {
     data: reservableBook
