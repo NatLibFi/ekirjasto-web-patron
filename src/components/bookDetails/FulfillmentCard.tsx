@@ -21,11 +21,13 @@ import {
 import BookStatus from "components/BookStatus";
 import { AnyBook, FulfillableBook, FulfillmentLink } from "interfaces";
 import CancelOrReturn from "components/CancelOrReturn";
+import { T } from "@transifex/react"; // eslint-disable-line @typescript-eslint/no-unused-vars
+import { getServerSideTranslations } from "../../../i18n"; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 const FulfillmentCard: React.FC<{ book: AnyBook }> = ({ book }) => {
   return (
     <div
-      aria-label="Borrow and download card"
+      aria-label="Borrow and download card" // to be translated
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -54,8 +56,8 @@ const FulfillmentContent: React.FC<{
     return (
       <CancelOrReturn
         url={book.revokeUrl}
-        text="Cancel Reservation"
-        loadingText="Cancelling..."
+        text="Cancel Reservation" // to be translated
+        loadingText="Cancelling..." // to be translated
         id={book.id}
       />
     );
@@ -68,7 +70,9 @@ const FulfillmentContent: React.FC<{
   }
   return (
     <Text>
-      This title is not supported in this application, please try another.
+      {
+        <T _str="This title is not supported in this application, please try another." />
+      }
     </Text>
   );
 };
@@ -90,13 +94,13 @@ const AccessCard: React.FC<{
     <>
       <CancelOrReturn
         url={book.revokeUrl}
-        loadingText="Returning..."
+        loadingText="Returning..." // to be translated
         id={book.id}
-        text="Return"
+        text="Return" // to be translated
       />
       {isFulfillable && redirectUser && (
         <Text variant="text.body.italic">
-          If you would rather read on your computer, you can:
+          {<T _str="If you would rather read on your computer, you can:" />}
         </Text>
       )}
       {isFulfillable && (
@@ -114,5 +118,14 @@ const AccessCard: React.FC<{
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  const data = await getServerSideTranslations(context);
+  return {
+    props: {
+      ...data // { locale, locales, translations }
+    }
+  };
+}
 
 export default withErrorBoundary(FulfillmentCard);

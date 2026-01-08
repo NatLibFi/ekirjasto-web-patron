@@ -5,6 +5,12 @@ import Recommendations from "../Recommendations";
 import useSWR, { SWRResponse } from "swr";
 import { fetchCollection } from "dataflow/opds1/fetch";
 
+jest.mock("next/config", () => () => ({
+  publicRuntimeConfig: {
+    // Add any necessary configuration values here
+  }
+}));
+
 jest.mock("swr");
 
 const mockedSWR = useSWR as jest.MockedFunction<typeof useSWR>;
