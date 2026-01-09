@@ -35,10 +35,6 @@ media_support:
   application/atom+xml;type=entry;profile=opds-catalog:
     text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media": show
 
-  # Adobe Encryption
-  application/vnd.adobe.adept+xml:
-    application/epub+zip: redirect-and-show
-
   # Bearer Token Exchange
   application/vnd.librarysimplified.bearer-token+json:
     application/pdf: show
@@ -51,8 +47,7 @@ media_support:
     application/audiobook+lcp: redirect
     text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media": show
 
-# defines the companion app for the instance. Can be "simplye" or "openebooks"
-# default is "simplye"
+# defines the companion app for the instance.
 companion_app: E-kirjasto
 
 # BUGSNAG: defines the bugsnag api key to integrate error tracking
