@@ -8,7 +8,6 @@ import ExternalLink from "./ExternalLink";
 import useLibraryContext from "./context/LibraryContext";
 import List, { ListItem } from "./List";
 import { H3, Text } from "./Text";
-import { NavButton } from "./Button";
 import SvgPhone from "icons/Phone";
 import IosBadge from "./storeBadges/IosBadge";
 import GooglePlayBadge from "./storeBadges/GooglePlayBadge";
@@ -21,9 +20,7 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
     helpWebsite,
     privacyPolicy,
     tos,
-    about,
-    registration,
-    libraryWebsite
+    about
   } = library.libraryLinks;
   const title = library.catalogName;
 
@@ -38,6 +35,39 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
       }}
       className={className}
     >
+      <div sx={{ flex: "0 0 auto", mt: 5, mr: 5 }}>
+        <H3 sx={{ mt: 0, maxWidth: "100%" }}>{title}</H3>
+        <FooterList>
+          {privacyPolicy && (
+            <ListItem>
+              <FooterExternalLink href={privacyPolicy.href}>
+                Privacy Policy
+              </FooterExternalLink>
+            </ListItem>
+          )}
+          {tos && (
+            <ListItem>
+              <FooterExternalLink href={tos.href}>
+                Terms of Use
+              </FooterExternalLink>
+            </ListItem>
+          )}
+          {about && (
+            <ListItem>
+              <FooterExternalLink href={about.href}>About</FooterExternalLink>
+            </ListItem>
+          )}
+          <ListItem>
+            <FooterExternalLink
+              href={
+                "https://www.kansalliskirjasto.fi/en/e-library/e-library-accessibility-statement"
+              }
+            >
+              Accessibility Statement
+            </FooterExternalLink>
+          </ListItem>
+        </FooterList>
+      </div>
       <div sx={{ flex: "0 0 auto", mt: 5, mr: [3, 5] }}>
         <H3 sx={{ mt: 0 }}>Patron Support</H3>
         <FooterList>
@@ -46,30 +76,27 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
               Leave feedback
             </FooterExternalLink>
           </ListItem>
-          <ListItem>
-            <FooterExternalLink href={"https://www.kansalliskirjasto.fi/en/e-library/e-library-accessibility-statement"}>
-              Accessibility Statement
-            </FooterExternalLink>
-          </ListItem>
-          <ListItem>
-            <FooterExternalLink href={"https://www.kansalliskirjasto.fi/en/e-library/privacy-policy-data-protection-statement-and-description-data-file"}>
-              Privacy Policy
-            </FooterExternalLink>
-          </ListItem>
-          <ListItem>
-            <FooterExternalLink href={"https://www.kansalliskirjasto.fi/en/e-library/e-library-terms-use"}>
-              User Agreement
-            </FooterExternalLink>
-          </ListItem>
         </FooterList>
       </div>
       <div sx={{ flex: "0 0 auto", mt: 5, mr: [3, 5] }}>
         <H3 sx={{ mt: 0 }}>Librarians</H3>
         <FooterList>
+          {helpEmail && (
+            <ListItem>
+              <FooterExternalLink href={helpEmail.href}>
+                Email Support
+              </FooterExternalLink>
+            </ListItem>
+          )}
+          {helpWebsite && (
+            <ListItem>
+              <FooterExternalLink href={helpWebsite.href}>
+                Help Website
+              </FooterExternalLink>
+            </ListItem>
+          )}
           <ListItem>
-            <FooterExternalLink href={undefined}>
-              Statistics
-            </FooterExternalLink>
+            <FooterExternalLink href={undefined}>Statistics</FooterExternalLink>
           </ListItem>
           <ListItem>
             <FooterExternalLink href={undefined}>
@@ -77,9 +104,7 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
             </FooterExternalLink>
           </ListItem>
           <ListItem>
-            <FooterExternalLink href={undefined}>
-              Statements
-            </FooterExternalLink>
+            <FooterExternalLink href={undefined}>Statements</FooterExternalLink>
           </ListItem>
         </FooterList>
       </div>
