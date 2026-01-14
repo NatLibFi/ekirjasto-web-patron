@@ -76,11 +76,6 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
               Leave feedback
             </FooterExternalLink>
           </ListItem>
-        </FooterList>
-      </div>
-      <div sx={{ flex: "0 0 auto", mt: 5, mr: [3, 5] }}>
-        <H3 sx={{ mt: 0 }}>Librarians</H3>
-        <FooterList>
           {helpEmail && (
             <ListItem>
               <FooterExternalLink href={helpEmail.href}>
@@ -95,6 +90,11 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
               </FooterExternalLink>
             </ListItem>
           )}
+        </FooterList>
+      </div>
+      <div sx={{ flex: "0 0 auto", mt: 5, mr: [3, 5] }}>
+        <H3 sx={{ mt: 0 }}>Librarians</H3>
+        <FooterList>
           <ListItem>
             <FooterExternalLink href={undefined}>Statistics</FooterExternalLink>
           </ListItem>
