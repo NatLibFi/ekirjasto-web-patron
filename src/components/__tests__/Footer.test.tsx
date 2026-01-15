@@ -32,18 +32,12 @@ test("shows external links when present in state w/ apropriate attributes", () =
     expect(lnk).toHaveAttribute("rel", "noopener noreferrer");
     expect(lnk).toHaveAttribute("target", "__blank");
   };
-  expectExternalLink("Library Homepage (Opens in a new tab)");
-  expectExternalLink("Need a library card? (Opens in a new tab)");
+
   expectExternalLink("Email Support (Opens in a new tab)");
   expectExternalLink("Help Website (Opens in a new tab)");
-  expectExternalLink("Privacy (Opens in a new tab)");
+  expectExternalLink("Privacy Policy (Opens in a new tab)");
   expectExternalLink("Terms of Use (Opens in a new tab)");
   expectExternalLink("About (Opens in a new tab)");
-
-  // my books nav link
-  const myBooks = utils.getByRole("link", { name: /my books/i });
-  expect(myBooks).toBeInTheDocument();
-  expect(myBooks).toHaveAttribute("href", "/testlib/loans");
 });
 
 describe("toggling SimplyE Branding", () => {
@@ -82,12 +76,5 @@ describe("toggling SimplyE Branding", () => {
       "href",
       "https://play.google.com/store/apps/details?id=fi.kansalliskirjasto.ekirjasto"
     );
-
-    // my books nav link
-    const myBooks = utils.getByRole("link", {
-      name: /my books/i
-    });
-    expect(myBooks).toBeInTheDocument();
-    expect(myBooks).toHaveAttribute("href", "/testlib/loans");
   });
 });

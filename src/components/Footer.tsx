@@ -8,7 +8,6 @@ import ExternalLink from "./ExternalLink";
 import useLibraryContext from "./context/LibraryContext";
 import List, { ListItem } from "./List";
 import { H3, Text } from "./Text";
-import { NavButton } from "./Button";
 import SvgPhone from "icons/Phone";
 import IosBadge from "./storeBadges/IosBadge";
 import GooglePlayBadge from "./storeBadges/GooglePlayBadge";
@@ -21,9 +20,7 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
     helpWebsite,
     privacyPolicy,
     tos,
-    about,
-    registration,
-    libraryWebsite
+    about
   } = library.libraryLinks;
   const title = library.catalogName;
 
@@ -41,29 +38,10 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
       <div sx={{ flex: "0 0 auto", mt: 5, mr: 5 }}>
         <H3 sx={{ mt: 0, maxWidth: "100%" }}>{title}</H3>
         <FooterList>
-          {libraryWebsite && (
-            <ListItem>
-              <FooterExternalLink href={libraryWebsite.href}>
-                Library Homepage
-              </FooterExternalLink>
-            </ListItem>
-          )}
-          <ListItem>
-            <NavButton variant="link" href="/loans" color="ui.black">
-              My Books
-            </NavButton>
-          </ListItem>
-          <ListItem>
-            {registration && (
-              <FooterExternalLink href={registration.href}>
-                Need a library card?
-              </FooterExternalLink>
-            )}
-          </ListItem>
           {privacyPolicy && (
             <ListItem>
               <FooterExternalLink href={privacyPolicy.href}>
-                Privacy
+                Privacy Policy
               </FooterExternalLink>
             </ListItem>
           )}
@@ -79,11 +57,25 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
               <FooterExternalLink href={about.href}>About</FooterExternalLink>
             </ListItem>
           )}
+          <ListItem>
+            <FooterExternalLink
+              href={
+                "https://www.kansalliskirjasto.fi/en/e-library/e-library-accessibility-statement"
+              }
+            >
+              Accessibility Statement
+            </FooterExternalLink>
+          </ListItem>
         </FooterList>
       </div>
       <div sx={{ flex: "0 0 auto", mt: 5, mr: [3, 5] }}>
         <H3 sx={{ mt: 0 }}>Patron Support</H3>
         <FooterList>
+          <ListItem>
+            <FooterExternalLink href={undefined}>
+              Leave feedback
+            </FooterExternalLink>
+          </ListItem>
           {helpEmail && (
             <ListItem>
               <FooterExternalLink href={helpEmail.href}>
@@ -98,6 +90,22 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
               </FooterExternalLink>
             </ListItem>
           )}
+        </FooterList>
+      </div>
+      <div sx={{ flex: "0 0 auto", mt: 5, mr: [3, 5] }}>
+        <H3 sx={{ mt: 0 }}>Librarians</H3>
+        <FooterList>
+          <ListItem>
+            <FooterExternalLink href={undefined}>Statistics</FooterExternalLink>
+          </ListItem>
+          <ListItem>
+            <FooterExternalLink href={undefined}>
+              User manual
+            </FooterExternalLink>
+          </ListItem>
+          <ListItem>
+            <FooterExternalLink href={undefined}>Statements</FooterExternalLink>
+          </ListItem>
         </FooterList>
       </div>
       <div sx={{ flex: "1 1 0" }} />
