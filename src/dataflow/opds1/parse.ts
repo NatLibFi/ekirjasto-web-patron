@@ -222,6 +222,21 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
 
   const categories = entry.categories
     .filter(category => !!category.label)
+    .filter(
+      category =>
+        category.scheme !== "http://schema.org/audience" &&
+        category.scheme !== "http://schema.org/typicalAgeRange"
+    )
+    .map(category => category.label);
+
+  const audience = entry.categories
+    .filter(category => !!category.label)
+    .filter(category => category.scheme === "http://schema.org/audience")
+    .map(category => category.label);
+
+  const ageRange = entry.categories
+    .filter(category => !!category.label)
+    .filter(category => category.scheme === "http://schema.org/typicalAgeRange")
     .map(category => category.label);
 
   const acquisitionLinks = entry.links.filter(isAcquisitionLink);
@@ -292,6 +307,8 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
     publisher: entry.publisher,
     published: entry.issued && formatDate(entry.issued),
     categories: categories,
+    audience: audience,
+    ageRange: ageRange,
     providerName: providerName,
     language: entry.language,
     url: detailUrl,
