@@ -102,9 +102,7 @@ export const BookDetails: React.FC = () => {
               />
               <DetailField
                 heading="Age range"
-                details={book.ageRange
-                  ?.map(range => `Ages ${range}`)
-                  .join(", ")}
+                details={book.ageRange?.join(", ")}
               />
               <DetailField heading="Book format" details={book.format} />
             </div>
