@@ -181,6 +181,8 @@ export type Book<Status = EmptyObject> = Readonly<
     publisher?: string;
     published?: string;
     categories?: string[];
+    audience?: string[];
+    ageRange?: string[];
     providerName?: string;
     language?: string;
     relatedUrl: string | null;
