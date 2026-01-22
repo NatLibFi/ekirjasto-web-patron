@@ -13,6 +13,7 @@ import { fetchEkirjastoToken } from "auth/ekirjastoFetch";
 type Status = "authenticated" | "loading" | "unauthenticated";
 export type UserState = {
   loans: AnyBook[] | undefined;
+  selected: AnyBook[] | undefined;
   status: Status;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -49,7 +50,7 @@ interface UserProviderProps {
  * those change it will cause a refetch.
  */
 export const UserProvider = ({ children }: UserProviderProps) => {
-  const { shelfUrl, slug, authMethods } = useLibraryContext();
+  const { shelfUrl, selectedUrl, slug, authMethods } = useLibraryContext();
   const { credentials, setCredentials, clearCredentials } = useCredentials(
     slug,
     authMethods
@@ -69,9 +70,15 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   const token = stringifyToken(credentials);
-  const { data, mutate, isValidating } = useSWR(
+  const { data : loansData, mutate, isValidating } = fetchFeed(shelfUrl)
+  const { data : selectedData } = fetchFeed(selectedUrl)
+
+  function fetchFeed (
+    fetchableUrl: string | null
+  ) {
+    return useSWR(
     // pass null if there are no credentials or shelfUrl to tell SWR not to fetch at all.
-    credentials && shelfUrl ? [shelfUrl, token, credentials?.methodType] : null,
+    credentials && fetchableUrl ? [fetchableUrl, token, credentials?.methodType] : null,
     fetchLoans,
     {
       shouldRetryOnError: credentials?.methodType === BasicTokenAuthType,
@@ -120,7 +127,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         }
       }
     }
-  );
+  )
+  }
 
   async function getEkirjastoToken(
     token: string,
@@ -148,7 +156,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   }
 
   function setBook(book: AnyBook, id?: string) {
-    const existing = data ?? [];
+    const existing = loansData ?? [];
 
     // if the id exists, remove that book and set the new one
     const withoutOldBook = existing.filter(book => book.id !== id);
@@ -160,7 +168,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
    * We should only ever be in one of these three states.
    */
   const status: Status =
-    data && credentials
+    loansData && credentials
       ? "authenticated"
       : credentials && isValidating
       ? "loading"
@@ -172,7 +180,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     status,
     isAuthenticated,
     isLoading,
-    loans: isAuthenticated ? data ?? [] : undefined,
+    loans: isAuthenticated ? loansData ?? [] : undefined,
+    selected: isAuthenticated ? selectedData ?? [] : undefined,
     refetchLoans: mutate,
     signIn,
     signOut,

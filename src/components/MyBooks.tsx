@@ -41,8 +41,9 @@ function compareTitles(a: AnyBook, b: AnyBook): 0 | -1 | 1 {
 }
 
 export const MyBooks: React.FC = () => {
-  const { loans, isLoading } = useUser();
+  const { loans, selected, isLoading } = useUser();
   const sortedBooks = loans ? sortBooksByLoanExpirationDate(loans) : [];
+  const selectedBooks = selected ? selected : [];
   const noBooks = sortedBooks.length === 0;
 
   return (
@@ -57,9 +58,19 @@ export const MyBooks: React.FC = () => {
         {noBooks && isLoading ? (
           <PageLoader />
         ) : noBooks ? (
-          <Empty />
+          <EmptyLoansAndHolds />
         ) : (
           <LoansContent books={sortedBooks} />
+        )}
+      </div>
+      <div sx={{ flex: 1, pb: 4 }}>
+        <PageTitle>Favorites</PageTitle>
+        {noBooks && isLoading ? (
+          <PageLoader />
+        ) : noBooks ? (
+          <EmptySelected />
+        ) : (
+          <LoansContent books={selectedBooks} />
         )}
       </div>
     </AuthProtectedRoute>
@@ -74,7 +85,7 @@ const LoansContent: React.FC<{ books: AnyBook[] }> = ({ books }) => {
   );
 };
 
-const Empty = () => {
+const EmptyLoansAndHolds = () => {
   return (
     <>
       <div
@@ -89,7 +100,26 @@ const Empty = () => {
         <H3>
           Your books will show up here when you have any loaned or on hold.
         </H3>
-        <SignOut />
+      </div>
+    </>
+  );
+};
+
+const EmptySelected = () => {
+  return (
+    <>
+      <div
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          px: [3, 5]
+        }}
+      >
+        <H3>
+          No books in favorites.
+        </H3>
       </div>
     </>
   );
