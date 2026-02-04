@@ -85,8 +85,7 @@ const Search: React.FC<SearchProps> = ({ className, ...props }) => {
           borderBottomLeftRadius: 30,
           letterSpacing: 0.4,
           padding: 15,
-          fontSize: 16,
-          fontFamily: "Asap-Regular"
+          fontSize: 16
         }}
         {...props}
       />
@@ -100,7 +99,6 @@ const Search: React.FC<SearchProps> = ({ className, ...props }) => {
           letterSpacing: "0.4px",
           borderTopRightRadius: "30px",
           borderBottomRightRadius: "30px",
-          fontFamily: "Asap-Regular",
           padding: "15px, 30px, 15px, 30px",
           fontSize: "16px"
         }}
