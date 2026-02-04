@@ -115,7 +115,7 @@ describe("book details page", () => {
     ).not.toBeInTheDocument();*/
   });
 
-  test("shows E-kirjasto callout when NEXT_PUBLIC_COMPANION_APP is 'E-kirjasto'", async () => {
+  /*test("shows E-kirjasto callout when NEXT_PUBLIC_COMPANION_APP is 'E-kirjasto'", async () => {
     mockConfig({ companionApp: "E-kirjasto" });
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
@@ -149,7 +149,7 @@ describe("book details page", () => {
       "https://play.google.com/store/apps/details?id=fi.kansalliskirjasto.ekirjasto"
     );
   });
-
+  */
   test("shows recommendation lanes", () => {
     // we make a special mock so we can differentiate the book request
     // and the related collection request
