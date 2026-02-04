@@ -14,11 +14,11 @@ import { truncateString } from "../../utils/string";
 import DetailField from "../BookMetaDetail";
 import ReportProblem from "./ReportProblem";
 import Head from "next/head";
-import { H1, H2, H3, Text } from "components/Text";
+import { H1, H2, Text } from "components/Text";
 import MediumIndicator from "components/MediumIndicator";
-import EkirjastoBookDetailsLogo from "components/ekirjastoLogos/EkirjastoBookDetailsLogo";
-import IosBadge from "components/storeBadges/IosBadge";
-import GooglePlayBadge from "components/storeBadges/GooglePlayBadge";
+//import EkirjastoBookDetailsLogo from "components/ekirjastoLogos/EkirjastoBookDetailsLogo";
+//import IosBadge from "components/storeBadges/IosBadge";
+//import GooglePlayBadge from "components/storeBadges/GooglePlayBadge";
 import { useRouter } from "next/router";
 import extractParam from "dataflow/utils";
 import useSWR from "swr";
@@ -64,10 +64,6 @@ export const BookDetails: React.FC = () => {
         >
           <div sx={{ flex: ["1 1 auto", 0.33], mr: [0, 4], mb: [3, 0] }}>
             <BookCover book={book} sx={{ maxWidth: [180, "initial"] }} />
-
-            {APP_CONFIG.companionApp === "E-kirjasto" && (
-              <SimplyECallout sx={{ display: ["none", "block"] }} />
-            )}
           </div>
           <div
             sx={{
@@ -128,9 +124,16 @@ const Summary: React.FC<{ book: AnyBook; className?: string }> = ({
     />
   </div>
 );
+/* comment out in case we some day need it back
+line 67 removed 
+
+{APP_CONFIG.companionApp === "E-kirjasto" && (
+              <SimplyECallout sx={{ display: ["none", "block"] }} />
+            )}
+
 const SimplyECallout: React.FC<{ className?: "string" }> = ({ className }) => {
   return (
-    <section
+     <section
       aria-label="Download E-kirjasto Mobile App"
       sx={{
         mt: 4,
@@ -155,5 +158,5 @@ const SimplyECallout: React.FC<{ className?: "string" }> = ({ className }) => {
     </section>
   );
 };
-
+*/
 export default BookDetails;
