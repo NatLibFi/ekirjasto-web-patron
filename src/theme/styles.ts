@@ -13,8 +13,8 @@ const styles = {
     color: "ui.black"
   },
   fonts: {
-    body: "Asap,sans-serif",
-    heading: "Asap,sans-serif",
+    body: "Asap, Arial",
+    heading: "Asap, Arial",
     monospace: "Menlo, monospace"
   }
 };
