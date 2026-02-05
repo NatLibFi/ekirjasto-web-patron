@@ -72,7 +72,7 @@ export const Collection: React.FC<{
             justifyContent: "center"
           }}
         >
-          <Text variant="text.callouts.italic">This collection is empty.</Text>
+          <Text variant="text.callouts">This collection is empty.</Text>
         </div>
       )}
     </div>

@@ -25,7 +25,7 @@ exports[`renders as expected 1`] = `
   padding-top: 4px;
   padding-bottom: 4px;
   font-size: 1rem;
-  font-family: Asap,sans-serif;
+  font-family: Asap,Arial;
   font-weight: 300;
   line-height: 1.5;
   width: 100%;
@@ -33,25 +33,25 @@ exports[`renders as expected 1`] = `
 }
 
 .emotion-1::-webkit-input-placeholder {
-  font-style: italic;
+  font-style: normal;
   color: var(--theme-ui-colors-ui-gray-dark);
   font-size: 0.875rem;
 }
 
 .emotion-1::-moz-placeholder {
-  font-style: italic;
+  font-style: normal;
   color: var(--theme-ui-colors-ui-gray-dark);
   font-size: 0.875rem;
 }
 
 .emotion-1:-ms-input-placeholder {
-  font-style: italic;
+  font-style: normal;
   color: var(--theme-ui-colors-ui-gray-dark);
   font-size: 0.875rem;
 }
 
 .emotion-1::placeholder {
-  font-style: italic;
+  font-style: normal;
   color: var(--theme-ui-colors-ui-gray-dark);
   font-size: 0.875rem;
 }
