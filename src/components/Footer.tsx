@@ -15,13 +15,7 @@ import { APP_CONFIG } from "utils/env";
 
 const Footer: React.FC<{ className?: string }> = ({ className }) => {
   const library = useLibraryContext();
-  const {
-    helpEmail,
-    helpWebsite,
-    privacyPolicy,
-    tos,
-    about
-  } = library.libraryLinks;
+  const { privacyPolicy, tos, about } = library.libraryLinks;
   const title = library.catalogName;
 
   return (
@@ -72,39 +66,61 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
         <H3 sx={{ mt: 0 }}>Patron Support</H3>
         <FooterList>
           <ListItem>
-            <FooterExternalLink href={undefined}>
-              Leave feedback
+            <FooterExternalLink
+              href={
+                "https://www.kansalliskirjasto.fi/en/e-library/e-library-instructions"
+              }
+            >
+              Help Website
             </FooterExternalLink>
           </ListItem>
-          {helpEmail && (
-            <ListItem>
-              <FooterExternalLink href={helpEmail.href}>
-                Email Support
-              </FooterExternalLink>
-            </ListItem>
-          )}
-          {helpWebsite && (
-            <ListItem>
-              <FooterExternalLink href={helpWebsite.href}>
-                Help Website
-              </FooterExternalLink>
-            </ListItem>
-          )}
+          <ListItem>
+            <FooterExternalLink
+              href={
+                "https://www.kansalliskirjasto.fi/en/e-library/e-library-faq"
+              }
+            >
+              Frequently Asked Questions
+            </FooterExternalLink>
+          </ListItem>
+          <ListItem>
+            <FooterExternalLink
+              href={
+                "https://www.kansalliskirjasto.fi/en/e-library/magazines-available-e-library"
+              }
+            >
+              Magazines in E-library
+            </FooterExternalLink>
+          </ListItem>
         </FooterList>
       </div>
       <div sx={{ flex: "0 0 auto", mt: 5, mr: [3, 5] }}>
-        <H3 sx={{ mt: 0 }}>Librarians</H3>
+        <H3 sx={{ mt: 0 }}>For Librarians</H3>
         <FooterList>
           <ListItem>
-            <FooterExternalLink href={undefined}>Statistics</FooterExternalLink>
-          </ListItem>
-          <ListItem>
-            <FooterExternalLink href={undefined}>
-              User manual
+            <FooterExternalLink
+              href={
+                "https://www.kansalliskirjasto.fi/en/e-library/municipalities-participating-e-library"
+              }
+            >
+              Municipalities participating E-library
             </FooterExternalLink>
           </ListItem>
           <ListItem>
-            <FooterExternalLink href={undefined}>Statements</FooterExternalLink>
+            <FooterExternalLink
+              href={
+                "https://www.kansalliskirjasto.fi/en/e-library/e-library-collection-policy"
+              }
+            >
+              Collection Policy
+            </FooterExternalLink>
+          </ListItem>
+          <ListItem>
+            <FooterExternalLink
+              href={"https://www.kiwi.fi/spaces/ekirjasto/overview"}
+            >
+              More For Librarians
+            </FooterExternalLink>
           </ListItem>
         </FooterList>
       </div>
