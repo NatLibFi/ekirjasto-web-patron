@@ -4,7 +4,7 @@
  * Typings for OPDS 1.2. This is a working document and it
  * is not complete. It currently focuses on typing of links
  * and the AuthDocument. The Feed and Entry are pretty well
- * typed by opds-feed-parser.
+ * typed by ekirjasto-opds-feed-parser.
  */
 
 /**

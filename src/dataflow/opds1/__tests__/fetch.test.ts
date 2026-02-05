@@ -9,7 +9,7 @@ import {
 } from "dataflow/opds1/fetch";
 import ApplicationError, { FetchError, ServerError } from "errors";
 import fetchMock from "jest-fetch-mock";
-import { OPDSEntry, OPDSFeed } from "opds-feed-parser";
+import { OPDSEntry, OPDSFeed } from "@natlibfi/ekirjasto-opds-feed-parser";
 import rawOpdsFeed from "test-utils/fixtures/raw-opds-feed";
 import rawOpdsEntry from "test-utils/fixtures/raw-opds-entry";
 
