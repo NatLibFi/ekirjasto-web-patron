@@ -160,7 +160,7 @@ export const BookListItem: React.FC<{
               </Link>
             </H2>
             {book.subtitle && (
-              <Text variant="callouts.italic" aria-label="Subtitle">
+              <Text variant="callout" aria-label="Subtitle">
                 , {truncateString(book.subtitle, 50)}
               </Text>
             )}
@@ -191,7 +191,7 @@ const Description: React.FC<{ book: AnyBook; className?: string }> = ({
 }) => {
   return (
     <div className={className}>
-      <Text variant="text.body.italic">
+      <Text variant="text.body">
         {truncateString(stripHTML(book.summary ?? ""), 280)}
       </Text>
       <NavButton

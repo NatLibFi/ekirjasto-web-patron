@@ -19,7 +19,7 @@ const styles = {
   variant: "text.body.regular",
   width: "100%",
   "&::placeholder": {
-    fontStyle: "italic",
+    fontStyle: "normal",
     color: "ui.gray.dark",
     fontSize: "-1"
   }
