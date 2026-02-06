@@ -1,13 +1,18 @@
 const withTM = require("next-transpile-modules")([
   "@thepalaceproject/webpub-viewer"
 ]);
+
+// ✅ i18n (next-i18next)
+const { i18n } = require("./next-i18next.config");
+
 const {
   BugsnagBuildReporterPlugin,
   BugsnagSourceMapUploaderPlugin
 } = require("webpack-bugsnag-plugins");
+
 const chalk = require("chalk");
-const package = require("./package.json");
-const APP_VERSION = package.version;
+const packageJson = require("./package.json");
+const APP_VERSION = packageJson.version;
 const { NODE_ENV, CONFIG_FILE, REACT_AXE } = process.env;
 
 const log = (...message) =>
@@ -30,7 +35,7 @@ const RELEASE_STAGE =
 
 const BUILD_ID = `${APP_VERSION}-${GIT_BRANCH}.${GIT_COMMIT_SHA}`;
 
-// fetch the config file synchronously. This will wait until the command exits to continue.
+// fetch the config file synchronously
 const APP_CONFIG = JSON.parse(
   execSync("node --unhandled-rejections=strict src/config/fetch-config.js", {
     encoding: "utf-8"
@@ -48,15 +53,17 @@ log(`BUILD_ID: ${BUILD_ID}`);
 log(`Companion App: ${APP_CONFIG.companionApp}`);
 log(`Show Medium: ${APP_CONFIG.showMedium ? "enabled" : "disabled"}`);
 log(
-  `Google Tag Manager: ${APP_CONFIG.gtmId
-    ? `enabled - ${APP_CONFIG.gtmId}`
-    : "disabled (no gtm_id in config file)"
+  `Google Tag Manager: ${
+    APP_CONFIG.gtmId
+      ? `enabled - ${APP_CONFIG.gtmId}`
+      : "disabled (no gtm_id in config file)"
   }`
 );
 log(
-  `Bugsnag: ${APP_CONFIG.bugsnagApiKey
-    ? `enabled - ${APP_CONFIG.bugsnagApiKey}`
-    : "disabled (no bugsnag_api_key in config file)"
+  `Bugsnag: ${
+    APP_CONFIG.bugsnagApiKey
+      ? `enabled - ${APP_CONFIG.bugsnagApiKey}`
+      : "disabled (no bugsnag_api_key in config file)"
   }`
 );
 log(`Open eBooks Config: `, APP_CONFIG.openebooks);
@@ -65,8 +72,8 @@ log(`Libraries: `, APP_CONFIG.libraries);
 
 const config = {
   env: {
-    CONFIG_FILE: CONFIG_FILE,
-    REACT_AXE: REACT_AXE,
+    CONFIG_FILE,
+    REACT_AXE,
     APP_VERSION,
     BUILD_ID,
     GIT_BRANCH,
@@ -76,35 +83,36 @@ const config = {
   },
   productionBrowserSourceMaps: true,
   generateBuildId: async () => BUILD_ID,
-  webpack: (config, { dev, isServer, _defaultLoaders, webpack }) => {
+  webpack: (config, { dev, isServer, webpack }) => {
     console.log(
       chalk.cyan("info  -"),
-      `Building ${isServer ? "server" : "client"} files using Webpack version ${webpack.version
+      `Building ${isServer ? "server" : "client"} files using Webpack version ${
+        webpack.version
       }.`
     );
-    // Perform customizations to webpack config
-    // Important: return the modified config
-    !isServer &&
+
+    if (!isServer) {
       config.plugins.push(
         new webpack.IgnorePlugin({ resourceRegExp: /jsdom$/ })
       );
-    // react-axe should only be bundled when REACT_AXE=true
-    !REACT_AXE === "true" &&
+      config.resolve.fallback = {
+        ...(config.resolve.fallback || {}),
+        fs: false
+      };
+    }
+
+    if (REACT_AXE !== "true") {
       config.plugins.push(
         new webpack.IgnorePlugin({ resourceRegExp: /react-axe$/ })
       );
-    // Fixes dependency on "fs" module.
-    // We don't (and can't) depend on this in client-side code.
-    if (!isServer) {
-      config.resolve.fallback.fs = false;
     }
 
-    // upload sourcemaps to bugsnag if we are not in dev
     if (!dev && APP_CONFIG.bugsnagApiKey) {
       const bugsnagConfig = {
         apiKey: APP_CONFIG.bugsnagApiKey,
         appVersion: BUILD_ID
       };
+
       config.plugins.push(new BugsnagBuildReporterPlugin(bugsnagConfig));
       config.plugins.push(
         new BugsnagSourceMapUploaderPlugin({
@@ -122,14 +130,15 @@ const config = {
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true"
 });
+
 module.exports = {
   ...withTM(withBundleAnalyzer(config)),
+  i18n,
   distDir: "_next",
   generateBuildId: async () => {
     if (process.env.BUILD_ID) {
       return process.env.BUILD_ID;
-    } else {
-      return `${new Date().getTime()}`;
     }
+    return `${Date.now()}`;
   }
 };
