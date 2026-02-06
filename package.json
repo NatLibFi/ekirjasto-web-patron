@@ -23,8 +23,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "extract-i18n": "i18next 'src/**/*.{ts,tsx}'"
-}
-
+    
   },
   "dependencies": {
     "@ariakit/react": "^0.4.13",
