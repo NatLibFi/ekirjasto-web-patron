@@ -7,7 +7,7 @@ import "@nypl/design-system-react-components/dist/styles.css";
 import "css-overrides.css";
 import track from "analytics/track";
 import { BreadcrumbProvider } from "components/context/BreadcrumbContext";
-import { appWithTranslation } from "next-i18next"; // ✅ lisää tämä
+import { appWithTranslation } from "next-i18next";
 
 /**
  * We can mock our backend api with MSW (mock service worker).
