@@ -40,5 +40,4 @@ export function reportWebVitals(metric: NextWebVitalsMetric) {
   track.webVitals(metric);
 }
 
-// ✅ wrapataan appWithTranslation ympärille
 export default appWithTranslation(MyApp);
