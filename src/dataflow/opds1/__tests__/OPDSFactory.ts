@@ -13,11 +13,11 @@ import {
   AcquisitionFeed,
   NavigationFeed,
   CompleteEntryLink
-} from "opds-feed-parser";
-import { OPDSLinkArgs } from "opds-feed-parser/lib/src/opds_link";
+} from "@natlibfi/ekirjasto-opds-feed-parser";
+import { OPDSLinkArgs } from "@natlibfi/ekirjasto-opds-feed-parser/lib/src/opds_link";
 
 /*
-Utilities for obtaining instances of classes from opds-feed-parser.
+Utilities for obtaining instances of classes from ekirjasto-opds-feed-parser.
 Most of the constructor arguments use the class as their type,
 so casting arguments to the class lets us avoid including
 required arguments for properties we aren't testing.

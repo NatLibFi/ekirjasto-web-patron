@@ -23,6 +23,16 @@ const raw = `<feed
 		<author>
 			<name>Jane Austen</name>
 		</author>
+		<accessibility>
+			<waysOfReading>
+				<feature>Appearance can be modified</feature>
+				<feature>Has alternative text</feature>
+				<feature>Not fully readable in read aloud or dynamic braille</feature>
+			</waysOfReading>
+			<conformance>
+				<conformsTo>This publication meets accepted accessibility standards</conformsTo>
+			</conformance>
+		</accessibility>
 		<published>2006-12-28T20:00:54Z</published>
 		<updated>2012-10-12T17:43:18Z</updated>
 		<dcterms:language>en</dcterms:language>
@@ -68,6 +78,16 @@ Pride And Prejudice, the story of Mrs. Bennet's attempts to marry off her five d
 		<author>
 			<name>Jane Austen</name>
 		</author>
+		<accessibility>
+			<waysOfReading>
+				<feature>Appearance can be modified</feature>
+				<feature>Has alternative text</feature>
+				<feature>Not fully readable in read aloud or dynamic braille</feature>
+			</waysOfReading>
+			<conformance>
+				<conformsTo>This publication meets accepted accessibility standards</conformsTo>
+			</conformance>
+		</accessibility>
 		<published>2006-12-28T20:00:54Z</published>
 		<updated>2012-10-12T17:43:18Z</updated>
 		<dcterms:language>en</dcterms:language>
@@ -93,6 +113,11 @@ This work is available for countries where copyright is Life+70 and in the USA.
 		<author>
 			<name>Jane Austen</name>
 		</author>
+		<accessibility>
+			<conformance>
+				<conformsTo>This publication meets accepted accessibility standards</conformsTo>
+			</conformance>
+		</accessibility>
 		<published>2006-12-28T20:00:54Z</published>
 		<updated>2012-10-12T17:43:18Z</updated>
 		<dcterms:language>en</dcterms:language>
@@ -121,6 +146,11 @@ This work is available for countries where copyright is Life+70 and in the USA.
 		<contributor>
 			<name>Jane Austen</name>
 		</contributor>
+		<accessibility>
+			<waysOfReading>
+				<feature>Appearance can be modified</feature>
+			</waysOfReading>
+		</accessibility>
 		<published>2006-12-28T20:00:54Z</published>
 		<updated>2012-10-12T17:43:18Z</updated>
 		<dcterms:language>en</dcterms:language>
@@ -146,6 +176,8 @@ This work is available for countries where copyright is Life+70 and in the USA.
 		<author>
 			<name>Jane Austen</name>
 		</author>
+		<accessibility>
+		</accessibility>
 		<published>2006-12-28T20:00:54Z</published>
 		<updated>2012-10-12T17:43:18Z</updated>
 		<dcterms:language>en</dcterms:language>

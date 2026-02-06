@@ -100,6 +100,22 @@ describe("book details page", () => {
     expect(screen.getByText("ePub")).toBeInTheDocument();
   });
 
+  test("shows accessibility information", () => {
+    mockSwr({ data: fixtures.book });
+    setup(<BookDetails />);
+    expect(screen.getByText("Accessibility")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "This publication meets accepted accessibility standards"
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Appearance can be modified, Has alternative text, Not fully readable in read aloud or dynamic braille"
+      )
+    ).toBeInTheDocument();
+  });
+
   test("shows E-kirjasto callout when NEXT_PUBLIC_COMPANION_APP is ''", () => {
     mockConfig({ companionApp: "E-kirjasto" });
     mockSwr({ data: fixtures.book });

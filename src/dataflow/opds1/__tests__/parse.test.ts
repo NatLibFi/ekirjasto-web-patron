@@ -4,7 +4,7 @@ import {
   OPDSAcquisitionLink,
   OPDSShelfLink,
   CompleteEntryLink
-} from "opds-feed-parser";
+} from "@natlibfi/ekirjasto-opds-feed-parser";
 import * as factory from "./OPDSFactory";
 import { entryToBook, feedToCollection } from "../parse";
 import { FulfillableBook, OPDS1 } from "interfaces";

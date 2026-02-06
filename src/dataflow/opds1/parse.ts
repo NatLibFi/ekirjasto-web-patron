@@ -13,7 +13,7 @@ import {
   OPDSAcquisitionLink,
   OPDSShelfLink,
   OPDSIndirectAcquisition
-} from "opds-feed-parser";
+} from "@natlibfi/ekirjasto-opds-feed-parser";
 import {
   CollectionData,
   LaneData,
@@ -289,6 +289,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
   const book: Book = {
     id: entry.id,
     title: entry.title,
+    accessibility: entry.accessibility,
     series: entry.series,
     authors: authors,
     contributors: contributors,
@@ -410,7 +411,7 @@ function findFirstAttributeValue(
 
 /**
  * Extracts provider name from entry.unparsed,
- * because opds-feed-parser doesn't parse bibframe:distribution.
+ * because ekirjasto-opds-feed-parser doesn't parse bibframe:distribution.
  * Messy, but grabs provider name from tag spit out by xml2js
  */
 function getProviderName(

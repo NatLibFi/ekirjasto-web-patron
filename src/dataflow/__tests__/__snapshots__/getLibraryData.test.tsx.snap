@@ -5,6 +5,18 @@ AcquisitionFeed {
   "complete": false,
   "entries": Array [
     PartialOPDSEntry {
+      "accessibility": Accessibility {
+        "conformance": Conformance {
+          "conformsTo": "This publication meets accepted accessibility standards",
+        },
+        "waysOfReading": WaysOfReading {
+          "features": Array [
+            "Appearance can be modified",
+            "Has alternative text",
+            "Not fully readable in read aloud or dynamic braille",
+          ],
+        },
+      },
       "authors": Array [
         Contributor {
           "name": "Jane Austen",
@@ -86,6 +98,62 @@ Pride And Prejudice, the story of Mrs. Bennet's attempts to marry off her five d
           "local": "entry",
           "uri": "http://www.w3.org/2005/Atom",
         },
+        "accessibility": Array [
+          Object {
+            "$ns": Object {
+              "local": "accessibility",
+              "uri": "http://www.w3.org/2005/Atom",
+            },
+            "conformance": Array [
+              Object {
+                "$ns": Object {
+                  "local": "conformance",
+                  "uri": "http://www.w3.org/2005/Atom",
+                },
+                "conformsTo": Array [
+                  Object {
+                    "$ns": Object {
+                      "local": "conformsTo",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "This publication meets accepted accessibility standards",
+                  },
+                ],
+              },
+            ],
+            "waysOfReading": Array [
+              Object {
+                "$ns": Object {
+                  "local": "waysOfReading",
+                  "uri": "http://www.w3.org/2005/Atom",
+                },
+                "feature": Array [
+                  Object {
+                    "$ns": Object {
+                      "local": "feature",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "Appearance can be modified",
+                  },
+                  Object {
+                    "$ns": Object {
+                      "local": "feature",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "Has alternative text",
+                  },
+                  Object {
+                    "$ns": Object {
+                      "local": "feature",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "Not fully readable in read aloud or dynamic braille",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
         "author": Array [
           Object {
             "$ns": Object {
@@ -408,6 +476,7 @@ This work is available for countries where copyright is Life+70 and in the USA.
       "updated": "2012-10-12T17:43:18Z",
     },
     PartialOPDSEntry {
+      "accessibility": null,
       "authors": Array [
         Contributor {
           "name": "Jane Austen",
@@ -737,6 +806,18 @@ Pride And Prejudice, the story of Mrs. Bennet's attempts to marry off her five d
       "updated": "2012-10-12T17:43:18Z",
     },
     PartialOPDSEntry {
+      "accessibility": Accessibility {
+        "conformance": Conformance {
+          "conformsTo": "This publication meets accepted accessibility standards",
+        },
+        "waysOfReading": WaysOfReading {
+          "features": Array [
+            "Appearance can be modified",
+            "Has alternative text",
+            "Not fully readable in read aloud or dynamic braille",
+          ],
+        },
+      },
       "authors": Array [
         Contributor {
           "name": "Jane Austen",
@@ -818,6 +899,62 @@ Pride And Prejudice, the story of Mrs. Bennet's attempts to marry off her five d
           "local": "entry",
           "uri": "http://www.w3.org/2005/Atom",
         },
+        "accessibility": Array [
+          Object {
+            "$ns": Object {
+              "local": "accessibility",
+              "uri": "http://www.w3.org/2005/Atom",
+            },
+            "conformance": Array [
+              Object {
+                "$ns": Object {
+                  "local": "conformance",
+                  "uri": "http://www.w3.org/2005/Atom",
+                },
+                "conformsTo": Array [
+                  Object {
+                    "$ns": Object {
+                      "local": "conformsTo",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "This publication meets accepted accessibility standards",
+                  },
+                ],
+              },
+            ],
+            "waysOfReading": Array [
+              Object {
+                "$ns": Object {
+                  "local": "waysOfReading",
+                  "uri": "http://www.w3.org/2005/Atom",
+                },
+                "feature": Array [
+                  Object {
+                    "$ns": Object {
+                      "local": "feature",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "Appearance can be modified",
+                  },
+                  Object {
+                    "$ns": Object {
+                      "local": "feature",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "Has alternative text",
+                  },
+                  Object {
+                    "$ns": Object {
+                      "local": "feature",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "Not fully readable in read aloud or dynamic braille",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
         "author": Array [
           Object {
             "$ns": Object {
@@ -1131,6 +1268,12 @@ Pride And Prejudice, the story of Mrs. Bennet's attempts to marry off her five d
       "updated": "2012-10-12T17:43:18Z",
     },
     PartialOPDSEntry {
+      "accessibility": Accessibility {
+        "conformance": Conformance {
+          "conformsTo": "This publication meets accepted accessibility standards",
+        },
+        "waysOfReading": null,
+      },
       "authors": Array [
         Contributor {
           "name": "Jane Austen",
@@ -1212,6 +1355,31 @@ Pride And Prejudice, the story of Mrs. Bennet's attempts to marry off her five d
           "local": "entry",
           "uri": "http://www.w3.org/2005/Atom",
         },
+        "accessibility": Array [
+          Object {
+            "$ns": Object {
+              "local": "accessibility",
+              "uri": "http://www.w3.org/2005/Atom",
+            },
+            "conformance": Array [
+              Object {
+                "$ns": Object {
+                  "local": "conformance",
+                  "uri": "http://www.w3.org/2005/Atom",
+                },
+                "conformsTo": Array [
+                  Object {
+                    "$ns": Object {
+                      "local": "conformsTo",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "This publication meets accepted accessibility standards",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
         "author": Array [
           Object {
             "$ns": Object {
@@ -1545,6 +1713,14 @@ Pride And Prejudice, the story of Mrs. Bennet's attempts to marry off her five d
       "updated": "2012-10-12T17:43:18Z",
     },
     PartialOPDSEntry {
+      "accessibility": Accessibility {
+        "conformance": null,
+        "waysOfReading": WaysOfReading {
+          "features": Array [
+            "Appearance can be modified",
+          ],
+        },
+      },
       "authors": Array [],
       "categories": Array [
         Category {
@@ -1626,6 +1802,31 @@ Pride And Prejudice, the story of Mrs. Bennet's attempts to marry off her five d
           "local": "entry",
           "uri": "http://www.w3.org/2005/Atom",
         },
+        "accessibility": Array [
+          Object {
+            "$ns": Object {
+              "local": "accessibility",
+              "uri": "http://www.w3.org/2005/Atom",
+            },
+            "waysOfReading": Array [
+              Object {
+                "$ns": Object {
+                  "local": "waysOfReading",
+                  "uri": "http://www.w3.org/2005/Atom",
+                },
+                "feature": Array [
+                  Object {
+                    "$ns": Object {
+                      "local": "feature",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "Appearance can be modified",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
         "category": Array [
           Object {
             "$": Object {
@@ -1948,6 +2149,10 @@ This work is available for countries where copyright is Life+70 and in the USA.
       "updated": "2012-10-12T17:43:18Z",
     },
     PartialOPDSEntry {
+      "accessibility": Accessibility {
+        "conformance": null,
+        "waysOfReading": null,
+      },
       "authors": Array [
         Contributor {
           "name": "Jane Austen",
@@ -2029,6 +2234,14 @@ Pride And Prejudice, the story of Mrs. Bennet's attempts to marry off her five d
           "local": "entry",
           "uri": "http://www.w3.org/2005/Atom",
         },
+        "accessibility": Array [
+          Object {
+            "$ns": Object {
+              "local": "accessibility",
+              "uri": "http://www.w3.org/2005/Atom",
+            },
+          },
+        ],
         "author": Array [
           Object {
             "$ns": Object {
@@ -2460,6 +2673,62 @@ This work is available for countries where copyright is Life+70 and in the USA.
           "local": "entry",
           "uri": "http://www.w3.org/2005/Atom",
         },
+        "accessibility": Array [
+          Object {
+            "$ns": Object {
+              "local": "accessibility",
+              "uri": "http://www.w3.org/2005/Atom",
+            },
+            "conformance": Array [
+              Object {
+                "$ns": Object {
+                  "local": "conformance",
+                  "uri": "http://www.w3.org/2005/Atom",
+                },
+                "conformsTo": Array [
+                  Object {
+                    "$ns": Object {
+                      "local": "conformsTo",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "This publication meets accepted accessibility standards",
+                  },
+                ],
+              },
+            ],
+            "waysOfReading": Array [
+              Object {
+                "$ns": Object {
+                  "local": "waysOfReading",
+                  "uri": "http://www.w3.org/2005/Atom",
+                },
+                "feature": Array [
+                  Object {
+                    "$ns": Object {
+                      "local": "feature",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "Appearance can be modified",
+                  },
+                  Object {
+                    "$ns": Object {
+                      "local": "feature",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "Has alternative text",
+                  },
+                  Object {
+                    "$ns": Object {
+                      "local": "feature",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "Not fully readable in read aloud or dynamic braille",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
         "author": Array [
           Object {
             "$ns": Object {
@@ -3043,6 +3312,62 @@ Pride And Prejudice, the story of Mrs. Bennet's attempts to marry off her five d
           "local": "entry",
           "uri": "http://www.w3.org/2005/Atom",
         },
+        "accessibility": Array [
+          Object {
+            "$ns": Object {
+              "local": "accessibility",
+              "uri": "http://www.w3.org/2005/Atom",
+            },
+            "conformance": Array [
+              Object {
+                "$ns": Object {
+                  "local": "conformance",
+                  "uri": "http://www.w3.org/2005/Atom",
+                },
+                "conformsTo": Array [
+                  Object {
+                    "$ns": Object {
+                      "local": "conformsTo",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "This publication meets accepted accessibility standards",
+                  },
+                ],
+              },
+            ],
+            "waysOfReading": Array [
+              Object {
+                "$ns": Object {
+                  "local": "waysOfReading",
+                  "uri": "http://www.w3.org/2005/Atom",
+                },
+                "feature": Array [
+                  Object {
+                    "$ns": Object {
+                      "local": "feature",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "Appearance can be modified",
+                  },
+                  Object {
+                    "$ns": Object {
+                      "local": "feature",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "Has alternative text",
+                  },
+                  Object {
+                    "$ns": Object {
+                      "local": "feature",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "Not fully readable in read aloud or dynamic braille",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
         "author": Array [
           Object {
             "$ns": Object {
@@ -3358,6 +3683,31 @@ Pride And Prejudice, the story of Mrs. Bennet's attempts to marry off her five d
           "local": "entry",
           "uri": "http://www.w3.org/2005/Atom",
         },
+        "accessibility": Array [
+          Object {
+            "$ns": Object {
+              "local": "accessibility",
+              "uri": "http://www.w3.org/2005/Atom",
+            },
+            "conformance": Array [
+              Object {
+                "$ns": Object {
+                  "local": "conformance",
+                  "uri": "http://www.w3.org/2005/Atom",
+                },
+                "conformsTo": Array [
+                  Object {
+                    "$ns": Object {
+                      "local": "conformsTo",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "This publication meets accepted accessibility standards",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
         "author": Array [
           Object {
             "$ns": Object {
@@ -3693,6 +4043,31 @@ Pride And Prejudice, the story of Mrs. Bennet's attempts to marry off her five d
           "local": "entry",
           "uri": "http://www.w3.org/2005/Atom",
         },
+        "accessibility": Array [
+          Object {
+            "$ns": Object {
+              "local": "accessibility",
+              "uri": "http://www.w3.org/2005/Atom",
+            },
+            "waysOfReading": Array [
+              Object {
+                "$ns": Object {
+                  "local": "waysOfReading",
+                  "uri": "http://www.w3.org/2005/Atom",
+                },
+                "feature": Array [
+                  Object {
+                    "$ns": Object {
+                      "local": "feature",
+                      "uri": "http://www.w3.org/2005/Atom",
+                    },
+                    "_": "Appearance can be modified",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
         "category": Array [
           Object {
             "$": Object {
@@ -4017,6 +4392,14 @@ This work is available for countries where copyright is Life+70 and in the USA.
           "local": "entry",
           "uri": "http://www.w3.org/2005/Atom",
         },
+        "accessibility": Array [
+          Object {
+            "$ns": Object {
+              "local": "accessibility",
+              "uri": "http://www.w3.org/2005/Atom",
+            },
+          },
+        ],
         "author": Array [
           Object {
             "$ns": Object {

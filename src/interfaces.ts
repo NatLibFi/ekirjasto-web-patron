@@ -155,6 +155,14 @@ export type Book<Status = EmptyObject> = Readonly<
   Status & {
     id: string;
     title: string;
+    accessibility?: {
+      conformance?: {
+        conformsTo?: string;
+      };
+      waysOfReading?: {
+        features?: string[];
+      };
+    };
     series?: {
       name: string;
       position?: number;
