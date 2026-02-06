@@ -125,7 +125,7 @@ const MagazinesFixedPage: NextPage<AppProps> = ({ library, error }) => {
         <Head>
           <title>{t("title_magazines", "Magazines - E-library")}</title>
         </Head>
-        <BreadcrumbBar currentLocation="Lehdet" />
+        <BreadcrumbBar currentLocation={t("breadcrumb_magazines", "Magazines")} />
         <MagazinesFixedContent />
       </>
     </LayoutPage>
