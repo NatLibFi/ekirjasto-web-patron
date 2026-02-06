@@ -22,7 +22,8 @@
     "generate-icons": "npx @svgr/cli --template src/icons/_template.js --typescript --icon --ext tsx --svg-props 'fill=currentColor' -d src/icons src/icons",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "extract-i18n": "i18next 'src/**/*.{ts,tsx}'"
+    "extract-i18n": "i18next 'src/**/*.{ts,tsx}'",
+    "translate": "npm run extract-i18n"
   },
   "dependencies": {
     "@ariakit/react": "^0.4.13",
