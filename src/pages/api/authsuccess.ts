@@ -24,12 +24,12 @@ export default async function handler(
       const authenticateHref = await fetchEkirjastoAuthenticationLink();
 
       // Get circulation token
-      const { access_token } = await fetchEAuthToken(authenticateHref, token);
+      const { accessToken } = await fetchEAuthToken(authenticateHref, token);
 
       // Set the circulation token as a cookie that can be read on the other page and stored
       res.setHeader(
         "Set-Cookie",
-        serialize("access_token", access_token, {
+        serialize("access_token", accessToken, {
           httpOnly: false,
           path: "/"
         })
