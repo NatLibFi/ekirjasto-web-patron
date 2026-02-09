@@ -17,7 +17,6 @@ export async function fetchEAuthToken(
 
   const response = await fetchWithHeaders(url, `Bearer ${token}`, {}, "POST");
   const json = await response.json();
-  console.log(json);
 
   if (!response.ok) {
     throw new ServerError(url, response.status, json);
