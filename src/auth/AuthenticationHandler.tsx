@@ -2,10 +2,12 @@ import React from "react";
 import BasicAuthHandler from "./BasicAuthHandler";
 import BasicTokenAuthHandler from "./BasicTokenAuthHandler";
 import CleverAuthHandler from "./CleverAuthHandler";
+import EkirjastoAuthHandler from "./EkirjastoAuthHandler";
 import SamlAuthHandler from "./SamlAuthHandler";
 import {
   ClientBasicMethod,
   ClientBasicTokenMethod,
+  ClientEkirjastoMethod,
   ClientSamlMethod
 } from "interfaces";
 import {
@@ -13,19 +15,25 @@ import {
   CleverAuthType,
   CleverAuthMethod,
   SamlAuthType,
-  BasicTokenAuthType
+  BasicTokenAuthType,
+  EkirjastoAuthType,
+  EkirjastoMethod
 } from "../types/opds1";
 import track from "../analytics/track";
 import ApplicationError from "../errors";
 
 type SupportedAuthTypes =
+  | typeof EkirjastoAuthType
   | typeof BasicAuthType
   | typeof BasicTokenAuthType
   | typeof SamlAuthType
   | typeof CleverAuthType;
 
 type SupportedAuthHandlerProps = {
-  [key in SupportedAuthTypes]: key extends typeof BasicAuthType
+  [key in SupportedAuthTypes]
+    : key extends typeof EkirjastoAuthType
+    ? EkirjastoMethod
+    : key extends typeof BasicAuthType
     ? ClientBasicMethod
     : key extends typeof BasicTokenAuthType
     ? ClientBasicTokenMethod
@@ -44,6 +52,7 @@ export const authHandlers: {
     method: SupportedAuthHandlerProps[key];
   }>;
 } = {
+  [EkirjastoAuthType]: EkirjastoAuthHandler,
   [BasicAuthType]: BasicAuthHandler,
   [BasicTokenAuthType]: BasicTokenAuthHandler,
   [SamlAuthType]: SamlAuthHandler,
@@ -62,7 +71,9 @@ const AuthenticationHandler: React.ComponentType<AuthHandlerWrapperProps> = ({
 }) => {
   const _AuthHandler = authHandlers[method.type];
 
-  if (method.type === BasicTokenAuthType && typeof method !== "string") {
+  if (method.type === EkirjastoAuthType && typeof method !== "string") {
+    return <_AuthHandler method={method as ClientEkirjastoMethod} />;
+  }if (method.type === BasicTokenAuthType && typeof method !== "string") {
     return <_AuthHandler method={method as ClientBasicTokenMethod} />;
   } else if (method.type === BasicAuthType && typeof method !== "string") {
     return <_AuthHandler method={method as ClientBasicMethod} />;

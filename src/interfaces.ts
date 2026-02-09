@@ -91,12 +91,17 @@ export interface ClientBasicTokenMethod extends OPDS1.BasicTokenAuthMethod {
   id: string;
 }
 
+export interface ClientEkirjastoMethod extends OPDS1.EkirjastoMethod {
+  id: string;
+}
+
 // auth methods once they have been processed for the app
 export type AppAuthMethod =
   | ClientCleverMethod
   | ClientBasicMethod
   | ClientBasicTokenMethod
-  | ClientSamlMethod;
+  | ClientSamlMethod
+  | ClientEkirjastoMethod;
 
 export type Token = {
   basicToken: string | undefined;

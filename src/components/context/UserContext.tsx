@@ -6,7 +6,7 @@ import { ServerError } from "errors";
 import { AppAuthMethod, AnyBook, AuthCredentials, Token } from "interfaces";
 import * as React from "react";
 import useSWR from "swr";
-import { BasicTokenAuthType } from "types/opds1";
+import { BasicTokenAuthType, EkirjastoAuthType } from "types/opds1";
 import { addHours, isBefore } from "date-fns";
 
 type Status = "authenticated" | "loading" | "unauthenticated";
@@ -44,9 +44,10 @@ interface UserProviderProps {
  * those change it will cause a refetch.
  */
 export const UserProvider = ({ children }: UserProviderProps) => {
-  const { shelfUrl, slug } = useLibraryContext();
+  const { shelfUrl, slug, authMethods } = useLibraryContext()
   const { credentials, setCredentials, clearCredentials } = useCredentials(
-    slug
+    slug,
+    authMethods
   );
   const [error, setError] = React.useState<ServerError | null>(null);
 
@@ -97,13 +98,17 @@ export const UserProvider = ({ children }: UserProviderProps) => {
               clearCredentials();
             }
           }
+          if (credentials?.methodType === EkirjastoAuthType) {
+            // TODO: token refresh on 401
+             console.log("EKIRJASTO REFRESH")
+          }
         }
       },
       // clear credentials whenever we receive a 401, but save the error so it sticks around.
       // however, BasicTokenAuthType methods are retried in onErrorRetry to get new token
       onError: err => {
         if (err instanceof ServerError && err?.info.status === 401) {
-          if (credentials?.methodType !== BasicTokenAuthType) {
+          if (credentials?.methodType !== BasicTokenAuthType ) {
             setError(err);
             clearCredentials();
           }
