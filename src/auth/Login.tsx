@@ -23,14 +23,15 @@ export default function Login(): React.ReactElement {
   // Automatically redirect user to first supported auth method
   // Unless there is ekirjasto authentication, then redirect to that
   React.useEffect(() => {
-    const ekirjastoAuth = supportedAuthMethods.find(
-      method => method.type === EKIRJASTO_AUTH_TYPE
-    );
-    if (ekirjastoAuth) {
-      initLogin(ekirjastoAuth.id);
-    }
     if (supportedAuthMethods.length > 0) {
-      initLogin(supportedAuthMethods[0].id);
+      const ekirjastoAuth = supportedAuthMethods.find(
+        method => method.type === EKIRJASTO_AUTH_TYPE
+      );
+      if (ekirjastoAuth) {
+        initLogin(ekirjastoAuth.id);
+      } else {
+        initLogin(supportedAuthMethods[0].id);
+      }
     }
   }, [supportedAuthMethods, initLogin]);
 
