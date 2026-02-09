@@ -8,6 +8,7 @@ import { Text } from "components/Text";
 import LoadingIndicator from "components/LoadingIndicator";
 import useLogin from "auth/useLogin";
 import { isSupportedAuthType } from "./AuthenticationHandler";
+import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
 
 export default function Login(): React.ReactElement {
   const { initLogin } = useLogin();
@@ -20,9 +21,17 @@ export default function Login(): React.ReactElement {
   );
 
   // Automatically redirect user to first supported auth method
+  // Unless there is ekirjasto authentication, then redirect to that
   React.useEffect(() => {
     if (supportedAuthMethods.length > 0) {
-      initLogin(supportedAuthMethods[0].id);
+      const ekirjastoAuth = supportedAuthMethods.find(
+        method => method.type === EKIRJASTO_AUTH_TYPE
+      );
+      if (ekirjastoAuth) {
+        initLogin(ekirjastoAuth.id);
+      } else {
+        initLogin(supportedAuthMethods[0].id);
+      }
     }
   }, [supportedAuthMethods, initLogin]);
 

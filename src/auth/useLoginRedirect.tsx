@@ -7,7 +7,7 @@ import { IS_SERVER } from "utils/env";
 /**
  * Extracts the redirect url stored in the browser url bar and returns
  * a version including the origin (fullSuccessUrl) or a version that is
- * just a path (successPath).
+ * just a path (successPath), or a path for special authentication handling (authSuccessUrl)
  */
 export default function useLoginRedirectUrl() {
   const { buildMultiLibraryLink } = useLinkUtils();
@@ -33,8 +33,14 @@ export default function useLoginRedirectUrl() {
     ? ""
     : `${window.location.origin}${successPath}`;
 
+  // get the url where we redirect after authentication
+  const authSuccessUrl = IS_SERVER
+    ? ""
+    : `${window.location.origin}/api/authsuccess`;
+
   return {
     fullSuccessUrl,
-    successPath
+    successPath,
+    authSuccessUrl
   };
 }
