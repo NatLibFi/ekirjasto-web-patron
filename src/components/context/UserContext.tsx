@@ -44,7 +44,7 @@ interface UserProviderProps {
  * those change it will cause a refetch.
  */
 export const UserProvider = ({ children }: UserProviderProps) => {
-  const { shelfUrl, slug, authMethods } = useLibraryContext()
+  const { shelfUrl, slug, authMethods } = useLibraryContext();
   const { credentials, setCredentials, clearCredentials } = useCredentials(
     slug,
     authMethods
@@ -100,7 +100,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
           }
           if (credentials?.methodType === EkirjastoAuthType) {
             // TODO: token refresh on 401
-             console.log("EKIRJASTO REFRESH")
+            console.log("EKIRJASTO REFRESH");
           }
         }
       },
@@ -108,7 +108,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       // however, BasicTokenAuthType methods are retried in onErrorRetry to get new token
       onError: err => {
         if (err instanceof ServerError && err?.info.status === 401) {
-          if (credentials?.methodType !== BasicTokenAuthType ) {
+          if (credentials?.methodType !== BasicTokenAuthType) {
             setError(err);
             clearCredentials();
           }

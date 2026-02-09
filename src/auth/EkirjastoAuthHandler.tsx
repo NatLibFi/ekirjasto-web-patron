@@ -25,17 +25,17 @@ const EkirjastoAuthHandler: React.FC<{ method: ClientEkirjastoMethod }> = ({
   )?.href;
 
   //Create link with redirect
-    const urlWithRedirect = `${authenticationStartHref}&redirect_uri=${encodeURIComponent(
-        authSuccessUrl
-      )}`;
+  const urlWithRedirect = `${authenticationStartHref}&redirect_uri=${encodeURIComponent(
+    authSuccessUrl
+  )}`;
 
-      // Start login
-      React.useEffect(() => {
-        if (!token && urlWithRedirect) {
-          window.location.href = urlWithRedirect;
-          console.log(urlWithRedirect)
-        }
-      }, [token, signOut, urlWithRedirect]);
+  // Start login
+  React.useEffect(() => {
+    if (!token && urlWithRedirect) {
+      window.location.href = urlWithRedirect;
+      console.log(urlWithRedirect);
+    }
+  }, [token, signOut, urlWithRedirect]);
 
   return (
     <Stack direction="column" sx={{ alignItems: "center" }}>

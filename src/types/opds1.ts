@@ -215,8 +215,7 @@ export interface AuthMethod<T extends AnyAuthType, L extends Link = Link> {
 export interface ServerSamlMethod
   extends AuthMethod<typeof SamlAuthType, SamlIdp> {}
 
-export interface EkirjastoMethod
-  extends AuthMethod<typeof EkirjastoAuthType> {}
+export interface EkirjastoMethod extends AuthMethod<typeof EkirjastoAuthType> {}
 
 export interface CleverAuthMethod extends AuthMethod<typeof CleverAuthType> {}
 

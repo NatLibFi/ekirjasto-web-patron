@@ -30,8 +30,7 @@ type SupportedAuthTypes =
   | typeof CleverAuthType;
 
 type SupportedAuthHandlerProps = {
-  [key in SupportedAuthTypes]
-    : key extends typeof EkirjastoAuthType
+  [key in SupportedAuthTypes]: key extends typeof EkirjastoAuthType
     ? EkirjastoMethod
     : key extends typeof BasicAuthType
     ? ClientBasicMethod
@@ -73,7 +72,8 @@ const AuthenticationHandler: React.ComponentType<AuthHandlerWrapperProps> = ({
 
   if (method.type === EkirjastoAuthType && typeof method !== "string") {
     return <_AuthHandler method={method as ClientEkirjastoMethod} />;
-  }if (method.type === BasicTokenAuthType && typeof method !== "string") {
+  }
+  if (method.type === BasicTokenAuthType && typeof method !== "string") {
     return <_AuthHandler method={method as ClientBasicTokenMethod} />;
   } else if (method.type === BasicAuthType && typeof method !== "string") {
     return <_AuthHandler method={method as ClientBasicMethod} />;

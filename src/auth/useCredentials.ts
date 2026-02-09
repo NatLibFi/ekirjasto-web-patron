@@ -4,7 +4,11 @@ import { AppAuthMethod, AuthCredentials, OPDS1 } from "interfaces";
 import { IS_SERVER } from "utils/env";
 import { NextRouter, useRouter } from "next/router";
 import { generateCredentials } from "utils/auth";
-import { EKIRJASTO_AUTH_TYPE, EKIRJASTO_TOKEN_PARAM, SAML_LOGIN_QUERY_PARAM } from "utils/constants";
+import {
+  EKIRJASTO_AUTH_TYPE,
+  EKIRJASTO_TOKEN_PARAM,
+  SAML_LOGIN_QUERY_PARAM
+} from "utils/constants";
 
 /**
  * This hook:
@@ -16,15 +20,22 @@ import { EKIRJASTO_AUTH_TYPE, EKIRJASTO_TOKEN_PARAM, SAML_LOGIN_QUERY_PARAM } fr
  *    if finds a token, it extracts it and sets it as the current
  *    credentials.
  */
-export default function useCredentials(slug: string | null, authMethods: AppAuthMethod[] | null) {
+export default function useCredentials(
+  slug: string | null,
+  authMethods: AppAuthMethod[] | null
+) {
   const router = useRouter();
 
   // Since we don't actually call the login function anywhere, we need to put the authentication url
   // in somehow, so we fetch it here and take it to getCredentialsState function
-  const ekirjastoMethod = authMethods?.find(method => method.type === EKIRJASTO_AUTH_TYPE)
-  let authenticationUrl
+  const ekirjastoMethod = authMethods?.find(
+    method => method.type === EKIRJASTO_AUTH_TYPE
+  );
+  let authenticationUrl;
   if (ekirjastoMethod) {
-    authenticationUrl = ekirjastoMethod.links?.find(link => link.rel === "authenticate")?.href
+    authenticationUrl = ekirjastoMethod.links?.find(
+      link => link.rel === "authenticate"
+    )?.href;
   }
   const [credentialsState, setCredentialsState] = React.useState<
     AuthCredentials | undefined
@@ -33,23 +44,20 @@ export default function useCredentials(slug: string | null, authMethods: AppAuth
   React.useEffect(() => {
     const cookie = getCredentialsCookie(slug, authenticationUrl);
     if (cookie) setCredentialsState(cookie);
-  }, [slug]);
+  }, [authenticationUrl, slug]);
 
   // set both cookie and state credentials
-  const setCredentials = React.useCallback(
-    (creds: AuthCredentials) => {
-      setCredentialsState(creds);
-      setCredentialsCookie(creds);
-      console.log("Cookies after setting credentials:", Cookie.get());
-    },
-    [slug]
-  );
+  const setCredentials = React.useCallback((creds: AuthCredentials) => {
+    setCredentialsState(creds);
+    setCredentialsCookie(creds);
+    console.log("Cookies after setting credentials:", Cookie.get());
+  }, []);
 
   // clear both cookie and state credentials
   const clear = React.useCallback(() => {
     setCredentialsState(undefined);
     clearCredentialsCookie();
-  }, [slug]);
+  }, []);
 
   // use credentials from browser url if they exist
   const { token: urlToken, methodType: urlMethodType } =
@@ -82,7 +90,7 @@ function cookieName(): string {
  * Get credentials from cookies.
  * We assume the token is in access_token cookie, and that it is
  * of the Ekirjasto Authentication type
- * 
+ *
  * @param librarySlug Library slug, that is useful if we have multiple libraries
  * @param authenticationUrl AuthenticationUrl where we make refresh requests
  * @returns Ekirjasto credentials if access_token is available, otherwise undefined
@@ -94,18 +102,16 @@ function getCredentialsCookie(
   // Get access token, for ekirjasto login credentials
   const accessToken = Cookie.get(cookieName());
   // Create ekirjasto authentication credentials
-  const authCredentials : AuthCredentials = {
-      token: `Bearer ${accessToken}`,
-      methodType: OPDS1.EkirjastoAuthType,
-      authenticationUrl: authenticationUrl ? authenticationUrl : undefined
-    };
+  const authCredentials: AuthCredentials = {
+    token: `Bearer ${accessToken}`,
+    methodType: OPDS1.EkirjastoAuthType,
+    authenticationUrl: authenticationUrl ? authenticationUrl : undefined
+  };
   // Return the credentials
   return authCredentials ? authCredentials : undefined;
 }
 
-function setCredentialsCookie(
-  credentials: AuthCredentials
-) {
+function setCredentialsCookie(credentials: AuthCredentials) {
   Cookie.set(cookieName(), JSON.stringify(credentials));
 }
 
