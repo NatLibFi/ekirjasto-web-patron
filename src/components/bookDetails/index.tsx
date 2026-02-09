@@ -5,6 +5,7 @@
 import { jsx } from "theme-ui";
 import * as React from "react";
 import { AnyBook } from "interfaces";
+import Accessibility from "./Accessibility";
 import BookCover from "../BookCover";
 import Recommendations from "./Recommendations";
 import { PageLoader } from "../LoadingIndicator";
@@ -101,6 +102,7 @@ export const BookDetails: React.FC = () => {
                 details={book.ageRange?.join(", ")}
               />
               <DetailField heading="Book format" details={book.format} />
+              <Accessibility book={book} sx={{ mt: 3 }} />
             </div>
             <ReportProblem book={book} />
           </div>
