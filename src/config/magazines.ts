@@ -4,14 +4,14 @@
 
 // Base URLs for the magazine reader interface
 const MAGAZINE_READER_URLS = {
-  production: "https://e-kirjasto.epaper.fi",
-  playground: "https://e-kirjasto-playground.epaper.fi"
+  production: "https://lehdet.e-kirjasto.fi",
+  playground: "https://lehdet-testing.e-kirjasto.fi"
 } as const;
 
 // API URLs for magazine catalog data
 const MAGAZINE_API_URLS = {
-  production: "https://e-kirjasto.epaper.fi/feed/catalog",
-  playground: "https://e-kirjasto-playground.epaper.fi/feed/catalog"
+  production: "https://lehdet.e-kirjasto.fi/feed/catalog",
+  playground: "https://lehdet-testing.e-kirjasto.fi/feed/catalog"
 } as const;
 
 /**
