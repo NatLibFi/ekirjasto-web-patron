@@ -1,4 +1,4 @@
-// Magazine service related (epaper) TypeScript interfaces
+// Magazine service related (epress) TypeScript interfaces
 
 export interface MagazineTitle {
   id: string;
