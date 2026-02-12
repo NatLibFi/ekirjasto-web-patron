@@ -17,6 +17,7 @@ import {
 } from "config/magazines";
 import Head from "next/head";
 import BreadcrumbBar from "components/BreadcrumbBar";
+import { useTranslation } from "next-i18next";
 
 const MagazinesFixedContent: React.FC = () => {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
@@ -119,13 +120,16 @@ const MagazinesFixedContent: React.FC = () => {
 };
 
 const MagazinesFixedPage: NextPage<AppProps> = ({ library, error }) => {
+  const { t } = useTranslation("common");
   return (
     <LayoutPage library={library} error={error} hideFooter>
       <>
         <Head>
           <title>{t("title_magazines", "Magazines - E-library")}</title>
         </Head>
-        <BreadcrumbBar currentLocation={t("breadcrumb_magazines", "Magazines")} />
+        <BreadcrumbBar
+          currentLocation={t("breadcrumb_magazines", "Magazines")}
+        />
         <MagazinesFixedContent />
       </>
     </LayoutPage>
