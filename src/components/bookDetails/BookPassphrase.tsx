@@ -7,6 +7,7 @@ import { AnyBook } from "interfaces";
 import { jsx } from "theme-ui";
 import * as React from "react";
 import BookPassphraseInstructionsText from "components/BookPassphraseInstructionsText";
+import BookPassphraseCard from "components/BookPassphraseCard";
 import Stack from "components/Stack";
 import useUser from "components/context/UserContext";
 
@@ -49,7 +50,9 @@ const BookPassphrase: React.FC<BookPassphraseProps> = ({ book }) => {
         <Stack direction="column" sx={stackStyle}>
           {/* first render instructions how to use book passhprase */}
           <BookPassphraseInstructionsText />
-          {/* rest of passphrase component here */}
+
+          {/* then render the passphrase card */}
+          <BookPassphraseCard passphrase={book.passphrase} />
         </Stack>
       )}
     </>
