@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import * as React from "react";
 import Accessibility from "./Accessibility";
 import BookCover from "../BookCover";
+import BookPassphrase from "./BookPassphrase";
 import BreadcrumbBar from "../BreadcrumbBar";
 import DetailField from "../BookMetaDetail";
 import extractParam from "dataflow/utils";
@@ -93,6 +94,8 @@ export const BookDetails: React.FC = () => {
             {APP_CONFIG.showMedium && <MediumIndicator book={book} />}
 
             <FulfillmentCard book={book} sx={{ mt: 3 }} />
+
+            <BookPassphrase book={book} />
 
             <Summary book={book} />
 
