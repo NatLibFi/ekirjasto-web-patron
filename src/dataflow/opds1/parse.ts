@@ -270,9 +270,10 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
     link => link.supportLevel !== "unsupported"
   );
 
-  // Get the availability, holds and copies from the borrow link, and if there is no
-  // borrow link, get it from the first possible acquisition link
-  const { availability, holds, copies } =
+  // Get the availability, holds, copies and passphrases
+  // from the borrow link, and if there is no borrow link,
+  // get it from the first possible acquisition link
+  const { availability, holds, copies, passphrases } =
     borrowLink ?? acquisitionLinks[0] ?? {};
 
   const format = bookIsAudiobook({ ...entry.unparsed, raw: entry.unparsed })
@@ -305,6 +306,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
     },
     holds: holds,
     copies: copies,
+    passphrase: passphrases?.unhashedPassphrase,
     publisher: entry.publisher,
     published: entry.issued && formatDate(entry.issued),
     categories: categories,
