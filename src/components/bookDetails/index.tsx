@@ -2,32 +2,29 @@
 /** @jsx jsx */
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
+import { APP_CONFIG } from "utils/env";
+import { fetchBook } from "dataflow/opds1/fetch";
+import { getAuthors } from "utils/book";
+import { H1, Text } from "components/Text";
 import { jsx } from "theme-ui";
+import { PageLoader } from "../LoadingIndicator";
+import { truncateString } from "../../utils/string";
+import { useRouter } from "next/router";
 import * as React from "react";
-import { AnyBook } from "interfaces";
 import Accessibility from "./Accessibility";
 import BookCover from "../BookCover";
-import Recommendations from "./Recommendations";
-import { PageLoader } from "../LoadingIndicator";
-import FulfillmentCard from "./FulfillmentCard";
 import BreadcrumbBar from "../BreadcrumbBar";
-import { truncateString } from "../../utils/string";
 import DetailField from "../BookMetaDetail";
-import ReportProblem from "./ReportProblem";
-import Head from "next/head";
-import { H1, H2, Text } from "components/Text";
-import MediumIndicator from "components/MediumIndicator";
-//import EkirjastoBookDetailsLogo from "components/ekirjastoLogos/EkirjastoBookDetailsLogo";
-//import IosBadge from "components/storeBadges/IosBadge";
-//import GooglePlayBadge from "components/storeBadges/GooglePlayBadge";
-import { useRouter } from "next/router";
 import extractParam from "dataflow/utils";
-import useSWR from "swr";
-import { fetchBook } from "dataflow/opds1/fetch";
-import useUser from "components/context/UserContext";
+import FulfillmentCard from "./FulfillmentCard";
+import Head from "next/head";
+import MediumIndicator from "components/MediumIndicator";
+import Recommendations from "./Recommendations";
+import ReportProblem from "./ReportProblem";
+import Summary from "./Summary";
 import useBreadcrumbContext from "components/context/BreadcrumbContext";
-import { APP_CONFIG } from "utils/env";
-import { getAuthors } from "utils/book";
+import useSWR from "swr";
+import useUser from "components/context/UserContext";
 
 export const BookDetails: React.FC = () => {
   const { query } = useRouter();
@@ -50,10 +47,12 @@ export const BookDetails: React.FC = () => {
       <Head>
         <title>{book.title}</title>
       </Head>
+
       <BreadcrumbBar
         breadcrumbs={storedBreadcrumbs}
         currentLocation={truncateString(book.title, 60, false)}
       />
+
       <div sx={{ maxWidth: 1100, mx: "auto" }}>
         <div
           sx={{
@@ -63,9 +62,16 @@ export const BookDetails: React.FC = () => {
             flexWrap: ["wrap", "nowrap"]
           }}
         >
-          <div sx={{ flex: ["1 1 auto", 0.33], mr: [0, 4], mb: [3, 0] }}>
+          <div
+            sx={{
+              flex: ["1 1 auto", 0.33],
+              mr: [0, 4],
+              mb: [3, 0]
+            }}
+          >
             <BookCover book={book} sx={{ maxWidth: [180, "initial"] }} />
           </div>
+
           <div
             sx={{
               flex: ["1 1 auto", 0.66],
@@ -83,9 +89,13 @@ export const BookDetails: React.FC = () => {
               by&nbsp;
               {getAuthors(book)?.join(", ") ?? "Unknown"}
             </Text>
+
             {APP_CONFIG.showMedium && <MediumIndicator book={book} />}
+
             <FulfillmentCard book={book} sx={{ mt: 3 }} />
+
             <Summary book={book} />
+
             <div sx={{ mt: 2 }}>
               <DetailField heading="Publisher" details={book.publisher} />
               <DetailField heading="Published" details={book.published} />
@@ -104,61 +114,15 @@ export const BookDetails: React.FC = () => {
               <DetailField heading="Book format" details={book.format} />
               <Accessibility book={book} sx={{ mt: 3 }} />
             </div>
+
             <ReportProblem book={book} />
           </div>
         </div>
       </div>
+
       <Recommendations book={book} />
     </section>
   );
 };
 
-const Summary: React.FC<{ book: AnyBook; className?: string }> = ({
-  book,
-  className
-}) => (
-  <div sx={{ my: 2 }} className={className} aria-label="Book summary">
-    <H2 sx={{ mb: 2, variant: "text.headers.tertiary" }}>Summary</H2>
-    <div
-      dangerouslySetInnerHTML={{
-        __html: book.summary ?? "Summary not provided."
-      }}
-    />
-  </div>
-);
-/* comment out in case we some day need it back
-line 67 removed 
-
-{APP_CONFIG.companionApp === "E-kirjasto" && (
-              <SimplyECallout sx={{ display: ["none", "block"] }} />
-            )}
-
-const SimplyECallout: React.FC<{ className?: "string" }> = ({ className }) => {
-  return (
-     <section
-      aria-label="Download E-kirjasto Mobile App"
-      sx={{
-        mt: 4,
-        bg: "ui.gray.lightWarm",
-        display: "flex",
-        flexDirection: "column",
-        p: 3,
-        textAlign: "center"
-      }}
-      className={className}
-    >
-      <EkirjastoBookDetailsLogo sx={{ mt: 3, mb: 3, height: "90px" }} />
-      <H3 sx={{ mt: 0 }}>Download E-kirjasto</H3>
-      <Text>
-        Browse and read our collection of ebooks and audiobooks right from your
-        phone.
-      </Text>
-      <div sx={{ maxWidth: 140, mx: "auto", mt: 3 }}>
-        <IosBadge sx={{ m: "6%" }} />
-        <GooglePlayBadge />
-      </div>
-    </section>
-  );
-};
-*/
 export default BookDetails;
