@@ -4,6 +4,7 @@
 // @ts-nocheck
 
 import { jsx } from "theme-ui";
+import BookPassphraseCopyButton from "components/BookPassphraseCopyButton";
 import BookPassphraseDisplayText from "components/BookPassphraseDisplayText";
 import React from "react";
 import Stack from "components/Stack";
@@ -26,8 +27,11 @@ const BookPassphraseCard: React.FC<BookPassphraseCardProps> = ({
 
   return (
     <Stack direction="row" sx={stackStyle}>
+      {/* first render the actual book passhprase as text */}
       <BookPassphraseDisplayText passphrase={passphrase} />
-      {/* button for copying the passphrase to clipboard */}
+
+      {/* then render the button to copy the book passhprase to clibpboard */}
+      <BookPassphraseCopyButton stringToCopy={passphrase} />
     </Stack>
   );
 };
