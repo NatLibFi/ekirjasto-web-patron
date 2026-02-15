@@ -6,8 +6,9 @@
 import { AnyBook } from "interfaces";
 import { jsx } from "theme-ui";
 import * as React from "react";
-import BookPassphraseInstructionsText from "components/BookPassphraseInstructionsText";
 import BookPassphraseCard from "components/BookPassphraseCard";
+import BookPassphraseInstructionsText from "components/BookPassphraseInstructionsText";
+import BookPassphraseToggleButton from "components/BookPassphraseToggleButton";
 import Stack from "components/Stack";
 import useUser from "components/context/UserContext";
 
@@ -34,6 +35,15 @@ const BookPassphrase: React.FC<BookPassphraseProps> = ({ book }) => {
   // determine if the passphrase should be shown
   const shouldShowPassphrase = isAuthenticated && hasPassphrase && isEbook;
 
+  // define a button state "isVisible"
+  // so we can keep tabs if passphrase card is visible
+  const [isVisible, setVisible] = React.useState(false);
+
+  // function that toggles the visibility of the passphrase card
+  const toggleVisibility = () => {
+    setVisible(previousState => !previousState);
+  };
+
   // define style for the Stack component
   const stackStyle: React.CSSProperties = {
     alignItems: "flex-start",
@@ -51,8 +61,14 @@ const BookPassphrase: React.FC<BookPassphraseProps> = ({ book }) => {
           {/* first render instructions how to use book passhprase */}
           <BookPassphraseInstructionsText />
 
-          {/* then render the passphrase card */}
-          <BookPassphraseCard passphrase={book.passphrase} />
+          {/* render the toggle button */}
+          <BookPassphraseToggleButton
+            isVisible={isVisible}
+            onToggle={toggleVisibility}
+          />
+
+          {/* then render the passphrase card based on visibility state */}
+          {isVisible && <BookPassphraseCard passphrase={book.passphrase} />}
         </Stack>
       )}
     </>
