@@ -1,14 +1,13 @@
-import * as React from "react";
-import { fixtures, render, setup, screen, waitFor } from "test-utils";
-import merge from "deepmerge";
-import { BookDetails } from "../index";
 import { AnyBook } from "interfaces";
-import * as complaintActions from "hooks/useComplaints/actions";
-import ReportProblem from "../ReportProblem";
-import { ServerError } from "errors";
-import useSWR from "swr";
-import mockConfig from "test-utils/mockConfig";
+import { BookDetails } from "../index";
 import { BreadcrumbContext } from "components/context/BreadcrumbContext";
+import { fixtures, render, setup, screen, waitFor } from "test-utils";
+import { ServerError } from "errors";
+import * as complaintActions from "hooks/useComplaints/actions";
+import * as React from "react";
+import merge from "deepmerge";
+import ReportProblem from "../ReportProblem";
+import useSWR from "swr";
 
 jest.mock("swr");
 
@@ -24,6 +23,7 @@ function makeSwrResponse(value: Partial<ReturnType<typeof useSWR>>) {
     ...value
   };
 }
+
 function mockSwr(value: Partial<ReturnType<typeof useSWR>>) {
   mockedSWR.mockReturnValue(makeSwrResponse(value));
 }
@@ -79,6 +79,32 @@ describe("book details page", () => {
     expect(screen.queryByText("Categories:")).toBeFalsy();
   });
 
+  test("shows summary", () => {
+    mockSwr({
+      data: fixtures.book
+    });
+    setup(<BookDetails />);
+
+    const summaryHeadingString = "Summary";
+    const summaryContentString =
+      "&lt;b&gt;Sam and Remi Fargo race for treasure&#8212;and survival&#8212;" +
+      "in this lightning-paced new adventure from #1&lt;i&gt; New York Times&lt;/i&gt; " +
+      "bestselling author Clive Cussler.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;Husband-and-wife " +
+      "team Sam and Remi Fargo are in Mexico when they come upon a remarkable " +
+      "discovery&#8212;the mummified remainsof a man clutching an ancient sealed pot. " +
+      "Within the pot is a Mayan book larger than any known before.&lt;br /&gt;&lt;br " +
+      "/&gt;The book contains astonishing information about the Mayans, their cities, and " +
+      "about mankind itself. The secrets are so powerful that some people would do anything" +
+      " to possess them&#8212;as the Fargos are about to find out. Many men and women" +
+      " are going to die for that book.";
+
+    expect(screen.getByText(summaryHeadingString)).toBeInTheDocument();
+    expect(screen.getByText(summaryHeadingString)).toHaveRole("heading");
+    expect(screen.getByTestId("summary-content")).toContainHTML(
+      summaryContentString
+    );
+  });
+
   test("shows publisher", () => {
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
@@ -116,56 +142,6 @@ describe("book details page", () => {
     ).toBeInTheDocument();
   });
 
-  test("shows E-kirjasto callout when NEXT_PUBLIC_COMPANION_APP is ''", () => {
-    mockConfig({ companionApp: "E-kirjasto" });
-    mockSwr({ data: fixtures.book });
-    setup(<BookDetails />);
-
-    /*expect(screen.queryByText("Download E-kirjasto")).not.toBeInTheDocument();
-
-    expect(screen.queryByText("Palace Logo")).not.toBeInTheDocument();
-    expect(
-      screen.queryByText(
-        "Browse and read our collection of ebooks and audiobooks right from your phone."
-      )
-    ).not.toBeInTheDocument();*/
-  });
-
-  /*test("shows E-kirjasto callout when NEXT_PUBLIC_COMPANION_APP is 'E-kirjasto'", async () => {
-    mockConfig({ companionApp: "E-kirjasto" });
-    mockSwr({ data: fixtures.book });
-    setup(<BookDetails />);
-    expect(screen.getByText("Download E-kirjasto")).toBeInTheDocument();
-    expect(
-      screen.getByLabelText("Image of the E-library logo")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "Browse and read our collection of ebooks and audiobooks right from your phone."
-      )
-    ).toBeInTheDocument();
-
-    const iosBadge = screen.getByRole("link", {
-      name: "Download E-kirjasto on the Apple App Store",
-      hidden: true // it is initially hidden by a media query, only displayed on desktop
-    });
-    expect(iosBadge).toBeInTheDocument();
-    expect(iosBadge).toHaveAttribute(
-      "href",
-      "https://apps.apple.com/fi/app/e-kirjasto/id6471490203"
-    );
-
-    const googleBadge = screen.getByRole("link", {
-      name: "Get E-kirjasto on the Google Play Store",
-      hidden: true // hidden initially on mobile
-    });
-    expect(googleBadge).toBeInTheDocument();
-    expect(googleBadge).toHaveAttribute(
-      "href",
-      "https://play.google.com/store/apps/details?id=fi.kansalliskirjasto.ekirjasto"
-    );
-  });
-  */
   test("shows recommendation lanes", () => {
     // we make a special mock so we can differentiate the book request
     // and the related collection request
