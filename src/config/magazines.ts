@@ -14,22 +14,30 @@ const MAGAZINE_API_URLS = {
   playground: "https://lehdet-testing.e-kirjasto.fi/feed/catalog"
 } as const;
 
+type MagazineEnvironment = keyof typeof MAGAZINE_READER_URLS;
+
+function getMagazineEnvironment(): MagazineEnvironment {
+  const magazinesEnv = process.env.NEXT_PUBLIC_MAGAZINES_ENV;
+
+  if (magazinesEnv === "production" || magazinesEnv === "playground") {
+    return magazinesEnv;
+  }
+
+  return process.env.NODE_ENV === "production" ? "production" : "playground";
+}
+
 /**
  * Get the magazine reader base URL based on environment
  */
 export function getMagazineReaderUrl(): string {
-  return process.env.NODE_ENV === "production"
-    ? MAGAZINE_READER_URLS.production
-    : MAGAZINE_READER_URLS.playground;
+  return MAGAZINE_READER_URLS[getMagazineEnvironment()];
 }
 
 /**
  * Get the magazine API URL based on environment
  */
 export function getMagazineApiUrl(): string {
-  return process.env.NODE_ENV === "production"
-    ? MAGAZINE_API_URLS.production
-    : MAGAZINE_API_URLS.playground;
+  return MAGAZINE_API_URLS[getMagazineEnvironment()];
 }
 
 /**
