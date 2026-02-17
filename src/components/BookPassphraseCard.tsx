@@ -26,7 +26,7 @@ const BookPassphraseCard: React.FC<BookPassphraseCardProps> = ({
   };
 
   return (
-    <Stack direction="row" sx={stackStyle}>
+    <Stack direction="row" sx={stackStyle} data-testid="book-passphrase-card">
       {/* first render the actual book passhprase as text */}
       <BookPassphraseDisplayText passphrase={passphrase} />
 

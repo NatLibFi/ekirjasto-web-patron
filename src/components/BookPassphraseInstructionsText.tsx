@@ -20,7 +20,11 @@ const BookPassphraseInstructionsText: React.FC = () => {
   };
 
   return (
-    <Text sx={textStyle} aria-live="polite">
+    <Text
+      sx={textStyle}
+      aria-live="polite"
+      data-testid="book-passphrase-instructions-text"
+    >
       {INSTRUCTIONS_TEXT}
     </Text>
   );

@@ -57,7 +57,11 @@ const BookPassphrase: React.FC<BookPassphraseProps> = ({ book }) => {
   return (
     <>
       {shouldShowPassphrase && (
-        <Stack direction="column" sx={stackStyle}>
+        <Stack
+          direction="column"
+          sx={stackStyle}
+          data-testid="book-passphrase-component"
+        >
           {/* first render instructions how to use book passhprase */}
           <BookPassphraseInstructionsText />
 

@@ -31,7 +31,11 @@ const BookPassphraseDisplayText: React.FC<BookPassphraseDisplayTextProps> = ({
   };
 
   return (
-    <Text sx={textStyle} aria-label={PASSPHRASE_LABEL}>
+    <Text
+      sx={textStyle}
+      aria-label={PASSPHRASE_LABEL}
+      data-testid="book-passphrase-display-text"
+    >
       {passphrase}
     </Text>
   );

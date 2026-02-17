@@ -91,6 +91,7 @@ const BookPassphraseCopyButton: React.FC<BookPassphraseCopyButtonProps> = ({
           onClick={copyToClipboard}
           sx={buttonStyle}
           aria-label={COPY_PASSPHRASE_LABEL}
+          data-testid="book-passphrase-copy-button"
         >
           {buttonText}
           <FontAwesomeIcon icon={buttonIcon} />

@@ -40,6 +40,7 @@ const BookPassphraseToggleButton: React.FC<BookPassphraseToggleButtonProps> = ({
       sx={buttonStyle}
       aria-pressed={isVisible}
       aria-label={buttonText}
+      data-testid="book-passphrase-toggle-button"
     >
       {buttonText}
     </Button>
