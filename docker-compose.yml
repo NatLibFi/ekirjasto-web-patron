@@ -1,4 +1,3 @@
-version: "2"
 services:
   web-patron:
     container_name: web-patron
@@ -6,6 +5,7 @@ services:
     environment:
       CONFIG_FILE: /config/config.yml
       NODE_ENV: production
+      NEXT_PUBLIC_MAGAZINES_ENV: playground
     volumes:
       - ./config:/app/config
     ports:

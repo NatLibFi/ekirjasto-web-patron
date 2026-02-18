@@ -91,6 +91,19 @@ The following environment variables can be set to further configure the applicat
 
 - Set `AXE_TEST=true` to run the application with `react-axe` enabled (only works when `NODE_ENV` is "development").
 - Set `ANALYZE=true` to generate bundle analysis files inside `.next/analyze` which will show bundle sizes for server and client, as well as composition.
+- Set `NEXT_PUBLIC_MAGAZINES_ENV` to choose which magazines environment to use. Allowed values are `production` and `playground`.
+  - `production` uses `https://<magazines-production-url>`.
+  - `playground` uses `https://<magazines-playground-url>`.
+  - If not set (or set to an invalid value), it falls back to `production` when `NODE_ENV=production`, otherwise `playground`.
+- Set `NEXT_PUBLIC_MAGAZINES_ORIGIN` to override the allowed origin used for magazine iframe communication. If not set, the origin is derived from the selected magazines base URL.
+
+Example `.env.local` setup:
+
+```
+NEXT_PUBLIC_MAGAZINES_ENV=playground
+# Optional: override iframe allowed origin
+# NEXT_PUBLIC_MAGAZINES_ORIGIN=https://<magazines-allowed-origin>
+```
 
 ## Manager, Registry, and Application Configurations
 
