@@ -1,10 +1,14 @@
 import * as React from "react";
 import Cookie from "js-cookie";
-import { AuthCredentials, OPDS1 } from "interfaces";
+import { AppAuthMethod, AuthCredentials, OPDS1 } from "interfaces";
 import { IS_SERVER } from "utils/env";
 import { NextRouter, useRouter } from "next/router";
 import { generateCredentials } from "utils/auth";
-import { SAML_LOGIN_QUERY_PARAM } from "utils/constants";
+import {
+  EKIRJASTO_AUTH_TYPE,
+  EKIRJASTO_TOKEN_PARAM,
+  SAML_LOGIN_QUERY_PARAM
+} from "utils/constants";
 
 /**
  * This hook:
@@ -16,16 +20,31 @@ import { SAML_LOGIN_QUERY_PARAM } from "utils/constants";
  *    if finds a token, it extracts it and sets it as the current
  *    credentials.
  */
-export default function useCredentials(slug: string | null) {
+export default function useCredentials(
+  slug: string | null,
+  authMethods: AppAuthMethod[] | null
+) {
   const router = useRouter();
+
+  // Since we don't actually call the login function anywhere, we need to put the authentication url
+  // in somehow, so we fetch it here and take it to getCredentialsState function
+  const ekirjastoMethod = authMethods?.find(
+    method => method.type === EKIRJASTO_AUTH_TYPE
+  );
+  let authenticationUrl;
+  if (ekirjastoMethod) {
+    authenticationUrl = ekirjastoMethod.links?.find(
+      link => link.rel === "authenticate"
+    )?.href;
+  }
   const [credentialsState, setCredentialsState] = React.useState<
     AuthCredentials | undefined
-  >(getCredentialsCookie(slug));
+  >(getCredentialsCookie(slug, authenticationUrl));
   // sync up cookie state with react state
   React.useEffect(() => {
-    const cookie = getCredentialsCookie(slug);
+    const cookie = getCredentialsCookie(slug, authenticationUrl);
     if (cookie) setCredentialsState(cookie);
-  }, [slug]);
+  }, [authenticationUrl, slug]);
 
   // set both cookie and state credentials
   const setCredentials = React.useCallback(
@@ -60,7 +79,7 @@ export default function useCredentials(slug: string | null) {
 }
 
 /**
- * COOKIE CREDENDIALS
+ * COOKIE CREDENTIALS
  */
 /**
  * If you pass a librarySlug, the cookie will be scoped to the
@@ -70,23 +89,61 @@ function cookieName(librarySlug: string | null): string {
   const AUTH_COOKIE_NAME = "CPW_AUTH_COOKIE";
   return `${AUTH_COOKIE_NAME}/${librarySlug}`;
 }
-
+/**
+ * When using ekirjasto authentication, we don't use scoping to a particular library
+ * @returns ekirjasto cookie name
+ */
+function cookieNameEkirjasto(): string {
+  const AUTH_COOKIE_NAME = EKIRJASTO_TOKEN_PARAM;
+  return AUTH_COOKIE_NAME;
+}
+/**
+ * Get credentials from cookies.
+ * We assume the token is in access_token cookie, and that it is
+ * of the Ekirjasto Authentication type
+ *
+ * @param librarySlug Library slug, that is useful if we have multiple libraries
+ * @param authenticationUrl AuthenticationUrl where we make refresh requests
+ * @returns Ekirjasto credentials if access_token is available, otherwise undefined
+ */
 function getCredentialsCookie(
-  librarySlug: string | null
+  librarySlug: string | null,
+  authenticationUrl: string | null
 ): AuthCredentials | undefined {
-  const credentials = Cookie.get(cookieName(librarySlug));
-  return credentials ? JSON.parse(credentials) : undefined;
+  if (librarySlug === "ekirjasto") {
+    // Get access token, for ekirjasto login credentials
+    const accessToken = Cookie.get(cookieNameEkirjasto());
+    // Create ekirjasto authentication credentials
+    const authCredentials: AuthCredentials = {
+      token: `Bearer ${accessToken}`,
+      methodType: OPDS1.EkirjastoAuthType,
+      authenticationUrl: authenticationUrl ? authenticationUrl : undefined
+    };
+    // Return the credentials
+    return authCredentials ? authCredentials : undefined;
+  } else {
+    const credentials = Cookie.get(cookieName(librarySlug));
+    return credentials ? JSON.parse(credentials) : undefined;
+  }
 }
 
 function setCredentialsCookie(
   librarySlug: string | null,
   credentials: AuthCredentials
 ) {
-  Cookie.set(cookieName(librarySlug), JSON.stringify(credentials));
+  if (librarySlug === "ekirjasto") {
+    Cookie.set(cookieNameEkirjasto(), JSON.stringify(credentials));
+  } else {
+    Cookie.set(cookieName(librarySlug), JSON.stringify(credentials));
+  }
 }
 
 function clearCredentialsCookie(librarySlug: string | null) {
-  Cookie.remove(cookieName(librarySlug));
+  if (librarySlug === "ekirjasto") {
+    Cookie.remove(cookieNameEkirjasto());
+  } else {
+    Cookie.remove(cookieName(librarySlug));
+  }
 }
 
 export function generateToken(username: string, password?: string) {
@@ -94,7 +151,7 @@ export function generateToken(username: string, password?: string) {
 }
 
 /**
- * URL CREDENTIALS
+ * URL CREDENTIALS, NOT USED WITH EKIRJASTO
  */
 function getUrlCredentials(router: NextRouter) {
   /* TODO: throw error if samlAccessToken and cleverAccessToken exist at the same time as this is an invalid state that shouldn't be reached */

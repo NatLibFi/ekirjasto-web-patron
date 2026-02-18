@@ -1,4 +1,8 @@
-import { OPDSFeed, OPDSLink, OPDSEntry } from "opds-feed-parser";
+import {
+  OPDSFeed,
+  OPDSLink,
+  OPDSEntry
+} from "@natlibfi/ekirjasto-opds-feed-parser";
 import { OPDS1 } from "interfaces";
 
 const authDocLink: OPDSLink = {

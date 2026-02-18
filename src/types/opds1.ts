@@ -4,7 +4,7 @@
  * Typings for OPDS 1.2. This is a working document and it
  * is not complete. It currently focuses on typing of links
  * and the AuthDocument. The Feed and Entry are pretty well
- * typed by opds-feed-parser.
+ * typed by ekirjasto-opds-feed-parser.
  */
 
 /**
@@ -168,7 +168,18 @@ type AuthDocLinkRelations =
   | "terms-of-service"
   | "about"
   | "alternate"
-  | "authenticate";
+  | "authenticate"
+  | "ekirjasto_token"
+  | "magazine_service"
+  | "api"
+  | "tunnistus_start"
+  | "tunnistus_finish"
+  | "passkey_login_start"
+  | "passkey_login_finish"
+  | "relations"
+  | "invite"
+  | "passkey_register_start"
+  | "passkey_register_finish";
 
 export interface AuthDocumentLink extends Link {
   rel: AuthDocLinkRelations;
@@ -183,6 +194,7 @@ export const CleverAuthType =
 export const ImplicitGrantAuthType = "http://opds-spec.org/auth/oauth/implicit";
 export const PasswordCredentialsAuthType =
   "http://opds-spec.org/auth/oauth/password";
+export const EkirjastoAuthType = "http://e-kirjasto.fi/authtype/ekirjasto";
 
 export type AnyAuthType =
   | typeof BasicAuthType
@@ -190,7 +202,8 @@ export type AnyAuthType =
   | typeof SamlAuthType
   | typeof CleverAuthType
   | typeof ImplicitGrantAuthType
-  | typeof PasswordCredentialsAuthType;
+  | typeof PasswordCredentialsAuthType
+  | typeof EkirjastoAuthType;
 
 // https://drafts.opds.io/authentication-for-opds-1.0
 export interface AuthMethod<T extends AnyAuthType, L extends Link = Link> {
@@ -201,6 +214,8 @@ export interface AuthMethod<T extends AnyAuthType, L extends Link = Link> {
 }
 export interface ServerSamlMethod
   extends AuthMethod<typeof SamlAuthType, SamlIdp> {}
+
+export interface EkirjastoMethod extends AuthMethod<typeof EkirjastoAuthType> {}
 
 export interface CleverAuthMethod extends AuthMethod<typeof CleverAuthType> {}
 
@@ -237,7 +252,8 @@ export type ServerAuthMethod =
   | CleverAuthMethod
   | BasicAuthMethod
   | BasicTokenAuthMethod
-  | ServerSamlMethod;
+  | ServerSamlMethod
+  | EkirjastoMethod;
 
 export interface Announcement {
   id: string;

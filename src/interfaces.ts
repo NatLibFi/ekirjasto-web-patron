@@ -91,12 +91,17 @@ export interface ClientBasicTokenMethod extends OPDS1.BasicTokenAuthMethod {
   id: string;
 }
 
+export interface ClientEkirjastoMethod extends OPDS1.EkirjastoMethod {
+  id: string;
+}
+
 // auth methods once they have been processed for the app
 export type AppAuthMethod =
   | ClientCleverMethod
   | ClientBasicMethod
   | ClientBasicTokenMethod
-  | ClientSamlMethod;
+  | ClientSamlMethod
+  | ClientEkirjastoMethod;
 
 export type Token = {
   basicToken: string | undefined;
@@ -155,6 +160,14 @@ export type Book<Status = EmptyObject> = Readonly<
   Status & {
     id: string;
     title: string;
+    accessibility?: {
+      conformance?: {
+        conformsTo?: string;
+      };
+      waysOfReading?: {
+        features?: string[];
+      };
+    };
     series?: {
       name: string;
       position?: number;
