@@ -19,7 +19,11 @@ const BookPassphraseInstructionsText: React.FC = () => {
     fontSize: "-1"
   };
 
-  return <Text sx={textStyle}>{INSTRUCTIONS_TEXT}</Text>;
+  return (
+    <Text sx={textStyle} aria-live="polite">
+      {INSTRUCTIONS_TEXT}
+    </Text>
+  );
 };
 
 export default BookPassphraseInstructionsText;

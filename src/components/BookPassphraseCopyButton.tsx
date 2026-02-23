@@ -20,6 +20,9 @@ export const COPY_PASSPHRASE_ICON: IconDefinition = faCopy;
 export const COPIED_PASSPHRASE_TEXT: string = "Copied!";
 export const COPIED_PASSPHRASE_ICON: IconDefinition = faCheck;
 
+// define aria label for button
+export const COPY_PASSPHRASE_LABEL: string = "Copy book passphrase";
+
 // define the timeout duration in milliseconds.
 // This should be enough time for the user to
 // notice the Copied! text before it disappears
@@ -84,7 +87,11 @@ const BookPassphraseCopyButton: React.FC<BookPassphraseCopyButtonProps> = ({
     <>
       {/* copy button is only visible if clipboard is available */}
       {isClipboardAvailable && (
-        <Button onClick={copyToClipboard} sx={buttonStyle}>
+        <Button
+          onClick={copyToClipboard}
+          sx={buttonStyle}
+          aria-label={COPY_PASSPHRASE_LABEL}
+        >
           {buttonText}
           <FontAwesomeIcon icon={buttonIcon} />
         </Button>

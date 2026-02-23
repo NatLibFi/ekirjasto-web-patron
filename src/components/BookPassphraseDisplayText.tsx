@@ -7,6 +7,9 @@ import { jsx } from "theme-ui";
 import { Text } from "components/Text";
 import React from "react";
 
+// define aria label for button
+export const PASSPHRASE_LABEL: string = "Book passphrase";
+
 // define props for the BookPassphraseDisplayText component
 interface BookPassphraseDisplayTextProps {
   passphrase: string;
@@ -27,7 +30,11 @@ const BookPassphraseDisplayText: React.FC<BookPassphraseDisplayTextProps> = ({
     borderRadius: "1"
   };
 
-  return <Text sx={textStyle}>{passphrase}</Text>;
+  return (
+    <Text sx={textStyle} aria-label={PASSPHRASE_LABEL}>
+      {passphrase}
+    </Text>
+  );
 };
 
 export default BookPassphraseDisplayText;

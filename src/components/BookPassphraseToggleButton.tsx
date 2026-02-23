@@ -35,7 +35,12 @@ const BookPassphraseToggleButton: React.FC<BookPassphraseToggleButtonProps> = ({
   };
 
   return (
-    <Button onClick={onToggle} sx={buttonStyle}>
+    <Button
+      onClick={onToggle}
+      sx={buttonStyle}
+      aria-pressed={isVisible}
+      aria-label={buttonText}
+    >
       {buttonText}
     </Button>
   );
