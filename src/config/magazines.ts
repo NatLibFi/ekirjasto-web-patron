@@ -44,8 +44,21 @@ export function getMagazineApiUrl(): string {
  * Get the allowed origin for magazine iframe communication
  */
 export function getMagazineAllowedOrigin(): string {
-  const baseUrl = getMagazineReaderUrl();
-  return process.env.NEXT_PUBLIC_MAGAZINES_ORIGIN || new URL(baseUrl).origin;
+  const overrideOrigin = process.env.NEXT_PUBLIC_MAGAZINES_ORIGIN;
+
+  if (overrideOrigin) {
+    try {
+      return new URL(overrideOrigin).origin;
+    } catch {
+      // Ignore invalid override and fall back to reader base URL origin.
+    }
+  }
+
+  try {
+    return new URL(getMagazineReaderUrl()).origin;
+  } catch {
+    return MAGAZINE_READER_URLS.production;
+  }
 }
 
 /**
