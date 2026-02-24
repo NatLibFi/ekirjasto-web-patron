@@ -113,22 +113,25 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
           {libraryWebsite.title ?? `${libraryName} Home`}
         </AnchorButton>
       )}
-      <NavButton
-        variant="ghost"
-        color="ui.black"
-        href="/magazines"
-        sx={{ mr: 1 }}
-      >
-        Magazines (logged in users)
-      </NavButton>
-      <NavButton
-        variant="ghost"
-        color="ui.black"
-        href="/magazines-preview"
-        sx={{ mr: 1 }}
-      >
-        Magazines (anonymous users)
-      </NavButton>
+      {isAuthenticated ? (
+        <NavButton
+          variant="ghost"
+          color="ui.black"
+          href="/magazines"
+          sx={{ mr: 1 }}
+        >
+          Magazines
+        </NavButton>
+      ) : (
+        <NavButton
+          variant="ghost"
+          color="ui.black"
+          href="/magazines-preview"
+          sx={{ mr: 1 }}
+        >
+          Magazines
+        </NavButton>
+      )}
       <NavButton
         variant="ghost"
         color="ui.black"

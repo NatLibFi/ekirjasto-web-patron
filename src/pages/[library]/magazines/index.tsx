@@ -7,7 +7,7 @@ import * as React from "react";
 import { NextPage, GetStaticProps, GetStaticPaths } from "next";
 import LayoutPage from "components/LayoutPage";
 import withAppProps, { AppProps } from "dataflow/withAppProps";
-// import useUser from "components/context/UserContext";
+import useUser from "components/context/UserContext";
 import useLogin from "auth/useLogin";
 import useLibraryContext from "components/context/LibraryContext";
 import {
@@ -20,8 +20,7 @@ import BreadcrumbBar from "components/BreadcrumbBar";
 
 const MagazinesFixedContent: React.FC = () => {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
-  const token = "MOCK_TOKEN";
-  // const { token } = useUser();
+  const { token } = useUser();
   const { initLogin } = useLogin();
   const { slug } = useLibraryContext();
 
