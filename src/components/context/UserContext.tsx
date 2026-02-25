@@ -121,13 +121,16 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       }
     }
   );
-  
+
   async function getEkirjastoToken(
     token: string,
     fetchUrl: string | undefined
-  ) : Promise<string> {
-    const { token : ekirjastoToken} = await fetchEkirjastoToken(fetchUrl, token)
-    return ekirjastoToken
+  ): Promise<string> {
+    const { token: ekirjastoToken } = await fetchEkirjastoToken(
+      fetchUrl,
+      token
+    );
+    return ekirjastoToken;
   }
 
   function signIn(

@@ -17,8 +17,7 @@ export async function fetchEAuthToken(
 
   //If in some case, the bearer text is present, remove it so there is no repetition in the request
   if (token?.startsWith("Bearer ")) {
-    token = token.replace("Bearer ", "")
-    console.log(token)
+    token = token.replace("Bearer ", "");
   }
 
   const response = await fetchWithHeaders(url, `Bearer ${token}`, {}, "POST");
@@ -44,7 +43,7 @@ export async function fetchEkirjastoToken(
 
   const response = await fetchWithHeaders(url, token, {}, "GET");
   const json = await response.json();
-  
+
   if (!response.ok) {
     throw new ServerError(url, response.status, json);
   }
