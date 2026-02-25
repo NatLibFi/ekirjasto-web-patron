@@ -10,6 +10,7 @@ import withAppProps, { AppProps } from "dataflow/withAppProps";
 import useUser from "components/context/UserContext";
 import useLogin from "auth/useLogin";
 import useLibraryContext from "components/context/LibraryContext";
+import useCredentials from "auth/useCredentials";
 import {
   getMagazineReaderUrl,
   getMagazineAllowedOrigin,
@@ -17,12 +18,33 @@ import {
 } from "config/magazines";
 import Head from "next/head";
 import BreadcrumbBar from "components/BreadcrumbBar";
+import { EkirjastoAuthType } from "types/opds1";
+import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
 
 const MagazinesFixedContent: React.FC = () => {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
-  const { token } = useUser();
+  const { token, signIn, getEkirjastoToken } = useUser();
   const { initLogin } = useLogin();
-  const { slug } = useLibraryContext();
+  const { slug, authMethods } = useLibraryContext();
+  const { credentials, setCredentials, clearCredentials } = useCredentials(
+      slug,
+      authMethods
+    );
+  const ekirMethod = authMethods.find(method => method.type === EKIRJASTO_AUTH_TYPE)
+  let ekirjastoToken: string | undefined
+  if (ekirMethod && token) {
+    try {
+    //Get the ekirjastoToken
+    const ekirjastoTokenUrl = ekirMethod.links.find(link => link.rel === "ekirjasto_token")?.href
+    ekirjastoToken = getEkirjastoToken(token, ekirjastoTokenUrl)
+    } catch (error) {
+      //Can not start the reader so should show not logged in or something
+    }
+  }
+  if (!token) {
+    console.log("There is no token so should be logged out")
+    ekirjastoToken = undefined
+  }
 
   const storageKey = React.useMemo(
     () => `${MAGAZINE_CONFIG.STORAGE_KEY_PREFIX}${slug ?? "default"}`,
@@ -45,12 +67,18 @@ const MagazinesFixedContent: React.FC = () => {
   const handleMessage = React.useCallback(
     (e: MessageEvent) => {
       const allowedOrigin = getMagazineAllowedOrigin();
+
+      if (!token) {
+        console.log("No token!")
+        
+      }
+      
       if (e.origin !== allowedOrigin || typeof e.data !== "string") return;
 
       if (e.data === "ewl:unauthorized") {
-        if (token) {
+        if (ekirjastoToken) {
           iframeRef.current?.contentWindow?.postMessage(
-            `ewl:login:${token}`,
+            `ewl:login:${ekirjastoToken}`,
             allowedOrigin
           );
         } else {
@@ -72,7 +100,7 @@ const MagazinesFixedContent: React.FC = () => {
         });
       }
     },
-    [initLogin, token, storageKey]
+    [initLogin, ekirjastoToken, storageKey]
   );
 
   React.useEffect(() => {
