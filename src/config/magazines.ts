@@ -73,5 +73,5 @@ export const MAGAZINE_CONFIG = {
 
   // Default iframe sandbox permissions
   IFRAME_SANDBOX:
-    "allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+    "allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
 } as const;

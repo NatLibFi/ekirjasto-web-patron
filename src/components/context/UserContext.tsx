@@ -8,6 +8,7 @@ import * as React from "react";
 import useSWR from "swr";
 import { BasicTokenAuthType, EkirjastoAuthType } from "types/opds1";
 import { addHours, isBefore } from "date-fns";
+import { fetchEkirjastoToken } from "auth/ekirjastoFetch";
 
 type Status = "authenticated" | "loading" | "unauthenticated";
 export type UserState = {
@@ -22,6 +23,10 @@ export type UserState = {
     authenticationUrl: string | undefined
   ) => void;
   signOut: () => void;
+  getEkirjastoToken: (
+    token: string,
+    fetchUrl: string | undefined
+  ) => Promise<string>;
   setBook: (book: AnyBook, id?: string) => void;
   error: any;
   token: string | undefined;
@@ -117,6 +122,17 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     }
   );
 
+  async function getEkirjastoToken(
+    token: string,
+    fetchUrl: string | undefined
+  ): Promise<string> {
+    const { token: ekirjastoToken } = await fetchEkirjastoToken(
+      fetchUrl,
+      token
+    );
+    return ekirjastoToken;
+  }
+
   function signIn(
     token: string | Token,
     method: AppAuthMethod,
@@ -160,6 +176,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     refetchLoans: mutate,
     signIn,
     signOut,
+    getEkirjastoToken,
     setBook,
     error,
     token: stringifyToken(credentials),
