@@ -190,6 +190,7 @@ export type Book<Status = EmptyObject> = Readonly<
       total: number;
       available: number;
     } | null;
+    passphrase?: string;
     url: string;
     publisher?: string;
     published?: string;
