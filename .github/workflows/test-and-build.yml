@@ -128,11 +128,6 @@ jobs:
       - name: Test
         run: npm run test:ci -- --coverage
 
-      - name: Coveralls Report
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
   publish:
     name: Publish image to Docker registry
     needs: [lint, typecheck, test]
