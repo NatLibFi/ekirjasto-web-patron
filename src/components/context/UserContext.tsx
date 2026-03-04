@@ -70,64 +70,64 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   const token = stringifyToken(credentials);
-  const { data : loansData, mutate, isValidating } = fetchFeed(shelfUrl)
-  const { data : selectedData } = fetchFeed(selectedUrl)
+  const { data: loansData, mutate, isValidating } = useFetchFeed(shelfUrl);
+  const { data: selectedData } = useFetchFeed(selectedUrl);
 
-  function fetchFeed (
-    fetchableUrl: string | null
-  ) {
+  function useFetchFeed(fetchableUrl: string | null) {
     return useSWR(
-    // pass null if there are no credentials or shelfUrl to tell SWR not to fetch at all.
-    credentials && fetchableUrl ? [fetchableUrl, token, credentials?.methodType] : null,
-    fetchLoans,
-    {
-      shouldRetryOnError: credentials?.methodType === BasicTokenAuthType,
-      revalidateOnFocus: shouldRevalidate(),
-      revalidateOnReconnect: false,
-      errorRetryCount: credentials?.methodType === BasicTokenAuthType ? 1 : 0,
-      // Try and fetch new token once old token has expired
-      onErrorRetry: async (err, _key, _config, revalidate) => {
-        if (err instanceof ServerError && err?.info.status === 401) {
-          if (credentials?.methodType === BasicTokenAuthType) {
-            try {
-              // assume expiresIn is in seconds
-              const { accessToken, expiresIn } = await fetchAuthToken(
-                credentials?.authenticationUrl,
-                stringifyToken(credentials, "basicToken")
-              );
-              setCredentials({
-                authenticationUrl: credentials?.authenticationUrl,
-                methodType: credentials.methodType,
-                token: {
-                  bearerToken: `Bearer ${accessToken}`,
-                  basicToken: stringifyToken(credentials, "basicToken"),
-                  expirationDate: addHours(new Date(), expiresIn / 3600)
-                }
-              });
-              revalidate();
-            } catch (err) {
+      // pass null if there are no credentials or shelfUrl to tell SWR not to fetch at all.
+      credentials && fetchableUrl
+        ? [fetchableUrl, token, credentials?.methodType]
+        : null,
+      fetchLoans,
+      {
+        shouldRetryOnError: credentials?.methodType === BasicTokenAuthType,
+        revalidateOnFocus: shouldRevalidate(),
+        revalidateOnReconnect: false,
+        errorRetryCount: credentials?.methodType === BasicTokenAuthType ? 1 : 0,
+        // Try and fetch new token once old token has expired
+        onErrorRetry: async (err, _key, _config, revalidate) => {
+          if (err instanceof ServerError && err?.info.status === 401) {
+            if (credentials?.methodType === BasicTokenAuthType) {
+              try {
+                // assume expiresIn is in seconds
+                const { accessToken, expiresIn } = await fetchAuthToken(
+                  credentials?.authenticationUrl,
+                  stringifyToken(credentials, "basicToken")
+                );
+                setCredentials({
+                  authenticationUrl: credentials?.authenticationUrl,
+                  methodType: credentials.methodType,
+                  token: {
+                    bearerToken: `Bearer ${accessToken}`,
+                    basicToken: stringifyToken(credentials, "basicToken"),
+                    expirationDate: addHours(new Date(), expiresIn / 3600)
+                  }
+                });
+                revalidate();
+              } catch (err) {
+                setError(err);
+                clearCredentials();
+              }
+            }
+            if (credentials?.methodType === EkirjastoAuthType) {
+              // TODO: token refresh on 401
+              console.log("EKIRJASTO REFRESH");
+            }
+          }
+        },
+        // clear credentials whenever we receive a 401, but save the error so it sticks around.
+        // however, BasicTokenAuthType methods are retried in onErrorRetry to get new token
+        onError: err => {
+          if (err instanceof ServerError && err?.info.status === 401) {
+            if (credentials?.methodType !== BasicTokenAuthType) {
               setError(err);
               clearCredentials();
             }
           }
-          if (credentials?.methodType === EkirjastoAuthType) {
-            // TODO: token refresh on 401
-            console.log("EKIRJASTO REFRESH");
-          }
-        }
-      },
-      // clear credentials whenever we receive a 401, but save the error so it sticks around.
-      // however, BasicTokenAuthType methods are retried in onErrorRetry to get new token
-      onError: err => {
-        if (err instanceof ServerError && err?.info.status === 401) {
-          if (credentials?.methodType !== BasicTokenAuthType) {
-            setError(err);
-            clearCredentials();
-          }
         }
       }
-    }
-  )
+    );
   }
 
   async function getEkirjastoToken(

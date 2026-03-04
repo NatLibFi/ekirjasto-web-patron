@@ -8,7 +8,6 @@ import BreadcrumbBar from "./BreadcrumbBar";
 import { H3 } from "./Text";
 import { AnyBook } from "interfaces";
 import PageTitle from "./PageTitle";
-import { SignOut } from "./SignOut";
 import useUser from "components/context/UserContext";
 import { PageLoader } from "components/LoadingIndicator";
 import AuthProtectedRoute from "auth/AuthProtectedRoute";
@@ -117,9 +116,7 @@ const EmptySelected = () => {
           px: [3, 5]
         }}
       >
-        <H3>
-          No books in favorites.
-        </H3>
+        <H3>No books in favorites.</H3>
       </div>
     </>
   );
