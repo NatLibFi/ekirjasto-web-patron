@@ -1,0 +1,204 @@
+name: Release Build
+
+on:
+  release:
+    types: [published]
+
+concurrency:
+  group: release-build-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+env:
+  IMAGE_NAME: ghcr.io/natlibfi/ekirjasto-web-patron
+
+jobs:
+  build-release-image:
+    name: Build and Publish Release Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Validate release tag format
+        id: validate_tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          RELEASE_TAG="${{ github.event.release.tag_name }}"
+          if [[ ! "${RELEASE_TAG}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Release tag must match vX.Y.Z. Got: ${RELEASE_TAG}" >&2
+            exit 1
+          fi
+          echo "release_tag=${RELEASE_TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: refs/tags/${{ steps.validate_tag.outputs.release_tag }}
+
+      - name: Resolve release commit and verify origin/prod ancestry
+        id: git_checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin +refs/heads/prod:refs/remotes/origin/prod
+
+          RELEASE_TAG="${{ steps.validate_tag.outputs.release_tag }}"
+          RELEASE_COMMIT="$(git rev-list -n 1 "${RELEASE_TAG}^{commit}")"
+          if [[ -z "${RELEASE_COMMIT}" ]]; then
+            echo "Unable to resolve commit for ${RELEASE_TAG}" >&2
+            exit 1
+          fi
+
+          if ! git merge-base --is-ancestor "${RELEASE_COMMIT}" origin/prod; then
+            echo "Release commit ${RELEASE_COMMIT} is not reachable from origin/prod" >&2
+            exit 1
+          fi
+
+          SHORT_SHA="$(printf '%s' "${RELEASE_COMMIT}" | cut -c1-12)"
+          BUILT_AT="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+          echo "release_commit=${RELEASE_COMMIT}" >> "$GITHUB_OUTPUT"
+          echo "short_sha=${SHORT_SHA}" >> "$GITHUB_OUTPUT"
+          echo "built_at=${BUILT_AT}" >> "$GITHUB_OUTPUT"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enforce immutable release tags
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          VERSION_TAG="${{ steps.validate_tag.outputs.release_tag }}"
+          SHA_TAG="sha-${{ steps.git_checks.outputs.short_sha }}"
+
+          if docker buildx imagetools inspect "${IMAGE_NAME}:${VERSION_TAG}" >/dev/null 2>&1; then
+            echo "Immutable tag already exists: ${IMAGE_NAME}:${VERSION_TAG}" >&2
+            exit 1
+          fi
+
+          if docker buildx imagetools inspect "${IMAGE_NAME}:${SHA_TAG}" >/dev/null 2>&1; then
+            echo "Immutable tag already exists: ${IMAGE_NAME}:${SHA_TAG}" >&2
+            exit 1
+          fi
+
+      - name: Build and push release image
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}:${{ steps.validate_tag.outputs.release_tag }}
+            ${{ env.IMAGE_NAME }}:sha-${{ steps.git_checks.outputs.short_sha }}
+            ${{ env.IMAGE_NAME }}:prod
+
+      - name: Write build metadata
+        shell: bash
+        run: |
+          cat > build-metadata.json <<JSON
+          {
+            "image": "${IMAGE_NAME}",
+            "release_tag": "${{ steps.validate_tag.outputs.release_tag }}",
+            "channel_tag": "prod",
+            "sha_tag": "sha-${{ steps.git_checks.outputs.short_sha }}",
+            "digest": "${{ steps.build.outputs.digest }}",
+            "commit": "${{ steps.git_checks.outputs.release_commit }}",
+            "actor": "${GITHUB_ACTOR}",
+            "built_at": "${{ steps.git_checks.outputs.built_at }}"
+          }
+          JSON
+
+      - name: Publish workflow summary
+        shell: bash
+        run: |
+          {
+            echo "## Release Image Published"
+            echo
+            echo "- Image: \`${IMAGE_NAME}\`"
+            echo "- Tag: \`${{ steps.validate_tag.outputs.release_tag }}\`"
+            echo "- Tag: \`sha-${{ steps.git_checks.outputs.short_sha }}\`"
+            echo "- Tag: \`prod\`"
+            echo "- Digest: \`${{ steps.build.outputs.digest }}\`"
+            echo "- Commit: \`${{ steps.git_checks.outputs.release_commit }}\`"
+            echo "- Actor: \`${GITHUB_ACTOR}\`"
+            echo "- Built at (UTC): \`${{ steps.git_checks.outputs.built_at }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload build metadata artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-build-metadata
+          path: build-metadata.json
+
+      - name: Append container artifact details to release notes
+        uses: actions/github-script@v7
+        env:
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          RELEASE_TAG: ${{ steps.validate_tag.outputs.release_tag }}
+          SHORT_SHA: ${{ steps.git_checks.outputs.short_sha }}
+          RELEASE_COMMIT: ${{ steps.git_checks.outputs.release_commit }}
+          DIGEST: ${{ steps.build.outputs.digest }}
+          BUILT_AT: ${{ steps.git_checks.outputs.built_at }}
+        with:
+          script: |
+            const marker = "### Container Artifact";
+            const section = [
+              marker,
+              "",
+              `- Image: \`${process.env.IMAGE_NAME}\``,
+              `- Version tag: \`${process.env.RELEASE_TAG}\``,
+              `- SHA tag: \`sha-${process.env.SHORT_SHA}\``,
+              "- Channel tag: `prod`",
+              `- Digest: \`${process.env.DIGEST}\``,
+              `- Commit: \`${process.env.RELEASE_COMMIT}\``,
+              `- Built at: \`${process.env.BUILT_AT}\``
+            ].join("\n");
+
+            const release = context.payload.release;
+            const { data: currentRelease } = await github.rest.repos.getRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: release.id
+            });
+
+            const lines = (currentRelease.body || "").split("\n");
+            const markerIndex = lines.findIndex(line => line.trim() === marker);
+
+            let body;
+            if (markerIndex >= 0) {
+              let sectionEnd = lines.length;
+              for (let i = markerIndex + 1; i < lines.length; i += 1) {
+                if (lines[i].startsWith("### ")) {
+                  sectionEnd = i;
+                  break;
+                }
+              }
+              lines.splice(markerIndex, sectionEnd - markerIndex, ...section.split("\n"));
+              body = lines.join("\n").replace(/\n{3,}/g, "\n\n").trimEnd();
+            } else {
+              const existingBody = (currentRelease.body || "").trimEnd();
+              body = existingBody ? `${existingBody}\n\n${section}` : section;
+            }
+
+            await github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: release.id,
+              body
+            });
