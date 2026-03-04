@@ -1,0 +1,162 @@
+name: Rollback Retag
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Destination channel tag
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
+      target_tag:
+        description: Existing source tag to retag from
+        required: true
+        type: string
+
+concurrency:
+  group: rollback-${{ github.event.inputs.environment }}
+  cancel-in-progress: false
+
+env:
+  IMAGE_NAME: ghcr.io/natlibfi/ekirjasto-web-patron
+
+jobs:
+  rollback:
+    name: Retag Channel
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Set operation metadata
+        id: vars
+        shell: bash
+        run: |
+          TARGET_TAG="${{ github.event.inputs.target_tag }}"
+          TARGET_ENV="${{ github.event.inputs.environment }}"
+          BUILT_AT="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          echo "target_tag=${TARGET_TAG}" >> "$GITHUB_OUTPUT"
+          echo "target_env=${TARGET_ENV}" >> "$GITHUB_OUTPUT"
+          echo "built_at=${BUILT_AT}" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate target tag input and source existence
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          TARGET_ENV="${{ steps.vars.outputs.target_env }}"
+          TARGET_TAG="${{ steps.vars.outputs.target_tag }}"
+
+          if [[ "${TARGET_ENV}" == "prod" ]]; then
+            if [[ ! "${TARGET_TAG}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "prod rollback requires target_tag in vX.Y.Z format. Got: ${TARGET_TAG}" >&2
+              exit 1
+            fi
+          fi
+
+          if [[ "${TARGET_ENV}" == "dev" ]]; then
+            if [[ ! "${TARGET_TAG}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ && ! "${TARGET_TAG}" =~ ^sha-[0-9a-f]{7,40}$ ]]; then
+              echo "dev rollback requires target_tag matching vX.Y.Z or sha-<hex>. Got: ${TARGET_TAG}" >&2
+              exit 1
+            fi
+          fi
+
+          if ! docker buildx imagetools inspect "${IMAGE_NAME}:${TARGET_TAG}" >/dev/null 2>&1; then
+            echo "Source tag does not exist: ${IMAGE_NAME}:${TARGET_TAG}" >&2
+            exit 1
+          fi
+
+      - name: Capture before-state digest
+        id: before
+        shell: bash
+        run: |
+          set -euo pipefail
+          DEST_REF="${IMAGE_NAME}:${{ steps.vars.outputs.target_env }}"
+          OLD_DIGEST="$(docker buildx imagetools inspect "${DEST_REF}" 2>/dev/null | awk '/^Digest:/ {print $2; exit}')"
+          if [[ -z "${OLD_DIGEST}" ]]; then
+            OLD_DIGEST="(none)"
+          fi
+          echo "old_digest=${OLD_DIGEST}" >> "$GITHUB_OUTPUT"
+
+      - name: Retag destination channel
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker buildx imagetools create \
+            --tag "${IMAGE_NAME}:${{ steps.vars.outputs.target_env }}" \
+            "${IMAGE_NAME}:${{ steps.vars.outputs.target_tag }}"
+
+      - name: Capture after-state digest
+        id: after
+        shell: bash
+        run: |
+          set -euo pipefail
+          DEST_REF="${IMAGE_NAME}:${{ steps.vars.outputs.target_env }}"
+          SOURCE_REF="${IMAGE_NAME}:${{ steps.vars.outputs.target_tag }}"
+
+          NEW_DIGEST="$(docker buildx imagetools inspect "${DEST_REF}" | awk '/^Digest:/ {print $2; exit}')"
+          SOURCE_DIGEST="$(docker buildx imagetools inspect "${SOURCE_REF}" | awk '/^Digest:/ {print $2; exit}')"
+
+          if [[ -z "${NEW_DIGEST}" ]]; then
+            echo "Unable to resolve destination digest after retag: ${DEST_REF}" >&2
+            exit 1
+          fi
+
+          if [[ -z "${SOURCE_DIGEST}" ]]; then
+            echo "Unable to resolve source digest: ${SOURCE_REF}" >&2
+            exit 1
+          fi
+
+          echo "new_digest=${NEW_DIGEST}" >> "$GITHUB_OUTPUT"
+          echo "source_digest=${SOURCE_DIGEST}" >> "$GITHUB_OUTPUT"
+
+      - name: Write rollback metadata
+        shell: bash
+        run: |
+          cat > rollback-metadata.json <<JSON
+          {
+            "image": "${IMAGE_NAME}",
+            "environment": "${{ steps.vars.outputs.target_env }}",
+            "source_tag": "${{ steps.vars.outputs.target_tag }}",
+            "source_digest": "${{ steps.after.outputs.source_digest }}",
+            "destination_old_digest": "${{ steps.before.outputs.old_digest }}",
+            "destination_new_digest": "${{ steps.after.outputs.new_digest }}",
+            "actor": "${GITHUB_ACTOR}",
+            "timestamp": "${{ steps.vars.outputs.built_at }}"
+          }
+          JSON
+
+      - name: Publish workflow summary
+        shell: bash
+        run: |
+          {
+            echo "## Rollback Retag Complete"
+            echo
+            echo "- Image: \`${IMAGE_NAME}\`"
+            echo "- Source tag: \`${{ steps.vars.outputs.target_tag }}\`"
+            echo "- Source digest: \`${{ steps.after.outputs.source_digest }}\`"
+            echo "- Destination tag: \`${{ steps.vars.outputs.target_env }}\`"
+            echo "- Previous destination digest: \`${{ steps.before.outputs.old_digest }}\`"
+            echo "- New destination digest: \`${{ steps.after.outputs.new_digest }}\`"
+            echo "- Actor: \`${GITHUB_ACTOR}\`"
+            echo "- Timestamp (UTC): \`${{ steps.vars.outputs.built_at }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload rollback metadata artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rollback-metadata
+          path: rollback-metadata.json
