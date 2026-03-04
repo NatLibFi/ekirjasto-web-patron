@@ -8,7 +8,6 @@ import { NextPage, GetStaticProps, GetStaticPaths } from "next";
 import LayoutPage from "components/LayoutPage";
 import withAppProps, { AppProps } from "dataflow/withAppProps";
 import useUser from "components/context/UserContext";
-import useLogin from "auth/useLogin";
 import useLibraryContext from "components/context/LibraryContext";
 import {
   getMagazineReaderUrl,
@@ -22,7 +21,6 @@ import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
 const MagazinesFixedContent: React.FC = () => {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
   const { token, getEkirjastoToken } = useUser();
-  const { initLogin } = useLogin();
   const { slug, authMethods } = useLibraryContext();
   const ekirMethod = authMethods.find(
     method => method.type === EKIRJASTO_AUTH_TYPE
@@ -91,7 +89,7 @@ const MagazinesFixedContent: React.FC = () => {
         });
       }
     },
-    [initLogin, ekirjastoToken, token, storageKey]
+    [ekirjastoToken, storageKey]
   );
 
   React.useEffect(() => {

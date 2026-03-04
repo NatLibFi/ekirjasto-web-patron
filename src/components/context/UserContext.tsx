@@ -74,10 +74,16 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     credentials && shelfUrl ? [shelfUrl, token, credentials?.methodType] : null,
     fetchLoans,
     {
-      shouldRetryOnError: credentials?.methodType === BasicTokenAuthType || credentials?.methodType === EkirjastoAuthType,
+      shouldRetryOnError:
+        credentials?.methodType === BasicTokenAuthType ||
+        credentials?.methodType === EkirjastoAuthType,
       revalidateOnFocus: shouldRevalidate(),
       revalidateOnReconnect: false,
-      errorRetryCount: credentials?.methodType === BasicTokenAuthType || credentials?.methodType === EkirjastoAuthType ? 1 : 0,
+      errorRetryCount:
+        credentials?.methodType === BasicTokenAuthType ||
+        credentials?.methodType === EkirjastoAuthType
+          ? 1
+          : 0,
       // Try and fetch new token once old token has expired
       onErrorRetry: async (err, _key, _config, revalidate) => {
         if (err instanceof ServerError && err?.info.status === 401) {
@@ -113,7 +119,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
               setCredentials({
                 authenticationUrl: credentials?.authenticationUrl,
                 methodType: credentials.methodType,
-                token:`Bearer ${accessToken}`
+                token: `Bearer ${accessToken}`
               });
               revalidate();
             } catch (err) {
@@ -127,7 +133,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       // however, BasicTokenAuthType methods are retried in onErrorRetry to get new token
       onError: err => {
         if (err instanceof ServerError && err?.info.status === 401) {
-          if (credentials?.methodType !== BasicTokenAuthType && credentials?.methodType !== EkirjastoAuthType) {
+          if (
+            credentials?.methodType !== BasicTokenAuthType &&
+            credentials?.methodType !== EkirjastoAuthType
+          ) {
             setError(err);
             clearCredentials();
           }
