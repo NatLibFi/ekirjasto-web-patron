@@ -40,7 +40,7 @@ const MagazinesFixedContent: React.FC = () => {
     }
   }
   if (!token) {
-    console.log("There is no token so should be logged out");
+    //If there is no token, reload should happen
     ekirjastoToken = undefined;
   }
 
@@ -66,10 +66,6 @@ const MagazinesFixedContent: React.FC = () => {
     (e: MessageEvent) => {
       const allowedOrigin = getMagazineAllowedOrigin();
 
-      if (!token) {
-        console.log("No token!");
-      }
-
       if (e.origin !== allowedOrigin || typeof e.data !== "string") return;
 
       if (e.data === "ewl:unauthorized") {
@@ -78,8 +74,6 @@ const MagazinesFixedContent: React.FC = () => {
             `ewl:login:${ekirjastoToken}`,
             allowedOrigin
           );
-        } else {
-          initLogin();
         }
         return;
       }
