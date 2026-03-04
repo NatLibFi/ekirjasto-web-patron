@@ -1,14 +1,5 @@
 # web-patron
 
-<!-- <div>
-<a aria-label="Docker images" href="[https://hub.docker.com/r/thepalaceproject/web-patron/tags](https://hub.docker.com/r/thepalaceproject/web-patron/tags)">
-<img alt="Docker Image Version (latest semver)" src="[https://img.shields.io/docker/v/thepalaceproject/web-patron?label=Docker Hub&logo=docker&sort=semver](https://img.shields.io/docker/v/thepalaceproject/web-patron?label=Docker%20Hub&logo=docker&sort=semver)">
-</a>
-<img alt="GitHub Workflow Status" src="[https://img.shields.io/github/workflow/status/thepalaceproject/web-patron/CI?label=Tests&logo=github](https://img.shields.io/github/workflow/status/thepalaceproject/web-patron/CI?label=Tests&logo=github)">
-<img alt="GitHub Workflow Status" src="[https://img.shields.io/github/workflow/status/thepalaceproject/web-patron/Production](https://img.shields.io/github/workflow/status/thepalaceproject/web-patron/Production) Release?label=Build%20%28master%29&logo=github">
-<img alt="GitHub Workflow Status" src="[https://img.shields.io/github/workflow/status/thepalaceproject/web-patron/Publish](https://img.shields.io/github/workflow/status/thepalaceproject/web-patron/Publish) beta?label=Build%20%28beta%29&logo=github">
-</div> -->
-
 An OPDS web catalog client for library patrons.
 
 This app supports discovery, borrowing, downloading, and returning of material. It does not directly support viewing.
@@ -219,9 +210,22 @@ When creating links using `<Link>`, you don't need to worry about whether it is 
 
 # Deploying
 
-This repository includes a Dockerfile, and the master branch is built as an image in Docker Hub in the Hub repository [thepalaceproject/web-patron](https://hub.docker.com/r/thepalaceproject/web-patron). You can deploy the application simply by running the image from Docker Hub. You can either use the `latest` tag in Docker Hub, or a specific version tagged with the version number. There will also be an image tagged `beta` for the most recent code on the `beta` branch.
+This repository includes a Dockerfile and publishes images to GitHub Container Registry (GHCR) at `ghcr.io/natlibfi/ekirjasto-web-patron`.
 
-Alternatively, you can build your own container from local changes as described below. If you would like to deploy from Docker Hub, skip to [Running a container from the image](#running-a-container-from-the-image).
+### Image tags and release channels
+
+- Moving tag `dev`: updated on every push to `main`.
+- Moving tag `prod`: updated only when a GitHub Release `vX.Y.Z` is published from a commit reachable from `prod`.
+- Immutable tag `sha-<shortsha>`: created by both dev and release builds.
+- Immutable tag `vX.Y.Z`: created only by release builds.
+
+`latest` and moving `main` tags are intentionally not published.
+
+### Runtime default migration note
+
+If your runtime automation defines `WEBPATRON_IMAGE`, update the default from `https://github.com/NatLibFi/ekirjasto-web-patron:main` to `https://github.com/NatLibFi/ekirjasto-web-patron:prod` as part of this rollout.
+
+Alternatively, you can build your own container from local changes as described below. If you would like to deploy from GHCR, skip to [Running the docker container](#running-the-docker-container).
 
 ## Build a docker container
 
@@ -239,20 +243,20 @@ If you wanted to customize the image, you could create an additional Dockerfile 
 
 ### Running the docker container
 
-Whether running the container from a Docker Hub image, or a local one, you will need to provide at least one environment variable to specify the circulation manager backend, as described in [Application Startup Configurations](#Application-Startup-Configurations). You can also provide the other optional environment variables when running your docker container. There are two ways to run the container: (1) via the command line, and (2) via `docker-compose` with a `docker-compose.yml` file.
+Whether running the container from a GHCR image, or a local one, you will need to provide at least one environment variable to specify the circulation manager backend, as described in [Application Startup Configurations](#Application-Startup-Configurations). You can also provide the other optional environment variables when running your docker container. There are two ways to run the container: (1) via the command line, and (2) via `docker-compose` with a `docker-compose.yml` file.
 
 When running the image with the `CONFIG_FILE` option, you will want to provide the file's directory to the container as a volume, so the container can access the file on your host machine. When doing this, replace `$PATH_TO_LOCAL_VOLUME` with the absolute path to the `/config` directory on the host machine.
 
 ### From the command line
 
-This command will download the image from The Palace Project's Docker Hub repo, and then run it with the `CONFIG_FILE` option (using a file named `cm_libraries.txt`) and the name `webpatron`. If you would like to run your locally built image, substitute `thepalaceproject/web-patron` with the tag of the image you built previously (just `webpatron` in the example above).
+This command will download the image from GHCR and then run it with the `CONFIG_FILE` option (using a file named `cm_libraries.txt`) and the name `webpatron`. If you would like to run your locally built image, substitute `ghcr.io/natlibfi/ekirjasto-web-patron:prod` with the tag of the image you built previously (just `webpatron` in the example above).
 
 ```
 docker run -d --name webpatron -p 3000:3000\\
   --restart=unless-stopped \\
   -e "CONFIG_FILE=/config_volume/config.yml" \\
   -v $PATH_TO_LOCAL_VOLUME:/config_volume \\
-  thepalaceproject/web-patron
+  ghcr.io/natlibfi/ekirjasto-web-patron:prod
 
 ```
 
@@ -279,6 +283,14 @@ If you would like to use a `SIMPLIFIED_CATALOG_BASE` or `REGISTRY_BASE`, or prov
   ```
   docker run -it --name webpatron -v $PATH_TO_LOCAL_VOLUME:/config --rm --entrypoint=/bin/sh webpatron
   ```
+
+### Operator runbook
+
+- Merge to `main` publishes `ghcr.io/natlibfi/ekirjasto-web-patron:dev` and `ghcr.io/natlibfi/ekirjasto-web-patron:sha-<shortsha>`.
+- Publishing a GitHub Release `vX.Y.Z` for a commit on `prod` publishes `:vX.Y.Z`, `:sha-<shortsha>`, and moves `:prod`.
+- Use the `Rollback Retag` workflow for controlled rollbacks:
+  - `environment=prod` only accepts `target_tag` in `vX.Y.Z` format.
+  - `environment=dev` accepts `target_tag` in `vX.Y.Z` or `sha-<hex>` format.
 
 ### Credits
 
