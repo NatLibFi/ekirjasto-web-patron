@@ -222,6 +222,19 @@ The E-kirjasto application utilizes the following packages for internationalizat
 - **i18next-cli** a command-line tool for managing translations (development dependency)
 - **eslint-plugin-18next** ESLint plugin that warns about hardcoded strings (development dependency)
 
+### Configuration files
+
+#### `next-i18next.config.js`
+
+This file contains the configuration for the `next-i18next` library, which manages translations in the application.
+
+Key settings:
+
+- **Supported languages**: Finnish (`fi`), Swedish (`sv`) and English (`en`).
+- **Default language**: Finnish (`fi`) is the default and fallback language
+- **Namespaces**: The default namespace is set to `translations`, which contains all translation keys
+- **Translation files path**: Translation files are stored in the `public/locales` directory
+
 # Deploying
 
 This repository includes a Dockerfile and publishes images to GitHub Container Registry (GHCR) at `ghcr.io/natlibfi/ekirjasto-web-patron`.
