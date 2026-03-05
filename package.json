@@ -48,6 +48,7 @@
     "dompurify": "^3.2.4",
     "downloadjs": "^1.4.7",
     "history": "^4.10.1",
+    "i18next": "^23.10.1",
     "js-cookie": "^2.2.1",
     "jsdom": "^16.2.2",
     "lodash": "^4.17.23",

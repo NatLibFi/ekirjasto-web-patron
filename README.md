@@ -212,6 +212,12 @@ When creating links using `<Link>`, you don't need to worry about whether it is 
 
 Overview of the translation setup in the E-kirjasto application
 
+### Packages used for translations
+
+The E-kirjasto application utilizes the following packages for internationalization (i18n):
+
+- **i18next**: an internationalization framework for JavaScript
+
 # Deploying
 
 This repository includes a Dockerfile and publishes images to GitHub Container Registry (GHCR) at `ghcr.io/natlibfi/ekirjasto-web-patron`.
