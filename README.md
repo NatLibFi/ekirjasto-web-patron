@@ -235,6 +235,21 @@ Key settings:
 - **Namespaces**: The default namespace is set to `translations`, which contains all translation keys
 - **Translation files path**: Translation files are stored in the `public/locales` directory
 
+#### `i18next.config.ts`
+
+This file configures the `i18next-cli` for extracting translation keys from the source code.
+
+Key settings:
+
+- **Input files**: The configuration specifies that `.tsx` and `.jsx` files in the `src/components` and `src/pages` directories should be scanned for translation keys
+- **Output path**: Extracted translation files are saved in the `public/locales` directory, organized by language and namespace
+- **Commands**: Use the following scripts to manage translations:
+  - `translations:status` Overview of project translations
+  - `translations:lint` List of hardcoded strings needing translation
+  - `translations:extract` Extract translation keys and update translation files
+  - `translations:sync` Sync Finnish and Swedish files with the English file
+  - `translations:ci` Fail builds when translations are outdated
+
 # Deploying
 
 This repository includes a Dockerfile and publishes images to GitHub Container Registry (GHCR) at `ghcr.io/natlibfi/ekirjasto-web-patron`.
