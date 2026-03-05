@@ -326,6 +326,16 @@ To extract translation keys from your component source code and to update the `t
 6. **Save changes**  
   Verify that the translations are correct and functioning as expected in the application. Then commit the updated translation files.
 
+### Changing the app language
+
+The LanguageSelector component lets users change the language of the E-library application to Finnish, Swedish or English. Note that the language code in the URL is only visible when a language other than Finnish is selected:
+
+- **Finnish (default)**: `https://example.com/books` (no language code `fi`)
+- **Swedish**: `https://example.com/sv/books` (language code `sv`)
+- **English**: `https://example.com/en/books` (language code `en`)
+
+The component uses Next.js's Router to handle the current language through `router.locale`. When user selects a language, the component updates the locale using `router.push`. This means the URL is updated creating a new entry in the browser's history, so users can always navigate back and see the language switch as a separate step.
+
 # Deploying
 
 This repository includes a Dockerfile and publishes images to GitHub Container Registry (GHCR) at `ghcr.io/natlibfi/ekirjasto-web-patron`.
