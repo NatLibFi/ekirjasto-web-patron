@@ -29,6 +29,7 @@ export type UserState = {
     fetchUrl: string | undefined
   ) => Promise<string>;
   setBook: (book: AnyBook, id?: string) => void;
+  setSelected: (book: AnyBook, id?: string) => void;
   error: any;
   token: string | undefined;
   clearCredentials: () => void;
@@ -71,7 +72,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   const token = stringifyToken(credentials);
   const { data: loansData, mutate, isValidating } = useFetchFeed(shelfUrl);
-  const { data: selectedData } = useFetchFeed(selectedUrl);
+  const { data: selectedData, mutate: mutateSelected } = useFetchFeed(
+    selectedUrl
+  );
 
   function useFetchFeed(fetchableUrl: string | null) {
     return useSWR(
@@ -164,6 +167,15 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     mutate(newData);
   }
 
+  function setSelected(book: AnyBook, id?: string) {
+    const existing = selectedData ?? [];
+
+    // if the id exists, remove that book and set the new one
+    const withoutOldBook = existing.filter(book => book.id !== id);
+    const newData: AnyBook[] = [...withoutOldBook, book];
+    mutateSelected(newData);
+  }
+
   /**
    * We should only ever be in one of these three states.
    */
@@ -187,6 +199,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     signOut,
     getEkirjastoToken,
     setBook,
+    setSelected,
     error,
     token: stringifyToken(credentials),
     clearCredentials
