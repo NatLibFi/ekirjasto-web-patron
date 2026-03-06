@@ -104,6 +104,7 @@ describe("buildLibraryData", () => {
       catalogUrl: "/catalog-root",
       catalogName: "auth doc title",
       logoUrl: null,
+      selectedUrl: null,
       colors: null,
       headerLinks: [],
       shelfUrl: null,
