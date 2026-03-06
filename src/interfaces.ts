@@ -204,6 +204,8 @@ export type Book<Status = EmptyObject> = Readonly<
     raw?: any;
     format?: BookFormat;
     trackOpenBookUrl: string | null;
+    selectBookUrl: string | null;
+    unselectBookUrl: string | null;
   }
 >;
 
