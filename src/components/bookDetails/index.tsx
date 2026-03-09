@@ -22,7 +22,7 @@ import Head from "next/head";
 import MediumIndicator from "components/MediumIndicator";
 import Recommendations from "./Recommendations";
 import ReportProblem from "./ReportProblem";
-import SelectBookCard from "../SelectBook";
+import SelectBookCard from "../SelectBookCard";
 import Summary from "./Summary";
 import useBreadcrumbContext from "components/context/BreadcrumbContext";
 import useSWR from "swr";

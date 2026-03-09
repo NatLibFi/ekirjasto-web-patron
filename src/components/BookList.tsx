@@ -28,11 +28,10 @@ import {
   getFulfillmentFromLink,
   shouldRedirectToCompanionApp
 } from "utils/fulfill";
-import { ArrowForward } from "icons";
 import BookStatus from "components/BookStatus";
 import Link from "./Link";
 import { APP_CONFIG } from "utils/env";
-import SelectBookCard from "./SelectBook";
+import SelectBookCard from "./SelectBookCard";
 
 const ListLoadingIndicator = () => (
   <div
