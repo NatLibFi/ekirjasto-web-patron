@@ -54,7 +54,7 @@ export const MyBooks: React.FC = () => {
         </Head>
 
         <BreadcrumbBar currentLocation="My Books" />
-        <PageTitle>Loans and holds</PageTitle>
+        <PageTitle>Loans and Holds</PageTitle>
         {noBooks && isLoading ? (
           <PageLoader />
         ) : noBooks ? (
