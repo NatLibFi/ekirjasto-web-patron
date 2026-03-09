@@ -97,6 +97,8 @@ export const book: Book = {
       ]
     }
   },
+  selectBookUrl: "/select_book",
+  unselectBookUrl: "/unselect_book",
   raw: {
     $: { "schema:additionalType": { value: "http://schema.org/EBook" } },
     category: [
