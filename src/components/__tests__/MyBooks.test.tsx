@@ -67,7 +67,7 @@ const books: FulfillableBook[] = [
   })
 ];
 
-test("displays books when signed in with data", async () => {
+test("displays loaned or reserved books when signed in with data", async () => {
   const utils = render(<MyBooks />, {
     user: {
       isAuthenticated: true,
@@ -92,7 +92,7 @@ test("displays books when signed in with data", async () => {
   expect(utils.getByText("Book 0 author")).toBeInTheDocument();
 });
 
-test("sorts books", () => {
+test("sorts loaned books", () => {
   const utils = render(<MyBooks />, {
     user: {
       isAuthenticated: true,
@@ -106,4 +106,29 @@ test("sorts books", () => {
   expect(bookNames[2]).toHaveTextContent("Book Title 10");
   expect(bookNames[3]).toHaveTextContent("Book Title 0");
   expect(bookNames[4]).toHaveTextContent("Book Title 1");
+});
+
+test("displays selected books when signed in with data", async () => {
+  const utils = render(<MyBooks />, {
+    user: {
+      isAuthenticated: true,
+      selected: books,
+      isLoading: false
+    }
+  });
+
+  expect(utils.getByText(fixtures.makeBook(0).title)).toBeInTheDocument();
+  expect(utils.getByText(fixtures.makeBook(9).title)).toBeInTheDocument();
+
+  expect(
+    utils.queryByText("You need to be signed in to view this page.")
+  ).not.toBeInTheDocument();
+
+  expect(
+    utils.queryByText(
+      "Your favorite books will show up here when you have any selected."
+    )
+  ).toBeFalsy();
+
+  expect(utils.getByText("Book 0 author")).toBeInTheDocument();
 });

@@ -28,7 +28,9 @@ export function makeBook(i: number): Book {
     publisher: `Book ${i} publisher`,
     categories: [`Book ${i} cat 1`, `Book ${i} cat 2`],
     relatedUrl: `/related-url-${i}`,
-    trackOpenBookUrl: `/track-open-book-${i}`
+    trackOpenBookUrl: `/track-open-book-${i}`,
+    selectBookUrl: `/select-book-${i}`,
+    unselectBookUrl: `/unselect-book-${i}`
   };
 }
 
