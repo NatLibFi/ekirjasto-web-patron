@@ -208,6 +208,10 @@ test("fetches search description", async () => {
 
 When creating links using `<Link>`, you don't need to worry about whether it is for a single or multi-library route config. Write the `as` and `href` like you would if the package only supported one-library setups, and the `<Link>` will prepend `/[libraryId]` to your routes if needed.
 
+## Translations
+
+Overview of the translation setup in the E-kirjasto application
+
 # Deploying
 
 This repository includes a Dockerfile and publishes images to GitHub Container Registry (GHCR) at `ghcr.io/natlibfi/ekirjasto-web-patron`.
