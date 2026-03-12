@@ -28,6 +28,7 @@ export const libraryData: LibraryData = {
   ],
   libraryLinks: {},
   shelfUrl: "/shelf-url",
+  selectedUrl: "/selected_books",
   authMethods: [basicAuthMethod, createSamlMethod(0), cleverAuthMethod]
 };
 

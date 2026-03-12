@@ -8,7 +8,6 @@ import BreadcrumbBar from "./BreadcrumbBar";
 import { H3 } from "./Text";
 import { AnyBook } from "interfaces";
 import PageTitle from "./PageTitle";
-import { SignOut } from "./SignOut";
 import useUser from "components/context/UserContext";
 import { PageLoader } from "components/LoadingIndicator";
 import AuthProtectedRoute from "auth/AuthProtectedRoute";
@@ -41,9 +40,11 @@ function compareTitles(a: AnyBook, b: AnyBook): 0 | -1 | 1 {
 }
 
 export const MyBooks: React.FC = () => {
-  const { loans, isLoading } = useUser();
+  const { loans, selected, isLoading } = useUser();
   const sortedBooks = loans ? sortBooksByLoanExpirationDate(loans) : [];
   const noBooks = sortedBooks.length === 0;
+  const selectedBooksArray = selected ?? [];
+  const noSelectedBooks = selectedBooksArray.length === 0;
 
   return (
     <AuthProtectedRoute>
@@ -53,13 +54,24 @@ export const MyBooks: React.FC = () => {
         </Head>
 
         <BreadcrumbBar currentLocation="My Books" />
-        <PageTitle>My Books</PageTitle>
+        <PageTitle>Loans and Holds</PageTitle>
         {noBooks && isLoading ? (
           <PageLoader />
         ) : noBooks ? (
-          <Empty />
+          <EmptyLoansAndHolds />
         ) : (
           <LoansContent books={sortedBooks} />
+        )}
+      </div>
+
+      <div sx={{ flex: 1, pb: 4 }}>
+        <PageTitle>Favorites</PageTitle>
+        {noSelectedBooks && isLoading ? (
+          <PageLoader />
+        ) : noSelectedBooks ? (
+          <EmptySelected />
+        ) : (
+          <SelectedBooksContent books={selectedBooksArray} />
         )}
       </div>
     </AuthProtectedRoute>
@@ -74,7 +86,21 @@ const LoansContent: React.FC<{ books: AnyBook[] }> = ({ books }) => {
   );
 };
 
-const Empty = () => {
+const SelectedBooksContent: React.FC<{
+  books: AnyBook[];
+}> = ({ books }) => {
+  return (
+    <React.Fragment>
+      {books.map(book => (
+        <div key={book.id} sx={{ mb: 3 }}>
+          <BookList books={[book]} />
+        </div>
+      ))}
+    </React.Fragment>
+  );
+};
+
+const EmptyLoansAndHolds = () => {
   return (
     <>
       <div
@@ -89,7 +115,26 @@ const Empty = () => {
         <H3>
           Your books will show up here when you have any loaned or on hold.
         </H3>
-        <SignOut />
+      </div>
+    </>
+  );
+};
+
+const EmptySelected = () => {
+  return (
+    <>
+      <div
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          px: [3, 5]
+        }}
+      >
+        <H3>
+          Your favorite books will show up here when you have any selected.
+        </H3>
       </div>
     </>
   );
