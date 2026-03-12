@@ -6,7 +6,12 @@ import Modal from "./Modal";
 import { useDialogStore, DialogDisclosure } from "@ariakit/react/dialog";
 import Button from "./Button";
 import Stack from "./Stack";
+import { useRouter } from "next/router";
 import useUser from "components/context/UserContext";
+import useLibraryContext from "./context/LibraryContext";
+import { isSupportedAuthType } from "auth/AuthenticationHandler";
+import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
+import useLogin from "auth/useLogin";
 
 interface SignOutProps {
   color?: string;
@@ -16,9 +21,39 @@ export const SignOut: React.FC<SignOutProps> = ({
   color = "ui.black"
 }: SignOutProps) => {
   const dialog = useDialogStore();
-  const { signOut } = useUser();
+  const { push } = useRouter();
+  const { authMethods } = useLibraryContext();
+  const { token, signOut, ekirjastoSignOut } = useUser();
+  const { getLogoutUrl } = useLogin();
+
+  const supportedAuthMethods = authMethods.filter(m =>
+    isSupportedAuthType(m.type)
+  );
+
+  const method = supportedAuthMethods.find(
+    method => method.type === EKIRJASTO_AUTH_TYPE
+  );
+
   function signOutAndClose() {
-    signOut();
+    if (method) {
+      push(getLogoutUrl());
+      //TODO: funktion that runs the logout without any interruption to the user
+      const ekirjastoTokenHref = method.links?.find(
+        link => link.rel === "ekirjasto_token"
+      )?.href;
+
+      const authenticationLogoutHref = method.links?.find(
+        link => link.rel === "api"
+      )?.href;
+
+      //Create link
+      const logoutUrl = `${authenticationLogoutHref}/v1/auth/logout/start?locale=en`;
+      //TODO: remove comment if we want the possibly cleaner handling
+      //ekirjastoSignOut(ekirjastoTokenHref, token!, logoutUrl)
+    } else {
+      signOut();
+    }
+
     dialog.hide();
   }
   return (

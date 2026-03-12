@@ -50,3 +50,21 @@ export async function fetchEkirjastoToken(
 
   return json;
 }
+
+export async function logoutEkirjastoUser(url: string | undefined) {
+  if (!url) {
+    throw new ApplicationError({
+      title: "Incomplete Logout Info",
+      detail: "No URL was provided for logout"
+    });
+  }
+
+  const response = await fetchWithHeaders(url, undefined, {}, "GET");
+  const json = await response.json();
+
+  if (!response.ok) {
+    throw new ServerError(url, response.status, json);
+  }
+
+  return json;
+}

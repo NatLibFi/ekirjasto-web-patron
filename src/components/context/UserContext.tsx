@@ -8,7 +8,8 @@ import * as React from "react";
 import useSWR from "swr";
 import { BasicTokenAuthType, EkirjastoAuthType } from "types/opds1";
 import { addHours, isBefore } from "date-fns";
-import { fetchEkirjastoToken } from "auth/ekirjastoFetch";
+import { fetchEkirjastoToken, logoutEkirjastoUser } from "auth/ekirjastoFetch";
+import Cookie from "js-cookie";
 
 type Status = "authenticated" | "loading" | "unauthenticated";
 export type UserState = {
@@ -23,6 +24,11 @@ export type UserState = {
     authenticationUrl: string | undefined
   ) => void;
   signOut: () => void;
+  ekirjastoSignOut: (
+    logoutTokenUrl: string | undefined,
+    token: string,
+    logoutUrl: string
+  ) => void;
   getEkirjastoToken: (
     token: string,
     fetchUrl: string | undefined
@@ -142,6 +148,22 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     mutate();
   }
 
+  async function ekirjastoSignOut(
+    logoutTokenUrl: string | undefined,
+    token: string,
+    logoutUrl: string
+  ) {
+    const ekirjastoToken = getEkirjastoToken(token, logoutTokenUrl);
+    Cookie.set("SESSION", ekirjastoToken, {
+      path: "/",
+      domain: ".e-kirjasto.fi",
+      sameSite: "None",
+      secure: true
+    });
+    logoutEkirjastoUser(logoutUrl);
+    signOut();
+  }
+
   function signOut() {
     clearCredentials();
     mutate();
@@ -176,6 +198,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     refetchLoans: mutate,
     signIn,
     signOut,
+    ekirjastoSignOut,
     getEkirjastoToken,
     setBook,
     error,
