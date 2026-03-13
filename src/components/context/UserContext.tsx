@@ -84,10 +84,16 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         : null,
       fetchLoans,
       {
-        shouldRetryOnError: credentials?.methodType === BasicTokenAuthType || credentials?.methodType === EkirjastoAuthType,
+        shouldRetryOnError:
+          credentials?.methodType === BasicTokenAuthType ||
+          credentials?.methodType === EkirjastoAuthType,
         revalidateOnFocus: shouldRevalidate(),
         revalidateOnReconnect: false,
-        errorRetryCount: credentials?.methodType === BasicTokenAuthType || credentials?.methodType === EkirjastoAuthType ? 1 : 0,
+        errorRetryCount:
+          credentials?.methodType === BasicTokenAuthType ||
+          credentials?.methodType === EkirjastoAuthType
+            ? 1
+            : 0,
         // Try and fetch new token once old token has expired
         onErrorRetry: async (err, _key, _config, revalidate) => {
           if (err instanceof ServerError && err?.info.status === 401) {
@@ -115,7 +121,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
             }
             if (credentials?.methodType === EkirjastoAuthType) {
               try {
-                console.log("EKIRJREFRESH")
+                console.log("EKIRJREFRESH");
                 // Try refreshing the access token
                 const { access_token: accessToken } = await fetchEAuthToken(
                   credentials?.authenticationUrl,
