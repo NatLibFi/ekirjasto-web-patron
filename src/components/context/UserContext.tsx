@@ -8,7 +8,7 @@ import * as React from "react";
 import useSWR from "swr";
 import { BasicTokenAuthType, EkirjastoAuthType } from "types/opds1";
 import { addHours, isBefore } from "date-fns";
-import { fetchEkirjastoToken } from "auth/ekirjastoFetch";
+import { fetchEAuthToken, fetchEkirjastoToken } from "auth/ekirjastoFetch";
 
 type Status = "authenticated" | "loading" | "unauthenticated";
 export type UserState = {
@@ -114,8 +114,22 @@ export const UserProvider = ({ children }: UserProviderProps) => {
               }
             }
             if (credentials?.methodType === EkirjastoAuthType) {
-              // TODO: token refresh on 401
-              console.log("EKIRJASTO REFRESH");
+              try {
+                // Try refreshing the access token
+                const { access_token: accessToken } = await fetchEAuthToken(
+                  credentials?.authenticationUrl,
+                  stringifyToken(credentials)
+                );
+                setCredentials({
+                  authenticationUrl: credentials?.authenticationUrl,
+                  methodType: credentials.methodType,
+                  token: `Bearer ${accessToken}`
+                });
+                revalidate();
+              } catch (err) {
+                setError(err);
+                clearCredentials();
+              }
             }
           }
         },
@@ -123,7 +137,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         // however, BasicTokenAuthType methods are retried in onErrorRetry to get new token
         onError: err => {
           if (err instanceof ServerError && err?.info.status === 401) {
-            if (credentials?.methodType !== BasicTokenAuthType) {
+            if (
+              credentials?.methodType !== BasicTokenAuthType &&
+              credentials?.methodType !== EkirjastoAuthType
+            ) {
               setError(err);
               clearCredentials();
             }
