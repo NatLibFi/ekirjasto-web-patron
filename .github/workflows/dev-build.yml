@@ -1,0 +1,105 @@
+name: Dev Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: dev-build-${{ github.ref_name }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+env:
+  IMAGE_NAME: ghcr.io/natlibfi/ekirjasto-web-patron
+
+jobs:
+  build-dev-image:
+    name: Build and Publish Dev Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set build metadata
+        id: vars
+        shell: bash
+        run: |
+          SHORT_SHA="$(printf '%s' "${GITHUB_SHA}" | cut -c1-12)"
+          BUILT_AT="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          echo "short_sha=${SHORT_SHA}" >> "$GITHUB_OUTPUT"
+          echo "built_at=${BUILT_AT}" >> "$GITHUB_OUTPUT"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enforce immutable sha tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          SHA_TAG="sha-${{ steps.vars.outputs.short_sha }}"
+          if docker buildx imagetools inspect "${IMAGE_NAME}:${SHA_TAG}" >/dev/null 2>&1; then
+            echo "Immutable tag already exists: ${IMAGE_NAME}:${SHA_TAG}" >&2
+            exit 1
+          fi
+
+      - name: Build and push dev image
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}:sha-${{ steps.vars.outputs.short_sha }}
+            ${{ env.IMAGE_NAME }}:dev
+
+      - name: Write build metadata
+        shell: bash
+        run: |
+          cat > build-metadata.json <<JSON
+          {
+            "image": "${IMAGE_NAME}",
+            "channel_tag": "dev",
+            "sha_tag": "sha-${{ steps.vars.outputs.short_sha }}",
+            "digest": "${{ steps.build.outputs.digest }}",
+            "commit": "${GITHUB_SHA}",
+            "actor": "${GITHUB_ACTOR}",
+            "built_at": "${{ steps.vars.outputs.built_at }}"
+          }
+          JSON
+
+      - name: Publish workflow summary
+        shell: bash
+        run: |
+          {
+            echo "## Dev Image Published"
+            echo
+            echo "- Image: \`${IMAGE_NAME}\`"
+            echo "- Tag: \`sha-${{ steps.vars.outputs.short_sha }}\`"
+            echo "- Tag: \`dev\`"
+            echo "- Digest: \`${{ steps.build.outputs.digest }}\`"
+            echo "- Commit: \`${GITHUB_SHA}\`"
+            echo "- Actor: \`${GITHUB_ACTOR}\`"
+            echo "- Built at (UTC): \`${{ steps.vars.outputs.built_at }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload build metadata artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dev-build-metadata
+          path: build-metadata.json

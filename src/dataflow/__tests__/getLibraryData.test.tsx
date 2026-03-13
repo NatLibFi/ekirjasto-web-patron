@@ -103,6 +103,7 @@ describe("buildLibraryData", () => {
       slug: "librarySlug",
       catalogUrl: "/catalog-root",
       catalogName: "auth doc title",
+      selectedUrl: null,
       logoUrl: null,
       colors: null,
       headerLinks: [],
