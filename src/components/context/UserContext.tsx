@@ -121,7 +121,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
             }
             if (credentials?.methodType === EkirjastoAuthType) {
               try {
-                console.log("EKIRJREFRESH");
                 // Try refreshing the access token
                 const { access_token: accessToken } = await fetchEAuthToken(
                   credentials?.authenticationUrl,
