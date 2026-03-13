@@ -138,9 +138,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         onError: err => {
           if (err instanceof ServerError && err?.info.status === 401) {
             if (
-            credentials?.methodType !== BasicTokenAuthType &&
-            credentials?.methodType !== EkirjastoAuthType
-          ) {
+              credentials?.methodType !== BasicTokenAuthType &&
+              credentials?.methodType !== EkirjastoAuthType
+            ) {
               setError(err);
               clearCredentials();
             }
