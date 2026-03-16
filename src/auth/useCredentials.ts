@@ -136,7 +136,12 @@ function setCredentialsCookie(
   credentials: AuthCredentials
 ) {
   if (librarySlug === "ekirjasto") {
-    Cookie.set(cookieNameEkirjasto(), JSON.stringify(credentials));
+    if (credentials.token && typeof credentials.token === "string") {
+      Cookie.set(
+        cookieNameEkirjasto(),
+        credentials.token.replace("Bearer ", "")
+      );
+    }
   } else {
     Cookie.set(cookieName(librarySlug), JSON.stringify(credentials));
   }

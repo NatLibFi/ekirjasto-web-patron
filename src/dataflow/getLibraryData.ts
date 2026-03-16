@@ -46,6 +46,13 @@ function getShelfUrl(authDoc: OPDS1.AuthDocument): string | null {
   );
 }
 
+function getSelectedUrl(authDoc: OPDS1.AuthDocument): string | null {
+  return (
+    authDoc.links?.find(link => {
+      return link.rel === OPDS1.SelectedLinkRel;
+    })?.href ?? null
+  );
+}
 /**
  * Extracts the catalog root url from an auth document
  */
@@ -79,11 +86,13 @@ export function buildLibraryData(
   const libraryLinks = parseLinks(authDoc.links);
   const authMethods = flattenSamlMethod(authDoc);
   const shelfUrl = getShelfUrl(authDoc);
+  const selectedUrl = getSelectedUrl(authDoc);
   const catalogUrl = getCatalogUrl(authDoc);
   return {
     slug: librarySlug,
     catalogUrl,
     shelfUrl: shelfUrl ?? null,
+    selectedUrl: selectedUrl ?? null,
     catalogName: authDoc.title,
     logoUrl: logoUrl ?? null,
     colors:

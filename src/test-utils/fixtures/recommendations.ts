@@ -50,6 +50,8 @@ export const recommendations: CollectionData = {
           ],
           language: "en",
           url: "http://recommendation-1-url",
+          selectBookUrl: "/select_book",
+          unselectBookUrl: "/unselect_book",
           raw: {
             $: {
               "schema:additionalType": {
@@ -972,6 +974,8 @@ export const recommendations: CollectionData = {
           holds: null,
           copies: null,
           publisher: "Standard Ebooks",
+          selectBookUrl: "/select_book",
+          unselectBookUrl: "/unselect_book",
           categories: [
             "Adult",
             "Fiction",
@@ -988,6 +992,8 @@ export const recommendations: CollectionData = {
           status: "borrowable",
           relatedUrl: null,
           trackOpenBookUrl: null,
+          selectBookUrl: "/select_book",
+          unselectBookUrl: "/unselect_book",
           id: "https://standardebooks.org/ebooks/jane-austen/persuasion",
           title: "Persuasion",
           series: null,
@@ -1041,7 +1047,9 @@ export const recommendations: CollectionData = {
           ],
           language: "en",
           url:
-            "http://test-cm.com/catalogUrl/works/URI/https://standardebooks.org/ebooks/jane-austen/emma"
+            "http://test-cm.com/catalogUrl/works/URI/https://standardebooks.org/ebooks/jane-austen/emma",
+          selectBookUrl: "/select_book",
+          unselectBookUrl: "/unselect_book"
         }
       ]
     }
