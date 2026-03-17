@@ -3,5 +3,6 @@
   "languageName.EN": "Engelska",
   "languageName.FI": "Finska",
   "languageName.SV": "Svenska",
-  "languageSelector": "Välj sidspråk"
+  "languageSelector": "Välj sidspråk",
+  "skipNavigation.skipToContent": ""
 }

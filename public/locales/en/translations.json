@@ -3,5 +3,6 @@
   "languageName.EN": "English",
   "languageName.FI": "Finnish",
   "languageName.SV": "Swedish",
-  "languageSelector": "Select page language"
+  "languageSelector": "Select page language",
+  "skipNavigation.skipToContent": "Skip to content"
 }
