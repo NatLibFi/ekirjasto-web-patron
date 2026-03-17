@@ -7,6 +7,7 @@ import useSelectBook from "hooks/useSelectBook";
 import Button from "components/Button";
 import { Text } from "components/Text";
 import useUser from "components/context/UserContext";
+import { useTranslation } from "next-i18next";
 
 interface SelectBookProps {
   book: AnyBook;
@@ -19,10 +20,14 @@ const SelectBookButton: React.FC<{
   onClick: () => Promise<void>;
   error?: string;
 }> = ({ book, isSelected, isLoading, onClick, error }) => {
+  const { t } = useTranslation();
+
   const loadingText = isSelected
-    ? "Removing from Favorites..."
-    : "Adding to Favorites...";
-  const buttonLabel = isSelected ? "Remove from Favorites" : "Add to Favorites";
+    ? t("selectBookCard.removingFromFavorites")
+    : t("selectBookCard.addingToFavorites");
+  const buttonLabel = isSelected
+    ? t("selectBookCard.removeFromFavorites")
+    : t("selectBookCard.addToFavorites");
 
   return (
     <div>
@@ -32,8 +37,12 @@ const SelectBookButton: React.FC<{
         loadingText={loadingText}
         aria-label={
           isSelected
-            ? `Remove ${book.title} from Favorites`
-            : `Add ${book.title} to Favorites`
+            ? t("selectBookCard.removeFromFavoritesAriaLabel", {
+                bookTitle: book.title
+              })
+            : t("selectBookCard.addToFavoritesAriaLabel", {
+                bookTitle: book.title
+              })
         }
       >
         {buttonLabel}
@@ -44,6 +53,7 @@ const SelectBookButton: React.FC<{
 };
 
 const SelectBookCard: React.FC<SelectBookProps> = ({ book }) => {
+  const { t } = useTranslation();
   const { isLoading, toggleSelection } = useSelectBook();
   const { selected } = useUser();
   // Initial selection state is checked against the user's selected books
@@ -55,7 +65,7 @@ const SelectBookCard: React.FC<SelectBookProps> = ({ book }) => {
   };
 
   return (
-    <div aria-label="Favorite book selection">
+    <div aria-label={t("selectBookCard.ariaLabel")}>
       <SelectBookButton
         book={book}
         isSelected={isSelected}
