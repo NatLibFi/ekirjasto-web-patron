@@ -4,6 +4,10 @@
   "languageName.FI": "Suomi",
   "languageName.SV": "Ruotsi",
   "languageSelector": "Valitse sivun kieli",
+  "signOut.cancel": "",
+  "signOut.confirm": "",
+  "signOut.confirmationQuestion": "",
+  "signOut.signOut": "",
   "simplyELogo": "",
   "skipNavigation.skipToContent": ""
 }

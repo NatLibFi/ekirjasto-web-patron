@@ -4,6 +4,10 @@
   "languageName.FI": "Finska",
   "languageName.SV": "Svenska",
   "languageSelector": "Välj sidspråk",
+  "signOut.cancel": "",
+  "signOut.confirm": "",
+  "signOut.confirmationQuestion": "",
+  "signOut.signOut": "",
   "simplyELogo": "",
   "skipNavigation.skipToContent": ""
 }

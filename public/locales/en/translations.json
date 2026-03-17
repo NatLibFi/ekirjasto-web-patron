@@ -4,6 +4,10 @@
   "languageName.FI": "Finnish",
   "languageName.SV": "Swedish",
   "languageSelector": "Select page language",
+  "signOut.cancel": "Cancel",
+  "signOut.confirm": "Confirm Sign Out",
+  "signOut.confirmationQuestion": "Are you sure you want to sign out?",
+  "signOut.signOut": "Sign Out",
   "simplyELogo": "SimplyE Logo",
   "skipNavigation.skipToContent": "Skip to content"
 }
