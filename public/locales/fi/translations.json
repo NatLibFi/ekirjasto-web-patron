@@ -1,5 +1,10 @@
 {
   "hello": "Hei, käännökset!",
+  "lane.error": "",
+  "lane.scrollLeft": "",
+  "lane.scrollRight": "",
+  "lane.seeAll": "",
+  "lane.seeMore": "",
   "languageName.EN": "Englanti",
   "languageName.FI": "Suomi",
   "languageName.SV": "Ruotsi",

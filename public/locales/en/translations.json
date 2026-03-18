@@ -1,5 +1,10 @@
 {
   "hello": "Hello, translations!",
+  "lane.error": "There was an error displaying this lane. Please refresh and try again.",
+  "lane.scrollLeft": "scroll left",
+  "lane.scrollRight": "scroll right",
+  "lane.seeAll": "See All",
+  "lane.seeMore": "See More",
   "languageName.EN": "English",
   "languageName.FI": "Finnish",
   "languageName.SV": "Swedish",

@@ -1,5 +1,10 @@
 {
   "hello": "Hej, översättningar!",
+  "lane.error": "",
+  "lane.scrollLeft": "",
+  "lane.scrollRight": "",
+  "lane.seeAll": "",
+  "lane.seeMore": "",
   "languageName.EN": "Engelska",
   "languageName.FI": "Finska",
   "languageName.SV": "Svenska",
