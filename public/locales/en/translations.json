@@ -4,6 +4,8 @@
   "languageName.FI": "Finnish",
   "languageName.SV": "Swedish",
   "languageSelector": "Select page language",
+  "magazineIssuesByYear.noMagazines": "No issues available for this magazine.",
+  "magazineIssuesByYear.publisher": "Publisher",
   "magazineTitleGrid.noMagazinesAvailable": "No magazines available with the selected filters.",
   "myBooks.breadcrumb": "My Books",
   "myBooks.emptyFavorites": "Your favorite books will show up here when you have any selected.",
