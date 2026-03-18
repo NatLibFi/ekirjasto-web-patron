@@ -4,6 +4,7 @@
   "languageName.FI": "Finnish",
   "languageName.SV": "Swedish",
   "languageSelector": "Select page language",
+  "magazineGrid.noMagazinesAvailable": "No magazines available with the selected filters.",
   "magazineIssuesByYear.noMagazines": "No issues available for this magazine.",
   "magazineIssuesByYear.publisher": "Publisher",
   "magazineTitleGrid.noMagazinesAvailable": "No magazines available with the selected filters.",
