@@ -11,6 +11,7 @@ import PageTitle from "./PageTitle";
 import useUser from "components/context/UserContext";
 import { PageLoader } from "components/LoadingIndicator";
 import AuthProtectedRoute from "auth/AuthProtectedRoute";
+import { useTranslation } from "next-i18next";
 
 const availableUntil = (book: AnyBook) =>
   book.availability?.until ? new Date(book.availability.until) : "NaN";
@@ -40,6 +41,7 @@ function compareTitles(a: AnyBook, b: AnyBook): 0 | -1 | 1 {
 }
 
 export const MyBooks: React.FC = () => {
+  const { t } = useTranslation();
   const { loans, selected, isLoading } = useUser();
   const sortedBooks = loans ? sortBooksByLoanExpirationDate(loans) : [];
   const noBooks = sortedBooks.length === 0;
@@ -50,11 +52,11 @@ export const MyBooks: React.FC = () => {
     <AuthProtectedRoute>
       <div sx={{ flex: 1, pb: 4 }}>
         <Head>
-          <title>My Books</title>
+          <title>{t("myBooks.myBooksTitle")}</title>
         </Head>
 
-        <BreadcrumbBar currentLocation="My Books" />
-        <PageTitle>Loans and Holds</PageTitle>
+        <BreadcrumbBar currentLocation={t("myBooks.breadcrumb")} />
+        <PageTitle>{t("myBooks.loansAndHoldsTitle")}</PageTitle>
         {noBooks && isLoading ? (
           <PageLoader />
         ) : noBooks ? (
@@ -65,7 +67,7 @@ export const MyBooks: React.FC = () => {
       </div>
 
       <div sx={{ flex: 1, pb: 4 }}>
-        <PageTitle>Favorites</PageTitle>
+        <PageTitle>{t("myBooks.favoritesTitle")}</PageTitle>
         {noSelectedBooks && isLoading ? (
           <PageLoader />
         ) : noSelectedBooks ? (
@@ -101,6 +103,7 @@ const SelectedBooksContent: React.FC<{
 };
 
 const EmptyLoansAndHolds = () => {
+  const { t } = useTranslation();
   return (
     <>
       <div
@@ -112,15 +115,14 @@ const EmptyLoansAndHolds = () => {
           px: [3, 5]
         }}
       >
-        <H3>
-          Your books will show up here when you have any loaned or on hold.
-        </H3>
+        <H3>{t("myBooks.emptyLoansAndHolds")}</H3>
       </div>
     </>
   );
 };
 
 const EmptySelected = () => {
+  const { t } = useTranslation();
   return (
     <>
       <div
@@ -132,9 +134,7 @@ const EmptySelected = () => {
           px: [3, 5]
         }}
       >
-        <H3>
-          Your favorite books will show up here when you have any selected.
-        </H3>
+        <H3>{t("myBooks.emptyFavorites")}</H3>
       </div>
     </>
   );
