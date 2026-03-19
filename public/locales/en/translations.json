@@ -1,4 +1,5 @@
 {
+  "bookCover.coverOfBook": "Cover of book: ",
   "bookList.cancelling": "Cancelling...",
   "bookList.cancelReservation": "Cancel Reservation",
   "bookList.loading": "Loading ...",

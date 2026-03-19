@@ -6,6 +6,7 @@ import { AspectRatio } from "@theme-ui/components";
 import { MediumIcon } from "./MediumIndicator";
 import { AnyBook } from "interfaces";
 import LazyImage from "components/LazyImage";
+import { useTranslation } from "next-i18next";
 
 /**
  * This is meant to be a book cover. Primarily the image and styling,
@@ -19,6 +20,7 @@ const BookCover: React.FC<{
   className?: string;
   showMedium?: boolean;
 }> = ({ book, className, showMedium = false }) => {
+  const { t } = useTranslation();
   const [state, setState] = React.useState<ImageLoadState>("loading");
   const { imageUrl } = book;
 
@@ -35,7 +37,7 @@ const BookCover: React.FC<{
           height: "100%"
         }
       }}
-      aria-label={`Cover of book: ${book.title}`}
+      aria-label={t("bookCover.coverOfBook") + `${book.title}`}
       role="img"
     >
       <AspectRatio
@@ -54,7 +56,7 @@ const BookCover: React.FC<{
         <MediumIcon book={book} sx={{ height: "30%", fill: "ui.gray.dark" }} />
       </AspectRatio>
       <LazyImage
-        alt={`Cover of book: ${book.title}`}
+        alt={t("bookCover.coverOfBook") + `${book.title}`}
         src={imageUrl}
         onError={handleError}
         onLoad={handleLoad}
