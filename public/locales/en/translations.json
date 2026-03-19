@@ -1,4 +1,5 @@
 {
+  "collection.empty": "This collection is empty.",
   "errorBoundary.errorComponentDetail": "Something went wrong. Please refresh and try again. If the issue persists, contact your library support staff.",
   "externalLink.opensInNewTab": "Opens in a new tab",
   "footer.about": "About",
