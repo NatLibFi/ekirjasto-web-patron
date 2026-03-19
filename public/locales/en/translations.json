@@ -90,5 +90,8 @@
   "signOut.confirmationQuestion": "Are you sure you want to sign out?",
   "signOut.signOut": "Sign Out",
   "simplyELogo": "SimplyE Logo",
-  "skipNavigation.skipToContent": "Skip to content"
+  "skipNavigation.skipToContent": "Skip to content",
+  "storeBadges.altForPlayStoreImage": "Get it on Google Play",
+  "storeBadges.ariaLabelForAppStoreLink": "Download E-kirjasto on the Apple App Store",
+  "storeBadges.ariaLabelForPlayStoreLink": "Get E-kirjasto on the Google Play Store"
 }

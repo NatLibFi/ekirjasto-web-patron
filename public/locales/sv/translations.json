@@ -90,5 +90,10 @@
   "signOut.confirmationQuestion": "",
   "signOut.signOut": "",
   "simplyELogo": "",
-  "skipNavigation.skipToContent": ""
+  "skipNavigation.skipToContent": "",
+  "storeBadges.altForPlayStoreImage": "",
+  "storeBadges.ariaLabelForAndroidLink": "",
+  "storeBadges.ariaLabelForAppStoreLink": "",
+  "storeBadges.ariaLabelForiOSLink": "",
+  "storeBadges.ariaLabelForPlayStoreLink": ""
 }
