@@ -1,4 +1,5 @@
 {
+  "breadcrumbBar.currentLocation": "Current location: ",
   "cancelOrReturn.signIn": "You must be signed in.",
   "collection.empty": "This collection is empty.",
   "errorBoundary.errorComponentDetail": "Something went wrong. Please refresh and try again. If the issue persists, contact your library support staff.",
