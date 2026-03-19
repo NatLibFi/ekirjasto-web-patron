@@ -1,4 +1,11 @@
 {
+  "bookList.cancelling": "Cancelling...",
+  "bookList.cancelReservation": "Cancel Reservation",
+  "bookList.loading": "Loading ...",
+  "bookList.readMore": "Read more",
+  "bookList.return": "Return",
+  "bookList.returning": "Returning...",
+  "bookList.viewMore": "View more",
   "bookPasshprase.passphraseCopied": "Copied!",
   "bookPasshprase.passphraseCopy": "Copy",
   "bookPassphrase.ariaLabelForCopyButton": "Copy book passphrase",
