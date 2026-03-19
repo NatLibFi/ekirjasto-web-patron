@@ -1,4 +1,10 @@
 {
+  "header.ariaLabelForLibraryCatalogLink": "",
+  "header.labelForHelpButton": "",
+  "header.labelForMagazinesButton": "",
+  "header.labelForMagazinesPreviewButton": "",
+  "header.labelForMyBooksButton": "",
+  "header.labelForSignInButton": "",
   "hello": "Hei, käännökset!",
   "lane.error": "",
   "lane.scrollLeft": "",
