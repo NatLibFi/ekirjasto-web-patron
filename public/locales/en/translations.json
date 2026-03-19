@@ -1,4 +1,5 @@
 {
+  "externalLink.opensInNewTab": "Opens in a new tab",
   "footer.about": "About",
   "footer.accessibilityStatement": "Accessibility Statement",
   "footer.appDescription": "Our mobile app lets you browse, borrow and read from our whole collection of ebooks, audiobooks and magazines right on your phone!",
@@ -12,7 +13,7 @@
   "footer.municipalitiesParticipating": "Municipalities participating E-library",
   "footer.patronSupport": "Patron Support",
   "footer.privacyPolicy": "Privacy Policy",
-  "footer.termsOfUse": "Terms Of Use",
+  "footer.termsOfUse": "Terms of Use",
   "fulfillmentButton.downloading": "Downloading...",
   "fulfillmentButton.opening": "Opening...",
   "fulfillmentButton.read": "Read",
