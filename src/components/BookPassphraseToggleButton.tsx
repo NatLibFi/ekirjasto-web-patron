@@ -4,12 +4,9 @@
 // @ts-nocheck
 
 import { jsx } from "theme-ui";
+import { useTranslation } from "next-i18next";
 import Button from "components/Button";
 import React from "react";
-
-// define the alternating texts for the toggle button
-export const HIDE_PASSPHRASE_TEXT: string = "Hide passphrase";
-export const SHOW_PASSPHRASE_TEXT: string = "Show passphrase";
 
 // define props for the BookPassphraseToggleButton component
 // isVisible indicates if the passphrase card is visible
@@ -24,8 +21,13 @@ const BookPassphraseToggleButton: React.FC<BookPassphraseToggleButtonProps> = ({
   isVisible,
   onToggle
 }) => {
-  // change text based on if passhphrase is currently visible or not
-  const buttonText = isVisible ? HIDE_PASSPHRASE_TEXT : SHOW_PASSPHRASE_TEXT;
+  const { t } = useTranslation();
+
+  // change toggle button text based on
+  // if passhphrase is currently visible or not
+  const buttonText = isVisible
+    ? t("bookPassphrase.hidePassphrase")
+    : t("bookPassphrase.showPassphrase");
 
   // define the style for the toggle button
   const buttonStyle: React.CSSProperties = {

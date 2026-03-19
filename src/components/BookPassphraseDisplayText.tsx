@@ -5,10 +5,8 @@
 
 import { jsx } from "theme-ui";
 import { Text } from "components/Text";
+import { useTranslation } from "next-i18next";
 import React from "react";
-
-// define aria label for button
-export const PASSPHRASE_LABEL: string = "Book passphrase";
 
 // define props for the BookPassphraseDisplayText component
 interface BookPassphraseDisplayTextProps {
@@ -19,6 +17,8 @@ interface BookPassphraseDisplayTextProps {
 const BookPassphraseDisplayText: React.FC<BookPassphraseDisplayTextProps> = ({
   passphrase
 }) => {
+  const { t } = useTranslation();
+
   // define style for the Stack component
   // for example use monospace font
   const textStyle: React.CSSProperties = {
@@ -33,7 +33,7 @@ const BookPassphraseDisplayText: React.FC<BookPassphraseDisplayTextProps> = ({
   return (
     <Text
       sx={textStyle}
-      aria-label={PASSPHRASE_LABEL}
+      aria-label={t("bookPassphrase.ariaLabelForPassphrase")}
       data-testid="book-passphrase-display-text"
     >
       {passphrase}

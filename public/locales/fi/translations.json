@@ -1,4 +1,11 @@
 {
+  "bookPasshprase.passphraseCopied": "",
+  "bookPasshprase.passphraseCopy": "",
+  "bookPassphrase.ariaLabelForCopyButton": "",
+  "bookPassphrase.ariaLabelForPassphrase": "",
+  "bookPassphrase.hidePassphrase": "",
+  "bookPassphrase.instructionsText": "",
+  "bookPassphrase.showPassphrase": "",
   "bookStatus.availableToBorrow": "",
   "bookStatus.inTheApp": "",
   "bookStatus.readyToBorrow": "",

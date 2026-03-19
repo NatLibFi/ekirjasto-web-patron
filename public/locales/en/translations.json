@@ -1,4 +1,11 @@
 {
+  "bookPasshprase.passphraseCopied": "Copied!",
+  "bookPasshprase.passphraseCopy": "Copy",
+  "bookPassphrase.ariaLabelForCopyButton": "Copy book passphrase",
+  "bookPassphrase.ariaLabelForPassphrase": "Book passphrase",
+  "bookPassphrase.hidePassphrase": "Hide passphrase",
+  "bookPassphrase.instructionsText": "If you download the book, please copy the password below for your EPUB reader.",
+  "bookPassphrase.showPassphrase": "Show passphrase",
   "bookStatus.availableToBorrow": "Available to borrow",
   "bookStatus.inTheApp": "in the E-kirjasto App",
   "bookStatus.readyToBorrow": "Ready to Borrow",
