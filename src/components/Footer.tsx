@@ -12,11 +12,13 @@ import SvgPhone from "icons/Phone";
 import IosBadge from "./storeBadges/IosBadge";
 import GooglePlayBadge from "./storeBadges/GooglePlayBadge";
 import { APP_CONFIG } from "utils/env";
+import { useTranslation } from "next-i18next";
 
 const Footer: React.FC<{ className?: string }> = ({ className }) => {
   const library = useLibraryContext();
   const { privacyPolicy, tos, about } = library.libraryLinks;
   const title = library.catalogName;
+  const { t } = useTranslation();
 
   return (
     <footer
@@ -35,20 +37,22 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
           {privacyPolicy && (
             <ListItem>
               <FooterExternalLink href={privacyPolicy.href}>
-                Privacy Policy
+                {t("footer.privacyPolicy")}
               </FooterExternalLink>
             </ListItem>
           )}
           {tos && (
             <ListItem>
               <FooterExternalLink href={tos.href}>
-                Terms of Use
+                {t("footer.termsOfUse")}
               </FooterExternalLink>
             </ListItem>
           )}
           {about && (
             <ListItem>
-              <FooterExternalLink href={about.href}>About</FooterExternalLink>
+              <FooterExternalLink href={about.href}>
+                {t("footer.about")}{" "}
+              </FooterExternalLink>
             </ListItem>
           )}
           <ListItem>
@@ -57,13 +61,13 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
                 "https://www.kansalliskirjasto.fi/en/e-library/e-library-accessibility-statement"
               }
             >
-              Accessibility Statement
+              {t("footer.accessibilityStatement")}
             </FooterExternalLink>
           </ListItem>
         </FooterList>
       </div>
       <div sx={{ flex: "0 0 auto", mt: 5, mr: [3, 5] }}>
-        <H3 sx={{ mt: 0 }}>Patron Support</H3>
+        <H3 sx={{ mt: 0 }}>{t("footer.patronSupport")}</H3>
         <FooterList>
           <ListItem>
             <FooterExternalLink
@@ -71,7 +75,7 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
                 "https://www.kansalliskirjasto.fi/en/e-library/e-library-instructions"
               }
             >
-              Help Website
+              {t("footer.helpWebsite")}
             </FooterExternalLink>
           </ListItem>
           <ListItem>
@@ -80,7 +84,7 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
                 "https://www.kansalliskirjasto.fi/en/e-library/e-library-faq"
               }
             >
-              Frequently Asked Questions
+              {t("footer.faq")}
             </FooterExternalLink>
           </ListItem>
           <ListItem>
@@ -89,13 +93,13 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
                 "https://www.kansalliskirjasto.fi/en/e-library/magazines-available-e-library"
               }
             >
-              Magazines in E-library
+              {t("footer.magazinesInELibrary")}
             </FooterExternalLink>
           </ListItem>
         </FooterList>
       </div>
       <div sx={{ flex: "0 0 auto", mt: 5, mr: [3, 5] }}>
-        <H3 sx={{ mt: 0 }}>For Librarians</H3>
+        <H3 sx={{ mt: 0 }}>{t("footer.forLibrarians")}</H3>
         <FooterList>
           <ListItem>
             <FooterExternalLink
@@ -103,7 +107,7 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
                 "https://www.kansalliskirjasto.fi/en/e-library/municipalities-participating-e-library"
               }
             >
-              Municipalities participating E-library
+              {t("footer.municipalitiesParticipating")}
             </FooterExternalLink>
           </ListItem>
           <ListItem>
@@ -112,14 +116,14 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
                 "https://www.kansalliskirjasto.fi/en/e-library/e-library-collection-policy"
               }
             >
-              Collection Policy
+              {t("footer.collectionPolicy")}
             </FooterExternalLink>
           </ListItem>
           <ListItem>
             <FooterExternalLink
               href={"https://www.kiwi.fi/spaces/ekirjasto/overview"}
             >
-              More For Librarians
+              {t("footer.moreForLibrarians")}
             </FooterExternalLink>
           </ListItem>
         </FooterList>
@@ -130,22 +134,22 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
   );
 };
 
-const DownloadSimplyECallout = () => (
-  <div sx={{ maxWidth: 300, flex: "0 1 auto", mt: 5 }}>
-    <H3 sx={{ mt: 0, display: "flex", alignItems: "center" }}>
-      <SvgPhone sx={{ mr: 1 }} />
-      Download E-kirjasto
-    </H3>
-    <Text>
-      Our mobile app lets you browse, borrow and read from our whole collection
-      of ebooks, audiobooks and magazines right on your phone!
-    </Text>
-    <div sx={{ width: "75%", overflow: "hidden", ml: -3 }}>
-      <IosBadge sx={{ p: 3, pb: 0 }} />
-      <GooglePlayBadge />
+const DownloadSimplyECallout = () => {
+  const { t } = useTranslation();
+  return (
+    <div sx={{ maxWidth: 300, flex: "0 1 auto", mt: 5 }}>
+      <H3 sx={{ mt: 0, display: "flex", alignItems: "center" }}>
+        <SvgPhone sx={{ mr: 1 }} />
+        {t("footer.downloadEkirjasto")}
+      </H3>
+      <Text>{t("footer.appDescription")}</Text>
+      <div sx={{ width: "75%", overflow: "hidden", ml: -3 }}>
+        <IosBadge sx={{ p: 3, pb: 0 }} />
+        <GooglePlayBadge />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const FooterList = (props: React.ComponentProps<typeof List>) => (
   <List
