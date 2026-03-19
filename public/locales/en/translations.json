@@ -1,4 +1,7 @@
 {
+  "fulfillmentButton.downloading": "Downloading...",
+  "fulfillmentButton.opening": "Opening...",
+  "fulfillmentButton.read": "Read",
   "header.ariaLabelForLibraryCatalogLink": "Library catalog, back to homepage",
   "header.labelForHelpButton": "Help",
   "header.labelForMagazinesButton": "Magazines",
