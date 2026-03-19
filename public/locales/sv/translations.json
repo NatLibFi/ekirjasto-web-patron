@@ -1,4 +1,10 @@
 {
+  "bookStatus.availableToBorrow": "",
+  "bookStatus.inTheApp": "",
+  "bookStatus.readyToBorrow": "",
+  "bookStatus.reserved": "",
+  "bookStatus.unavailable": "",
+  "bookStatus.unsupported": "",
   "breadcrumbBar.currentLocation": "",
   "cancelOrReturn.signIn": "",
   "collection.empty": "",

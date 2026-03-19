@@ -1,4 +1,10 @@
 {
+  "bookStatus.availableToBorrow": "Available to borrow",
+  "bookStatus.inTheApp": "in the E-kirjasto App",
+  "bookStatus.readyToBorrow": "Ready to Borrow",
+  "bookStatus.reserved": "Reserved",
+  "bookStatus.unavailable": "Unavailable",
+  "bookStatus.unsupported": "Unsupported",
   "breadcrumbBar.currentLocation": "Current location: ",
   "cancelOrReturn.signIn": "You must be signed in.",
   "collection.empty": "This collection is empty.",

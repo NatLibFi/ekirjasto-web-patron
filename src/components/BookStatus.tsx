@@ -9,29 +9,31 @@ import { Text } from "components/Text";
 import { shouldRedirectToCompanionApp } from "utils/fulfill";
 import SvgPhone from "icons/Phone";
 import { APP_CONFIG } from "utils/env";
+import { useTranslation } from "next-i18next";
 
 const BookStatus: React.FC<{ book: AnyBook }> = ({ book }) => {
   const { status } = book;
+  const { t } = useTranslation();
 
   const redirectUser = bookIsFulfillable(book)
     ? shouldRedirectToCompanionApp(book.fulfillmentLinks)
     : false;
 
   const companionApp =
-    APP_CONFIG.companionApp === "E-kirjasto" ? "in the E-kirjasto App" : "";
+    APP_CONFIG.companionApp === "E-kirjasto" ? t("bookStatus.inTheApp") : "";
 
   const str =
     status === "borrowable"
-      ? "Available to borrow"
+      ? t("bookStatus.availableToBorrow")
       : status === "reservable"
-      ? "Unavailable"
+      ? t("bookStatus.unavailable")
       : status === "reserved"
-      ? "Reserved"
+      ? t("bookStatus.reserved")
       : status === "on-hold"
-      ? "Ready to Borrow"
+      ? t("bookStatus.readyToBorrow")
       : status === "fulfillable"
       ? `Ready to Read${redirectUser ? ` ${companionApp}` : ""}!`
-      : "Unsupported";
+      : t("bookStatus.unsupported");
 
   return (
     <div>
