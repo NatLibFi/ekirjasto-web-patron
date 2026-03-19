@@ -9,6 +9,7 @@ import { truncateString } from "../utils/string";
 import { Text, H3 } from "./Text";
 import { AnyBook } from "interfaces";
 import { APP_CONFIG } from "utils/env";
+import { useTranslation } from "next-i18next";
 
 export const BOOK_WIDTH = 187;
 export const BOOK_HEIGHT = 365;
@@ -19,6 +20,7 @@ const BookCard = React.forwardRef<
   HTMLLIElement,
   { book: AnyBook; className?: string }
 >(({ book, className }, ref) => {
+  const { t } = useTranslation();
   const authors = getAuthors(book, 2);
 
   // if the book url is undefined, there is no sense displaying it.
@@ -38,7 +40,7 @@ const BookCard = React.forwardRef<
     >
       <Link
         bookUrl={book.url}
-        aria-label={`View ${book.title}`}
+        aria-label={t("bookCard.view") + `${book.title}`}
         sx={{ "&:hover": { textDecoration: "none" } }}
       >
         <BookCover book={book} showMedium={APP_CONFIG.showMedium} />
