@@ -32,11 +32,8 @@ export default function Logout(): React.ReactElement {
 
   // Get link for logout
   const authenticationLogoutHref = method.links?.find(
-    link => link.rel === "api"
+    link => link.rel === "logout"
   )?.href;
-
-  //Create link with redirect
-  const logoutUrl = `${authenticationLogoutHref}/v1/auth/logout/start?locale=en`;
 
   const [ekirjastoToken, setEkirjastoToken] = useState("");
 
@@ -49,7 +46,7 @@ export default function Logout(): React.ReactElement {
   });
 
   React.useEffect(() => {
-    if (ekirjastoToken && logoutUrl) {
+    if (ekirjastoToken && authenticationLogoutHref) {
       Cookie.set("SESSION", ekirjastoToken, {
         path: "/",
         domain: ".e-kirjasto.fi",
@@ -58,9 +55,15 @@ export default function Logout(): React.ReactElement {
       });
       //document.cookie = `SESSION=${ekirjastoToken}; path=/;  domain: ".e-kirjasto.fi", SameSite=None; Secure`;
       signOut();
-      window.location.href = logoutUrl;
+      window.location.href = authenticationLogoutHref;
     }
-  }, [token, signOut, logoutUrl, ekirjastoTokenHref, ekirjastoToken]);
+  }, [
+    token,
+    signOut,
+    authenticationLogoutHref,
+    ekirjastoTokenHref,
+    ekirjastoToken
+  ]);
 
   if (supportedAuthMethods.length === 0) {
     return <NoAuth />;
