@@ -29,32 +29,32 @@ const Feedback: React.FC = () => {
     };
   }, [library.feedbackUrl]);
 
+  // Fixed-height layout where the iframe scrolls.
   return (
     <div
       aria-label="Feedback Form"
       style={{
-        width: "100%",
-        height: "100%",
-        border: "none",
         display: "flex",
         flexDirection: "column",
-        flex: 1,
-        minHeight: 0
+        width: "100%",
+        flex: "1 1 auto",
+        minHeight: 0,
+        overflow: "hidden",
+        position: "relative"
       }}
     >
       <iframe
         ref={iframeRef}
-        src="https://lib.e-kirjasto.fi/palaute/"
+        // "http://127.0.0.1:5000/palaute/" locally
         src={library.feedbackUrl || undefined}
         title="Feedback"
-        width="90%"
-        height="100%"
         style={{
-          flex: 1,
-          minHeight: 0,
-          display: "block",
-          margin: "0 auto",
-          borderWidth: 0
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          border: 0,
+          flex: 1
         }}
         allowFullScreen
       />
