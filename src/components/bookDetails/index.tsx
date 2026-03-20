@@ -27,6 +27,7 @@ import Summary from "./Summary";
 import useBreadcrumbContext from "components/context/BreadcrumbContext";
 import useSWR from "swr";
 import useUser from "components/context/UserContext";
+import { useTranslation } from "next-i18next";
 
 export const BookDetails: React.FC = () => {
   const { query } = useRouter();
@@ -36,6 +37,7 @@ export const BookDetails: React.FC = () => {
   const { storedBreadcrumbs } = useBreadcrumbContext();
   // use the loans version if it exists
   const book = loans?.find(loanedBook => data?.id === loanedBook.id) ?? data;
+  const { t } = useTranslation();
 
   if (error) {
     // just throw the error and let it be handled by an error boundary
@@ -45,7 +47,7 @@ export const BookDetails: React.FC = () => {
   if (!book) return <PageLoader />;
 
   return (
-    <section aria-label="Book details">
+    <section aria-label={t("bookDetails.ariaLabelForBookDetails")}>
       <Head>
         <title>{book.title}</title>
       </Head>
@@ -80,7 +82,7 @@ export const BookDetails: React.FC = () => {
               display: "flex",
               flexDirection: "column"
             }}
-            aria-label="Book info"
+            aria-label={t("bookDetails.ariaLabelForBookInfo")}
           >
             <H1 sx={{ m: 0 }}>
               {book.title}
@@ -88,8 +90,7 @@ export const BookDetails: React.FC = () => {
             </H1>
 
             <Text variant="text.callouts.regular">
-              by&nbsp;
-              {getAuthors(book)?.join(", ") ?? "Unknown"}
+              {getAuthors(book)?.join(", ") ?? t("bookDetails.unknownAuthor")}
             </Text>
 
             {APP_CONFIG.showMedium && <MediumIndicator book={book} />}
@@ -103,21 +104,30 @@ export const BookDetails: React.FC = () => {
             <Summary book={book} sx={{ mt: 3 }} />
 
             <div sx={{ mt: 2 }}>
-              <DetailField heading="Publisher" details={book.publisher} />
-              <DetailField heading="Published" details={book.published} />
               <DetailField
-                heading="Categories"
+                heading={t("bookDetails.headingForPublisher")}
+                details={book.publisher}
+              />
+              <DetailField
+                heading={t("bookDetails.headingForPublished")}
+                details={book.published}
+              />
+              <DetailField
+                heading={t("bookDetails.headingForCategories")}
                 details={book.categories?.join(", ")}
               />
               <DetailField
-                heading="Audience"
+                heading={t("bookDetails.headingForAudience")}
                 details={book.audience?.join(", ")}
               />
               <DetailField
-                heading="Age range"
+                heading={t("bookDetails.headingForAgeRange")}
                 details={book.ageRange?.join(", ")}
               />
-              <DetailField heading="Book format" details={book.format} />
+              <DetailField
+                heading={t("bookDetails.headingForBookFormat")}
+                details={book.format}
+              />
               <Accessibility book={book} sx={{ mt: 3 }} />
             </div>
 
