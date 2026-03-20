@@ -8,7 +8,11 @@ import * as React from "react";
 import useSWR from "swr";
 import { BasicTokenAuthType, EkirjastoAuthType } from "types/opds1";
 import { addHours, isBefore } from "date-fns";
-import { fetchEAuthToken, fetchEkirjastoToken, logoutEkirjastoUser } from "auth/ekirjastoFetch";
+import {
+  fetchEAuthToken,
+  fetchEkirjastoToken,
+  logoutEkirjastoUser
+} from "auth/ekirjastoFetch";
 import Cookie from "js-cookie";
 import { LODOUT_COOKIE_PARAM, EKIRJASTO_DOMAIN } from "utils/constants";
 
