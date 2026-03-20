@@ -71,7 +71,8 @@ export const MAGAZINE_CONFIG = {
   // Default iframe permissions
   IFRAME_ALLOW: "fullscreen; clipboard-read; clipboard-write",
 
-  // Default iframe sandbox permissions
+  // The embedded reader needs to redirect the host page in Safari/WebKit.
+  // `allow-top-navigation-by-user-activation` is not sufficient there.
   IFRAME_SANDBOX:
-    "allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
+    "allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation"
 } as const;

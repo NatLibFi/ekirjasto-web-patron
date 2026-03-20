@@ -156,10 +156,12 @@ export interface Link {
  */
 export const CatalogRootRel = "start";
 export const ShelfLinkRel = "http://opds-spec.org/shelf";
+export const SelectedLinkRel = "http://opds-spec.org/shelf/selected_books";
 type AuthDocLinkRelations =
   | typeof SelfRel
   | typeof CatalogRootRel
   | typeof ShelfLinkRel
+  | typeof SelectedLinkRel
   | "navigation"
   | "logo"
   | "register"

@@ -8,6 +8,7 @@ import {
   OPDSFacetLink,
   OPDSLink,
   SearchLink,
+  AlternateLink,
   CompleteEntryLink,
   OPDSCatalogRootLink,
   OPDSAcquisitionLink,
@@ -36,7 +37,6 @@ import { getAppSupportLevel } from "utils/fulfill";
 import { TrackOpenBookRel } from "types/opds1";
 import DOMPurify from "dompurify";
 import { bookIsAudiobook } from "utils/book";
-
 /**
  * Parses OPDS 1.x Feed or Entry into a Collection or Book
  */
@@ -183,6 +183,23 @@ function buildFulfillmentLink(feedUrl: string) {
 function findRevokeUrl(links: OPDSLink[]) {
   return links.find(link => link.rel === OPDS1.RevokeLinkRel)?.href ?? null;
 }
+// creates the url for selecting a book from the alternate link
+function createSelectBookUrl(links: OPDSLink[], feedUrl: string) {
+  const alternateLink = links.find(link => link instanceof AlternateLink);
+  if (alternateLink) {
+    return resolve(feedUrl, alternateLink.href + "/select_book");
+  }
+  return null;
+}
+
+// creates the url for unselecting a book from the alternate link
+function createUnselectBookUrl(links: OPDSLink[], feedUrl: string) {
+  const alternateLink = links.find(link => link instanceof AlternateLink);
+  if (alternateLink) {
+    return resolve(feedUrl, alternateLink.href + "/unselect_book");
+  }
+  return null;
+}
 
 /**
  * Converters
@@ -282,6 +299,10 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
 
   const revokeUrl = findRevokeUrl(entry.links);
 
+  const selectBookUrl = createSelectBookUrl(entry.links, feedUrl);
+
+  const unSelectBookUrl = createUnselectBookUrl(entry.links, feedUrl);
+
   const trackOpenBookLink = entry.links.find(isTrackOpenBookLink);
 
   const bibframeTags = entryToBibframeData(entry);
@@ -317,6 +338,8 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
     url: detailUrl,
     relatedUrl: relatedLink?.href ?? null,
     trackOpenBookUrl: trackOpenBookLink?.href ?? null,
+    selectBookUrl: selectBookUrl,
+    unselectBookUrl: unSelectBookUrl,
     format: format,
     raw: entry.unparsed
   };

@@ -44,7 +44,8 @@ export async function fetchEkirjastoToken(
   const response = await fetchWithHeaders(url, token, {}, "GET");
   const json = await response.json();
 
-  if (!response.ok) {
+  //If we get a 401, refresh is going to happen so we don't want to throw an error
+  if (!response.ok && response.status !== 401) {
     throw new ServerError(url, response.status, json);
   }
 

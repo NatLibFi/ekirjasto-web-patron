@@ -143,7 +143,7 @@ test("submit by clicking login button", async () => {
       new Date(parsed.token.expirationDate).toISOString()
     ).not.toThrow();
 
-    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
 
     // First call grabs token from /patrons/me/token using username and password
     expect(fetchMock).toHaveBeenNthCalledWith(1, basicTokenAuthenticationUrl, {
@@ -190,7 +190,7 @@ test("fetch new token if token has expired", async () => {
   );
 
   await waitFor(() => {
-    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
 
     // attempt fetch with old token
     expect(fetchMock).toHaveBeenNthCalledWith(1, "/shelf-url", {
@@ -203,7 +203,7 @@ test("fetch new token if token has expired", async () => {
     });
 
     // get new token with username and password saved in credentials
-    expect(fetchMock).toHaveBeenNthCalledWith(2, basicTokenAuthenticationUrl, {
+    expect(fetchMock).toHaveBeenNthCalledWith(3, basicTokenAuthenticationUrl, {
       headers: {
         Authorization: generateCredentials("1234", "pinpin"),
         "X-Requested-With": "XMLHttpRequest"

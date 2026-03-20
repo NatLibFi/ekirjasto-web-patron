@@ -130,6 +130,7 @@ export interface LibraryData {
   libraryLinks: LibraryLinks;
   authMethods: AppAuthMethod[];
   shelfUrl: string | null;
+  selectedUrl: string | null;
 }
 
 /**
@@ -203,6 +204,8 @@ export type Book<Status = EmptyObject> = Readonly<
     raw?: any;
     format?: BookFormat;
     trackOpenBookUrl: string | null;
+    selectBookUrl: string | null;
+    unselectBookUrl: string | null;
   }
 >;
 

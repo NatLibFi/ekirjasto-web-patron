@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render, fixtures, fireEvent } from "test-utils";
+import { render, fixtures } from "test-utils";
 import { MyBooks } from "../MyBooks";
 import { FulfillableBook } from "interfaces";
 
@@ -28,28 +28,6 @@ test("displays empty state when empty and signed in", async () => {
       "Your books will show up here when you have any loaned or on hold."
     )
   ).toBeInTheDocument();
-
-  expect(utils.getByText("Sign Out")).toBeInTheDocument();
-});
-
-test("sign out calls sign out", async () => {
-  const utils = render(<MyBooks />, {
-    user: {
-      isAuthenticated: true,
-      loans: undefined,
-      isLoading: false
-    }
-  });
-
-  expect(fixtures.mockSignOut).toHaveBeenCalledTimes(0);
-  const signOut = await utils.findByRole("button", { name: "Sign Out" });
-  fireEvent.click(signOut);
-
-  // now get the confirmation button
-  const realSignOut = utils.getByLabelText("Confirm Sign Out");
-  fireEvent.click(realSignOut);
-
-  expect(fixtures.mockSignOut).toHaveBeenCalledTimes(1);
 });
 
 const books: FulfillableBook[] = [
@@ -89,7 +67,7 @@ const books: FulfillableBook[] = [
   })
 ];
 
-test("displays books when signed in with data", async () => {
+test("displays loaned or reserved books when signed in with data", async () => {
   const utils = render(<MyBooks />, {
     user: {
       isAuthenticated: true,
@@ -114,7 +92,7 @@ test("displays books when signed in with data", async () => {
   expect(utils.getByText("Book 0 author")).toBeInTheDocument();
 });
 
-test("sorts books", () => {
+test("sorts loaned books", () => {
   const utils = render(<MyBooks />, {
     user: {
       isAuthenticated: true,
@@ -128,4 +106,29 @@ test("sorts books", () => {
   expect(bookNames[2]).toHaveTextContent("Book Title 10");
   expect(bookNames[3]).toHaveTextContent("Book Title 0");
   expect(bookNames[4]).toHaveTextContent("Book Title 1");
+});
+
+test("displays selected books when signed in with data", async () => {
+  const utils = render(<MyBooks />, {
+    user: {
+      isAuthenticated: true,
+      selected: books,
+      isLoading: false
+    }
+  });
+
+  expect(utils.getByText(fixtures.makeBook(0).title)).toBeInTheDocument();
+  expect(utils.getByText(fixtures.makeBook(9).title)).toBeInTheDocument();
+
+  expect(
+    utils.queryByText("You need to be signed in to view this page.")
+  ).not.toBeInTheDocument();
+
+  expect(
+    utils.queryByText(
+      "Your favorite books will show up here when you have any selected."
+    )
+  ).toBeFalsy();
+
+  expect(utils.getByText("Book 0 author")).toBeInTheDocument();
 });

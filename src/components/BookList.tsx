@@ -28,10 +28,10 @@ import {
   getFulfillmentFromLink,
   shouldRedirectToCompanionApp
 } from "utils/fulfill";
-import { ArrowForward } from "icons";
 import BookStatus from "components/BookStatus";
 import Link from "./Link";
 import { APP_CONFIG } from "utils/env";
+import SelectBookCard from "./SelectBookCard";
 
 const ListLoadingIndicator = () => (
   <div
@@ -171,6 +171,7 @@ export const BookListItem: React.FC<{
 
           <BookStatus book={book} />
           <BookListCTA book={book} />
+          <SelectBookCard book={book} />
           <Description
             book={book}
             sx={{ display: ["none", "none", "block"] }}
@@ -257,11 +258,7 @@ const BookListCTA: React.FC<{ book: AnyBook }> = ({ book }) => {
             book={book}
             isPrimaryAction
           />
-        ) : (
-          <NavButton variant="link" bookUrl={book.url} iconRight={ArrowForward}>
-            View Book Details
-          </NavButton>
-        )}
+        ) : null}
       </>
     );
   }
