@@ -4,7 +4,7 @@ import { jsx } from "theme-ui";
 import * as React from "react";
 import { MediumIcon } from "components/MediumIndicator";
 import { AnyBook } from "interfaces";
-import { availabilityString, bookIsFulfillable } from "utils/book";
+import { bookIsFulfillable, getAvailabilityString } from "utils/book";
 import { Text } from "components/Text";
 import { shouldRedirectToCompanionApp } from "utils/fulfill";
 import SvgPhone from "icons/Phone";
@@ -19,8 +19,11 @@ const BookStatus: React.FC<{ book: AnyBook }> = ({ book }) => {
     ? shouldRedirectToCompanionApp(book.fulfillmentLinks)
     : false;
 
-  const companionApp =
-    APP_CONFIG.companionApp === "E-kirjasto" ? t("bookStatus.inTheApp") : "";
+  const companionAppPart = redirectUser
+    ? ` ${
+        APP_CONFIG.companionApp === "E-kirjasto" ? t("bookStatus.inTheApp") : ""
+      }`
+    : "";
 
   const str =
     status === "borrowable"
@@ -32,7 +35,7 @@ const BookStatus: React.FC<{ book: AnyBook }> = ({ book }) => {
       : status === "on-hold"
       ? t("bookStatus.readyToBorrow")
       : status === "fulfillable"
-      ? `Ready to Read${redirectUser ? ` ${companionApp}` : ""}!`
+      ? t("bookStatus.readyToRead", { companionAppPart })
       : t("bookStatus.unsupported");
 
   return (
@@ -47,20 +50,21 @@ const BookStatus: React.FC<{ book: AnyBook }> = ({ book }) => {
           {str}
         </Text>
       </div>
-      <AvailabilityString book={book} />
+      <Availability book={book} />
     </div>
   );
 };
 
-const AvailabilityString: React.FC<{ book: AnyBook }> = ({ book }) => {
-  const str = availabilityString(book);
-  if (!str) return null;
+const Availability: React.FC<{ book: AnyBook }> = ({ book }) => {
+  const { t } = useTranslation();
+  const availabilityString = getAvailabilityString(book, t);
+
   return (
     <Text
       variant="text.body.italic"
       sx={{ fontSize: "-1", color: "ui.gray.dark", my: 1 }}
     >
-      {str}
+      {availabilityString}
     </Text>
   );
 };

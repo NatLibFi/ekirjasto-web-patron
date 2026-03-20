@@ -49,7 +49,13 @@ const BookCard = React.forwardRef<
           {truncateString(book.title, twoLines, false)}
         </H3>
         <Text sx={{ fontSize: -1 }}>
-          {truncateString(authors.join(", "), twoLines, false)}
+          {truncateString(
+            authors && authors.length > 0
+              ? authors.join(", ")
+              : t("bookCard.unknownAuthors"),
+            twoLines,
+            false
+          )}
         </Text>
       </Link>
     </li>

@@ -125,7 +125,7 @@ describe("OnHoldBook", () => {
       availability: { status: "ready" }
     });
     setup(<FulfillmentCard book={withoutCopies} />);
-    expect(screen.getByText("You have this book on hold."));
+    expect(screen.getByText("You have this book on hold"));
   });
 });
 

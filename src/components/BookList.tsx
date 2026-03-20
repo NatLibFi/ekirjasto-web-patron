@@ -9,7 +9,7 @@ import {
   bookIsReservable,
   bookIsReserved,
   bookIsOnHold,
-  getAuthorsString
+  getAuthors
 } from "../utils/book";
 import Lane from "./Lane";
 import Button, { NavButton } from "./Button";
@@ -32,7 +32,7 @@ import BookStatus from "components/BookStatus";
 import Link from "./Link";
 import { APP_CONFIG } from "utils/env";
 import SelectBookCard from "./SelectBookCard";
-import { useTranslation } from "next-i18next";
+import { useTranslation, TFunction } from "next-i18next";
 
 const ListLoadingIndicator = () => {
   const { t } = useTranslation();
@@ -125,9 +125,7 @@ export const BookListItem: React.FC<{
   // if the book exists in loans, use that version
   const loanedBook = loans?.find(loan => loan.id === collectionBook.id);
   const book = loanedBook ?? collectionBook;
-
-  // uses contributors if there are no authors
-  const authors = getAuthorsString(book);
+  const { t } = useTranslation();
 
   return (
     <li
@@ -172,7 +170,7 @@ export const BookListItem: React.FC<{
               </Text>
             )}
             <Text aria-label="Authors" sx={{ display: "block" }}>
-              {authors}
+              {limitedAuthorsList(book, t)}
             </Text>
           </div>
 
@@ -286,3 +284,26 @@ export const LanesView: React.FC<{ lanes: LaneData[] }> = ({ lanes }) => {
     </ul>
   );
 };
+
+function limitedAuthorsList(book: AnyBook, t: TFunction): string {
+  const { authors } = book;
+
+  // return a placeholder if authors are not defined
+  if (!authors) return t("bookList.unknownAuthor");
+
+  // get the names of the first two authors
+  const limitedAuthorsList = getAuthors(book, 2);
+
+  // count how many additional authors there are after the first two
+  const additionalAuthorCount = authors.length - 2;
+
+  // if there are more than two authors, concatenate string telling how many more
+  if (additionalAuthorCount > 0) {
+    limitedAuthorsList.push(
+      t("bookList.moreAuthors", { additionalAuthorCount })
+    );
+  }
+
+  // return the authors' names as a comma-separated string
+  return limitedAuthorsList.join(", ");
+}
