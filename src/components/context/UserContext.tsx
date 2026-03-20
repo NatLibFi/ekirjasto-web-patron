@@ -10,6 +10,7 @@ import { BasicTokenAuthType, EkirjastoAuthType } from "types/opds1";
 import { addHours, isBefore } from "date-fns";
 import { fetchEkirjastoToken, logoutEkirjastoUser } from "auth/ekirjastoFetch";
 import Cookie from "js-cookie";
+import { LODOUT_COOKIE_PARAM, EKIRJASTO_DOMAIN } from "utils/constants";
 
 type Status = "authenticated" | "loading" | "unauthenticated";
 export type UserState = {
@@ -154,14 +155,18 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     logoutUrl: string
   ) {
     const ekirjastoToken = getEkirjastoToken(token, logoutTokenUrl);
-    Cookie.set("SESSION", ekirjastoToken, {
+    Cookie.set(LODOUT_COOKIE_PARAM, ekirjastoToken, {
       path: "/",
-      domain: ".e-kirjasto.fi",
+      domain: EKIRJASTO_DOMAIN,
       sameSite: "None",
       secure: true
     });
-    logoutEkirjastoUser(logoutUrl);
-    signOut();
+    logoutEkirjastoUser(logoutUrl).then(response => {
+      if (response.status === 200) {
+        // Perform local logout actions only if logout was succesful on server
+        signOut();
+      }
+    });
   }
 
   function signOut() {

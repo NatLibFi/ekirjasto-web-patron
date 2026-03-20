@@ -60,11 +60,14 @@ export async function logoutEkirjastoUser(url: string | undefined) {
   }
 
   const response = await fetchWithHeaders(url, undefined, {}, "GET");
-  const json = await response.json();
 
   if (!response.ok) {
-    throw new ServerError(url, response.status, json);
+    throw new ServerError(url, response.status, {
+      detail: "Logout failed on server",
+      title: "Logout failed",
+      status: response.status
+    });
   }
 
-  return json;
+  return response;
 }
