@@ -1,11 +1,9 @@
-import React, { useRef } from "react";
-import useBreadcrumbContext from "components/context/BreadcrumbContext";
-import BreadcrumbBar from "./BreadcrumbBar";
+import React, { useEffect, useRef } from "react";
+import useLibraryContext from "./context/LibraryContext";
 
 const Feedback: React.FC = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  const { storedBreadcrumbs } = useBreadcrumbContext();
 
   return (
     <div
@@ -20,10 +18,6 @@ const Feedback: React.FC = () => {
         minHeight: 0
       }}
     >
-      <BreadcrumbBar
-        breadcrumbs={storedBreadcrumbs}
-        currentLocation="Feedback"
-      />
       <iframe
         ref={iframeRef}
         src="https://lib.e-kirjasto.fi/palaute/"
