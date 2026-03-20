@@ -199,7 +199,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       sameSite: "None",
       secure: true
     });
-    logoutEkirjastoUser(logoutUrl)
+    logoutEkirjastoUser(logoutUrl);
     signOut();
   }
 
