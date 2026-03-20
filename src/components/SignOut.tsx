@@ -7,6 +7,9 @@ import { useDialogStore, DialogDisclosure } from "@ariakit/react/dialog";
 import Button from "./Button";
 import Stack from "./Stack";
 import useUser from "components/context/UserContext";
+import useLibraryContext from "./context/LibraryContext";
+import { isSupportedAuthType } from "auth/AuthenticationHandler";
+import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
 
 interface SignOutProps {
   color?: string;
@@ -16,9 +19,34 @@ export const SignOut: React.FC<SignOutProps> = ({
   color = "ui.black"
 }: SignOutProps) => {
   const dialog = useDialogStore();
-  const { signOut } = useUser();
+  const { authMethods } = useLibraryContext();
+  const { token, signOut, ekirjastoSignOut } = useUser();
+
+  const supportedAuthMethods = authMethods.filter(m =>
+    isSupportedAuthType(m.type)
+  );
+
+  const method = supportedAuthMethods.find(
+    method => method.type === EKIRJASTO_AUTH_TYPE
+  );
+
   function signOutAndClose() {
-    signOut();
+    if (method) {
+      //Get links that are needec for successful ekirjasto logout
+      const ekirjastoTokenHref = method.links?.find(
+        link => link.rel === "ekirjasto_token"
+      )?.href;
+
+      const authenticationLogoutHref = method.links?.find(
+        link => link.rel === "logout"
+      )?.href;
+
+      //Run logout in he background
+      ekirjastoSignOut(ekirjastoTokenHref, token!, authenticationLogoutHref!);
+    } else {
+      signOut();
+    }
+
     dialog.hide();
   }
   return (
