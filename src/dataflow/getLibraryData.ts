@@ -88,6 +88,8 @@ export function buildLibraryData(
   const shelfUrl = getShelfUrl(authDoc);
   const selectedUrl = getSelectedUrl(authDoc);
   const catalogUrl = getCatalogUrl(authDoc);
+  const feedbackUrl = authDoc.links?.find(link => link.rel === "feedback")
+    ?.href;
   return {
     slug: librarySlug,
     catalogUrl,
@@ -104,6 +106,7 @@ export function buildLibraryData(
         : null,
     headerLinks,
     libraryLinks,
+    feedbackUrl: feedbackUrl ?? null,
     authMethods
   };
 }
