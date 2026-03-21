@@ -4,7 +4,7 @@
 // @ts-nocheck
 import { APP_CONFIG } from "utils/env";
 import { fetchBook } from "dataflow/opds1/fetch";
-import { getAuthors } from "utils/book";
+import { getAuthors, getSubtitle } from "utils/book";
 import { H1, Text } from "components/Text";
 import { jsx } from "theme-ui";
 import { PageLoader } from "../LoadingIndicator";
@@ -37,6 +37,7 @@ export const BookDetails: React.FC = () => {
   const { storedBreadcrumbs } = useBreadcrumbContext();
   // use the loans version if it exists
   const book = loans?.find(loanedBook => data?.id === loanedBook.id) ?? data;
+  const subtitle = getSubtitle(book);
   const { t } = useTranslation();
 
   if (error) {
@@ -86,7 +87,7 @@ export const BookDetails: React.FC = () => {
           >
             <H1 sx={{ m: 0 }}>
               {book.title}
-              {book.subtitle && `: ${book.subtitle}`}
+              {subtitle && `: ${subtitle}`}
             </H1>
 
             <Text variant="text.callouts.regular">

@@ -144,6 +144,14 @@ function getLoanExpiryString(expiryDateString: string, t: TFunction): string {
   return t("book.differenceInDays", { differenceInDays });
 }
 
+export function getSubtitle(book: AnyBook): string | null {
+  const subtitle = book?.subtitle?.trim();
+  if (!subtitle) return null;
+  if (subtitle.length === 0) return null;
+  if (subtitle.toLowerCase() === "none") return null; // check for backend odd stuff
+  return subtitle;
+}
+
 export function queueString(book: AnyBook) {
   const holds = book.holds?.total;
   return typeof holds === "number"

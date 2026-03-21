@@ -9,7 +9,8 @@ import {
   bookIsReservable,
   bookIsReserved,
   bookIsOnHold,
-  getAuthors
+  getAuthors,
+  getSubtitle
 } from "../utils/book";
 import Lane from "./Lane";
 import Button, { NavButton } from "./Button";
@@ -125,6 +126,7 @@ export const BookListItem: React.FC<{
   // if the book exists in loans, use that version
   const loanedBook = loans?.find(loan => loan.id === collectionBook.id);
   const book = loanedBook ?? collectionBook;
+  const subtitle = getSubtitle(book);
   const { t } = useTranslation();
 
   return (
@@ -164,9 +166,9 @@ export const BookListItem: React.FC<{
                 {truncateString(book.title, 50)}
               </Link>
             </H2>
-            {book.subtitle && (
+            {subtitle && (
               <Text variant="callout" aria-label="Subtitle">
-                , {truncateString(book.subtitle, 50)}
+                , {truncateString(subtitle, 50)}
               </Text>
             )}
             <Text aria-label="Authors" sx={{ display: "block" }}>
