@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import extractParam from "dataflow/utils";
 import { OPDS1 } from "interfaces";
 import { PageLoader } from "components/LoadingIndicator";
+import { useTranslation } from "next-i18next";
 
 const ErrorComponent: React.FC<{ info?: OPDS1.ProblemDocument }> = ({
   info
@@ -17,6 +18,7 @@ const ErrorComponent: React.FC<{ info?: OPDS1.ProblemDocument }> = ({
 
   const router = useRouter();
   const library = extractParam(router.query, "library");
+  const { t } = useTranslation();
 
   return (
     //It isn't necessary to show an error page for 401 (Unauthorized) errors since the user will be redirected to the login page
@@ -31,12 +33,12 @@ const ErrorComponent: React.FC<{ info?: OPDS1.ProblemDocument }> = ({
           }}
         >
           <H1>
-            {status} Error: {title}
+            {status} {t("error.error")}: {t(title)}
           </H1>
           <p>
-            {detail && `${detail}`} <br />
+            {detail && `${t(detail)}`} <br />
           </p>
-          <Link href={`/${library}`}>Return Home</Link>
+          <Link href={`/${library}`}>{t("error.returnHome")}</Link>
         </div>
       )}
     </>
