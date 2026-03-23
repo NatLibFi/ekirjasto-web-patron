@@ -38,7 +38,7 @@ export const SignOut: React.FC<SignOutProps> = ({
     if (method) {
       push(getLogoutUrl());
     } else {
-      signOut()
+      signOut();
     }
     dialog.hide();
   }
