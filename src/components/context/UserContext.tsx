@@ -14,7 +14,7 @@ import {
   logoutEkirjastoUser
 } from "auth/ekirjastoFetch";
 import Cookie from "js-cookie";
-import { LODOUT_COOKIE_PARAM, EKIRJASTO_DOMAIN } from "utils/constants";
+import { LOGOUT_COOKIE_PARAM, EKIRJASTO_DOMAIN } from "utils/constants";
 
 type Status = "authenticated" | "loading" | "unauthenticated";
 export type UserState = {
@@ -193,18 +193,14 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     logoutUrl: string
   ) {
     const ekirjastoToken = getEkirjastoToken(token, logoutTokenUrl);
-    Cookie.set(LODOUT_COOKIE_PARAM, ekirjastoToken, {
+    Cookie.set(LOGOUT_COOKIE_PARAM, ekirjastoToken, {
       path: "/",
       domain: EKIRJASTO_DOMAIN,
       sameSite: "None",
       secure: true
     });
-    logoutEkirjastoUser(logoutUrl).then(response => {
-      if (response.status === 200) {
-        // Perform local logout actions only if logout was succesful on server
-        signOut();
-      }
-    });
+    logoutEkirjastoUser(logoutUrl);
+    signOut();
   }
 
   function signOut() {
