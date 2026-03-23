@@ -7,6 +7,7 @@ import "@nypl/design-system-react-components/dist/styles.css";
 import "css-overrides.css";
 import track from "analytics/track";
 import { BreadcrumbProvider } from "components/context/BreadcrumbContext";
+import { appWithTranslation } from "next-i18next";
 
 /**
  * We can mock our backend api with MSW (mock service worker).
@@ -39,4 +40,7 @@ export function reportWebVitals(metric: NextWebVitalsMetric) {
   track.webVitals(metric);
 }
 
-export default MyApp;
+// Wrap MyApp component with appWithTranslation to provide i18n context,
+// so we can use translation functions (t) in child components
+// and switch translations based on locales
+export default appWithTranslation(MyApp);

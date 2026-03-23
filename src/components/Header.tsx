@@ -15,9 +15,12 @@ import Stack from "./Stack";
 import { SignOut } from "./SignOut";
 import useUser from "components/context/UserContext";
 import useLogin from "auth/useLogin";
+import { useTranslation } from "next-i18next";
+import LanguageSelector from "components/LanguageSelector";
 
 const HeaderFC: React.FC<{ className?: string }> = ({ className }) => {
   const library = useLibraryContext();
+  const { t } = useTranslation();
 
   return (
     <header
@@ -30,6 +33,8 @@ const HeaderFC: React.FC<{ className?: string }> = ({ className }) => {
       }}
       className={className}
     >
+      {/* Temporary example string to test translations */}
+      <Text>{t("hello")}</Text>
       <Link
         href="/"
         aria-label="Library catalog, back to homepage"
@@ -81,6 +86,7 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
         justifyContent: ["center", "flex-end"]
       }}
     >
+      <LanguageSelector />
       {library?.headerLinks?.map(link => (
         <AnchorButton
           variant="ghost"

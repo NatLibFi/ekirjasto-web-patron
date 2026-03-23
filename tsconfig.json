@@ -28,7 +28,7 @@
   "exclude": [
     "node_modules",
     "jest.config.js",
-    "cypress"
+    "cypress",
   ],
   "include": [
     "next-env.d.ts",
@@ -38,6 +38,7 @@
     "next.config.js",
     "public/sw.js",
     "src/config/fetch-config.js",
-    "src/icons/_template.js"
+    "src/icons/_template.js",
+    "next-i18next.config.js"
   ]
 }

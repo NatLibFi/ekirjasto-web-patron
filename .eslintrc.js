@@ -28,7 +28,8 @@ module.exports = {
     "prettier/@typescript-eslint",
     "plugin:prettier/recommended",
     "prettier/react",
-    "plugin:@next/next/recommended"
+    "plugin:@next/next/recommended",
+    "plugin:i18next/recommended"
   ],
   rules: {
     // this rule was deprecated in favor of another
@@ -85,11 +86,38 @@ module.exports = {
     "no-redeclare": "error",
     "no-var": "error",
     "@next/next/no-img-element": "off",
-    "react/no-unknown-property": ["error", { ignore: ["sx", "jsx", "global"] }]
+    "react/no-unknown-property": ["error", { ignore: ["sx", "jsx", "global"] }],
+    "i18next/no-literal-string": [
+      "warn",
+      {
+        message: "Use i18n translation instead of hardcoded strings.",
+        markupOnly: true,
+        ignoredProps: ["data-testid", "href", "htmlFor", "id"],
+        "jsx-attributes": {
+          include: [
+            "alt",
+            "aria-label",
+            "heading",
+            "placeholder",
+            "subtitle",
+            "title"
+          ]
+        },
+        mode: "jsx-only"
+      }
+    ]
   },
   settings: {
     react: {
       version: "detect"
     }
-  }
+  },
+  overrides: [
+    {
+      files: ["*.test.*"],
+      rules: {
+        "i18next/no-literal-string": "off"
+      }
+    }
+  ]
 };

@@ -9,6 +9,7 @@ const chalk = require("chalk");
 const package = require("./package.json");
 const APP_VERSION = package.version;
 const { NODE_ENV, CONFIG_FILE, REACT_AXE } = process.env;
+const { i18n } = require("./next-i18next.config");
 
 const log = (...message) =>
   console.log(chalk.blue("app info") + "  -", ...message);
@@ -125,6 +126,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 module.exports = {
   ...withTM(withBundleAnalyzer(config)),
   distDir: "_next",
+  i18n,
   generateBuildId: async () => {
     if (process.env.BUILD_ID) {
       return process.env.BUILD_ID;

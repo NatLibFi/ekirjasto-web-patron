@@ -208,6 +208,147 @@ test("fetches search description", async () => {
 
 When creating links using `<Link>`, you don't need to worry about whether it is for a single or multi-library route config. Write the `as` and `href` like you would if the package only supported one-library setups, and the `<Link>` will prepend `/[libraryId]` to your routes if needed.
 
+## Translations
+
+Overview of the translation setup in the E-kirjasto application
+
+### Packages used for translations
+
+The E-kirjasto application utilizes the following packages for internationalization (i18n):
+
+- **i18next**: an internationalization framework for JavaScript
+- **next-i18next**: a plugin for Next.js that integrates i18next for server-side translations
+- **react-i18next**: React bindings for i18next (peer dependency required by next-i18next)
+- **i18next-cli** a command-line tool for managing translations (development dependency)
+- **eslint-plugin-18next** ESLint plugin that warns about hardcoded strings (development dependency)
+
+### Configuration files
+
+#### `next-i18next.config.js`
+
+This file contains the configuration for the `next-i18next` library, which manages translations in the application.
+
+Key settings:
+
+- **Supported languages**: Finnish (`fi`), Swedish (`sv`) and English (`en`).
+- **Default language**: Finnish (`fi`) is the default and fallback language
+- **Namespaces**: The default namespace is set to `translations`, which contains all translation keys
+- **Translation files path**: Translation files are stored in the `public/locales` directory
+
+#### `i18next.config.ts`
+
+This file configures the `i18next-cli` for extracting translation keys from the source code.
+
+Key settings:
+
+- **Input files**: The configuration specifies that `.tsx` and `.jsx` files in the `src/components` and `src/pages` directories should be scanned for translation keys
+- **Output path**: Extracted translation files are saved in the `public/locales` directory, organized by language and namespace
+- **Commands**: Use the following scripts to manage translations:
+  - `translations:status` Overview of project translations
+  - `translations:lint` List of hardcoded strings needing translation
+  - `translations:extract` Extract translation keys and update translation files
+  - `translations:sync` Sync Finnish and Swedish files with the English file
+  - `translations:ci` Fail builds when translations are outdated
+
+### JSON structure for translations files
+
+Translations are stored in flat JSON files named `translations.json`, with one file for each supported language. The JSON files consist of key-value pairs, where the key is a unique identifier for the translation and the value is the actual translated string.  The translation keys within these files can be structured using a dot notation, like `bookDetails.publisher`, but using this structure is optional. Nesting is not used, which makes it easier to retrieve and sort the translations.
+
+Example content of a `translations.json` file:
+
+```json
+{
+  "book": "Book",
+  "bookDetails": "Book details",
+  "bookDetails.publisher": "Publisher",
+  "bookDetails.title": "Title",
+  "bookDetails.author": "Author",
+  "status.availableToBorrow": "This book is available to borrow"
+}
+```
+
+### Using translations in components
+
+To translate strings in components, follow these steps:
+
+1. **Import the `useTranslation` hook**
+
+   ```javascript
+   import { useTranslation } from "next-i18next";
+   ```
+
+2. **Define the `t` translation function**
+
+   ```javascript
+   const { t } = useTranslation();
+   ```
+
+3. **Fetch translation strings with `t("translationString")`**
+
+    ```jsx
+      <DetailField heading={t("bookDetails.publisher")} details={book.publisher} />
+    ```
+
+**Code example:**
+
+This component displays the translation for the key `hello`, showing for example _Hello, translations!_ or _Hei, käännökset!_ or _Hej, översättningar!_ on the page based on the current language in the app.
+
+```javascript
+  import { useTranslation } from "next-i18next";
+
+  const MyComponent = () => {
+    const { t } = useTranslation();
+    return <h1>{t("hello")}</h1>; 
+  };
+```
+
+### Translation process
+
+To extract translation keys from your component source code and to update the `translations.json` files, follow these steps:
+
+1. **Run the `lint` command (optional)**  
+
+    ```bash
+    npm run translations:lint
+    ```
+
+    This command prints a list of hardcoded strings, that are not yet wrapped in the translation function (`t`). These strings probably need to be translated, too.
+
+2. **Run the `extract` command**  
+
+   ```bash
+   npm run translations:extract
+   ```
+
+   This command will scan the specified directories for translation keys used in your components and update the three `translations.json` files in the `public/locales` directory.
+
+3. **Run the `sync` command (optional)**  
+
+   ```bash
+   npm run translations:sync
+   ```
+
+    This command will compare the Finnish (`fi`) and Swedish (`sv`) translation files against the English (`en`) file. It will add any missing keys from the English file to the Finnish and Swedish files and remove any extra keys that are not present in the English file.
+
+4. **Check the output**  
+  After running the commands, check the `translations.json` files that the new translation keys have been added correctly.
+
+5. **Add translations**  
+  Collaborate with the translators and add the translations for the keys in Finnish (`FI`) and Swedish (`SV`) and English (`EN`) to the `translations.json` files.
+
+6. **Save changes**  
+  Verify that the translations are correct and functioning as expected in the application. Then commit the updated translation files.
+
+### Changing the app language
+
+The LanguageSelector component lets users change the language of the E-library application to Finnish, Swedish or English. Note that the language code in the URL is only visible when a language other than Finnish is selected:
+
+- **Finnish (default)**: `https://example.com/books` (no language code `fi`)
+- **Swedish**: `https://example.com/sv/books` (language code `sv`)
+- **English**: `https://example.com/en/books` (language code `en`)
+
+The component uses Next.js's Router to handle the current language through `router.locale`. When user selects a language, the component updates the locale using `router.push`. This means the URL is updated creating a new entry in the browser's history, so users can always navigate back and see the language switch as a separate step.
+
 # Deploying
 
 This repository includes a Dockerfile and publishes images to GitHub Container Registry (GHCR) at `ghcr.io/natlibfi/ekirjasto-web-patron`.
