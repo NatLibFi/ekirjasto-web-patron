@@ -11,6 +11,7 @@ import { isSupportedAuthType } from "auth/AuthenticationHandler";
 import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
 import useLogin from "auth/useLogin";
 import { useRouter } from "next/router";
+import useUser from "./context/UserContext";
 
 interface SignOutProps {
   color?: string;
@@ -23,6 +24,7 @@ export const SignOut: React.FC<SignOutProps> = ({
   const { authMethods } = useLibraryContext();
   const { getLogoutUrl } = useLogin();
   const { push } = useRouter();
+  const { signOut } = useUser();
 
   const supportedAuthMethods = authMethods.filter(m =>
     isSupportedAuthType(m.type)
@@ -35,6 +37,8 @@ export const SignOut: React.FC<SignOutProps> = ({
   function signOutAndClose() {
     if (method) {
       push(getLogoutUrl());
+    } else {
+      signOut()
     }
     dialog.hide();
   }
