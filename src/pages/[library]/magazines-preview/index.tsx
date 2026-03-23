@@ -17,6 +17,7 @@ import LoadingIndicator from "components/LoadingIndicator";
 import useMagazines from "hooks/useMagazines";
 import { MagazineIssue, MagazineTitle } from "types/magazines";
 import { getMagazineReaderUrl } from "config/magazines";
+import { useTranslation } from "next-i18next";
 
 const MagazinesPreviewContent: React.FC = () => {
   const {
@@ -33,6 +34,8 @@ const MagazinesPreviewContent: React.FC = () => {
     selectedTitle,
     setSelectedTitle
   ] = React.useState<MagazineTitle | null>(null);
+
+  const { t } = useTranslation();
 
   const handleTitleClick = (title: MagazineTitle) => {
     setSelectedTitle(title);
@@ -95,7 +98,7 @@ const MagazinesPreviewContent: React.FC = () => {
     return (
       <div sx={{ textAlign: "center", py: 4 }}>
         <p sx={{ color: "ui.error" }}>
-          Virhe ladattaessa lehtiä: {error.message}
+          {t("magazinesPreview.errorLoadingMagazines")} {error.message}
         </p>
       </div>
     );
@@ -129,11 +132,11 @@ const MagazinesPreviewContent: React.FC = () => {
                 }
               }}
             >
-              ← Takaisin lehtiin
+              {t("magazinesPreview.backToMagazines")}
             </button>
           </div>
         ) : (
-          <H1>Lehdet</H1>
+          <H1>{t("magazinesPreview.headerForMagazines")}</H1>
         )}
       </div>
 
@@ -171,6 +174,7 @@ const MagazinesPreviewContent: React.FC = () => {
 };
 
 const MagazinesPreviewPage: NextPage<AppProps> = ({ library, error }) => {
+  const { t } = useTranslation();
   return (
     <LayoutPage library={library} error={error}>
       <div
@@ -179,9 +183,11 @@ const MagazinesPreviewPage: NextPage<AppProps> = ({ library, error }) => {
         }}
       >
         <Head>
-          <title>Lehdet - E-kirjasto</title>
+          <title>{t("magazinesPreview.HTMLtitleForMagazines")}</title>
         </Head>
-        <BreadcrumbBar currentLocation="Lehdet" />
+        <BreadcrumbBar
+          currentLocation={t("magazinesPreview.breadcrumbForMagazines")}
+        />
         <MagazinesPreviewContent />
       </div>
     </LayoutPage>
