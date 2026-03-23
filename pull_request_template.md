@@ -22,5 +22,6 @@
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 
 - [ ] I have updated the documentation accordingly.
+- [ ] AI was used during the process and I have described above how.
 - [ ] All new and existing tests passed.
 - [ ] Review added atleast to E-kirjasto maintainers +1
