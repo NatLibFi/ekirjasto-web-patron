@@ -101,7 +101,6 @@ const ReadOnlineExternal: React.FC<{
       handleError(e);
     }
   }
-
   return (
     <>
       <Button
@@ -111,7 +110,7 @@ const ReadOnlineExternal: React.FC<{
         loading={loading}
         loadingText={t("fulfillmentButton.opening")}
       >
-        {details.buttonLabel}
+        {t(details.buttonLabel)}
       </Button>
       {error && <Text sx={{ color: "ui.error" }}>{error}</Text>}
     </>
@@ -185,7 +184,7 @@ const DownloadButton: React.FC<{
         loading={loading}
         loadingText={t("fulfillmentButton.downloading")}
       >
-        {buttonLabel}
+        {t(buttonLabel)}
       </Button>
       {error && <Text sx={{ color: "ui.error" }}>{error}</Text>}
     </>
