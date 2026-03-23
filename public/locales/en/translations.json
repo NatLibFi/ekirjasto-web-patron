@@ -145,5 +145,10 @@
   "skipNavigation.skipToContent": "Skip to content",
   "storeBadges.altForPlayStoreImage": "Get it on Google Play",
   "storeBadges.ariaLabelForAppStoreLink": "Download E-kirjasto on the Apple App Store",
-  "storeBadges.ariaLabelForPlayStoreLink": "Get E-kirjasto on the Google Play Store"
+  "storeBadges.ariaLabelForPlayStoreLink": "Get E-kirjasto on the Google Play Store",
+  "useBorrow.borrowBook": "Borrow this book",
+  "useBorrow.borrowing": "Borrowing...",
+  "useBorrow.reserveBook": "Reserve this book",
+  "useBorrow.reserving": "Reserving...",
+  "useBorrow.signInToBorrow": "You must be signed in to borrow this book."
 }

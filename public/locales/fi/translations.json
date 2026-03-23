@@ -145,5 +145,10 @@
   "skipNavigation.skipToContent": "",
   "storeBadges.altForPlayStoreImage": "",
   "storeBadges.ariaLabelForAppStoreLink": "",
-  "storeBadges.ariaLabelForPlayStoreLink": ""
+  "storeBadges.ariaLabelForPlayStoreLink": "",
+  "useBorrow.borrowBook": "",
+  "useBorrow.borrowing": "",
+  "useBorrow.reserveBook": "",
+  "useBorrow.reserving": "",
+  "useBorrow.signInToBorrow": ""
 }

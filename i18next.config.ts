@@ -44,7 +44,7 @@ const defaultTranslationNamespace = "translations";
 
 // define the input file patterns to search for translation keys
 // We include all .tsx and .jsx files in the components and pages directories
-const inputFiles = ["src/{components,pages,utils}/**/*.{tsx,jsx}"];
+const inputFiles = ["src/{components,hooks,pages,utils}/**/*.{ts,tsx,jsx}"];
 
 // define the output path to public/locales directory,
 // and organise the translation files by language and namespace,
