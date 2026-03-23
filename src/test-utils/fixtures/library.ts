@@ -29,7 +29,8 @@ export const libraryData: LibraryData = {
   libraryLinks: {},
   shelfUrl: "/shelf-url",
   selectedUrl: "/selected_books",
-  authMethods: [basicAuthMethod, createSamlMethod(0), cleverAuthMethod]
+  authMethods: [basicAuthMethod, createSamlMethod(0), cleverAuthMethod],
+  feedbackUrl: "https://test.fi/palaute/"
 };
 
 export default libraryData;
