@@ -38,9 +38,14 @@ export default function useLoginRedirectUrl() {
     ? ""
     : `${window.location.origin}/api/authsuccess`;
 
+  const logoutRedirectUrl = IS_SERVER
+    ? ""
+    : `${window.location.origin}${catalogRootPath}`;
+
   return {
     fullSuccessUrl,
     successPath,
+    logoutRedirectUrl,
     authSuccessUrl
   };
 }

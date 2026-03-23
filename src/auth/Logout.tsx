@@ -7,20 +7,27 @@ import ExternalLink from "components/ExternalLink";
 import { Text } from "components/Text";
 import LoadingIndicator from "components/LoadingIndicator";
 import { isSupportedAuthType } from "./AuthenticationHandler";
-import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
+import {
+  EKIRJASTO_AUTH_TYPE,
+  EKIRJASTO_DOMAIN,
+  LOGOUT_COOKIE_PARAM
+} from "utils/constants";
 import useUser from "components/context/UserContext";
-import Cookie from "js-cookie";
 import { useEffect, useState } from "react";
+import useLoginRedirectUrl from "./useLoginRedirect";
 
 export default function Logout(): React.ReactElement {
+  const { token, signOut, getEkirjastoToken } = useUser();
+  const { logoutRedirectUrl } = useLoginRedirectUrl();
+  const { authMethods } = useLibraryContext();
+
+  const [ekirjastoToken, setEkirjastoToken] = useState("");
+
   // AppAuthMethod[] shouldn't be populated with unsupported auth methods from auth document,
   // but we filter out any unsupported methods just in case.
-  const { authMethods } = useLibraryContext();
   const supportedAuthMethods = authMethods.filter(m =>
     isSupportedAuthType(m.type)
   );
-
-  const { token, signOut, getEkirjastoToken } = useUser();
 
   const method = supportedAuthMethods.find(
     method => method.type === EKIRJASTO_AUTH_TYPE
@@ -35,7 +42,10 @@ export default function Logout(): React.ReactElement {
     link => link.rel === "logout"
   )?.href;
 
-  const [ekirjastoToken, setEkirjastoToken] = useState("");
+  // Add the redirect link
+  const urlWithRedirect = `${authenticationLogoutHref}&redirect_uri=${encodeURIComponent(
+    logoutRedirectUrl
+  )}`;
 
   useEffect(() => {
     async function getToken() {
@@ -47,22 +57,17 @@ export default function Logout(): React.ReactElement {
 
   React.useEffect(() => {
     if (ekirjastoToken && authenticationLogoutHref) {
-      Cookie.set("SESSION", ekirjastoToken, {
-        path: "/",
-        domain: ".e-kirjasto.fi",
-        sameSite: "None",
-        secure: true
-      });
-      //document.cookie = `SESSION=${ekirjastoToken}; path=/;  domain: ".e-kirjasto.fi", SameSite=None; Secure`;
+      document.cookie = `${LOGOUT_COOKIE_PARAM}=${ekirjastoToken}; path=/;  domain: ${EKIRJASTO_DOMAIN}, SameSite=None; Secure`;
+      window.location.href = urlWithRedirect;
       signOut();
-      window.location.href = authenticationLogoutHref;
     }
   }, [
     token,
     signOut,
     authenticationLogoutHref,
     ekirjastoTokenHref,
-    ekirjastoToken
+    ekirjastoToken,
+    urlWithRedirect
   ]);
 
   if (supportedAuthMethods.length === 0) {
