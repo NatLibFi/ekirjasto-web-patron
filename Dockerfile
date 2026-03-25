@@ -1,7 +1,5 @@
 # build environment
-FROM node:20.18.1-alpine
-
-RUN apk update && apk add git
+FROM node:20.18.1-bookworm-sli
 
 WORKDIR /app
 
