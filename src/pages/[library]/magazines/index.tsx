@@ -23,9 +23,9 @@ const MagazinesFixedContent: React.FC = () => {
   const { token, getEkirjastoToken } = useUser();
   const { slug, authMethods } = useLibraryContext();
 
-   const [ekirjastoToken, setEkirjastoToken] = React.useState<string>("");
+  const [ekirjastoToken, setEkirjastoToken] = React.useState<string>("");
 
-   const fetchEkirjastoToken = async () => {
+  const fetchEkirjastoToken = async () => {
     try {
       // Get the ekirjasto auth method
       const ekirMethod = authMethods.find(
@@ -37,9 +37,9 @@ const MagazinesFixedContent: React.FC = () => {
       )?.href;
       // Fetch the ekirjasto token
       const fetchedToken = await getEkirjastoToken(token, ekirjastoTokenUrl);
-     
+
       // Set the fetched token
-      setEkirjastoToken(fetchedToken)
+      setEkirjastoToken(fetchedToken);
     } catch (error) {
       // If the token fetch fails, it is most likely due to 401, which will be picked up
       // elsewhere and causes a reload of the magazines page
