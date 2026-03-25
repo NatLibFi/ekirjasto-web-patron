@@ -1,6 +1,10 @@
 # build environment
 FROM node:20.18.1-bookworm-slim
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends git \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 # Copy package files and install ALL dependencies
