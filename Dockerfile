@@ -1,5 +1,5 @@
 # build environment
-FROM node:20.18.1-bookworm-sli
+FROM node:20.18.1-bookworm-slim
 
 WORKDIR /app
 
