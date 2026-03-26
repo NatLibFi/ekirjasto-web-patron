@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string */
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx, SxProp } from "theme-ui";

@@ -53,7 +53,10 @@ const outputPath = "public/locales/{{language}}/{{namespace}}.json";
 
 // define files and directories to ignore during extraction
 // For example test files are skipped
-const ignoredFiles = ["**/__tests__/**"];
+const ignoredFiles = [
+  "**/__tests__/**",
+  "src/components/OpenEbooksLanding.tsx"
+];
 
 // define list of HTML attributes to ignore during extraction,
 // these attributes do not need to be translated
@@ -75,6 +78,7 @@ const ignoredAttributes = [
   "name",
   "rel",
   "role",
+  "size",
   "variant",
   "viewBox",
   "width"
