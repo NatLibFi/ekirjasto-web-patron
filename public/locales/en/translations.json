@@ -143,6 +143,7 @@
   "mediumIndicator.labelForAudiobook": "Audiobook",
   "mediumIndicator.labelForBook": "Book",
   "mediumIndicator.labelForeBook": "eBook",
+  "multiLibraryHome.chooseLibrary": "Choose a library",
   "myBooks.breadcrumb": "My Books",
   "myBooks.emptyFavorites": "Your favorite books will show up here when you have any selected.",
   "myBooks.emptyLoansAndHolds": "Your books will show up here when you have any loaned or on hold.",
