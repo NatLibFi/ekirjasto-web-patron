@@ -120,6 +120,7 @@
   "languageName.FI": "Suomi",
   "languageName.SV": "Ruotsi",
   "languageSelector": "Valitse sivun kieli",
+  "loadingIndicator.loading": "",
   "magazineFilters.allMagazines": "",
   "magazineFilters.allSubjects": "",
   "magazineFilters.selectMagazine": "",
