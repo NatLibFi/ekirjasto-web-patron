@@ -56,8 +56,8 @@ export default function Logout(): React.ReactElement {
       // Set the fetched token
       setEkirjastoToken(fetchedToken);
     } catch (error) {
-      // If the token fetch fails, it is most likely due to 401, which will be picked up
-      // elsewhere and causes a reload of the magazines page
+      // If the token fetch fails, it is most likely due to 401,
+      // In which case, refresh happens elsewhere
     }
   };
 
