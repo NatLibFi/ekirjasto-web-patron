@@ -52,8 +52,10 @@ describe("BorrowableBook", () => {
 
   test("correct title and subtitle", () => {
     setup(<FulfillmentCard book={borrowableBook} />);
-    expect(screen.getByText("Available to borrow")).toBeInTheDocument();
-    expect(screen.getByText("10 out of 13 copies available."));
+    expect(
+      screen.getByText("This book is available to borrow")
+    ).toBeInTheDocument();
+    expect(screen.getByText("Available: 10 / 13"));
   });
 
   test("borrow button fetches book and displays borrow errors", async () => {
@@ -67,7 +69,7 @@ describe("BorrowableBook", () => {
       user: { isAuthenticated: true }
     });
     const borrowButton = await screen.findByRole("button", {
-      name: "Borrow this book"
+      name: "Borrow"
     });
     expect(borrowButton).toBeInTheDocument();
 
@@ -108,7 +110,7 @@ describe("OnHoldBook", () => {
     setup(<FulfillmentCard book={onHoldBook} />, {
       user: { isAuthenticated: true }
     });
-    const borrowButton = await screen.findByText("Borrow this book");
+    const borrowButton = await screen.findByText("Borrow");
     expect(borrowButton).toBeInTheDocument();
 
     // click borrow
@@ -144,10 +146,10 @@ describe("ReservableBook", () => {
 
   test("correct title and subtitle", () => {
     setup(<FulfillmentCard book={reservableBook} />);
-    expect(screen.getByText("Unavailable")).toBeInTheDocument();
     expect(
-      screen.getByText("0 out of 13 copies available.")
+      screen.getByText("This book is available to place on hold")
     ).toBeInTheDocument();
+    expect(screen.getByText("Available: 0 / 13")).toBeInTheDocument();
   });
 
   test("displays reserve button", async () => {
@@ -166,16 +168,12 @@ describe("ReservableBook", () => {
       }
     });
     setup(<FulfillmentCard book={bookWithQueue} />);
-    expect(
-      screen.getByText("0 out of 13 copies available. 4 patrons in the queue.")
-    );
+    expect(screen.getByText("Hold queue: 4, available: 0 / 13"));
   });
 
   test("doesn't show patrons in queue when holds info no present", () => {
     setup(<FulfillmentCard book={reservableBook} />);
-    expect(
-      screen.getByText("0 out of 13 copies available.")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Available: 0 / 13")).toBeInTheDocument();
   });
 
   test("handles unknown availability numbers", () => {
@@ -185,10 +183,10 @@ describe("ReservableBook", () => {
       copies: undefined
     });
     setup(<FulfillmentCard book={bookWithQueue} />);
+    expect(screen.getByRole("button", { name: "Reserve" })).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Reserve this book" })
+      screen.getByText("This book is available to place on hold")
     ).toBeInTheDocument();
-    expect(screen.getByText("Unavailable")).toBeInTheDocument();
   });
 
   test("shows reserve button which fetches book", async () => {
@@ -201,7 +199,7 @@ describe("ReservableBook", () => {
     setup(<FulfillmentCard book={reservableBook} />, {
       user: { isAuthenticated: true }
     });
-    const reserveButton = await screen.findByText("Reserve this book");
+    const reserveButton = await screen.findByText("Reserve");
     expect(reserveButton).toBeInTheDocument();
 
     // click borrow
@@ -305,11 +303,8 @@ describe("reserved", () => {
       }
     });
     setup(<FulfillmentCard book={reservedBookWithQueue} />);
-    expect(
-      screen.getByText(
-        "You are in position 5 out of 23 in the queue. 0 out of 13 copies available."
-      )
-    ).toBeInTheDocument;
+    expect(screen.getByText("Your hold position: 5 / 23, available: 0 / 13"))
+      .toBeInTheDocument;
   });
 });
 

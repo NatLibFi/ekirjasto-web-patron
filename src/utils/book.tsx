@@ -70,7 +70,11 @@ export function getAvailabilityString(
       });
 
       if (queue !== null) {
-        reservableString += t("book.patronsInQueue", { queue });
+        reservableString = t("book.patronsInQueue", {
+          queue,
+          availableCopies,
+          totalCopies
+        });
       }
 
       return reservableString;

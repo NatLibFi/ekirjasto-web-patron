@@ -48,9 +48,7 @@ describe("BorrowableBook", () => {
   test("shows correct string and link to book details", () => {
     setup(<BookListItem book={borrowableBook} />);
     expectReadMore();
-    expect(
-      screen.getByText("10 out of 13 copies available.")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Available: 10 / 13")).toBeInTheDocument();
   });
 
   test("shows loading state when borrowing, borrows, and revalidates loans", async () => {
@@ -65,7 +63,7 @@ describe("BorrowableBook", () => {
     });
 
     // click borrow
-    fireEvent.click(screen.getByText("Borrow this book"));
+    fireEvent.click(screen.getByText("Borrow"));
     expect(mockFetchBook).toHaveBeenCalledTimes(1);
     expect(mockFetchBook).toHaveBeenCalledWith(
       "/borrow",
@@ -117,7 +115,7 @@ describe("OnHoldBook", () => {
     });
 
     // click borrow
-    fireEvent.click(screen.getByText("Borrow this book"));
+    fireEvent.click(screen.getByText("Borrow"));
     expect(mockFetchBook).toHaveBeenCalledTimes(1);
     expect(mockFetchBook).toHaveBeenCalledWith(
       "/borrow",
@@ -150,16 +148,14 @@ describe("ReservableBook", () => {
 
   test("displays correct title and subtitle", () => {
     setup(<BookListItem book={reservableBook} />);
-    expect(
-      screen.getByText("0 out of 13 copies available.")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Available: 0 / 13")).toBeInTheDocument();
     expectReadMore();
   });
 
   test("displays reserve button", () => {
     setup(<BookListItem book={reservableBook} />);
     const reserveButton = screen.getByRole("button", {
-      name: "Reserve this book"
+      name: "Reserve"
     });
     expect(reserveButton).toBeInTheDocument();
   });
@@ -177,7 +173,7 @@ describe("ReservableBook", () => {
     });
 
     // click borrow
-    fireEvent.click(screen.getByText("Reserve this book"));
+    fireEvent.click(screen.getByText("Reserve"));
     expect(mockFetchBook).toHaveBeenCalledTimes(1);
     expect(mockFetchBook).toHaveBeenCalledWith(
       "/reserve",
@@ -212,7 +208,7 @@ describe("ReservedBook", () => {
 
   test("displays reserved status and string ", () => {
     setup(<BookListItem book={reservedBook} />);
-    expect(screen.getByText("Reserved"));
+    expect(screen.getByText("You have this book on hold"));
   });
 
   test("allows cancelling reservation", async () => {
@@ -222,7 +218,7 @@ describe("ReservedBook", () => {
     });
     mockFetchBook.mockResolvedValue(unreservedBook);
     setup(<BookListItem book={reservedBook} />);
-    expect(screen.getByText("Reserved"));
+    expect(screen.getByText("You have this book on hold"));
     const cancel = screen.getByRole("button", { name: "Cancel Reservation" });
     expect(cancel).toBeInTheDocument();
 
@@ -259,9 +255,7 @@ describe("ReservedBook", () => {
     });
     setup(<BookListItem book={reservedBookWithQueue} />);
     expect(
-      screen.getByText(
-        "You are in position 5 out of 23 in the queue. 0 out of 13 copies available."
-      )
+      screen.getByText("Your hold position: 5 / 23, available: 0 / 13")
     ).toBeInTheDocument();
   });
 });
