@@ -80,7 +80,7 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
           </ListItem>
           <ListItem>
             <FooterExternalLink href={`/${library.slug}/feedback`}>
-              Feedback
+              {t("footer.feedback")}
             </FooterExternalLink>
           </ListItem>
           <ListItem>

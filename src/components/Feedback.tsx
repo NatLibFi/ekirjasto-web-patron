@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import useLibraryContext from "./context/LibraryContext";
+import { useTranslation } from "next-i18next";
 
 const Feedback: React.FC = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const library = useLibraryContext();
+  const { t } = useTranslation();
 
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
@@ -32,7 +34,7 @@ const Feedback: React.FC = () => {
   // Fixed-height layout where the iframe scrolls.
   return (
     <div
-      aria-label="Feedback Form"
+      aria-label={t("feedback.ariaLabel")}
       style={{
         display: "flex",
         flexDirection: "column",
@@ -47,7 +49,7 @@ const Feedback: React.FC = () => {
         ref={iframeRef}
         // "http://127.0.0.1:5000/palaute/" locally
         src={library.feedbackUrl || undefined}
-        title="Feedback"
+        title={t("feedback.title")}
         style={{
           position: "absolute",
           inset: 0,
