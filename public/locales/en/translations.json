@@ -50,6 +50,8 @@
   "bookDetails.summaryNotProvided": "Summary not provided.",
   "bookDetails.unknownAuthor": "Unknown",
   "bookDetails.waysOfReading": "Ways of reading",
+  "bookList.ariaLabelForAuthors": "Authors",
+  "bookList.ariaLabelForSubtitle": "Subtitle",
   "bookList.cancelling": "Cancelling...",
   "bookList.cancelReservation": "Cancel Reservation",
   "bookList.loading": "Loading ...",

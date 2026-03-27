@@ -167,11 +167,17 @@ export const BookListItem: React.FC<{
               </Link>
             </H2>
             {subtitle && (
-              <Text variant="callout" aria-label="Subtitle">
+              <Text
+                variant="callout"
+                aria-label={t("bookList.ariaLabelForSubtitle")}
+              >
                 , {truncateString(subtitle, 50)}
               </Text>
             )}
-            <Text aria-label="Authors" sx={{ display: "block" }}>
+            <Text
+              aria-label={t("bookList.ariaLabelForAuthors")}
+              sx={{ display: "block" }}
+            >
               {limitedAuthorsList(book, t)}
             </Text>
           </div>

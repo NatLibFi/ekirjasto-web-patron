@@ -50,6 +50,8 @@
   "bookDetails.summaryNotProvided": "Kuvasta ei ole saatavilla.",
   "bookDetails.unknownAuthor": "Tuntematon",
   "bookDetails.waysOfReading": "Lukemisen keinot",
+  "bookList.ariaLabelForAuthors": "Tekijät",
+  "bookList.ariaLabelForSubtitle": "Alanimeke",
   "bookList.cancelling": "Poistetaan...",
   "bookList.cancelReservation": "Poista varaus",
   "bookList.loading": "Ladataan...",
