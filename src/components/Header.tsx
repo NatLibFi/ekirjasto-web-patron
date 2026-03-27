@@ -33,8 +33,6 @@ const HeaderFC: React.FC<{ className?: string }> = ({ className }) => {
       }}
       className={className}
     >
-      {/* Temporary example string to test translations */}
-      <Text>{t("hello")}</Text>
       <Link
         href="/"
         aria-label={t("header.ariaLabelForLibraryCatalogLink")}
