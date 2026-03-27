@@ -42,6 +42,7 @@
     "@natlibfi/ekirjasto-opds-feed-parser": "2.1.0",
     "@nypl/design-system-react-components": "^0.7.2",
     "@nypl/dgx-svg-icons": "^0.3.12",
+    "@simplewebauthn/browser": "^13.3.0",
     "@theme-ui/color": "^0.16.2",
     "@theme-ui/components": "^0.16.2",
     "@theme-ui/match-media": "^0.16.2",
