@@ -104,6 +104,8 @@ const MagazinesFixedContent: React.FC = () => {
     return `${baseUrl}${path}`;
   }, [initialPath]);
 
+  const { t } = useTranslation();
+
   // fixed-height layout where only the iframe scrolls and the footer is hidden
   return (
     <div
