@@ -6,8 +6,6 @@ import useLibraryContext from "components/context/LibraryContext";
 import { useEffect, useState } from "react";
 import { isSupportedAuthType } from "./AuthenticationHandler";
 import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
-import useLoginRedirectUrl from "./useLoginRedirect";
-import useUser from "components/context/UserContext";
 
 
 export function PasskeyLogin({ redirectURI }: { redirectURI?: string }) {
