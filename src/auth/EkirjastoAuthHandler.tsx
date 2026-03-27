@@ -48,7 +48,6 @@ const EkirjastoAuthHandler: React.FC<{ method: ClientEkirjastoMethod }> = ({
           <PasskeyLogin redirectURI = {authSuccessUrl}/>
         </>
       )}
-      {!token && <p>Logging in with Ekirjasto Authentication...</p>}
     </Stack>
   );
 };
