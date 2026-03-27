@@ -63,7 +63,7 @@ export default function Logout(): React.ReactElement {
 
   React.useEffect(() => {
     fetchEkirjastoToken();
-  }, []);
+  });
 
   React.useEffect(() => {
     if (ekirjastoToken && authenticationLogoutHref) {
@@ -78,7 +78,13 @@ export default function Logout(): React.ReactElement {
       window.location.href = urlWithRedirect;
       signOut();
     }
-  }, [token, signOut, authenticationLogoutHref, urlWithRedirect]);
+  }, [
+    token,
+    signOut,
+    authenticationLogoutHref,
+    urlWithRedirect,
+    ekirjastoToken
+  ]);
 
   if (supportedAuthMethods.length === 0) {
     return <NoAuth />;
