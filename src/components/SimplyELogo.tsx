@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useTranslation } from "next-i18next";
 
 // svg {
 //   float: left;
@@ -21,11 +22,13 @@ import * as React from "react";
 // }
 
 function SimplyELogo(props: React.SVGProps<SVGSVGElement>) {
+  const { t } = useTranslation();
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 511.98438 147"
-      aria-label="SimplyE Logo"
+      aria-label={t("simplyELogo")}
       {...props}
     >
       <g id="logo_mark">

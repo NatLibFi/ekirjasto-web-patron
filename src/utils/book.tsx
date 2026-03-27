@@ -10,89 +10,116 @@ import {
   UnsupportedBook
 } from "interfaces";
 import { Book, Headset } from "../icons";
+import { TFunction } from "next-i18next";
 
+// Select authors or contributors based on availability
 export function getAuthors(book: AnyBook, lim?: number): string[] {
-  // select contributors if the authors array is undefined or empty.
-  const allAuth =
-    typeof book.authors?.length === "number" && book.authors.length > 0
-      ? book.authors
-      : typeof book.contributors?.length === "number" &&
-        book.contributors.length > 0
-      ? book.contributors
-      : ["Authors unknown"];
+  let authorsList: string[];
 
-  // now limit it to however many
-  if (lim) {
-    return allAuth.slice(0, lim);
-  }
-  return allAuth;
-}
-
-export function getAuthorsString(book: AnyBook): string {
-  const { authors } = book;
-  if (!authors) return "Unknown Author";
-  const authorsArray = getAuthors(book, 2);
-
-  if (authors.length > 2) {
-    authorsArray.push(`& ${authors.length - 2} more`);
+  if (book.authors && book.authors.length > 0) {
+    // use authors if available
+    authorsList = book.authors;
+  } else if (book.contributors && book.contributors.length > 0) {
+    // use contributors if authors are not available
+    authorsList = book.contributors;
+  } else {
+    // no authors nor contributors are available
+    authorsList = [];
   }
 
-  return authorsArray.join(", ");
+  // Limit the number of authors returned if 'lim' is specified
+  return lim ? authorsList.slice(0, lim) : authorsList;
 }
 
-export function availabilityString(book: AnyBook) {
+export function getAvailabilityString(
+  book: AnyBook,
+  t: TFunction
+): string | null {
   const status = book.status;
   const availableCopies = book.copies?.available;
   const totalCopies = book.copies?.total;
   const queue = typeof book.holds?.total === "number" ? book.holds.total : null;
+  const until = book.availability?.until;
 
   switch (status) {
     case "borrowable":
-      return typeof availableCopies === "number" &&
-        typeof totalCopies === "number"
-        ? `${availableCopies} out of ${totalCopies} copies available.`
-        : null;
+      if (
+        typeof availableCopies !== "number" ||
+        typeof totalCopies !== "number"
+      ) {
+        return null;
+      }
+
+      const borrowableString = t("book.borrowable", {
+        availableCopies,
+        totalCopies
+      });
+
+      return borrowableString;
+
     case "reservable":
-      return typeof availableCopies === "number" &&
-        typeof totalCopies === "number"
-        ? `${availableCopies} out of ${totalCopies} copies available.${
-            queue !== null ? ` ${queue} patrons in the queue.` : ""
-          }`
-        : null;
+      if (
+        typeof availableCopies !== "number" ||
+        typeof totalCopies !== "number"
+      )
+        return null;
+
+      let reservableString = t("book.reservable", {
+        availableCopies,
+        totalCopies
+      });
+
+      if (queue !== null) {
+        reservableString = t("book.patronsInQueue", {
+          queue,
+          availableCopies,
+          totalCopies
+        });
+      }
+
+      return reservableString;
 
     case "reserved":
       const position = book.holds?.position;
+
+      if (!position || isNaN(position)) return null;
+
       const queueReserved =
         typeof book.holds?.total === "number" ? book.holds.total : null;
 
-      if (!position || isNaN(position)) return null;
-      return `You are in position ${position} out of ${queueReserved} in the queue. ${availableCopies} out of ${totalCopies} copies available.`;
+      const reservedString = t("book.reserved", {
+        position,
+        queueReserved,
+        availableCopies,
+        totalCopies
+      });
+
+      return reservedString;
 
     case "on-hold":
-      const until = book.availability?.until
-        ? new Date(book.availability.until).toDateString()
-        : "NaN";
-      const untilStr = until === "NaN" ? undefined : until;
+      const untilStr = until ? new Date(until).toDateString() : undefined;
+      let onHoldString = t("book.onHold");
 
-      return `You have this book on hold${
-        untilStr ? ` until ${untilStr}` : ""
-      }.`;
+      if (untilStr) {
+        onHoldString += t("book.until", { untilStr });
+      }
+
+      return onHoldString;
 
     case "fulfillable":
-      const availableFor = book.availability?.until
-        ? daysUntilLoanExpiry(book.availability?.until)
-        : "NaN";
+      const availableFor = until ? getLoanExpiryString(until, t) : undefined;
 
-      return availableFor !== "NaN"
-        ? `You have this book on loan for ${availableFor}.`
-        : null;
+      if (availableFor === undefined) return null;
+
+      const fulfillableString = t("book.fulfillable", { availableFor });
+      return fulfillableString;
 
     case "unsupported":
       return null;
   }
 }
 
-function daysUntilLoanExpiry(expiryDateString) {
+function getLoanExpiryString(expiryDateString: string, t: TFunction): string {
   // Parse the expiry date and current date in millis
   const expiryDateInMillis = new Date(expiryDateString).getTime();
   const currentDateInMillis = new Date().getTime();
@@ -111,14 +138,22 @@ function daysUntilLoanExpiry(expiryDateString) {
 
     // if there is less than an hour of loan time, show it
     if (differenceInHours < 1) {
-      return "less than an hour";
+      return t("book.lessThenHour");
     }
 
     // Return number of hours left
-    return `${differenceInHours} hours`;
+    return t("book.differenceInHours", { differenceInHours });
   }
   // Return number of days left
-  return `${differenceInDays} days`;
+  return t("book.differenceInDays", { differenceInDays });
+}
+
+export function getSubtitle(book: AnyBook): string | null {
+  const subtitle = book?.subtitle?.trim();
+  if (!subtitle) return null;
+  if (subtitle.length === 0) return null;
+  if (subtitle.toLowerCase() === "none") return null; // check for backend odd stuff
+  return subtitle;
 }
 
 export function queueString(book: AnyBook) {

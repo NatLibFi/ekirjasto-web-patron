@@ -14,6 +14,7 @@ import useCollection from "hooks/useCollection";
 import { fetchSearchData } from "dataflow/opds1/fetch";
 import ApplicationError from "errors";
 import { SearchData } from "interfaces";
+import { useTranslation } from "next-i18next";
 
 interface SearchProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
@@ -31,6 +32,7 @@ let searchData: null | SearchData = null;
  */
 
 const Search: React.FC<SearchProps> = ({ className, ...props }) => {
+  const { t } = useTranslation();
   const [value, setValue] = React.useState("");
   const linkUtils = useLinkUtils();
   const { collection, error } = useCollection();
@@ -50,7 +52,7 @@ const Search: React.FC<SearchProps> = ({ className, ...props }) => {
     e.preventDefault();
     if (!searchData)
       throw new ApplicationError({
-        detail: "Cannot perform search. No search template available."
+        detail: t("search.applicationError")
       });
     const searchTerms = encodeURIComponent(value);
     const url = createSearchUrl(
@@ -75,8 +77,8 @@ const Search: React.FC<SearchProps> = ({ className, ...props }) => {
         type="search"
         name="search"
         title={searchData?.shortName}
-        placeholder="Enter an author, keyword, etc..."
-        aria-label="Enter search keyword or keywords"
+        placeholder={t("search.placeholderForTextInput")}
+        aria-label={t("search.ariaLabelForTextInput")}
         value={value}
         onChange={e => setValue(e.target.value)}
         sx={{
@@ -92,7 +94,7 @@ const Search: React.FC<SearchProps> = ({ className, ...props }) => {
       <Button
         type="submit"
         color="ui.ekirjastogreen"
-        aria-label="Search content"
+        aria-label={t("search.ariaLabelForButton")}
         sx={{
           height: "initial",
           flex: "1 0 auto",
@@ -104,7 +106,7 @@ const Search: React.FC<SearchProps> = ({ className, ...props }) => {
         }}
         iconLeft={SvgSearch}
       >
-        Search
+        {t("search.labelForButton")}
       </Button>
     </form>
   );

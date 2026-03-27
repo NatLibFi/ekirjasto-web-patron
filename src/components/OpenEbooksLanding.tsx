@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string */
 /** @jsxRuntime classic */
 /** @jsx jsx */
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

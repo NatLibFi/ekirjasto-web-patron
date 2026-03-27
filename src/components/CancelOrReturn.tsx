@@ -8,6 +8,7 @@ import { fetchBook } from "dataflow/opds1/fetch";
 import Button from "components/Button";
 import { Text } from "components/Text";
 import useError from "hooks/useError";
+import { useTranslation } from "next-i18next";
 
 const CancelOrReturn: React.FC<{
   text: string;
@@ -19,11 +20,12 @@ const CancelOrReturn: React.FC<{
   const { catalogUrl } = useLibraryContext();
   const [loading, setLoading] = React.useState(false);
   const { error, handleError, setErrorString, clearError } = useError();
+  const { t } = useTranslation();
 
   async function cancelReservation(revokeUrl: string) {
     clearError();
     if (!token) {
-      setErrorString("You must be signed in.");
+      setErrorString(t("cancelOrReturn.signIn"));
       return;
     }
     setLoading(true);

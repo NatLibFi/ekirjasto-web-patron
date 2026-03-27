@@ -5,14 +5,17 @@
 import { jsx } from "theme-ui";
 import * as React from "react";
 import SvgIosBadge from "icons/IosBadge";
+import { useTranslation } from "next-i18next";
 
 const IosBadge = (props: React.ComponentProps<"a">) => {
+  const { t } = useTranslation();
+
   return (
     <a
       rel="noopener noreferrer"
       target="__blank"
       href="https://apps.apple.com/fi/app/e-kirjasto/id6471490203"
-      aria-label="Download E-kirjasto on the Apple App Store"
+      aria-label={t("storeBadges.ariaLabelForAppStoreLink")}
       sx={{ display: "block" }}
       {...props}
     >

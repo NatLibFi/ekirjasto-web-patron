@@ -33,11 +33,9 @@ const HeaderFC: React.FC<{ className?: string }> = ({ className }) => {
       }}
       className={className}
     >
-      {/* Temporary example string to test translations */}
-      <Text>{t("hello")}</Text>
       <Link
         href="/"
-        aria-label="Library catalog, back to homepage"
+        aria-label={t("header.ariaLabelForLibraryCatalogLink")}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -77,6 +75,7 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
   const libraryName = library.catalogName;
   const { isAuthenticated, isLoading } = useUser();
   const { baseLoginUrl } = useLogin();
+  const { t } = useTranslation();
 
   return (
     <div
@@ -99,13 +98,8 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
         </AnchorButton>
       ))}
       {helpWebsite && (
-        <AnchorButton
-          variant="ghost"
-          color="ui.black"
-          href={helpWebsite.href}
-          title="help"
-        >
-          Help
+        <AnchorButton variant="ghost" color="ui.black" href={helpWebsite.href}>
+          {t("header.labelForHelpButton")}
         </AnchorButton>
       )}
       {libraryWebsite && (
@@ -113,7 +107,6 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
           variant="ghost"
           color="ui.black"
           href={libraryWebsite.href}
-          title="help"
           sx={{ whiteSpace: "initial" }}
         >
           {libraryWebsite.title ?? `${libraryName} Home`}
@@ -126,7 +119,7 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
           href="/magazines"
           sx={{ mr: 1 }}
         >
-          Magazines
+          {t("header.labelForMagazinesButton")}
         </NavButton>
       ) : (
         <NavButton
@@ -135,7 +128,7 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
           href="/magazines-preview"
           sx={{ mr: 1 }}
         >
-          Magazines
+          {t("header.labelForMagazinesPreviewButton")}
         </NavButton>
       )}
       <NavButton
@@ -145,7 +138,7 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
         iconLeft={BookIcon}
         sx={{ mr: 1 }}
       >
-        My Books
+        {t("header.labelForMyBooksButton")}
       </NavButton>
       {isAuthenticated ? (
         <SignOut />
@@ -157,7 +150,7 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
           color="ui.ekirjastogreen"
           href={baseLoginUrl}
         >
-          Sign In
+          {t("header.labelForSignInButton")}
         </NavButton>
       )}
     </div>

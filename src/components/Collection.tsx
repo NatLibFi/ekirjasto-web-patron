@@ -13,6 +13,7 @@ import useCollection from "hooks/useCollection";
 import ApplicationError from "errors";
 import ErrorComponent from "components/Error";
 import useBreadcrumbContext from "../components/context/BreadcrumbContext";
+import { useTranslation } from "next-i18next";
 
 export const Collection: React.FC<{
   title?: string;
@@ -31,6 +32,8 @@ export const Collection: React.FC<{
   );
 
   const { storedBreadcrumbs, setStoredBreadcrumbs } = useBreadcrumbContext();
+
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     //store the updated breadcrumbs in context
@@ -72,7 +75,7 @@ export const Collection: React.FC<{
             justifyContent: "center"
           }}
         >
-          <Text variant="text.callouts">This collection is empty.</Text>
+          <Text variant="text.callouts">{t("collection.empty")}</Text>
         </div>
       )}
     </div>

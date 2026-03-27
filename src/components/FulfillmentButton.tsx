@@ -20,6 +20,7 @@ import useUser from "components/context/UserContext";
 import downloadFile from "dataflow/download";
 import useError from "hooks/useError";
 import useLinkUtils from "hooks/useLinkUtils";
+import { useTranslation } from "next-i18next";
 
 const FulfillmentButton: React.FC<{
   details: AnyFullfillment;
@@ -79,6 +80,7 @@ const ReadOnlineExternal: React.FC<{
   const { token } = useUser();
   const [loading, setLoading] = React.useState(false);
   const { error, handleError, clearError } = useError();
+  const { t } = useTranslation();
 
   async function open() {
     setLoading(true);
@@ -99,7 +101,6 @@ const ReadOnlineExternal: React.FC<{
       handleError(e);
     }
   }
-
   return (
     <>
       <Button
@@ -107,9 +108,9 @@ const ReadOnlineExternal: React.FC<{
         iconLeft={ArrowForward}
         onClick={open}
         loading={loading}
-        loadingText="Opening..."
+        loadingText={t("fulfillmentButton.opening")}
       >
-        {details.buttonLabel}
+        {t(details.buttonLabel)}
       </Button>
       {error && <Text sx={{ color: "ui.error" }}>{error}</Text>}
     </>
@@ -125,13 +126,15 @@ const ReadOnlineInternal: React.FC<{
   const { buildMultiLibraryLink } = useLinkUtils();
 
   const internalLink = buildMultiLibraryLink(details.url);
+  const { t } = useTranslation();
+
   function open() {
     track.openBook(trackOpenBookUrl);
     router.push(internalLink, undefined, { shallow: true });
   }
   return (
     <Button {...getButtonStyles(isPrimaryAction)} onClick={open}>
-      Read
+      {t("fulfillmentButton.read")}
     </Button>
   );
 };
@@ -146,6 +149,7 @@ const DownloadButton: React.FC<{
   const { error, handleError, clearError } = useError();
   const { catalogUrl } = useLibraryContext();
   const { token } = useUser();
+  const { t } = useTranslation();
 
   async function download() {
     setLoading(true);
@@ -178,9 +182,9 @@ const DownloadButton: React.FC<{
         {...getButtonStyles(isPrimaryAction)}
         iconLeft={SvgDownload}
         loading={loading}
-        loadingText="Downloading..."
+        loadingText={t("fulfillmentButton.downloading")}
       >
-        {buttonLabel}
+        {t(buttonLabel)}
       </Button>
       {error && <Text sx={{ color: "ui.error" }}>{error}</Text>}
     </>

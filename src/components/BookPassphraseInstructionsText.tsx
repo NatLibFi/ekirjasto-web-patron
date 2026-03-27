@@ -5,15 +5,14 @@
 
 import { jsx } from "theme-ui";
 import { Text } from "components/Text";
+import { useTranslation } from "next-i18next";
 import React from "react";
-
-// define the instructions text string
-export const INSTRUCTIONS_TEXT: string =
-  "If you download the book, please copy the password below for your EPUB reader.";
 
 // Component that instructs the user
 // so that user knows how to use the book passphrase
 const BookPassphraseInstructionsText: React.FC = () => {
+  const { t } = useTranslation();
+
   // define style for the intruction text
   const textStyle: React.CSSProperties = {
     fontSize: "-1"
@@ -25,7 +24,7 @@ const BookPassphraseInstructionsText: React.FC = () => {
       aria-live="polite"
       data-testid="book-passphrase-instructions-text"
     >
-      {INSTRUCTIONS_TEXT}
+      {t("bookPassphrase.instructionsText")}
     </Text>
   );
 };

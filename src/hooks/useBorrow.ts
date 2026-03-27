@@ -4,6 +4,7 @@ import useUser from "components/context/UserContext";
 import useLibraryContext from "components/context/LibraryContext";
 import useError from "hooks/useError";
 import useLogin from "auth/useLogin";
+import { useTranslation } from "next-i18next";
 
 export default function useBorrow(isBorrow: boolean) {
   const { catalogUrl } = useLibraryContext();
@@ -12,15 +13,20 @@ export default function useBorrow(isBorrow: boolean) {
   const isUnmounted = React.useRef(false);
   const [isLoading, setLoading] = React.useState(false);
   const { error, handleError, setErrorString, clearError } = useError();
+  const { t } = useTranslation();
 
-  const loadingText = isBorrow ? "Borrowing..." : "Reserving...";
-  const buttonLabel = isBorrow ? "Borrow this book" : "Reserve this book";
+  const loadingText = isBorrow
+    ? t("useBorrow.borrowing")
+    : t("useBorrow.reserving");
+  const buttonLabel = isBorrow
+    ? t("useBorrow.borrowBook")
+    : t("useBorrow.reserveBook");
 
   const borrowOrReserve = async (url: string) => {
     clearError();
     if (!token) {
       initLogin();
-      setErrorString("You must be signed in to borrow this book.");
+      setErrorString(t("useBorrow.signInToBorrow"));
       return;
     }
     setLoading(true);

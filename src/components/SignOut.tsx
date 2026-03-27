@@ -12,6 +12,7 @@ import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
 import useLogin from "auth/useLogin";
 import { useRouter } from "next/router";
 import useUser from "./context/UserContext";
+import { useTranslation } from "next-i18next";
 
 interface SignOutProps {
   color?: string;
@@ -20,6 +21,7 @@ interface SignOutProps {
 export const SignOut: React.FC<SignOutProps> = ({
   color = "ui.black"
 }: SignOutProps) => {
+  const { t } = useTranslation();
   const dialog = useDialogStore();
   const { authMethods } = useLibraryContext();
   const { getLogoutUrl } = useLogin();
@@ -45,26 +47,26 @@ export const SignOut: React.FC<SignOutProps> = ({
   return (
     <>
       <DialogDisclosure as={Button} color={color} store={dialog}>
-        Sign Out
+        {t("signOut.signOut")}
       </DialogDisclosure>
       <Modal
         hideOnClickOutside
         dialog={dialog}
         role="alertdialog"
-        label="Sign Out"
+        label={t("signOut.signOut")}
         showClose={false}
       >
-        <p>Are you sure you want to sign out?</p>
+        <p>{t("signOut.confirmationQuestion")}</p>
         <Stack sx={{ justifyContent: "center" }}>
           <Button variant="ghost" color="ui.gray.dark" onClick={dialog.hide}>
-            Cancel
+            {t("signOut.cancel")}
           </Button>
           <Button
             color="ui.error"
             onClick={signOutAndClose}
-            aria-label="Confirm Sign Out"
+            aria-label={t("signOut.confirm")}
           >
-            Sign out
+            {t("signOut.signOut")}
           </Button>
         </Stack>
       </Modal>

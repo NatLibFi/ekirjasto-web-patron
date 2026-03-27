@@ -116,7 +116,7 @@ export function getFulfillmentFromLink(link: FulfillmentLink): AnyFullfillment {
           link.url
         ),
         type: "download",
-        buttonLabel: `Download ${modifier}${typeName}`,
+        buttonLabel: `fulfill.download${modifier.trim()}${typeName}`,
         contentType
       };
 
@@ -129,7 +129,7 @@ export function getFulfillmentFromLink(link: FulfillmentLink): AnyFullfillment {
           contentType,
           link.url
         ),
-        buttonLabel: "Read Online"
+        buttonLabel: "fulfill.readOnline"
       };
   }
   // TODO: track to bugsnag that we have found an unhandled media type

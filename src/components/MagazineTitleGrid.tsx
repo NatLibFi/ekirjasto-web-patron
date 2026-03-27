@@ -6,6 +6,7 @@ import { jsx } from "theme-ui";
 import * as React from "react";
 import MagazineTitleCard from "./MagazineTitleCard";
 import { MagazineTitle } from "../types/magazines";
+import { useTranslation } from "next-i18next";
 
 interface MagazineTitleGridProps {
   titles: MagazineTitle[];
@@ -20,6 +21,7 @@ const MagazineTitleGrid: React.FC<MagazineTitleGridProps> = ({
   onTitleClick,
   className
 }) => {
+  const { t } = useTranslation();
   if (titles.length === 0) {
     return (
       <div
@@ -30,7 +32,7 @@ const MagazineTitleGrid: React.FC<MagazineTitleGridProps> = ({
           color: "ui.gray.dark"
         }}
       >
-        <p>Ei lehtiä saatavilla valituilla suodattimilla.</p>
+        <p>{t("magazineTitleGrid.noMagazinesAvailable")}</p>
       </div>
     );
   }

@@ -10,6 +10,7 @@ import {
   MagazineCategory,
   MagazineFilters
 } from "../types/magazines";
+import { useTranslation } from "next-i18next";
 
 interface MagazineFiltersProps {
   titles: MagazineTitle[];
@@ -42,6 +43,8 @@ const MagazineFiltersComponent: React.FC<MagazineFiltersProps> = ({
     });
   };
 
+  const { t } = useTranslation();
+
   return (
     <div
       className={className}
@@ -58,7 +61,7 @@ const MagazineFiltersComponent: React.FC<MagazineFiltersProps> = ({
     >
       <div sx={{ flex: 1, minWidth: "200px" }}>
         <Label htmlFor="magazine-title-filter" sx={{ display: "block", mb: 1 }}>
-          Valitse lehti...
+          {t("magazineFilters.selectMagazine")}
         </Label>
         <Select
           id="magazine-title-filter"
@@ -66,7 +69,7 @@ const MagazineFiltersComponent: React.FC<MagazineFiltersProps> = ({
           onChange={handleTitleChange}
           onBlur={handleTitleChange}
         >
-          <option value="">Kaikki lehdet</option>
+          <option value="">{t("magazineFilters.allMagazines")}</option>
           {titles.map(title => (
             <option key={title.id} value={title.id}>
               {title.name}
@@ -80,7 +83,7 @@ const MagazineFiltersComponent: React.FC<MagazineFiltersProps> = ({
           htmlFor="magazine-category-filter"
           sx={{ display: "block", mb: 1 }}
         >
-          Valitse aihelue...
+          {t("magazineFilters.selectSubject")}
         </Label>
         <Select
           id="magazine-category-filter"
@@ -88,7 +91,7 @@ const MagazineFiltersComponent: React.FC<MagazineFiltersProps> = ({
           onChange={handleCategoryChange}
           onBlur={handleCategoryChange}
         >
-          <option value="">Kaikki aiheet</option>
+          <option value="">{t("magazineFilters.allSubjects")}</option>
           {categories.map(category => (
             <option key={category.id} value={category.id}>
               {category.name}
