@@ -22,25 +22,34 @@ const MagazinesFixedContent: React.FC = () => {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
   const { token, getEkirjastoToken } = useUser();
   const { slug, authMethods } = useLibraryContext();
-  const ekirMethod = authMethods.find(
-    method => method.type === EKIRJASTO_AUTH_TYPE
-  );
-  let ekirjastoToken: string | undefined;
-  if (ekirMethod && token) {
+
+  const [ekirjastoToken, setEkirjastoToken] = React.useState<string>("");
+
+  const fetchEkirjastoToken = async () => {
     try {
-      //Get the ekirjastoToken
+      // Get the ekirjasto auth method
+      const ekirMethod = authMethods.find(
+        method => method.type === EKIRJASTO_AUTH_TYPE
+      );
+      // Get the url for the token
       const ekirjastoTokenUrl = ekirMethod.links.find(
         link => link.rel === "ekirjasto_token"
       )?.href;
-      ekirjastoToken = getEkirjastoToken(token, ekirjastoTokenUrl);
+      // Fetch the ekirjasto token
+      const fetchedToken = await getEkirjastoToken(token, ekirjastoTokenUrl);
+
+      // Set the fetched token
+      setEkirjastoToken(fetchedToken);
     } catch (error) {
-      //Can not start the reader so should show not logged in or something
+      // If the token fetch fails, it is most likely due to 401, which will be picked up
+      // elsewhere and causes a reload of the magazines page
     }
-  }
-  if (!token) {
-    //If there is no token, reload should happen
-    ekirjastoToken = undefined;
-  }
+  };
+
+  // Fetch the ekirjasto token when we show the magazines page
+  React.useEffect(() => {
+    fetchEkirjastoToken();
+  }, []);
 
   const storageKey = React.useMemo(
     () => `${MAGAZINE_CONFIG.STORAGE_KEY_PREFIX}${slug ?? "default"}`,
@@ -67,6 +76,7 @@ const MagazinesFixedContent: React.FC = () => {
       if (e.origin !== allowedOrigin || typeof e.data !== "string") return;
 
       if (e.data === "ewl:unauthorized") {
+        // Run the login attempt when if we have the needed token
         if (ekirjastoToken) {
           iframeRef.current?.contentWindow?.postMessage(
             `ewl:login:${ekirjastoToken}`,
