@@ -9,20 +9,13 @@ const Feedback: React.FC = () => {
 
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
-      console.debug(
-        "[Feedback] Received postMessage:",
-        event.data,
-        "from",
-        event.origin
-      );
-      // Only messages from trusted source are accespted
+      // Only messages from trusted source are accepted
       if (
         event.data &&
         event.data.type === "feedback-csrf-token" &&
         typeof event.data.csrfToken === "string" &&
         event.origin === library.feedbackUrl
       ) {
-        console.debug("[Feedback] CSRF token received:", event.data.csrfToken);
       }
     }
     window.addEventListener("message", handleMessage);
