@@ -131,6 +131,7 @@ export interface LibraryData {
   authMethods: AppAuthMethod[];
   shelfUrl: string | null;
   selectedUrl: string | null;
+  feedbackUrl: string | null;
 }
 
 /**

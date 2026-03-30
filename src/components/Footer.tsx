@@ -79,6 +79,11 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
             </FooterExternalLink>
           </ListItem>
           <ListItem>
+            <FooterExternalLink href={`/${library.slug}/feedback`}>
+              {t("footer.feedback")}
+            </FooterExternalLink>
+          </ListItem>
+          <ListItem>
             <FooterExternalLink
               href={
                 "https://www.kansalliskirjasto.fi/en/e-library/e-library-faq"
