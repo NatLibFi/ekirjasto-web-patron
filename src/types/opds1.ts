@@ -176,6 +176,7 @@ type AuthDocLinkRelations =
   | "api"
   | "tunnistus_start"
   | "tunnistus_finish"
+  | "logout"
   | "passkey_login_start"
   | "passkey_login_finish"
   | "relations"

@@ -9,10 +9,12 @@ import ApplicationError, { PageNotFoundError } from "errors";
 import extractParam from "dataflow/utils";
 import { ParsedUrlQuery } from "querystring";
 import track from "analytics/track";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export type AppProps = {
   library?: LibraryData;
   error?: OPDS1.ProblemDocument;
+  _locale?: string;
 };
 
 export default function withAppProps(
@@ -37,11 +39,28 @@ export default function withAppProps(
       const pageResult = (await pageGetStaticProps?.(ctx)) ?? { props: {} };
       const pageProps = "props" in pageResult ? pageResult.props : {};
 
+      // define the translation file namespaces
+      const translationNamespaces = ["translations"];
+
+      // define the current locale.
+      // Use the locale from context,
+      // or if is missing, use app's default locale
+      const currentLocale = ctx.locale ?? "fi";
+
+      // fetch translations for the current locale from the server,
+      // translationNamespaces is used for finding translation keys
+      const translations = await serverSideTranslations(
+        currentLocale,
+        translationNamespaces
+      );
+
       return {
         ...pageResult,
         props: {
           ...pageProps,
-          library
+          library,
+          _locale: currentLocale,
+          ...translations
         },
         // revalidate library-wide data once per hour per route
         revalidate: 60 * 60

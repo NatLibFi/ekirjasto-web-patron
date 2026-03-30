@@ -6,7 +6,12 @@ import Modal from "./Modal";
 import { useDialogStore, DialogDisclosure } from "@ariakit/react/dialog";
 import Button from "./Button";
 import Stack from "./Stack";
-import useUser from "components/context/UserContext";
+import useLibraryContext from "./context/LibraryContext";
+import { isSupportedAuthType } from "auth/AuthenticationHandler";
+import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
+import useLogin from "auth/useLogin";
+import { useRouter } from "next/router";
+import useUser from "./context/UserContext";
 
 interface SignOutProps {
   color?: string;
@@ -16,9 +21,25 @@ export const SignOut: React.FC<SignOutProps> = ({
   color = "ui.black"
 }: SignOutProps) => {
   const dialog = useDialogStore();
+  const { authMethods } = useLibraryContext();
+  const { getLogoutUrl } = useLogin();
+  const { push } = useRouter();
   const { signOut } = useUser();
+
+  const supportedAuthMethods = authMethods.filter(m =>
+    isSupportedAuthType(m.type)
+  );
+
+  const method = supportedAuthMethods.find(
+    method => method.type === EKIRJASTO_AUTH_TYPE
+  );
+
   function signOutAndClose() {
-    signOut();
+    if (method) {
+      push(getLogoutUrl());
+    } else {
+      signOut();
+    }
     dialog.hide();
   }
   return (

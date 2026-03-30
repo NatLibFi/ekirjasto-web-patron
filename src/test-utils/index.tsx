@@ -20,6 +20,14 @@ import mockConfig from "test-utils/mockConfig";
 import track from "analytics/track";
 import "react-intersection-observer/test-utils";
 import "test-utils/mockToDateString";
+import { mockUseTranslation } from "test-utils/mockUseTranslation";
+
+// mock next-i18next for all tests
+// so we don't need to repeat this in each test file
+jest.mock("next-i18next", () => ({
+  // mock only the useTranslation hook we need
+  useTranslation: () => mockUseTranslation()
+}));
 
 enableFetchMocks();
 expect.addSnapshotSerializer(serializer);
