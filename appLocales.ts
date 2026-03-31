@@ -47,3 +47,59 @@ export const TRANSLATIONS_SECONDARY_LOCALES: AppLocale[] = ["fi", "sv"];
 // so we can write tests using the English strings
 // note: testing locale is defined as type of string
 export const APP_DEFAULT_LOCALE_FOR_TESTING: string = "en";
+
+// ******************************************************************
+// HELPER FUNCTIONS:
+
+// define type guard function
+// that checks if the string given as parameter is of type AppLocale
+export function isAppLocale(locale: string): locale is AppLocale {
+  // get list of supported locales as string
+  const supportedLocales = APP_LOCALES as readonly string[];
+
+  // returns true only if the locale is a supported locale
+  return supportedLocales.includes(locale);
+}
+
+// function that returns a valid app locale after checking it
+// or the app default locale as fallback
+// locale to check is given as a string parameter
+export function normaliseLocale(rawLocale?: string): AppLocale {
+  // check that we have a input
+  if (!rawLocale) {
+    // no input, just return default locale
+    return APP_DEFAULT_LOCALE;
+  }
+
+  // try to format the locale
+  const normalisedLocale = formatRawLocale(rawLocale);
+
+  // check that locale is valid and supported in app
+  if (!normalisedLocale || !isAppLocale(normalisedLocale)) {
+    // no locale to check after normalising or
+    // normalised locale is not valid app locale
+    // just return default locale
+    return APP_DEFAULT_LOCALE;
+  }
+
+  // return valid app locale
+  return normalisedLocale;
+}
+
+// Helper function that returns raw locale string formatted
+function formatRawLocale(rawLocale: string): string {
+  // first trim the input and remove any
+  // leading or trailign whitespaces
+  const trimmedLocale = rawLocale.trim();
+
+  // if for some reason region part is present,
+  // try separate it from the language code,
+  // for example format "en-US" to just "en"
+  const baseLocale = trimmedLocale.split("-")[0];
+
+  // change to lowercase just in case
+  const formattedLocale = baseLocale.toLowerCase();
+
+  // return after formatting
+  return formattedLocale;
+}
