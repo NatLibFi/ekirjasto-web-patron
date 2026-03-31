@@ -24,16 +24,23 @@
 // import helper function to create the configuration
 import { defineConfig } from "i18next-cli";
 
+// import Ekirjasto web app locale definitions
+import {
+  APP_LOCALES,
+  TRANSLATIONS_PRIMARY_LOCALE,
+  TRANSLATIONS_SECONDARY_LOCALES
+} from "./appLocales";
+
 // define the supported languages
 // E-kirjasto app has three languages: English, Finnish, Swedish
-const appLocales = ["fi", "sv", "en"];
+const appLocales = [...APP_LOCALES];
 
 // set the primary, "main" language for the application
 // English translations and keys are the "base" for other translations
-const primaryLanguage = "en";
+const primaryLanguage = TRANSLATIONS_PRIMARY_LOCALE;
 
 // define secondary languages that will be supported: Finnish and Swedish
-const secondaryLanguages = ["fi", "sv"];
+const secondaryLanguages = TRANSLATIONS_SECONDARY_LOCALES;
 
 // define the functions used for translation in the code
 // t function is used for retrieving translation strings
@@ -41,6 +48,10 @@ const translationFunctions = ["t"];
 
 // define the default namespace (file) for translations as "translations"
 const defaultTranslationNamespace = "translations";
+
+// define a default value that is used
+// for missing keys in secondary languages
+const defaultTranslationValue = "";
 
 // define the input file patterns to search for translation keys
 // We include all .tsx and .jsx files in the components and pages directories
@@ -95,6 +106,7 @@ const ignoredAttributes = [
 //    sorted alphabetically in translation.json files after extraction
 const extractConfig = {
   defaultNS: defaultTranslationNamespace,
+  defaultValue: defaultTranslationValue,
   functions: translationFunctions,
   ignore: ignoredFiles,
   ignoredAttributes,
