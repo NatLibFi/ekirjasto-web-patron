@@ -1,3 +1,4 @@
+import { APP_DEFAULT_LOCALE_FOR_TESTING } from "../../appLocales";
 import enTranslations from "../../public/locales/en/translations.json";
 import fiTranslations from "../../public/locales/fi/translations.json";
 import svTranslations from "../../public/locales/sv/translations.json";
@@ -13,7 +14,7 @@ const translations: Record<string, Record<string, string>> = {
 // set default language for tests as English
 // (we usually test with source code language)
 // note: actual app default is Finnish
-let currentLanguage = "en";
+let currentLanguage = APP_DEFAULT_LOCALE_FOR_TESTING;
 
 // helper function that replaces placeholders
 // in a translation strings with actual values.
