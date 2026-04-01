@@ -28,16 +28,34 @@ import useBreadcrumbContext from "components/context/BreadcrumbContext";
 import useSWR from "swr";
 import useUser from "components/context/UserContext";
 import { useTranslation } from "next-i18next";
+import useLibraryContext from "components/context/LibraryContext";
 
 export const BookDetails: React.FC = () => {
-  const { query } = useRouter();
+  const { locale, query } = useRouter();
+  const { catalogUrl } = useLibraryContext();
   const bookUrl = extractParam(query, "bookUrl");
-  const { data, error } = useSWR(bookUrl ?? null, fetchBook);
+
+  // define cache key (unique) for SWR based on bookUrl and locale.
+  // note: if bookUrl or locale is missing we don't fetch anything
+  const key = bookUrl && locale ? [bookUrl, locale] : null;
+
+  // define the fetcher function for SWR.
+  // Token is undefined here because authentication
+  // is not required the fetch normal book data from backend
+  const fetcher = () => fetchBook(bookUrl, catalogUrl, undefined, locale);
+
+  // SWR calls fetchBook when it needs new data
+  // data is the fetched book and error is any happened error during fetching
+  const { data, error } = useSWR(key, fetcher);
+
+  // get user's loaned and reserved books (MyBooks)
   const { loans } = useUser();
-  const { storedBreadcrumbs } = useBreadcrumbContext();
-  // use the loans version if it exists
+  // always use the MyBooks version of the book, if it is available
+  // otherwise, just use the fetched data as the book
   const book = loans?.find(loanedBook => data?.id === loanedBook.id) ?? data;
+
   const subtitle = getSubtitle(book);
+  const { storedBreadcrumbs } = useBreadcrumbContext();
   const { t } = useTranslation();
 
   if (error) {
