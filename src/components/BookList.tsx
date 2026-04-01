@@ -35,6 +35,7 @@ import Link from "./Link";
 import { APP_CONFIG } from "utils/env";
 import SelectBookCard from "./SelectBookCard";
 import { useTranslation, TFunction } from "next-i18next";
+import { useRouter } from "next/router";
 
 const ListLoadingIndicator = () => {
   const { t } = useTranslation();
@@ -60,13 +61,14 @@ export const InfiniteBookList: React.FC<{ firstPageUrl: string }> = ({
   firstPageUrl
 }) => {
   const { token } = useUser();
+  const { locale } = useRouter();
   const getKey = (pageIndex: number, previousData: CollectionData | null) => {
     // first page, no previous data
-    if (pageIndex === 0) return [firstPageUrl, token];
+    if (pageIndex === 0) return [firstPageUrl, token, locale];
     // reached the end
     if (!previousData?.nextPageUrl) return null;
     // otherwise return the next page url
-    return [previousData.nextPageUrl, token];
+    return [previousData.nextPageUrl, token, locale];
   };
   const { data, size, error, setSize } = useSWRInfinite(
     getKey,
