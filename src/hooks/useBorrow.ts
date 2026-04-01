@@ -5,6 +5,7 @@ import useLibraryContext from "components/context/LibraryContext";
 import useError from "hooks/useError";
 import useLogin from "auth/useLogin";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 export default function useBorrow(isBorrow: boolean) {
   const { catalogUrl } = useLibraryContext();
@@ -14,6 +15,7 @@ export default function useBorrow(isBorrow: boolean) {
   const [isLoading, setLoading] = React.useState(false);
   const { error, handleError, setErrorString, clearError } = useError();
   const { t } = useTranslation();
+  const { locale } = useRouter();
 
   const loadingText = isBorrow
     ? t("useBorrow.borrowing")
@@ -31,7 +33,7 @@ export default function useBorrow(isBorrow: boolean) {
     }
     setLoading(true);
     try {
-      const book = await fetchBook(url, catalogUrl, token);
+      const book = await fetchBook(url, catalogUrl, token, locale);
       setBook(book);
     } catch (e) {
       handleError(e);
