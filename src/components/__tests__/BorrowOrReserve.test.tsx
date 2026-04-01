@@ -51,7 +51,8 @@ test("borrowing calls correct url with token", async () => {
   expect(mockedFetchBook).toHaveBeenCalledWith(
     "/url",
     "http://test-cm.com/catalogUrl",
-    "user-token"
+    "user-token",
+    "en"
   );
 
   await waitForElementToBeRemoved(() => screen.getByText("Borrowing..."));

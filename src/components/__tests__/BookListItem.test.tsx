@@ -68,7 +68,8 @@ describe("BorrowableBook", () => {
     expect(mockFetchBook).toHaveBeenCalledWith(
       "/borrow",
       "http://test-cm.com/catalogUrl",
-      "user-token"
+      "user-token",
+      "en"
     );
     const borrowButton = screen.getByRole("button", {
       name: /Borrowing.../i
@@ -120,7 +121,8 @@ describe("OnHoldBook", () => {
     expect(mockFetchBook).toHaveBeenCalledWith(
       "/borrow",
       "http://test-cm.com/catalogUrl",
-      "user-token"
+      "user-token",
+      "en"
     );
     const borrowButton = screen.getByRole("button", {
       name: /Borrowing.../i
@@ -178,7 +180,8 @@ describe("ReservableBook", () => {
     expect(mockFetchBook).toHaveBeenCalledWith(
       "/reserve",
       "http://test-cm.com/catalogUrl",
-      "user-token"
+      "user-token",
+      "en"
     );
     const borrowButton = screen.getByRole("button", {
       name: /Reserving.../i
@@ -231,7 +234,8 @@ describe("ReservedBook", () => {
     expect(mockFetchBook).toHaveBeenCalledWith(
       "/revoke",
       "http://test-cm.com/catalogUrl",
-      "user-token"
+      "user-token",
+      "en"
     );
 
     expect(mockSetBook).toHaveBeenCalledWith(unreservedBook, reservedBook.id);

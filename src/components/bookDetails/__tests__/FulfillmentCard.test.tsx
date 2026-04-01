@@ -249,7 +249,8 @@ describe("reserved", () => {
     expect(mockFetchBook).toHaveBeenCalledWith(
       "/revoke",
       "http://test-cm.com/catalogUrl",
-      "user-token"
+      "user-token",
+      "en"
     );
 
     expect(mockSetBook).toHaveBeenCalledWith(unreservedBook, reservedBook.id);
@@ -277,7 +278,8 @@ describe("reserved", () => {
     expect(mockFetchBook).toHaveBeenCalledWith(
       "/revoke",
       "http://test-cm.com/catalogUrl",
-      "user-token"
+      "user-token",
+      "en"
     );
 
     expect(await screen.findByText("Error: Can't do that")).toBeInTheDocument();
@@ -353,7 +355,8 @@ describe("FulfillableBook", () => {
     expect(mockFetchBook).toHaveBeenCalledWith(
       "/revoke",
       "http://test-cm.com/catalogUrl",
-      "user-token"
+      "user-token",
+      "en"
     );
 
     expect(mockSetBook).toHaveBeenCalledWith(unborrowed, downloadableBook.id);
@@ -515,6 +518,7 @@ describe("FulfillableBook", () => {
     // you fetch the opds entry which should then return you a book with the correct link
     expect(fetchMock).toHaveBeenCalledWith("/indirect", {
       headers: {
+        "Accept-Language": "en",
         Authorization: "user-token",
         "X-Requested-With": "XMLHttpRequest"
       },
