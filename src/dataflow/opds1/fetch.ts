@@ -94,9 +94,10 @@ export async function fetchEntry(
  */
 export async function fetchCollection(
   url: string,
-  token?: string
+  token?: string,
+  locale?: string
 ): Promise<CollectionData> {
-  const feed = await fetchFeed(url, token);
+  const feed = await fetchFeed(url, token, locale);
   const collection = feedToCollection(feed, url);
   return collection;
 }
