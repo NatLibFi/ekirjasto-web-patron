@@ -52,7 +52,7 @@ const Modal: React.FC<ModalProps> = ({
         <div
           sx={{
             backgroundColor: "rgb(0 0 0 / 0.1)",
-            "-webkit-backdrop-filter": "blur(4px)",
+            WebkitBackdropFilter: "blur(4px)",
             backdropFilter: "blur(4px)"
           }}
         ></div>
