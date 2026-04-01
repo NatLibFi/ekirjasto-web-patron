@@ -196,7 +196,7 @@ test("fetches search description", async () => {
   // expected. In this case once for the collection, then for it's search
   // description.
   expect(mockedSWR).toHaveBeenCalledWith(
-    ["/collection", "user-token"],
+    ["/collection", "user-token", "en"],
     expect.anything()
   );
   expect(mockedSWR).toHaveBeenCalledWith("/search-data-url", expect.anything());
