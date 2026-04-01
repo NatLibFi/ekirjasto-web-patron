@@ -40,7 +40,7 @@ export function PasskeyCreate() {
     setIsSupported(browserSupportsWebAuthn());
   }, []);
 
-  const handleLogin = async () => {
+  const handleCreate = async () => {
     setError("");
     setIsLoading(true);
 
@@ -87,7 +87,7 @@ export function PasskeyCreate() {
       }
 
       const response = await finishResponse.json()
-      //TODO: do something with the response, or just informa that successful
+      //TODO: do something with the response, or just inform that successful
 
     } catch (err) {
       setError((err as Error).message || "Passkey creation failed");
