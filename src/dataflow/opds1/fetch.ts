@@ -108,9 +108,10 @@ export async function fetchCollection(
 export async function fetchBook(
   url: string,
   catalogUrl: string,
-  token?: string
+  token?: string,
+  locale?: string
 ): Promise<AnyBook> {
-  const entry = await fetchEntry(url, token);
+  const entry = await fetchEntry(url, token, locale);
   const book = entryToBook(entry, catalogUrl);
   return book;
 }
