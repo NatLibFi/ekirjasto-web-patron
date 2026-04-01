@@ -11,17 +11,15 @@ import Cookie from "js-cookie";
 import {
   EKIRJASTO_AUTH_TYPE,
   EKIRJASTO_DOMAIN,
-  LOGOUT_COOKIE_PARAM
+  EKIRJASTO_SESSION_PARAM
 } from "utils/constants";
 import useUser from "components/context/UserContext";
 import useLoginRedirectUrl from "./useLoginRedirect";
 
 export default function Logout(): React.ReactElement {
-  const { token, signOut, getEkirjastoToken } = useUser();
+  const { token, session, signOut } = useUser();
   const { logoutRedirectUrl } = useLoginRedirectUrl();
   const { authMethods } = useLibraryContext();
-
-  const [ekirjastoToken, setEkirjastoToken] = React.useState<string>("");
 
   // AppAuthMethod[] shouldn't be populated with unsupported auth methods from auth document,
   // but we filter out any unsupported methods just in case.
@@ -44,47 +42,19 @@ export default function Logout(): React.ReactElement {
     logoutRedirectUrl
   )}`;
 
-  const fetchEkirjastoToken = async () => {
-    try {
-      // Get the url for the token
-      const ekirjastoTokenUrl = method.links?.find(
-        link => link.rel === "ekirjasto_token"
-      )?.href;
-      // Fetch the ekirjasto token
-      const fetchedToken = await getEkirjastoToken(token!, ekirjastoTokenUrl);
-
-      // Set the fetched token
-      setEkirjastoToken(fetchedToken);
-    } catch (error) {
-      // If the token fetch fails, it is most likely due to 401,
-      // In which case, refresh happens elsewhere
-    }
-  };
-
   React.useEffect(() => {
-    fetchEkirjastoToken();
-  });
-
-  React.useEffect(() => {
-    if (ekirjastoToken && authenticationLogoutHref) {
+    if (session && authenticationLogoutHref) {
       // Set the session cookie
-      Cookie.set(LOGOUT_COOKIE_PARAM, ekirjastoToken, {
+      Cookie.set(EKIRJASTO_SESSION_PARAM, session, {
         path: "/",
         domain: EKIRJASTO_DOMAIN,
         sameSite: "None",
         secure: true
       });
-
-      window.location.href = urlWithRedirect;
-      signOut();
     }
-  }, [
-    token,
-    signOut,
-    authenticationLogoutHref,
-    urlWithRedirect,
-    ekirjastoToken
-  ]);
+    window.location.href = urlWithRedirect;
+    signOut();
+  }, [token, session, signOut, authenticationLogoutHref, urlWithRedirect]);
 
   if (supportedAuthMethods.length === 0) {
     return <NoAuth />;

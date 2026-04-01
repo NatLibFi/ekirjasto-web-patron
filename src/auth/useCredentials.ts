@@ -6,6 +6,7 @@ import { NextRouter, useRouter } from "next/router";
 import { generateCredentials } from "utils/auth";
 import {
   EKIRJASTO_AUTH_TYPE,
+  EKIRJASTO_SESSION_PARAM,
   EKIRJASTO_TOKEN_PARAM,
   SAML_LOGIN_QUERY_PARAM
 } from "utils/constants";
@@ -42,8 +43,8 @@ export default function useCredentials(
   >(getCredentialsCookie(slug, authenticationUrl));
   // sync up cookie state with react state
   React.useEffect(() => {
-    const cookie = getCredentialsCookie(slug, authenticationUrl);
-    if (cookie) setCredentialsState(cookie);
+    const cookieCredentials = getCredentialsCookie(slug, authenticationUrl);
+    if (cookieCredentials) setCredentialsState(cookieCredentials);
   }, [authenticationUrl, slug]);
 
   // set both cookie and state credentials
@@ -59,6 +60,7 @@ export default function useCredentials(
   const clear = React.useCallback(() => {
     setCredentialsState(undefined);
     clearCredentialsCookie(slug);
+    clearSessionCookie(slug);
   }, [slug]);
 
   // use credentials from browser url if they exist
@@ -97,10 +99,21 @@ function cookieNameEkirjasto(): string {
   const AUTH_COOKIE_NAME = EKIRJASTO_TOKEN_PARAM;
   return AUTH_COOKIE_NAME;
 }
+
+/**
+ * When using ekirjasto authentication, we don't use scoping to a particular library
+ * @returns ekirjasto session cookie name
+ */
+function cookieNameEkirjastoSession(): string {
+  const AUTH_COOKIE_NAME = EKIRJASTO_SESSION_PARAM;
+  return AUTH_COOKIE_NAME;
+}
 /**
  * Get credentials from cookies.
  * We assume the token is in access_token cookie, and that it is
  * of the Ekirjasto Authentication type
+ *
+ * There is also a token defining the session that is used for logout
  *
  * @param librarySlug Library slug, that is useful if we have multiple libraries
  * @param authenticationUrl AuthenticationUrl where we make refresh requests
@@ -113,6 +126,8 @@ function getCredentialsCookie(
   if (librarySlug === "ekirjasto") {
     // Get access token, for ekirjasto login credentials
     const accessToken = Cookie.get(cookieNameEkirjasto());
+    const session = Cookie.get(cookieNameEkirjastoSession());
+
     if (!accessToken) {
       return undefined;
     }
@@ -120,6 +135,7 @@ function getCredentialsCookie(
     const authCredentials: AuthCredentials = {
       token: `Bearer ${accessToken}`,
       methodType: OPDS1.EkirjastoAuthType,
+      session: session,
       authenticationUrl: authenticationUrl ? authenticationUrl : undefined
     };
     // Return the credentials
@@ -151,6 +167,12 @@ function clearCredentialsCookie(librarySlug: string | null) {
     Cookie.remove(cookieNameEkirjasto());
   } else {
     Cookie.remove(cookieName(librarySlug));
+  }
+}
+
+function clearSessionCookie(librarySlug: string | null) {
+  if (librarySlug === "ekirjasto") {
+    Cookie.remove(cookieNameEkirjastoSession());
   }
 }
 

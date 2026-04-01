@@ -32,6 +32,7 @@ export type UserState = {
   setSelected: (book: AnyBook, id?: string) => void;
   error: any;
   token: string | undefined;
+  session: string | undefined;
   clearCredentials: () => void;
 };
 
@@ -225,6 +226,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     setSelected,
     error,
     token: stringifyToken(credentials),
+    session: credentials?.session,
     clearCredentials
   };
 

@@ -114,6 +114,7 @@ export type AuthCredentialsToken = string | Token | undefined;
 export interface AuthCredentials {
   methodType: AppAuthMethod["type"];
   token: AuthCredentialsToken;
+  session?: string;
   authenticationUrl?: string;
 }
 
