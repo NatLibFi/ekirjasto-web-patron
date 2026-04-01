@@ -9,6 +9,7 @@ import useSWR from "swr";
 import { BasicTokenAuthType, EkirjastoAuthType } from "types/opds1";
 import { addHours, isBefore } from "date-fns";
 import { fetchEAuthToken, fetchEkirjastoToken } from "auth/ekirjastoFetch";
+import { useRouter } from "next/router";
 
 type Status = "authenticated" | "loading" | "unauthenticated";
 export type UserState = {
@@ -77,10 +78,11 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   );
 
   function useFetchFeed(fetchableUrl: string | null) {
+    const { locale } = useRouter();
     return useSWR(
       // pass null if there are no credentials or shelfUrl to tell SWR not to fetch at all.
       credentials && fetchableUrl
-        ? [fetchableUrl, token, credentials?.methodType]
+        ? [fetchableUrl, token, locale, credentials?.methodType]
         : null,
       fetchLoans,
       {
@@ -241,8 +243,8 @@ export default function useUser() {
 
 // we only need the books out of a collection for loans,
 // so this is a utility to extract those.
-async function fetchLoans(url: string, token: string) {
-  const collection = await fetchCollection(url, token);
+async function fetchLoans(url: string, token: string, locale: string) {
+  const collection = await fetchCollection(url, token, locale);
   return collection.books;
 }
 
