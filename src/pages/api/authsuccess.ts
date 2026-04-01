@@ -3,7 +3,11 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { serialize } from "cookie";
 import { APP_CONFIG } from "utils/env";
 import { buildLibraryData, fetchAuthDocument } from "dataflow/getLibraryData";
-import { EKIRJASTO_AUTH_TYPE, EKIRJASTO_SESSION_PARAM, EKIRJASTO_TOKEN_PARAM } from "utils/constants";
+import {
+  EKIRJASTO_AUTH_TYPE,
+  EKIRJASTO_SESSION_PARAM,
+  EKIRJASTO_TOKEN_PARAM
+} from "utils/constants";
 
 type ResponseData = {
   message: string;
@@ -30,17 +34,16 @@ export default async function handler(
       );
 
       // Set the circulation token and authentication token as cookies that can be read on the other page and stored
-      res.setHeader(
-        "Set-Cookie",
-        [serialize(EKIRJASTO_TOKEN_PARAM, accessToken, {
+      res.setHeader("Set-Cookie", [
+        serialize(EKIRJASTO_TOKEN_PARAM, accessToken, {
           httpOnly: false,
           path: "/"
-        }), 
+        }),
         serialize(EKIRJASTO_SESSION_PARAM, token, {
           httpOnly: false,
           path: "/"
-        })]
-      );
+        })
+      ]);
 
       // Redirect to back to ekirjasto
       res.writeHead(302, { Location: "/ekirjasto" });
