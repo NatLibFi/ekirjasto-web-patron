@@ -81,6 +81,7 @@ const ReadOnlineExternal: React.FC<{
   const [loading, setLoading] = React.useState(false);
   const { error, handleError, clearError } = useError();
   const { t } = useTranslation();
+  const { locale } = useRouter();
 
   async function open() {
     setLoading(true);
@@ -90,7 +91,8 @@ const ReadOnlineExternal: React.FC<{
       // provided function
       const { url: externalReaderUrl } = await details.getLocation(
         catalogUrl,
-        token
+        token,
+        locale
       );
 
       // we are about to open the book, so send a track event
@@ -150,6 +152,7 @@ const DownloadButton: React.FC<{
   const { catalogUrl } = useLibraryContext();
   const { token } = useUser();
   const { t } = useTranslation();
+  const { locale } = useRouter();
 
   async function download() {
     setLoading(true);
@@ -159,7 +162,7 @@ const DownloadButton: React.FC<{
         url: downloadUrl,
         token: downloadToken,
         lcpContentType
-      } = await details.getLocation(catalogUrl, token);
+      } = await details.getLocation(catalogUrl, token, locale);
 
       const downloadContentType = lcpContentType ?? details?.contentType;
       await downloadFile(
