@@ -11,10 +11,12 @@ import { AnyBook } from "interfaces";
 import { fetchCollection } from "dataflow/opds1/fetch";
 import useSWR from "swr";
 import useUser from "components/context/UserContext";
+import { useTranslation } from "next-i18next";
 
 const Recommendations: React.FC<{ book: AnyBook }> = ({ book }) => {
   const relatedUrl = book.relatedUrl;
   const { token } = useUser();
+  const { t } = useTranslation();
 
   const { data: recommendations, isValidating } = useSWR(
     relatedUrl ? [relatedUrl, token] : null,
@@ -38,7 +40,7 @@ const Recommendations: React.FC<{ book: AnyBook }> = ({ book }) => {
 
   return (
     <section
-      aria-label="Recommendations"
+      aria-label={t("bookDetails.ariaLabelForRecommendations")}
       sx={{ bg: "ui.gray.lightWarm", py: 4 }}
     >
       <H2
@@ -49,7 +51,7 @@ const Recommendations: React.FC<{ book: AnyBook }> = ({ book }) => {
           color: isLoading ? "ui.gray.dark" : "ui.black"
         }}
       >
-        Recommendations{" "}
+        {t("bookDetails.headerForRecommendations")}
         {isLoading && <LoadingIndicator size="1.75rem" color="ui.gray.dark" />}
       </H2>
       <ul sx={{ listStyle: "none", m: 0, p: 0 }}>

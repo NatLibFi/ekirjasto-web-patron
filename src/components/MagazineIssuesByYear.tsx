@@ -7,6 +7,7 @@ import * as React from "react";
 import { H2 } from "./Text";
 import MagazineCard from "./MagazineCard";
 import { MagazineIssue, MagazineTitle } from "../types/magazines";
+import { useTranslation } from "next-i18next";
 
 interface MagazineIssuesByYearProps {
   title: MagazineTitle;
@@ -52,6 +53,8 @@ const MagazineIssuesByYear: React.FC<MagazineIssuesByYearProps> = ({
     (a, b) => parseInt(b) - parseInt(a)
   );
 
+  const { t } = useTranslation();
+
   if (issues.length === 0) {
     return (
       <div
@@ -62,7 +65,7 @@ const MagazineIssuesByYear: React.FC<MagazineIssuesByYearProps> = ({
           color: "ui.gray.dark"
         }}
       >
-        <p>Ei numeroita saatavilla tälle lehdelle.</p>
+        <p>{t("magazineIssuesByYear.noMagazines")}</p>
       </div>
     );
   }
@@ -74,7 +77,7 @@ const MagazineIssuesByYear: React.FC<MagazineIssuesByYearProps> = ({
         <H2>{title.name}</H2>
         {title.publisher && (
           <p sx={{ color: "ui.gray.dark", mt: 1 }}>
-            Kustantaja: {title.publisher}
+            {t("magazineIssuesByYear.publisher")}: {title.publisher}
           </p>
         )}
         {title.language && (
@@ -90,11 +93,11 @@ const MagazineIssuesByYear: React.FC<MagazineIssuesByYearProps> = ({
             }}
           >
             {title.language === "fi"
-              ? "suomi"
+              ? "suomi" // eslint-disable-line i18next/no-literal-string
               : title.language === "sv"
-              ? "svenska"
+              ? "svenska" // eslint-disable-line i18next/no-literal-string
               : title.language === "en"
-              ? "english"
+              ? "english" // eslint-disable-line i18next/no-literal-string
               : title.language}
           </div>
         )}

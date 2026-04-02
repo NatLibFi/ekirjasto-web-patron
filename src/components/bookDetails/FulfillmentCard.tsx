@@ -21,11 +21,14 @@ import {
 import BookStatus from "components/BookStatus";
 import { AnyBook, FulfillableBook, FulfillmentLink } from "interfaces";
 import CancelOrReturn from "components/CancelOrReturn";
+import { useTranslation } from "next-i18next";
 
 const FulfillmentCard: React.FC<{ book: AnyBook }> = ({ book }) => {
+  const { t } = useTranslation();
+
   return (
     <div
-      aria-label="Borrow and download card"
+      aria-label={t("bookDetails.ariaLabelForFulfillmentCard")}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -44,6 +47,8 @@ const FulfillmentCard: React.FC<{ book: AnyBook }> = ({ book }) => {
 const FulfillmentContent: React.FC<{
   book: AnyBook;
 }> = ({ book }) => {
+  const { t } = useTranslation();
+
   if (bookIsBorrowable(book)) {
     return <BorrowOrReserve url={book.borrowUrl} isBorrow />;
   }
@@ -54,8 +59,8 @@ const FulfillmentContent: React.FC<{
     return (
       <CancelOrReturn
         url={book.revokeUrl}
-        text="Cancel Reservation"
-        loadingText="Cancelling..."
+        text={t("bookDetails.cancelReservation")}
+        loadingText={t("bookDetails.cancelling")}
         id={book.id}
       />
     );
@@ -66,11 +71,7 @@ const FulfillmentContent: React.FC<{
   if (bookIsFulfillable(book)) {
     return <AccessCard links={book.fulfillmentLinks} book={book} />;
   }
-  return (
-    <Text>
-      This title is not supported in this application, please try another.
-    </Text>
-  );
+  return <Text>{t("bookDetails.notSupported")}</Text>;
 };
 
 /**
@@ -86,17 +87,19 @@ const AccessCard: React.FC<{
   const isFulfillable = fulfillments.length > 0;
   const redirectUser = shouldRedirectToCompanionApp(links);
 
+  const { t } = useTranslation();
+
   return (
     <>
       <CancelOrReturn
         url={book.revokeUrl}
-        loadingText="Returning..."
+        loadingText={t("bookDetails.returning")}
         id={book.id}
-        text="Return"
+        text={t("bookDetails.return")}
       />
       {isFulfillable && redirectUser && (
         <Text variant="text.body.italic">
-          If you would rather read on your computer, you can:
+          {t("bookDetails.readOnComputer")}
         </Text>
       )}
       {isFulfillable && (

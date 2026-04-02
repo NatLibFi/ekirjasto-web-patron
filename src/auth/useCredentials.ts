@@ -114,7 +114,6 @@ function getCredentialsCookie(
     // Get access token, for ekirjasto login credentials
     const accessToken = Cookie.get(cookieNameEkirjasto());
     if (!accessToken) {
-      console.log("No access token");
       return undefined;
     }
     // Create ekirjasto authentication credentials

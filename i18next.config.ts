@@ -44,7 +44,7 @@ const defaultTranslationNamespace = "translations";
 
 // define the input file patterns to search for translation keys
 // We include all .tsx and .jsx files in the components and pages directories
-const inputFiles = ["src/{components,pages}/**/*.{tsx,jsx}"];
+const inputFiles = ["src/{components,hooks,pages,utils}/**/*.{ts,tsx,jsx}"];
 
 // define the output path to public/locales directory,
 // and organise the translation files by language and namespace,
@@ -53,7 +53,10 @@ const outputPath = "public/locales/{{language}}/{{namespace}}.json";
 
 // define files and directories to ignore during extraction
 // For example test files are skipped
-const ignoredFiles = ["**/__tests__/**"];
+const ignoredFiles = [
+  "**/__tests__/**",
+  "src/components/OpenEbooksLanding.tsx"
+];
 
 // define list of HTML attributes to ignore during extraction,
 // these attributes do not need to be translated
@@ -75,6 +78,7 @@ const ignoredAttributes = [
   "name",
   "rel",
   "role",
+  "size",
   "variant",
   "viewBox",
   "width"

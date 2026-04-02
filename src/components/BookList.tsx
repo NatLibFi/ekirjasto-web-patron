@@ -9,7 +9,8 @@ import {
   bookIsReservable,
   bookIsReserved,
   bookIsOnHold,
-  getAuthorsString
+  getAuthors,
+  getSubtitle
 } from "../utils/book";
 import Lane from "./Lane";
 import Button, { NavButton } from "./Button";
@@ -32,21 +33,27 @@ import BookStatus from "components/BookStatus";
 import Link from "./Link";
 import { APP_CONFIG } from "utils/env";
 import SelectBookCard from "./SelectBookCard";
+import { useTranslation, TFunction } from "next-i18next";
 
-const ListLoadingIndicator = () => (
-  <div
-    sx={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      fontSize: 2,
-      fontWeight: "heading",
-      p: 3
-    }}
-  >
-    <LoadingIndicator /> Loading ...
-  </div>
-);
+const ListLoadingIndicator = () => {
+  const { t } = useTranslation();
+
+  return (
+    <div
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        fontSize: 2,
+        fontWeight: "heading",
+        p: 3
+      }}
+    >
+      <LoadingIndicator />
+      {t("bookList.loading")}
+    </div>
+  );
+};
 
 export const InfiniteBookList: React.FC<{ firstPageUrl: string }> = ({
   firstPageUrl
@@ -65,6 +72,7 @@ export const InfiniteBookList: React.FC<{ firstPageUrl: string }> = ({
     fetchCollection
   );
 
+  const { t } = useTranslation();
   const isFetchingInitialData = !data && !error;
   const lastItem = data && data[data.length - 1];
   const hasMore = !!lastItem?.nextPageUrl;
@@ -91,7 +99,7 @@ export const InfiniteBookList: React.FC<{ firstPageUrl: string }> = ({
             onClick={() => setSize(size => size + 1)}
             sx={{ maxWidth: 300 }}
           >
-            View more
+            {t("bookList.viewMore")}
           </Button>
         </div>
       ) : null}
@@ -118,9 +126,8 @@ export const BookListItem: React.FC<{
   // if the book exists in loans, use that version
   const loanedBook = loans?.find(loan => loan.id === collectionBook.id);
   const book = loanedBook ?? collectionBook;
-
-  // uses contributors if there are no authors
-  const authors = getAuthorsString(book);
+  const subtitle = getSubtitle(book);
+  const { t } = useTranslation();
 
   return (
     <li
@@ -159,13 +166,19 @@ export const BookListItem: React.FC<{
                 {truncateString(book.title, 50)}
               </Link>
             </H2>
-            {book.subtitle && (
-              <Text variant="callout" aria-label="Subtitle">
-                , {truncateString(book.subtitle, 50)}
+            {subtitle && (
+              <Text
+                variant="callout"
+                aria-label={t("bookList.ariaLabelForSubtitle")}
+              >
+                , {truncateString(subtitle, 50)}
               </Text>
             )}
-            <Text aria-label="Authors" sx={{ display: "block" }}>
-              {authors}
+            <Text
+              aria-label={t("bookList.ariaLabelForAuthors")}
+              sx={{ display: "block" }}
+            >
+              {limitedAuthorsList(book, t)}
             </Text>
           </div>
 
@@ -190,6 +203,8 @@ const Description: React.FC<{ book: AnyBook; className?: string }> = ({
   book,
   className
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={className}>
       <Text variant="text.body">
@@ -200,13 +215,15 @@ const Description: React.FC<{ book: AnyBook; className?: string }> = ({
         variant="link"
         sx={{ verticalAlign: "baseline", ml: 1 }}
       >
-        Read more
+        {t("bookList.readMore")}
       </NavButton>
     </div>
   );
 };
 
 const BookListCTA: React.FC<{ book: AnyBook }> = ({ book }) => {
+  const { t } = useTranslation();
+
   if (bookIsBorrowable(book)) {
     return <BorrowOrReserve url={book.borrowUrl} isBorrow />;
   }
@@ -224,8 +241,8 @@ const BookListCTA: React.FC<{ book: AnyBook }> = ({ book }) => {
       <CancelOrReturn
         url={book.revokeUrl}
         id={book.id}
-        text="Cancel Reservation"
-        loadingText="Cancelling..."
+        text={t("bookList.cancelReservation")}
+        loadingText={t("bookList.cancelling")}
       />
     );
   }
@@ -248,9 +265,9 @@ const BookListCTA: React.FC<{ book: AnyBook }> = ({ book }) => {
       <>
         <CancelOrReturn
           url={book.revokeUrl}
-          loadingText="Returning..."
+          loadingText={t("bookList.returning")}
           id={book.id}
-          text="Return"
+          text={t("bookList.return")}
         />
         {singleFulfillment && !shouldRedirectUser ? (
           <FulfillmentButton
@@ -275,3 +292,26 @@ export const LanesView: React.FC<{ lanes: LaneData[] }> = ({ lanes }) => {
     </ul>
   );
 };
+
+function limitedAuthorsList(book: AnyBook, t: TFunction): string {
+  const { authors } = book;
+
+  // return a placeholder if authors are not defined
+  if (!authors) return t("bookList.unknownAuthor");
+
+  // get the names of the first two authors
+  const limitedAuthorsList = getAuthors(book, 2);
+
+  // count how many additional authors there are after the first two
+  const additionalAuthorCount = authors.length - 2;
+
+  // if there are more than two authors, concatenate string telling how many more
+  if (additionalAuthorCount > 0) {
+    limitedAuthorsList.push(
+      t("bookList.moreAuthors", { additionalAuthorCount })
+    );
+  }
+
+  // return the authors' names as a comma-separated string
+  return limitedAuthorsList.join(", ");
+}

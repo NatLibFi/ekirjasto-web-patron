@@ -4,6 +4,7 @@ import { jsx } from "theme-ui";
 import * as React from "react";
 import { BugsnagErrorBoundary } from "analytics/bugsnag";
 import ErrorComponent from "components/Error";
+import { useTranslation } from "next-i18next";
 
 export type FallbackProps = {
   error: Error;
@@ -12,12 +13,13 @@ export type FallbackProps = {
 };
 
 export const DefaultFallback: React.FC<FallbackProps> = ({ error }) => {
+  const { t } = useTranslation();
+
   return (
     <ErrorComponent
       info={{
         title: `${error.name}`,
-        detail:
-          "Something went wrong. Please refresh and try again. If the issue persists, contact your library support staff."
+        detail: t("errorBoundary.errorComponentDetail")
       }}
     />
   );

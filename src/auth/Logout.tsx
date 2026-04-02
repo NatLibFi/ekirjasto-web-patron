@@ -7,13 +7,13 @@ import ExternalLink from "components/ExternalLink";
 import { Text } from "components/Text";
 import LoadingIndicator from "components/LoadingIndicator";
 import { isSupportedAuthType } from "./AuthenticationHandler";
+import Cookie from "js-cookie";
 import {
   EKIRJASTO_AUTH_TYPE,
   EKIRJASTO_DOMAIN,
   LOGOUT_COOKIE_PARAM
 } from "utils/constants";
 import useUser from "components/context/UserContext";
-import { useEffect, useState } from "react";
 import useLoginRedirectUrl from "./useLoginRedirect";
 
 export default function Logout(): React.ReactElement {
@@ -21,7 +21,7 @@ export default function Logout(): React.ReactElement {
   const { logoutRedirectUrl } = useLoginRedirectUrl();
   const { authMethods } = useLibraryContext();
 
-  const [ekirjastoToken, setEkirjastoToken] = useState("");
+  const [ekirjastoToken, setEkirjastoToken] = React.useState<string>("");
 
   // AppAuthMethod[] shouldn't be populated with unsupported auth methods from auth document,
   // but we filter out any unsupported methods just in case.
@@ -29,13 +29,10 @@ export default function Logout(): React.ReactElement {
     isSupportedAuthType(m.type)
   );
 
-  const method = supportedAuthMethods.find(
+  // Get the ekirjasto auth method
+  const method = authMethods.find(
     method => method.type === EKIRJASTO_AUTH_TYPE
   )!;
-
-  const ekirjastoTokenHref = method.links?.find(
-    link => link.rel === "ekirjasto_token"
-  )?.href;
 
   // Get link for logout
   const authenticationLogoutHref = method.links?.find(
@@ -47,17 +44,37 @@ export default function Logout(): React.ReactElement {
     logoutRedirectUrl
   )}`;
 
-  useEffect(() => {
-    async function getToken() {
-      const ekirToken = await getEkirjastoToken(token!, ekirjastoTokenHref);
-      setEkirjastoToken(ekirToken);
+  const fetchEkirjastoToken = async () => {
+    try {
+      // Get the url for the token
+      const ekirjastoTokenUrl = method.links?.find(
+        link => link.rel === "ekirjasto_token"
+      )?.href;
+      // Fetch the ekirjasto token
+      const fetchedToken = await getEkirjastoToken(token!, ekirjastoTokenUrl);
+
+      // Set the fetched token
+      setEkirjastoToken(fetchedToken);
+    } catch (error) {
+      // If the token fetch fails, it is most likely due to 401,
+      // In which case, refresh happens elsewhere
     }
-    getToken();
+  };
+
+  React.useEffect(() => {
+    fetchEkirjastoToken();
   });
 
   React.useEffect(() => {
     if (ekirjastoToken && authenticationLogoutHref) {
-      document.cookie = `${LOGOUT_COOKIE_PARAM}=${ekirjastoToken}; path=/;  domain: ${EKIRJASTO_DOMAIN}, SameSite=None; Secure`;
+      // Set the session cookie
+      Cookie.set(LOGOUT_COOKIE_PARAM, ekirjastoToken, {
+        path: "/",
+        domain: EKIRJASTO_DOMAIN,
+        sameSite: "None",
+        secure: true
+      });
+
       window.location.href = urlWithRedirect;
       signOut();
     }
@@ -65,9 +82,8 @@ export default function Logout(): React.ReactElement {
     token,
     signOut,
     authenticationLogoutHref,
-    ekirjastoTokenHref,
-    ekirjastoToken,
-    urlWithRedirect
+    urlWithRedirect,
+    ekirjastoToken
   ]);
 
   if (supportedAuthMethods.length === 0) {

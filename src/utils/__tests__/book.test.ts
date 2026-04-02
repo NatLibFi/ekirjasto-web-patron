@@ -55,7 +55,7 @@ describe("get authors", () => {
       authors: [],
       contributors: []
     };
-    expect(getAuthors(book)).toStrictEqual(["Authors unknown"]);
+    expect(getAuthors(book)).toStrictEqual([]);
   });
 });
 

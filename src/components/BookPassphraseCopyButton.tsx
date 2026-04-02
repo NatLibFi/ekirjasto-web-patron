@@ -5,23 +5,11 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { jsx } from "theme-ui";
-import {
-  faCopy,
-  faCheck,
-  IconDefinition
-} from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "next-i18next";
+import { faCopy, faCheck } from "@fortawesome/free-solid-svg-icons";
+
 import Button from "components/Button";
 import React, { useState, useEffect } from "react";
-
-// define the text and icon for normal button state
-// as well as text and icon that indicate successful copying
-export const COPY_PASSPHRASE_TEXT: string = "Copy";
-export const COPY_PASSPHRASE_ICON: IconDefinition = faCopy;
-export const COPIED_PASSPHRASE_TEXT: string = "Copied!";
-export const COPIED_PASSPHRASE_ICON: IconDefinition = faCheck;
-
-// define aria label for button
-export const COPY_PASSPHRASE_LABEL: string = "Copy book passphrase";
 
 // define the timeout duration in milliseconds.
 // This should be enough time for the user to
@@ -38,6 +26,8 @@ interface BookPassphraseCopyButtonProps {
 const BookPassphraseCopyButton: React.FC<BookPassphraseCopyButtonProps> = ({
   stringToCopy
 }) => {
+  const { t } = useTranslation();
+
   // define a button state "isCopied"
   // so we can keep tabs if button was clicked
   const [isCopied, setIsCopied] = useState<boolean>(false);
@@ -69,8 +59,8 @@ const BookPassphraseCopyButton: React.FC<BookPassphraseCopyButtonProps> = ({
 
   // get the text and icon based on copied state
   const { buttonText, buttonIcon } = isCopied
-    ? { buttonText: COPIED_PASSPHRASE_TEXT, buttonIcon: COPIED_PASSPHRASE_ICON }
-    : { buttonText: COPY_PASSPHRASE_TEXT, buttonIcon: COPY_PASSPHRASE_ICON };
+    ? { buttonText: t("bookPasshprase.passphraseCopied"), buttonIcon: faCheck }
+    : { buttonText: t("bookPasshprase.passphraseCopy"), buttonIcon: faCopy };
 
   // define the style for the button
   // gap is the space between text and icon inside the button
@@ -90,7 +80,7 @@ const BookPassphraseCopyButton: React.FC<BookPassphraseCopyButtonProps> = ({
         <Button
           onClick={copyToClipboard}
           sx={buttonStyle}
-          aria-label={COPY_PASSPHRASE_LABEL}
+          aria-label={t("bookPassphrase.ariaLabelForCopyButton")}
           data-testid="book-passphrase-copy-button"
         >
           {buttonText}

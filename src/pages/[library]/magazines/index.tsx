@@ -17,6 +17,7 @@ import {
 import Head from "next/head";
 import BreadcrumbBar from "components/BreadcrumbBar";
 import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
+import { useTranslation } from "next-i18next";
 
 const MagazinesFixedContent: React.FC = () => {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
@@ -113,6 +114,8 @@ const MagazinesFixedContent: React.FC = () => {
     return `${baseUrl}${path}`;
   }, [initialPath]);
 
+  const { t } = useTranslation();
+
   // fixed-height layout where only the iframe scrolls and the footer is hidden
   return (
     <div
@@ -128,7 +131,7 @@ const MagazinesFixedContent: React.FC = () => {
     >
       <iframe
         ref={iframeRef}
-        title="Magazines (Fixed)"
+        title={t("magazines.titleForIframe")}
         src={src}
         style={{
           position: "absolute",
@@ -145,13 +148,16 @@ const MagazinesFixedContent: React.FC = () => {
 };
 
 const MagazinesFixedPage: NextPage<AppProps> = ({ library, error }) => {
+  const { t } = useTranslation();
   return (
     <LayoutPage library={library} error={error} hideFooter>
       <>
         <Head>
-          <title>Lehdet - E-kirjasto</title>
+          <title>{t("magazines.HTMLtitleForMagazines")}</title>
         </Head>
-        <BreadcrumbBar currentLocation="Lehdet" />
+        <BreadcrumbBar
+          currentLocation={t("magazines.breadcrumbForMagazines")}
+        />
         <MagazinesFixedContent />
       </>
     </LayoutPage>

@@ -8,6 +8,7 @@ import Link from "./Link";
 import List, { ListItem } from "./List";
 import { LinkData } from "interfaces";
 import useLibraryContext from "components/context/LibraryContext";
+import { useTranslation } from "next-i18next";
 
 const BreadcrumbBar: React.FC<{
   className?: string;
@@ -28,6 +29,8 @@ const BreadcrumbBar: React.FC<{
       : [{ text: catalogName, url: catalogUrl }];
 
   const lastItem = currentLocation ?? breadcrumbs?.pop()?.text;
+
+  const { t } = useTranslation();
 
   return (
     <div
@@ -63,7 +66,9 @@ const BreadcrumbBar: React.FC<{
               </ListItem>
             )
         )}
-        <ListItem aria-label={`Current location: ${lastItem}`}>
+        <ListItem
+          aria-label={t("breadcrumbBar.currentLocation") + `${lastItem}`}
+        >
           {lastItem ? lastItem : ""}
         </ListItem>
       </List>
