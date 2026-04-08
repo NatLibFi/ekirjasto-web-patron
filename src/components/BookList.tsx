@@ -25,10 +25,7 @@ import useUser from "components/context/UserContext";
 import Stack from "components/Stack";
 import CancelOrReturn from "components/CancelOrReturn";
 import FulfillmentButton from "components/FulfillmentButton";
-import {
-  getFulfillmentFromLink,
-  shouldRedirectToCompanionApp
-} from "utils/fulfill";
+import { getFulfillmentFromLink } from "utils/fulfill";
 import BookStatus from "components/BookStatus";
 import Link from "./Link";
 import { APP_CONFIG } from "utils/env";
@@ -249,12 +246,9 @@ const BookListCTA: React.FC<{ book: AnyBook }> = ({ book }) => {
 
   if (bookIsFulfillable(book)) {
     // we will show a fulfillment button if there is only one option
-    // and we are not supposed to redirect the user to the companion app
+
     const showableLinks = book.fulfillmentLinks.filter(
       link => link.supportLevel === "show"
-    );
-    const shouldRedirectUser = shouldRedirectToCompanionApp(
-      book.fulfillmentLinks
     );
 
     const showableFulfillments = showableLinks.map(getFulfillmentFromLink);
@@ -269,13 +263,13 @@ const BookListCTA: React.FC<{ book: AnyBook }> = ({ book }) => {
           id={book.id}
           text={t("bookList.return")}
         />
-        {singleFulfillment && !shouldRedirectUser ? (
+        {singleFulfillment && (
           <FulfillmentButton
             details={singleFulfillment}
             book={book}
             isPrimaryAction
           />
-        ) : null}
+        )}
       </>
     );
   }
