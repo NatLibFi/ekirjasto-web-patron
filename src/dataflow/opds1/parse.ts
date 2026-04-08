@@ -307,11 +307,18 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
     link => link.supportLevel !== "unsupported"
   );
 
-  // Get the availability, holds, copies and passphrases
+  // Get the availability, holds and copies
   // from the borrow link, and if there is no borrow link,
   // get it from the first possible acquisition link
-  const { availability, holds, copies, passphrases } =
+  const { availability, holds, copies } =
     borrowLink ?? acquisitionLinks[0] ?? {};
+
+  // find the first valid acquisition link
+  // (could be undefined, if no suitable link is found)
+  // and then extract the passphrases from the link
+  const passphrases = acquisitionLinks.find(link =>
+    isValidAcquisitionLinkWithPassphrases(link)
+  )?.passphrases;
 
   const format = bookIsAudiobook({ ...entry.unparsed, raw: entry.unparsed })
     ? "Audiobook"
