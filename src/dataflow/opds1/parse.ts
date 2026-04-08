@@ -30,6 +30,7 @@ import {
 } from "interfaces";
 import {
   EPUB_MEDIA_TYPES,
+  LcpDrmMediaType,
   IncorrectAdobeDrmMediaType,
   PdfMediaType
 } from "types/opds1";
@@ -199,6 +200,25 @@ function createUnselectBookUrl(links: OPDSLink[], feedUrl: string) {
     return resolve(feedUrl, alternateLink.href + "/unselect_book");
   }
   return null;
+}
+
+// helper function to check if an acquisition link has passphrases
+// and is of valid type
+function isValidAcquisitionLinkWithPassphrases(
+  link: OPDSAcquisitionLink
+): boolean {
+  // check that rel is "http://opds-spec.org/acquisition"
+  const isGenericRel = link.rel === OPDSAcquisitionLink.GENERIC_REL;
+
+  // check that type is "application/vnd.readium.lcp.license.v1.0+json"
+  // note: "application/vnd.adobe.adept+xml" is not acceptable
+  const isLCPType = link.type === LcpDrmMediaType;
+
+  // check that the passphrases object actually exists
+  const hasPassphrases = !!link.passphrases;
+
+  // return true if all checks pass
+  return isGenericRel && isLCPType && hasPassphrases;
 }
 
 /**
