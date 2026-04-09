@@ -26,8 +26,9 @@ import Stack from "components/Stack";
 import CancelOrReturn from "components/CancelOrReturn";
 import FulfillmentButton from "components/FulfillmentButton";
 import {
+  DownloadFulfillment,
   getFulfillmentFromLink,
-  shouldRedirectToCompanionApp
+  ReadExternalFulfillment
 } from "utils/fulfill";
 import BookStatus from "components/BookStatus";
 import Link from "./Link";
@@ -221,6 +222,11 @@ const Description: React.FC<{ book: AnyBook; className?: string }> = ({
   );
 };
 
+// Render the main action buttons for book list, for example
+// Borrow, Reserve, Download, Read online, Cancel and Return
+//
+// Note: adding or removing book from Favorites is a secondary action
+// and handled separately via SelectBookCard component
 const BookListCTA: React.FC<{ book: AnyBook }> = ({ book }) => {
   const { t } = useTranslation();
 
@@ -248,38 +254,66 @@ const BookListCTA: React.FC<{ book: AnyBook }> = ({ book }) => {
   }
 
   if (bookIsFulfillable(book)) {
-    // we will show a fulfillment button if there is only one option
-    // and we are not supposed to redirect the user to the companion app
-    const showableLinks = book.fulfillmentLinks.filter(
-      link => link.supportLevel === "show"
-    );
-    const shouldRedirectUser = shouldRedirectToCompanionApp(
-      book.fulfillmentLinks
+    // E-library has currently two possible fulfillment
+    // options for a book: download and read online.
+    // We show buttons for these options in the book list
+    // if they are available for the book,
+    // as well as the cancel reservation/return book button.
+
+    // first filter the links that should be shown
+    // and then extract Fulfillments from them
+    const showableFulfillments = book.fulfillmentLinks
+      .filter(link => link.supportLevel === "show")
+      .map(getFulfillmentFromLink);
+
+    // find the first fulfillment that is a DownloadFulfillment
+    // that has a type property 'download'
+    const downloadFulfillment = showableFulfillments.find(
+      (fulfillment): fulfillment is DownloadFulfillment =>
+        fulfillment.type === "download"
     );
 
-    const showableFulfillments = showableLinks.map(getFulfillmentFromLink);
-    const singleFulfillment =
-      showableFulfillments.length === 1 ? showableFulfillments[0] : undefined;
+    // find the first fulfillment that is a ReadExternalFulfillment
+    // and has a type property 'read-online-external'
+    const readOnlineFulfillment = showableFulfillments.find(
+      (fulfillment): fulfillment is ReadExternalFulfillment =>
+        fulfillment.type === "read-online-external"
+    );
 
     return (
       <>
+        {/* first render "Return" book button */}
         <CancelOrReturn
           url={book.revokeUrl}
           loadingText={t("bookList.returning")}
           id={book.id}
           text={t("bookList.return")}
         />
-        {singleFulfillment && !shouldRedirectUser ? (
+
+        {/* then render "Download LCP EPUB" button, if available */}
+        {downloadFulfillment && (
           <FulfillmentButton
-            details={singleFulfillment}
+            details={downloadFulfillment}
             book={book}
             isPrimaryAction
           />
-        ) : null}
+        )}
+
+        {/* render "Read online" button also, if available */}
+        {readOnlineFulfillment && (
+          <FulfillmentButton
+            details={readOnlineFulfillment}
+            book={book}
+            isPrimaryAction
+          />
+        )}
       </>
     );
   }
 
+  // this book is not
+  // borrowable, reservable, on hold, reserved or fulfillable,
+  // so just return null instead of main action buttons
   return null;
 };
 

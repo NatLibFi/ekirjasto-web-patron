@@ -47,7 +47,8 @@ const BookPassphrase: React.FC<BookPassphraseProps> = ({ book }) => {
   // define style for the Stack component
   const stackStyle: React.CSSProperties = {
     alignItems: "flex-start",
-    marginBottom: "16px"
+    marginBottom: "16px",
+    marginTop: "16px"
   };
 
   // component is only rendered if the
