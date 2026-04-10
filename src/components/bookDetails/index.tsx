@@ -55,8 +55,20 @@ export const BookDetails: React.FC = () => {
   const book = loans?.find(loanedBook => data?.id === loanedBook.id) ?? data;
 
   const subtitle = getSubtitle(book);
-  const { storedBreadcrumbs } = useBreadcrumbContext();
   const { t } = useTranslation();
+
+  // get current breadcrumbs and update function from context
+  const { storedBreadcrumbs, setStoredBreadcrumbs } = useBreadcrumbContext();
+
+  // effect that clears the breadcrumbs whenever book details page is opened.
+  // If the user changes locale in book detail page, the stored breadcrumbs
+  // become outdated. We cannot easily update the breadcrumbs in book detail page,
+  // because they are computed in collection pages on locale change,
+  // so we just clear the breadcrumbs so that wrong language is not used.
+  // Note: this should be only temporary fix for now
+  React.useEffect(() => {
+    setStoredBreadcrumbs([]);
+  }, [setStoredBreadcrumbs]);
 
   if (error) {
     // just throw the error and let it be handled by an error boundary
