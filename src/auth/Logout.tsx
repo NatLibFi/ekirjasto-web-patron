@@ -33,12 +33,12 @@ export default function Logout(): React.ReactElement {
   // Get the ekirjasto auth method
   const method = React.useMemo(
     () =>
-      supportedAuthMethods.find(method => method.type === EKIRJASTO_AUTH_TYPE)!,
+      supportedAuthMethods.find(method => method.type === EKIRJASTO_AUTH_TYPE),
     [supportedAuthMethods]
   );
 
   // Get link for logout
-  const authenticationLogoutHref = method.links?.find(
+  const authenticationLogoutHref = method!.links?.find(
     link => link.rel === "logout"
   )?.href;
 
@@ -96,7 +96,7 @@ export default function Logout(): React.ReactElement {
     return <NoAuth />;
   }
 
-  // If there is no login methods
+  // If there is no ekirjasto method
   if (!method) {
     return <NoAuth />;
   }
