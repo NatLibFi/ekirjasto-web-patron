@@ -25,14 +25,17 @@ export default function Logout(): React.ReactElement {
 
   // AppAuthMethod[] shouldn't be populated with unsupported auth methods from auth document,
   // but we filter out any unsupported methods just in case.
-  const supportedAuthMethods = authMethods.filter(m =>
-    isSupportedAuthType(m.type)
+  const supportedAuthMethods = React.useMemo(
+    () => authMethods.filter(m => isSupportedAuthType(m.type)),
+    [authMethods]
   );
 
   // Get the ekirjasto auth method
-  const method = authMethods.find(
-    method => method.type === EKIRJASTO_AUTH_TYPE
-  )!;
+  const method = React.useMemo(
+    () =>
+      supportedAuthMethods.find(method => method.type === EKIRJASTO_AUTH_TYPE)!,
+    [supportedAuthMethods]
+  );
 
   // Get link for logout
   const authenticationLogoutHref = method.links?.find(
@@ -62,8 +65,10 @@ export default function Logout(): React.ReactElement {
   };
 
   React.useEffect(() => {
-    fetchEkirjastoToken();
-  });
+    if (token && method) {
+      fetchEkirjastoToken();
+    }
+  }, [token, method]);
 
   React.useEffect(() => {
     if (ekirjastoToken && authenticationLogoutHref) {
@@ -75,8 +80,8 @@ export default function Logout(): React.ReactElement {
         secure: true
       });
 
-      window.location.href = urlWithRedirect;
       signOut();
+      window.location.href = urlWithRedirect;
     }
   }, [
     token,
@@ -86,7 +91,13 @@ export default function Logout(): React.ReactElement {
     ekirjastoToken
   ]);
 
+  // If there is no supported methods
   if (supportedAuthMethods.length === 0) {
+    return <NoAuth />;
+  }
+
+  // If there is no login methods
+  if (!method) {
     return <NoAuth />;
   }
 
