@@ -125,6 +125,7 @@
   "languageName.FI": "Finnish",
   "languageName.SV": "Swedish",
   "languageSelector": "Select page language",
+  "listFilters.label": "Book format",
   "loadingIndicator.loading": "Loading...",
   "magazineFilters.allMagazines": "All magazines",
   "magazineFilters.allSubjects": "All subjects",

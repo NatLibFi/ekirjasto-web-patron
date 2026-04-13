@@ -125,6 +125,7 @@
   "languageName.FI": "Suomi",
   "languageName.SV": "Ruotsi",
   "languageSelector": "Valitse sivun kieli",
+  "listFilters.label": "Kirjamuoto",
   "loadingIndicator.loading": "Ladataan...",
   "magazineFilters.allMagazines": "Kaikki lehdet",
   "magazineFilters.allSubjects": "Kaikki aiheet",
