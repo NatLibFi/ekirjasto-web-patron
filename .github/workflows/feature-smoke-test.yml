@@ -1,0 +1,96 @@
+name: Web-patron smoke test
+
+on:
+  push:
+    branches-ignore:
+      - main
+      - prod
+    paths-ignore:
+      - '**/README.md'
+      - '**/LICENSE'
+      - '**/.gitignore'
+      - 'CHANGELOG.md'
+  workflow_dispatch:
+
+concurrency:
+  group: feature-smoke-${{ github.ref_name }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  docker-smoke-test:
+    name: Build image and verify HTTP 200
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image for smoke test
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          load: true
+          tags: local/ekirjasto-web-patron:smoke
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Run container smoke test
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Remove named container if present from prev build
+          docker rm -f patron-smoke >/dev/null 2>&1 || true
+
+          # Release port 3000 if in use.
+          docker ps -q --filter "publish=3000" | xargs -r docker rm -f
+
+          docker run -d --name patron-smoke -p 3000:3000 local/ekirjasto-web-patron:smoke
+
+          # Poll for up to ~12.5 min (150 × 5 s)
+          for attempt in {1..150}; do
+            # curl exits non-zero on network errors, so || true is intentional .
+            status="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3000 || true)"
+
+            if [[ "${status}" == "200" ]]; then
+              echo "Smoke test passed with HTTP 200 on attempt ${attempt}."
+              exit 0
+            fi
+
+            # Fast-fail on server-side or client errors
+            if [[ "${status}" =~ ^(4[0-9]{2}|5[0-9]{2})$ && "${status}" != "404" ]]; then
+              echo "Fatal HTTP status ${status} on attempt ${attempt} — aborting early." >&2
+              docker logs patron-smoke || true
+              exit 1
+            fi
+
+            if [[ "${status}" == "000" ]]; then
+              echo "Service not reachable yet (attempt ${attempt})."
+            else
+              echo "Unexpected HTTP status: ${status} (attempt ${attempt})."
+            fi
+
+            sleep 5
+          done
+
+          echo "Smoke test failed: no HTTP 200 on http://127.0.0.1:3000 within 12.5 minutes." >&2
+          docker logs patron-smoke || true
+          exit 1
+
+      - name: Dump smoke test logs on failure
+        if: failure()
+        shell: bash
+        run: docker logs patron-smoke || true
+
+      - name: Stop smoke test container
+        if: always()
+        shell: bash
+        run: docker rm -f patron-smoke >/dev/null 2>&1 || true
