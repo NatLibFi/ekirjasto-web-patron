@@ -250,6 +250,13 @@ Key settings:
   - `translations:sync` Sync Finnish and Swedish files with the English file
   - `translations:ci` Fail builds when translations are outdated
 
+#### `appLocales.ts`
+
+This file is intended to collect all of the app’s locale settings and related helper functions in one place.
+
+- it defines which languages are supported in the app, the available translation locales and the locale used for testing
+- it provides helper functions for working with locales and the `AppLocale` type definition for safer locale handling
+
 ### JSON structure for translations files
 
 Translations are stored in flat JSON files named `translations.json`, with one file for each supported language. The JSON files consist of key-value pairs, where the key is a unique identifier for the translation and the value is the actual translated string.  The translation keys within these files can be structured using a dot notation, like `bookDetails.publisher`, but using this structure is optional. Nesting is not used, which makes it easier to retrieve and sort the translations.
