@@ -119,5 +119,6 @@ module.exports = {
         "i18next/no-literal-string": "off"
       }
     }
-  ]
+  ],
+  ignorePatterns: ["_next/", "next-env.d.ts"]
 };
