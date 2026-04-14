@@ -18,6 +18,7 @@ import Head from "next/head";
 import BreadcrumbBar from "components/BreadcrumbBar";
 import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
 import { useTranslation } from "next-i18next";
+import AuthProtectedRoute from "auth/AuthProtectedRoute";
 
 const MagazinesFixedContent: React.FC = () => {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
@@ -158,7 +159,9 @@ const MagazinesFixedPage: NextPage<AppProps> = ({ library, error }) => {
         <BreadcrumbBar
           currentLocation={t("magazines.breadcrumbForMagazines")}
         />
-        <MagazinesFixedContent />
+        <AuthProtectedRoute>
+          <MagazinesFixedContent />
+        </AuthProtectedRoute>
       </>
     </LayoutPage>
   );
