@@ -16,7 +16,6 @@ import { useTranslation } from "next-i18next";
 
 const Footer: React.FC<{ className?: string }> = ({ className }) => {
   const library = useLibraryContext();
-  const { privacyPolicy, tos, about } = library.libraryLinks;
   const title = library.catalogName;
   const { t } = useTranslation();
 
@@ -34,71 +33,52 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
       <div sx={{ flex: "0 0 auto", mt: 5, mr: 5 }}>
         <H3 sx={{ mt: 0, maxWidth: "100%" }}>{title}</H3>
         <FooterList>
-          {privacyPolicy && (
-            <ListItem>
-              <FooterExternalLink href={privacyPolicy.href}>
-                {t("footer.privacyPolicy")}
-              </FooterExternalLink>
-            </ListItem>
-          )}
-          {tos && (
-            <ListItem>
-              <FooterExternalLink href={tos.href}>
-                {t("footer.termsOfUse")}
-              </FooterExternalLink>
-            </ListItem>
-          )}
-          {about && (
-            <ListItem>
-              <FooterExternalLink href={about.href}>
-                {t("footer.about")}{" "}
-              </FooterExternalLink>
-            </ListItem>
-          )}
+          <ListItem>
+            <FooterExternalLink href={t("footer.hrefPrivacyPolicy")}>
+              {t("footer.privacyPolicy")}
+            </FooterExternalLink>
+          </ListItem>
+
+          <ListItem>
+            <FooterExternalLink href={t("footer.hrefElibraryTermsOfUse")}>
+              {t("footer.termsOfUse")}
+            </FooterExternalLink>
+          </ListItem>
+
+          <ListItem>
+            <FooterExternalLink href={t("footer.hrefElibraryAlwaysWithYou")}>
+              {t("footer.about")}
+            </FooterExternalLink>
+          </ListItem>
+
           <ListItem>
             <FooterExternalLink
-              href={
-                "https://www.kansalliskirjasto.fi/en/e-library/e-library-accessibility-statement"
-              }
+              href={t("footer.hrefElibraryAccessibilityStatement")}
             >
               {t("footer.accessibilityStatement")}
             </FooterExternalLink>
           </ListItem>
         </FooterList>
       </div>
+
       <div sx={{ flex: "0 0 auto", mt: 5, mr: [3, 5] }}>
         <H3 sx={{ mt: 0 }}>{t("footer.patronSupport")}</H3>
         <FooterList>
           <ListItem>
-            <FooterExternalLink
-              href={
-                "https://www.kansalliskirjasto.fi/en/e-library/e-library-instructions"
-              }
-            >
+            <FooterExternalLink href={t("footer.hrefElibraryInstructions")}>
               {t("footer.helpWebsite")}
             </FooterExternalLink>
           </ListItem>
+
           <ListItem>
             <FooterExternalLink href={`/${library.slug}/feedback`}>
               {t("footer.feedback")}
             </FooterExternalLink>
           </ListItem>
+
           <ListItem>
-            <FooterExternalLink
-              href={
-                "https://www.kansalliskirjasto.fi/en/e-library/e-library-faq"
-              }
-            >
+            <FooterExternalLink href={t("footer.hrefElibraryFAQ")}>
               {t("footer.faq")}
-            </FooterExternalLink>
-          </ListItem>
-          <ListItem>
-            <FooterExternalLink
-              href={
-                "https://www.kansalliskirjasto.fi/en/e-library/magazines-available-e-library"
-              }
-            >
-              {t("footer.magazinesInELibrary")}
             </FooterExternalLink>
           </ListItem>
         </FooterList>
@@ -108,26 +88,20 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
         <FooterList>
           <ListItem>
             <FooterExternalLink
-              href={
-                "https://www.kansalliskirjasto.fi/en/e-library/municipalities-participating-e-library"
-              }
+              href={t("footer.hrefMunicipalitiesParticipatingInElibrary")}
             >
               {t("footer.municipalitiesParticipating")}
             </FooterExternalLink>
           </ListItem>
+
           <ListItem>
-            <FooterExternalLink
-              href={
-                "https://www.kansalliskirjasto.fi/en/e-library/e-library-collection-policy"
-              }
-            >
+            <FooterExternalLink href={t("footer.hrefElibraryCollectionPolicy")}>
               {t("footer.collectionPolicy")}
             </FooterExternalLink>
           </ListItem>
+
           <ListItem>
-            <FooterExternalLink
-              href={"https://www.kiwi.fi/spaces/ekirjasto/overview"}
-            >
+            <FooterExternalLink href={t("footer.hrefEkirjastoKiwi")}>
               {t("footer.moreForLibrarians")}
             </FooterExternalLink>
           </ListItem>

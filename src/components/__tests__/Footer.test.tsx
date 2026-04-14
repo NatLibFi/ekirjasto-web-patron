@@ -28,7 +28,13 @@ test("shows external links when present in state w/ apropriate attributes", () =
   const expectExternalLink = (name: string) => {
     const lnk = utils.getByRole("link", { name });
     expect(lnk).toBeInTheDocument();
-    expect(lnk).toHaveAttribute("href", "/wherever");
+    // check just the beginning of link url
+    expect(lnk).toHaveAttribute(
+      "href",
+      expect.stringMatching(
+        /^https:\/\/www\.kansalliskirjasto\.fi\/en\/e-library\//
+      )
+    );
     expect(lnk).toHaveAttribute("rel", "noopener noreferrer");
     expect(lnk).toHaveAttribute("target", "__blank");
   };
