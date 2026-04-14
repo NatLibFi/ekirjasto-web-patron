@@ -72,7 +72,6 @@ const HeaderFC: React.FC<{ className?: string }> = ({ className }) => {
 
 const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
   const { helpWebsite, libraryWebsite } = library.libraryLinks;
-  const libraryName = library.catalogName;
   const { isAuthenticated, isLoading } = useUser();
   const { baseLoginUrl } = useLogin();
   const { t } = useTranslation();
@@ -109,7 +108,7 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
           href={libraryWebsite.href}
           sx={{ whiteSpace: "initial" }}
         >
-          {libraryWebsite.title ?? `${libraryName} Home`}
+          {libraryWebsite.title ?? t("header.labelForHome")}
         </AnchorButton>
       )}
       {isAuthenticated ? (
