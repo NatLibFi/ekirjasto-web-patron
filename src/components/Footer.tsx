@@ -9,7 +9,7 @@ import useLibraryContext from "./context/LibraryContext";
 import List, { ListItem } from "./List";
 import { H3, Text } from "./Text";
 import SvgPhone from "icons/Phone";
-import IosBadge from "./storeBadges/IosBadge";
+import AppStoreBadge from "./storeBadges/AppStoreBadge";
 import GooglePlayBadge from "./storeBadges/GooglePlayBadge";
 import { APP_CONFIG } from "utils/env";
 import { useTranslation } from "next-i18next";
@@ -116,14 +116,23 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
 const DownloadSimplyECallout = () => {
   const { t } = useTranslation();
   return (
-    <div sx={{ maxWidth: 300, flex: "0 1 auto", mt: 5 }}>
+    <div sx={{ maxWidth: 310, flex: "0 1 auto", mt: 5 }}>
       <H3 sx={{ mt: 0, display: "flex", alignItems: "center" }}>
         <SvgPhone sx={{ mr: 1 }} />
         {t("footer.downloadEkirjasto")}
       </H3>
       <Text>{t("footer.appDescription")}</Text>
-      <div sx={{ width: "75%", overflow: "hidden", ml: -3 }}>
-        <IosBadge sx={{ p: 3, pb: 0 }} />
+      <div
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 10,
+          margin: 10,
+          alignItems: "center",
+          justifyContent: "left"
+        }}
+      >
+        <AppStoreBadge />
         <GooglePlayBadge />
       </div>
     </div>

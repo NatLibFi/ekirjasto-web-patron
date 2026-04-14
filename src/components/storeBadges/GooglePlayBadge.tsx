@@ -1,28 +1,54 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { jsx } from "theme-ui";
 import * as React from "react";
+import { AppLocale, normaliseLocale } from "../../../appLocales";
+import SvgGetItOnGooglePlayBadgeEN from "icons/GetItOnGooglePlayBadgeEN";
+import SvgGetItOnGooglePlayBadgeFI from "icons/GetItOnGooglePlayBadgeFI";
+import SvgGetItOnGooglePlayBadgeSV from "icons/GetItOnGooglePlayBadgeSV";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
-const GooglePlayBadge = (props: React.ComponentProps<"a">) => {
+// define the URL that leads to E-kirjasto page on Google Play
+const EKIRJASTO_GOOGLE_PLAY_URL =
+  "https://play.google.com/store/apps/details?id=fi.kansalliskirjasto.ekirjasto";
+
+// define map for all language versions of Google Play badge
+const localisedBadges: Record<string, React.FC> = {
+  fi: SvgGetItOnGooglePlayBadgeFI,
+  sv: SvgGetItOnGooglePlayBadgeSV,
+  en: SvgGetItOnGooglePlayBadgeEN
+};
+
+// define props for the GooglePlayBadge component
+interface GooglePlayBadgeProps {
+  props: React.ComponentProps<"a">;
+}
+
+const GooglePlayBadge: React.FC<GooglePlayBadgeProps> = props => {
   const { t } = useTranslation();
+  const { locale } = useRouter();
+  const normalisedLocale: AppLocale = normaliseLocale(locale);
+
+  // match the badge language version with current locale
+  const BadgeComponent = localisedBadges[normalisedLocale];
 
   return (
     <a
       rel="noopener noreferrer"
-      target="__blank"
-      aria-label={t("storeBadges.ariaLabelForPlayStoreLink")}
-      href="https://play.google.com/store/apps/details?id=fi.kansalliskirjasto.ekirjasto"
-      sx={{ display: "block" }}
+      target="_blank"
+      href={EKIRJASTO_GOOGLE_PLAY_URL}
+      aria-label={t("storeBadges.ariaLabelForGooglePlayLink")}
+      sx={{
+        display: "block",
+        width: 160,
+        height: 40,
+        margin: 10,
+        transform: "scale(0.95)"
+      }}
       {...props}
     >
-      <img
-        alt={t("storeBadges.altForPlayStoreImage")}
-        sx={{ width: "100%" }}
-        src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-      />
+      <BadgeComponent />
     </a>
   );
 };

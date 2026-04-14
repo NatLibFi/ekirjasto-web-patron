@@ -63,20 +63,20 @@ describe("toggling SimplyE Branding", () => {
     ).toBeInTheDocument();
 
     // badges
-    const iosbadge = utils.getByRole("link", {
-      name: /download E-kirjasto on the apple app store/i
+    const appStoreBadge = utils.getByRole("link", {
+      name: /Download E-library on the App Store/i
     });
-    expect(iosbadge).toBeInTheDocument();
-    expect(iosbadge).toHaveAttribute(
+    expect(appStoreBadge).toBeInTheDocument();
+    expect(appStoreBadge).toHaveAttribute(
       "href",
       "https://apps.apple.com/fi/app/e-kirjasto/id6471490203"
     );
 
-    const googleBadge = utils.getByRole("link", {
-      name: /get E-kirjasto on the google play store/i
+    const googlePlayBadge = utils.getByRole("link", {
+      name: /Get E-library on Google Play/i
     });
-    expect(googleBadge).toBeInTheDocument();
-    expect(googleBadge).toHaveAttribute(
+    expect(googlePlayBadge).toBeInTheDocument();
+    expect(googlePlayBadge).toHaveAttribute(
       "href",
       "https://play.google.com/store/apps/details?id=fi.kansalliskirjasto.ekirjasto"
     );
