@@ -5,9 +5,7 @@ import Layout from "../Layout";
 describe("Layout nav + structure", () => {
   test("Library icon button navigates home", () => {
     setup(<Layout>Child</Layout>);
-    const homeButton = screen.getByLabelText(
-      "Library catalog, back to homepage"
-    );
+    const homeButton = screen.getByLabelText("Back to homepage");
 
     // the home button should navigate to "/"
     expect(homeButton.closest("a")).toHaveAttribute("href", "/testlib");

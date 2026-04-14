@@ -46,13 +46,13 @@ describe("toggling SimplyE Branding", () => {
 
     expect(
       utils.getByRole("heading", {
-        name: /download E-kirjasto/i
+        name: /download the e-library app/i
       })
     ).toBeInTheDocument();
 
     expect(
       utils.getByText(
-        "Our mobile app lets you browse, borrow and read from our whole collection of ebooks, audiobooks and magazines right on your phone!"
+        "Read e-books and magazines, and listen to audiobooks on your phone or tablet! Download the E-library app from your mobile device’s app store."
       )
     ).toBeInTheDocument();
 
