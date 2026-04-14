@@ -131,7 +131,9 @@ test("renders all facets when present", () => {
     />
   );
 
-  expect(screen.getByRole("combobox", { name: "Formats" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("combobox", { name: "Book format" })
+  ).toBeInTheDocument();
   expect(
     screen.getByRole("combobox", { name: "Availability" })
   ).toBeInTheDocument();
@@ -160,7 +162,7 @@ describe("Format filters", () => {
     setup(<PageTitle>Child</PageTitle>);
     expect(screen.queryByLabelText("Format filters")).toBeFalsy();
     expect(screen.queryByText("All")).toBeFalsy();
-    expect(screen.queryByLabelText("Books")).toBeFalsy();
+    expect(screen.queryByLabelText("ooks")).toBeFalsy();
     expect(screen.queryByLabelText("Audiobooks")).toBeFalsy();
   });
   test("Format filters are visible in PageTitle w/ facets", () => {
@@ -176,7 +178,7 @@ describe("Format filters", () => {
     );
 
     const select = screen.getByRole("combobox", {
-      name: "Formats"
+      name: "Book format"
     }) as HTMLSelectElement;
     // all is selected
     expect(select.value).toBe("eBooks");
