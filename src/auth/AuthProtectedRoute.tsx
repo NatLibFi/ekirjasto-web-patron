@@ -1,28 +1,19 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "theme-ui";
-import useLogin from "auth/useLogin";
 import useUser from "components/context/UserContext";
 import { PageLoader } from "components/LoadingIndicator";
 import React from "react";
 
 /**
- * This will show a message and redirect the user to the login
- * page if they try to access a route they are not permitted to see.
+ * This will show a message if the user tries to access a route they are not permitted to see.
  */
 
 interface Props {
   children: React.ReactNode;
 }
 const AuthProtectedRoute = ({ children }: Props) => {
-  const { isLoading, isAuthenticated, token, error } = useUser();
-  const { initLogin } = useLogin();
-
-  React.useEffect(() => {
-    if ((!token || error) && !isLoading) {
-      initLogin();
-    }
-  }, [initLogin, token, error, isLoading]);
+  const { isLoading, isAuthenticated } = useUser();
 
   if (isAuthenticated) {
     return <>{children}</>;
