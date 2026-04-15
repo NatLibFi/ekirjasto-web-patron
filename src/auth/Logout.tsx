@@ -35,9 +35,9 @@ export default function Logout(): React.ReactElement {
   );
 
   // Get link for logout
-  const authenticationLogoutHref = method ? method.links?.find(
-    link => link.rel === "logout"
-  )?.href : undefined;
+  const authenticationLogoutHref = method
+    ? method.links?.find(link => link.rel === "logout")?.href
+    : undefined;
 
   // Add the redirect link
   const urlWithRedirect =
@@ -48,9 +48,9 @@ export default function Logout(): React.ReactElement {
       : undefined;
 
   // Get the url for the token
-  const ekirjastoTokenUrl = method ? method.links?.find(
-    link => link.rel === "ekirjasto_token"
-  )?.href : undefined;
+  const ekirjastoTokenUrl = method
+    ? method.links?.find(link => link.rel === "ekirjasto_token")?.href
+    : undefined;
 
   const fetchEkirjastoToken = async () => {
     try {
