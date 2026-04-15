@@ -33,7 +33,7 @@ const NatLibFiFooterLogo: React.FC<NatLibFiFooterLogoProps> = props => {
       rel="noopener noreferrer"
       target="_blank"
       href={t("footer.hrefNatLibFi")}
-      aria-label={t("natlibfiLogos.ariaLabelForNatLibFiLink")}
+      aria-label={t("logos.ariaLabelForNatLibFiLink")}
       sx={{
         display: "flex",
         width: 160,

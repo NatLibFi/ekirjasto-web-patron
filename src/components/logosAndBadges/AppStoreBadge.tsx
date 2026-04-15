@@ -38,7 +38,7 @@ const AppStoreBadge: React.FC<AppStoreBadgeProps> = props => {
       rel="noopener noreferrer"
       target="_blank"
       href={EKIRJASTO_APP_STORE_URL}
-      aria-label={t("storeBadges.ariaLabelForAppStoreLink")}
+      aria-label={t("badges.ariaLabelForAppStoreLink")}
       sx={{
         display: "block",
         width: 160,

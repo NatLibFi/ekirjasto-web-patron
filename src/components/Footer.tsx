@@ -9,11 +9,11 @@ import useLibraryContext from "./context/LibraryContext";
 import List, { ListItem } from "./List";
 import { H3, Text } from "./Text";
 import SvgPhone from "icons/Phone";
-import AppStoreBadge from "./storeBadges/AppStoreBadge";
-import GooglePlayBadge from "./storeBadges/GooglePlayBadge";
+import AppStoreBadge from "./logosAndBadges/AppStoreBadge";
+import GooglePlayBadge from "./logosAndBadges/GooglePlayBadge";
 import { APP_CONFIG } from "utils/env";
 import { useTranslation } from "next-i18next";
-import NatLibFiFooterLogo from "./natlibfiLogos/NatLibFiFooterLogo";
+import NatLibFiFooterLogo from "./logosAndBadges/NatLibFiFooterLogo";
 
 const Footer: React.FC<{ className?: string }> = ({ className }) => {
   const library = useLibraryContext();

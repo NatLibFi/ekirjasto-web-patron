@@ -38,7 +38,7 @@ const GooglePlayBadge: React.FC<GooglePlayBadgeProps> = props => {
       rel="noopener noreferrer"
       target="_blank"
       href={EKIRJASTO_GOOGLE_PLAY_URL}
-      aria-label={t("storeBadges.ariaLabelForGooglePlayLink")}
+      aria-label={t("badges.ariaLabelForGooglePlayLink")}
       sx={{
         display: "block",
         width: 160,
