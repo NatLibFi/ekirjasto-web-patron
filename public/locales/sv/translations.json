@@ -1,6 +1,11 @@
 {
   "badges.ariaLabelForAppStoreLink": "Hämta E-biblioteket i App Store",
   "badges.ariaLabelForGooglePlayLink": "Ladda E-biblioteket ned på Google Play",
+  "betaBanner.hrefInfoEkirjasto": "https://www.kansalliskirjasto.fi/sv/e-library/e-library-always-you",
+  "betaBanner.infoAudiobooks": "Du kan lyssna på ljudböcker i E-biblioteket appen.",
+  "betaBanner.infoEbooksAndMagazines": "Här kan du läsa finska och svenska e-böcker samt tidskrifter direkt i din webbläsare.",
+  "betaBanner.infoEkirjasto": "Mer information om webbläsargränssnittet",
+  "betaBanner.infoWelcome": "Välkommen att testa E-bibliotekets webbläsargränssnitt!",
   "book.borrowable": "Tillgänglig: {{availableCopies}} / {{totalCopies}}",
   "book.differenceInDays": "{{differenceInDays}} dagar",
   "book.differenceInHours": "{{differenceInHours}} timmar",
