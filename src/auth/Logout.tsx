@@ -25,17 +25,12 @@ export default function Logout(): React.ReactElement {
 
   // AppAuthMethod[] shouldn't be populated with unsupported auth methods from auth document,
   // but we filter out any unsupported methods just in case.
-  const supportedAuthMethods = React.useMemo(
-    () => authMethods.filter(m => isSupportedAuthType(m.type)),
-    [authMethods]
-  );
+  const supportedAuthMethods = 
+      authMethods.filter(m => isSupportedAuthType(m.type));
 
   // Get the ekirjasto auth method
-  const method = React.useMemo(
-    () =>
-      supportedAuthMethods.find(method => method.type === EKIRJASTO_AUTH_TYPE),
-    [supportedAuthMethods]
-  );
+  const method = 
+      supportedAuthMethods.find(method => method.type === EKIRJASTO_AUTH_TYPE);
 
   // Get link for logout
   const authenticationLogoutHref = method!.links?.find(
@@ -47,12 +42,14 @@ export default function Logout(): React.ReactElement {
     logoutRedirectUrl
   )}`;
 
-  const fetchEkirjastoToken = async () => {
-    try {
-      // Get the url for the token
-      const ekirjastoTokenUrl = method.links?.find(
+  // Get the url for the token
+      const ekirjastoTokenUrl = method!.links?.find(
         link => link.rel === "ekirjasto_token"
       )?.href;
+
+  const fetchEkirjastoToken = async () => {
+    try {
+      console.log("LLAALALALA")
       // Fetch the ekirjasto token
       const fetchedToken = await getEkirjastoToken(token!, ekirjastoTokenUrl);
 
@@ -81,7 +78,7 @@ export default function Logout(): React.ReactElement {
       });
 
       signOut();
-      window.location.href = urlWithRedirect;
+      //window.location.href = urlWithRedirect;
     }
   }, [
     token,
