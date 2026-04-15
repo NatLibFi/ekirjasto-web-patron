@@ -82,3 +82,12 @@ describe("toggling SimplyE Branding", () => {
     );
   });
 });
+
+test("shows NatLibFi logo in footer", () => {
+  const utils = render(<Footer />);
+  const natLibFiLink = utils.getByRole("link", {
+    name: /national library of finland/i
+  });
+
+  expect(natLibFiLink).toBeInTheDocument();
+});

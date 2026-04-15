@@ -13,6 +13,7 @@ import AppStoreBadge from "./storeBadges/AppStoreBadge";
 import GooglePlayBadge from "./storeBadges/GooglePlayBadge";
 import { APP_CONFIG } from "utils/env";
 import { useTranslation } from "next-i18next";
+import NatLibFiFooterLogo from "./natlibfiLogos/NatLibFiFooterLogo";
 
 const Footer: React.FC<{ className?: string }> = ({ className }) => {
   const library = useLibraryContext();
@@ -24,7 +25,7 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
       sx={{
         bg: "ui.gray.extraLight",
         px: [3, 5],
-        pb: 7,
+        pb: 5,
         display: "flex",
         flexWrap: "wrap"
       }}
@@ -32,6 +33,7 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
     >
       <div sx={{ flex: "0 0 auto", mt: 5, mr: 5 }}>
         <H3 sx={{ mt: 0, maxWidth: "100%" }}>{title}</H3>
+
         <FooterList>
           <ListItem>
             <FooterExternalLink href={t("footer.hrefPrivacyPolicy")}>
@@ -63,6 +65,7 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
 
       <div sx={{ flex: "0 0 auto", mt: 5, mr: [3, 5] }}>
         <H3 sx={{ mt: 0 }}>{t("footer.patronSupport")}</H3>
+
         <FooterList>
           <ListItem>
             <FooterExternalLink href={t("footer.hrefElibraryInstructions")}>
@@ -83,8 +86,10 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
           </ListItem>
         </FooterList>
       </div>
+
       <div sx={{ flex: "0 0 auto", mt: 5, mr: [3, 5] }}>
         <H3 sx={{ mt: 0 }}>{t("footer.forLibrarians")}</H3>
+
         <FooterList>
           <ListItem>
             <FooterExternalLink
@@ -107,8 +112,14 @@ const Footer: React.FC<{ className?: string }> = ({ className }) => {
           </ListItem>
         </FooterList>
       </div>
+
       <div sx={{ flex: "1 1 0" }} />
+
       {APP_CONFIG.companionApp === "E-kirjasto" && <DownloadSimplyECallout />}
+
+      <div sx={{ flex: "0 1 100%", mt: 5 }}>
+        <NatLibFiFooterLogo />
+      </div>
     </footer>
   );
 };
