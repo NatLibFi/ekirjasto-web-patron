@@ -49,7 +49,6 @@ export default function Logout(): React.ReactElement {
 
   const fetchEkirjastoToken = async () => {
     try {
-      console.log("LLAALALALA")
       // Fetch the ekirjasto token
       const fetchedToken = await getEkirjastoToken(token!, ekirjastoTokenUrl);
 
@@ -78,7 +77,7 @@ export default function Logout(): React.ReactElement {
       });
 
       signOut();
-      //window.location.href = urlWithRedirect;
+      window.location.href = urlWithRedirect;
     }
   }, [
     token,
