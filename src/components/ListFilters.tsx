@@ -7,6 +7,7 @@ import Router from "next/router";
 import { CollectionData, FacetGroupData } from "interfaces";
 import FormLabel from "components/form/FormLabel";
 import useLinkUtils from "hooks/useLinkUtils";
+import { useTranslation } from "next-i18next";
 
 const ListFilters: React.FC<{ collection: CollectionData }> = ({
   collection
@@ -31,8 +32,13 @@ const FacetSelector: React.FC<{
   facetGroup: FacetGroupData;
 }> = ({ facetGroup }) => {
   const linkUtils = useLinkUtils();
+  const { t } = useTranslation();
 
-  const { label, facets } = facetGroup;
+  const { facets, label: rawLabel } = facetGroup;
+
+  // if facet label is 'Formats', translate it to current locale
+  // note: other facet labels come from backend already translated
+  const label = rawLabel === "Formats" ? t("listFilters.label") : rawLabel;
 
   const activeFacet = facets.find(facet => !!facet.active);
 

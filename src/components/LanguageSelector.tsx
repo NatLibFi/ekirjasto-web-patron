@@ -1,19 +1,13 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 
+import { APP_LOCALES, AppLocale, isAppLocale } from "../../appLocales";
 import { jsx } from "theme-ui";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import Button from "components/Button";
 import React from "react";
 import Stack from "components/Stack";
-
-// define enums that match the Next.js i18n locales
-export enum Language {
-  FI = "fi",
-  SV = "sv",
-  EN = "en"
-}
 
 // define style for the language selector stack
 // (the container for language buttons)
@@ -57,15 +51,6 @@ interface LanguageSelectorProps {
   // no properties for this component yet
 }
 
-// helper function (type guard) that checks
-// if a locale is a valid Language
-// for example "de" is not a valid language code in our app
-function isLanguage(locale: string | undefined): locale is Language {
-  return (
-    locale === Language.FI || locale === Language.SV || locale === Language.EN
-  );
-}
-
 // main LanguageSelector component
 const LanguageSelector: React.FC<LanguageSelectorProps> = () => {
   // get translation function t from the useTranslation hook,
@@ -76,14 +61,20 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = () => {
   // used for reading the current locale and changing the language in the URL
   const router = useRouter();
 
+  // first define currentLocale as type AppLocale or undefined
+  // and init as undefined
+  let currentLocale: AppLocale | undefined = undefined;
+
   // get the current locale from router,
-  // and make sure it's a valid language we want to use
-  const currentLocale: Language | undefined = isLanguage(router.locale)
-    ? router.locale
-    : undefined;
+  // and make sure it's a valid language using type guard
+  if (router.locale && isAppLocale(router.locale)) {
+    // router locale is valid app locale
+    // ok to set as current locale
+    currentLocale = router.locale;
+  }
 
   // function that handled language change
-  const handleLanguageChange = (language: Language) => {
+  const handleLanguageChange = (language: AppLocale) => {
     // first check if the selected language is the current locale
     if (currentLocale === language) {
       // nothing to change, languages are the same
@@ -104,7 +95,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = () => {
 
   // function that renders a single language button
   // we give unique key for each button
-  const renderLanguageButton = (language: Language) => {
+  const renderLanguageButton = (language: AppLocale) => {
     // first check if this language is currently selected
     const isSelected = currentLocale === language;
     const buttonLabel = language.toUpperCase();
@@ -141,9 +132,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = () => {
     <>
       {shouldRenderSelector && (
         <Stack role="group" sx={stackStyle} aria-label={t("languageSelector")}>
-          {renderLanguageButton(Language.FI)}
-          {renderLanguageButton(Language.SV)}
-          {renderLanguageButton(Language.EN)}
+          {APP_LOCALES.map(renderLanguageButton)}
         </Stack>
       )}
     </>

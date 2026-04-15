@@ -47,7 +47,7 @@ test("fetches search description", async () => {
     }
   });
   expect(mockedSWR).toHaveBeenCalledWith(
-    ["/collection", "user-token"],
+    ["/collection", "user-token", "en"],
     expect.anything()
   );
   expect(mockedSWR).toHaveBeenCalledWith("/search-data-url", expect.anything());

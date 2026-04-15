@@ -10,6 +10,7 @@ import extractParam from "dataflow/utils";
 import { ParsedUrlQuery } from "querystring";
 import track from "analytics/track";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { APP_DEFAULT_LOCALE } from "../../appLocales";
 
 export type AppProps = {
   library?: LibraryData;
@@ -45,7 +46,7 @@ export default function withAppProps(
       // define the current locale.
       // Use the locale from context,
       // or if is missing, use app's default locale
-      const currentLocale = ctx.locale ?? "fi";
+      const currentLocale = ctx.locale ?? APP_DEFAULT_LOCALE;
 
       // fetch translations for the current locale from the server,
       // translationNamespaces is used for finding translation keys

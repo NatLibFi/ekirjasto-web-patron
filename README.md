@@ -10,48 +10,6 @@ The `web-patron` application serves as a way for libraries to publish their coll
 
 This app can support many libraries, each at their own url: `http://example.com/library1` can be one library, and `http://example.com/library2` another library. You configure the libraries for the app in the [config file](#configuration-file).
 
-<!-- ## Community Demo
-
-- Community Preview - [https://web.librarysimplified.org](https://web.librarysimplified.org)
-
-In addition to the preview of the production branch, we also have previews of the `qa` and `dev` branches:
-
-- qa - [https://qa-web.librarysimplified.org](https://qa-web.librarysimplified.org)
-- dev - [https://dev-web.librarysimplified.org](https://dev-web.librarysimplified.org)
-
-Finally, every PR in this repository has a unique preview deployment so proposed changes can be previewed with any library in the community config file.
-
-__To have your library added to the demo, register it with NYPL's Library Registry.__ -->
-
-# Table of Contents
-
-- [web-patron](#web-patron)
-  - [Background](#background)
-  <!-- * [Demo](#community-demo) -->
-- [Configuring the App](#configuring-the-app)
-  - [Configuration File](#configuration-file)
-  - [Environment Variables](#environment-variables)
-  - [Manager, Registry, and Application Configurations](#manager--registry--and-application-configurations)
-- [Development](#development)
-  - [Contributing](#contributing)
-    - [GPG signed commit](#gpg-signed-commit)
-  - [Installing Dependencies](#installing-dependencies)
-  - [Running the Application](#running-the-application)
-    - [ENV Vars and Building](#env-vars-and-building)
-    - [Useful Scripts](#useful-scripts)
-  - [Testing](#testing)
-    - [Context and useful spies](#context-and-useful-spies)
-    - [Running tests](#running-tests)
-    - [Example](#example)
-  - [Links and Routing](#links-and-routing)
-- [Deploying](#deploying)
-  - [Build a docker container](#build-a-docker-container)
-    - [Running the docker container](#running-the-docker-container)
-    - [From the command line](#from-the-command-line)
-    - [Using `docker-compose`](#using--docker-compose-)
-    - [Helpful commands](#helpful-commands)
-    - [Credits](#credits)
-
 # Configuring the App
 
 ## Configuration File
@@ -196,7 +154,7 @@ test("fetches search description", async () => {
   // expected. In this case once for the collection, then for it's search
   // description.
   expect(mockedSWR).toHaveBeenCalledWith(
-    ["/collection", "user-token"],
+    ["/collection", "user-token", "en"],
     expect.anything()
   );
   expect(mockedSWR).toHaveBeenCalledWith("/search-data-url", expect.anything());
@@ -249,6 +207,10 @@ Key settings:
   - `translations:extract` Extract translation keys and update translation files
   - `translations:sync` Sync Finnish and Swedish files with the English file
   - `translations:ci` Fail builds when translations are outdated
+
+#### `appLocales.ts`
+
+This file is intended to collect all of the app’s locale settings and related helper functions in one place.
 
 ### JSON structure for translations files
 

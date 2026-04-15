@@ -14,11 +14,14 @@ import ApplicationError from "errors";
 import ErrorComponent from "components/Error";
 import useBreadcrumbContext from "../components/context/BreadcrumbContext";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 export const Collection: React.FC<{
   title?: string;
 }> = ({ title }) => {
   const { collection, collectionUrl, isValidating, error } = useCollection();
+  const { t } = useTranslation();
+  const { locale } = useRouter();
 
   const isLoading = !collection && isValidating;
 
@@ -26,17 +29,25 @@ export const Collection: React.FC<{
   const hasBooks = collection?.books && collection.books.length > 0;
   const pageTitle = isLoading ? "" : title ?? collection?.title ?? "Collection";
 
-  const collectionBreadcrumbs = React.useMemo(
-    () => computeBreadcrumbs(collection),
-    [collection]
-  );
-
+  // get the breadcrumbs context
   const { storedBreadcrumbs, setStoredBreadcrumbs } = useBreadcrumbContext();
 
-  const { t } = useTranslation();
+  // build the breadcrumbs for the current collection.
+  // note: collection is always fetched with the current locale,
+  // so when the user changes language, this function should
+  // be also run automatically and the builder should
+  // compute new breadcrumbs using the new locale.
+  // The reason locale is passed here is only to help
+  // translate some breadcrumbs
+  const collectionBreadcrumbs = React.useMemo(
+    // this is run whenever collection or locale changes
+    () => computeBreadcrumbs(collection, locale),
+    [collection, locale]
+  );
 
+  // effect that updates the breadcrumbs stored in context
+  // whenever collectionBreadcrumbs changes
   React.useEffect(() => {
-    //store the updated breadcrumbs in context
     setStoredBreadcrumbs(collectionBreadcrumbs);
   }, [collectionBreadcrumbs, setStoredBreadcrumbs]);
 

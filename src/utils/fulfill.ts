@@ -163,17 +163,28 @@ function isSupported(
  */
 type GetLocationWithIndirection = (
   catalogUrl: string,
-  token?: string
+  token?: string,
+  locale?: string | undefined
 ) => Promise<AuthorizedLocation>;
 
 const constructGetLocation = (
   indirectionType: OPDS1.IndirectAcquisitionType | undefined,
   contentType: OPDS1.AnyBookMediaType,
   url: string
-): GetLocationWithIndirection => async (catalogUrl: string, token?: string) => {
+): GetLocationWithIndirection => async (
+  catalogUrl: string,
+  token?: string,
+  locale?: string | undefined
+) => {
   switch (indirectionType) {
     case OPDS1.OPDSEntryMediaType:
-      return await resolveOpdsEntry(url, catalogUrl, token, contentType);
+      return await resolveOpdsEntry(
+        url,
+        catalogUrl,
+        token,
+        contentType,
+        locale
+      );
 
     case OPDS1.BearerTokenMediaType:
       return await resolveBearerToken(url, token);
@@ -197,9 +208,15 @@ async function resolveOpdsEntry(
   url: string,
   catalogUrl: string,
   token: string | undefined,
-  contentType: OPDS1.AnyBookMediaType
+  contentType: OPDS1.AnyBookMediaType,
+  locale?: string | undefined
 ): Promise<AuthorizedLocation> {
-  const book = (await fetchBook(url, catalogUrl, token)) as FulfillableBook;
+  const book = (await fetchBook(
+    url,
+    catalogUrl,
+    token,
+    locale
+  )) as FulfillableBook;
   if (!book) {
     throw new ApplicationError({
       title: "Fetch Error",

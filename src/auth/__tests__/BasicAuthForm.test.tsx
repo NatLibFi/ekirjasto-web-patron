@@ -115,7 +115,7 @@ test("submit by clicking login button", async () => {
       headers: {
         Authorization: token,
         "X-Requested-With": "XMLHttpRequest",
-        "Accept-Language": "*"
+        "Accept-Language": "en"
       },
       method: "GET"
     });
@@ -159,7 +159,7 @@ test("displays server error", async () => {
     headers: {
       Authorization: "token",
       "X-Requested-With": "XMLHttpRequest",
-      "Accept-Language": "*"
+      "Accept-Language": "en"
     },
     method: "GET"
   });
@@ -241,7 +241,7 @@ test("submits with no password input", async () => {
       headers: {
         Authorization: token,
         "X-Requested-With": "XMLHttpRequest",
-        "Accept-Language": "*"
+        "Accept-Language": "en"
       },
       method: "GET"
     });

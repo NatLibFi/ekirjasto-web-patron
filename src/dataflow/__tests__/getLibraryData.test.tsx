@@ -20,7 +20,7 @@ describe("fetching catalog", () => {
     expect(fetchMock).toHaveBeenCalledWith("some-url", {
       headers: {
         "X-Requested-With": "XMLHttpRequest",
-        "Accept-Language": "*"
+        "Accept-Language": "fi"
       },
       method: "GET"
     });

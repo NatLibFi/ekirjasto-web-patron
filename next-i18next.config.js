@@ -12,6 +12,8 @@ const path = require("path");
 // The default language for the application is Finnish,
 // which is also used as the fallback language
 // if a translation is missing.
+// Note: these duplicate locale definitions are used until
+// project is changed to support typescript next config
 const i18nConfig = {
   defaultLocale: "fi",
   locales: ["fi", "sv", "en"]

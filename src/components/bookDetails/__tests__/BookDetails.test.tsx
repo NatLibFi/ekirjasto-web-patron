@@ -146,7 +146,12 @@ describe("book details page", () => {
     // we make a special mock so we can differentiate the book request
     // and the related collection request
     mockedSWR.mockImplementation(((key: any) => {
-      if (key === "/book-url") {
+      // if key is a string OR
+      // if key is an array and the first item is "/book-url"
+      if (
+        key === "/book-url" ||
+        (Array.isArray(key) && key[0] === "/book-url")
+      ) {
         return makeSwrResponse({
           data: {
             ...fixtures.book,
@@ -154,12 +159,15 @@ describe("book details page", () => {
           }
         });
       }
-      if (key?.[0] === "/related-url") {
+
+      // if key is an array and the first item is "/related-url"
+      if (Array.isArray(key) && key[0] === "/related-url") {
         return makeSwrResponse({
           data: fixtures.recommendations
         });
       }
     }) as any);
+
     setup(<BookDetails />, {
       router: { query: { bookUrl: "/book-url" } }
     });
