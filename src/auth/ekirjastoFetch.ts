@@ -32,7 +32,8 @@ export async function fetchEAuthToken(
 
 export async function fetchEkirjastoToken(
   url: string | undefined,
-  token: string | undefined
+  token: string | undefined,
+  refreshUrl: string | undefined
 ) {
   if (!url || !token) {
     throw new ApplicationError({
@@ -47,6 +48,17 @@ export async function fetchEkirjastoToken(
   //If we get a 401, refresh is going to happen so we don't want to throw an error
   if (!response.ok && response.status !== 401) {
     throw new ServerError(url, response.status, json);
+  }
+  if (response.status === 401) {
+    if (!refreshUrl) {
+      throw new ApplicationError({
+        title: "Incomplete Token Refresh Info",
+        detail: "No URL for token refresh was provided"
+      });
+    }
+    //const { access_token: accessToken } = await fetchEAuthToken(refreshUrl, token)
+    //set refresh to undef so we don't end up in a loop
+    //return fetchEkirjastoToken(url,accessToken, undefined)
   }
 
   return json;

@@ -26,7 +26,8 @@ export type UserState = {
   signOut: () => void;
   getEkirjastoToken: (
     token: string,
-    fetchUrl: string | undefined
+    fetchUrl?: string,
+    refreshUrl?: string
   ) => Promise<string>;
   setBook: (book: AnyBook, id?: string) => void;
   setSelected: (book: AnyBook, id?: string) => void;
@@ -158,11 +159,13 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   async function getEkirjastoToken(
     token: string,
-    fetchUrl: string | undefined
+    fetchUrl?: string,
+    refreshUrl?: string
   ): Promise<string> {
     const { token: ekirjastoToken } = await fetchEkirjastoToken(
       fetchUrl,
-      token
+      token,
+      refreshUrl
     );
     return ekirjastoToken;
   }
