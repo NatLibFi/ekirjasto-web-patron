@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render, fixtures } from "test-utils";
-import MagazinesFixedPage from "../index";
+import MagazinesFixedPage from "pages/[library]/magazines/index";
 
 test("unauthenticated user sees unauthorized message", () => {
   const utils = render(<MagazinesFixedPage library={fixtures.libraryData} />);
