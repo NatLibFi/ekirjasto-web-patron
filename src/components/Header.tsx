@@ -1,26 +1,24 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { jsx } from "theme-ui";
 import * as React from "react";
 import { LibraryData } from "../interfaces";
 import Search from "./Search";
 import Button, { NavButton, AnchorButton } from "./Button";
-import Link from "./Link";
-import BookIcon from "../icons/Book";
+import BrowseIcon from "../icons/Browse";
+import MagazinesIcon from "../icons/Magazines";
+import MyBooksIcon from "../icons/MyBooks";
 import useLibraryContext from "./context/LibraryContext";
-import { Text } from "./Text";
 import Stack from "./Stack";
 import { SignOut } from "./SignOut";
 import useUser from "components/context/UserContext";
 import useLogin from "auth/useLogin";
 import { useTranslation } from "next-i18next";
 import LanguageSelector from "components/LanguageSelector";
+import EkirjastoHeaderLogo from "components/logosAndBadges/EkirjastoHeaderLogo";
 
 const HeaderFC: React.FC<{ className?: string }> = ({ className }) => {
   const library = useLibraryContext();
-  const { t } = useTranslation();
 
   return (
     <header
@@ -33,33 +31,24 @@ const HeaderFC: React.FC<{ className?: string }> = ({ className }) => {
       }}
       className={className}
     >
-      <Link
-        href="/"
-        aria-label={t("header.ariaLabelForLibraryCatalogLink")}
+      <Stack
         sx={{
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: ["center", "flex-start"],
-          textAlign: "center",
           p: 3,
           mb: [1, 0]
         }}
       >
-        {library.logoUrl ? (
-          <img src={library.logoUrl} alt={`${library.catalogName} Logo`} />
-        ) : (
-          <Text variant="text.headers.primary">{library.catalogName}</Text>
-        )}
-      </Link>
+        <EkirjastoHeaderLogo />
+      </Stack>
+
       <Stack
         direction="column"
         spacing={4}
         sx={{
-          // flexDirection: "column",
-          // flexWrap: "wrap",
           alignItems: ["stretch", "flex-end"],
-          // justifyContent: "space-between",
           flex: 1
         }}
       >
@@ -71,7 +60,7 @@ const HeaderFC: React.FC<{ className?: string }> = ({ className }) => {
 };
 
 const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
-  const { helpWebsite, libraryWebsite } = library.libraryLinks;
+  const { libraryWebsite } = library.libraryLinks;
   const { isAuthenticated, isLoading } = useUser();
   const { baseLoginUrl } = useLogin();
   const { t } = useTranslation();
@@ -85,6 +74,7 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
       }}
     >
       <LanguageSelector />
+
       {library?.headerLinks?.map(link => (
         <AnchorButton
           variant="ghost"
@@ -96,26 +86,25 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
           {link.title}
         </AnchorButton>
       ))}
-      {helpWebsite && (
-        <AnchorButton variant="ghost" color="ui.black" href={helpWebsite.href}>
-          {t("header.labelForHelpButton")}
-        </AnchorButton>
-      )}
+
       {libraryWebsite && (
         <AnchorButton
           variant="ghost"
           color="ui.black"
           href={libraryWebsite.href}
-          sx={{ whiteSpace: "initial" }}
+          iconLeft={BrowseIcon}
+          sx={{ whiteSpace: "initial", ml: 3 }}
         >
           {libraryWebsite.title ?? t("header.labelForHome")}
         </AnchorButton>
       )}
+
       {isAuthenticated ? (
         <NavButton
           variant="ghost"
           color="ui.black"
           href="/magazines"
+          iconLeft={MagazinesIcon}
           sx={{ mr: 1 }}
         >
           {t("header.labelForMagazinesButton")}
@@ -125,20 +114,23 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
           variant="ghost"
           color="ui.black"
           href="/magazines-preview"
+          iconLeft={MagazinesIcon}
           sx={{ mr: 1 }}
         >
           {t("header.labelForMagazinesPreviewButton")}
         </NavButton>
       )}
+
       <NavButton
         variant="ghost"
         color="ui.black"
         href="/loans"
-        iconLeft={BookIcon}
-        sx={{ mr: 1 }}
+        iconLeft={MyBooksIcon}
+        sx={{ mr: 3 }}
       >
         {t("header.labelForMyBooksButton")}
       </NavButton>
+
       {isAuthenticated ? (
         <SignOut />
       ) : isLoading ? (
