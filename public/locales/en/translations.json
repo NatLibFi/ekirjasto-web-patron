@@ -1,11 +1,11 @@
 {
   "badges.ariaLabelForAppStoreLink": "Download E-library on the App Store",
   "badges.ariaLabelForGooglePlayLink": "Get E-library on Google Play",
-  "betaBanner.hrefInfoEkirjasto": "https://www.kansalliskirjasto.fi/en/e-library/e-library-always-you",
+  "betaBanner.hrefInfoEkirjasto": "https://www.kansalliskirjasto.fi/en/news/e-library-browser-interface-be-released-21-april",
   "betaBanner.infoAudiobooks": "You can listen to audiobooks in the E-library app.",
   "betaBanner.infoEbooksAndMagazines": "Here you can read Finnish and Swedish e-books and magazines directly in your browser.",
   "betaBanner.infoEkirjasto": "More information about the browser interface",
-  "betaBanner.infoWelcome": "Welcome to test the E-library browser interface!",
+  "betaBanner.infoWelcome": "Welcome to try the E-library browser interface!",
   "book.borrowable": "Available: {{availableCopies}} / {{totalCopies}}",
   "book.differenceInDays": "{{differenceInDays}} days",
   "book.differenceInHours": "{{differenceInHours}} hours",

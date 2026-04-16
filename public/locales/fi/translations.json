@@ -1,11 +1,11 @@
 {
   "badges.ariaLabelForAppStoreLink": "Lataa E-kirjasto App Storesta",
   "badges.ariaLabelForGooglePlayLink": "Lataa E-kirjasto Google Playsta",
-  "betaBanner.hrefInfoEkirjasto": "https://www.kansalliskirjasto.fi/fi/e-library/e-library-always-you",
+  "betaBanner.hrefInfoEkirjasto": "https://www.kansalliskirjasto.fi/fi/uutiset/e-kirjaston-selainkayttoliittyma-julkaistaan-214",
   "betaBanner.infoAudiobooks": "Äänikirjoja voit kuunnella E-kirjasto-sovelluksessa.",
   "betaBanner.infoEbooksAndMagazines": "Täällä voit lukea suomen- ja ruotsinkielisiä e-kirjoja sekä lehtiä suoraan selaimessasi.",
   "betaBanner.infoEkirjasto": "Lisätietoa selainkäyttöliittymästä",
-  "betaBanner.infoWelcome": "Tervetuloa testaamaan E-kirjaston selainkäyttöliittymää!",
+  "betaBanner.infoWelcome": "Tervetuloa kokeilemaan E-kirjaston selainkäyttöliittymää!",
   "book.borrowable": "Saatavissa: {{availableCopies}} / {{totalCopies}}",
   "book.differenceInDays": "{{differenceInDays}} päivää",
   "book.differenceInHours": "{{differenceInHours}} tuntia",
