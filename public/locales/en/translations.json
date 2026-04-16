@@ -1,4 +1,5 @@
 {
+  "auth.unauthorizedMessage": "You need to be signed in to view this page.",
   "badges.ariaLabelForAppStoreLink": "Download E-library on the App Store",
   "badges.ariaLabelForGooglePlayLink": "Get E-library on Google Play",
   "betaBanner.hrefInfoEkirjasto": "https://www.kansalliskirjasto.fi/en/news/e-library-browser-interface-be-released-21-april",

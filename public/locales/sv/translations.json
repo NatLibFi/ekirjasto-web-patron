@@ -1,4 +1,5 @@
 {
+  "auth.unauthorizedMessage": "Du måste logga in för att se den här sidan",
   "badges.ariaLabelForAppStoreLink": "Hämta E-biblioteket i App Store",
   "badges.ariaLabelForGooglePlayLink": "Ladda E-biblioteket ned på Google Play",
   "betaBanner.hrefInfoEkirjasto": "https://www.kansalliskirjasto.fi/sv/nyheter/e-bibliotekets-webbgranssnitt-publiceras-den-21-april",

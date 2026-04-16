@@ -1,28 +1,20 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "theme-ui";
-import useLogin from "auth/useLogin";
 import useUser from "components/context/UserContext";
 import { PageLoader } from "components/LoadingIndicator";
 import React from "react";
+import { useTranslation } from "next-i18next";
 
 /**
- * This will show a message and redirect the user to the login
- * page if they try to access a route they are not permitted to see.
+ * This will show a message if the user tries to access a route they are not permitted to see.
  */
 
 interface Props {
   children: React.ReactNode;
 }
 const AuthProtectedRoute = ({ children }: Props) => {
-  const { isLoading, isAuthenticated, token, error } = useUser();
-  const { initLogin } = useLogin();
-
-  React.useEffect(() => {
-    if ((!token || error) && !isLoading) {
-      initLogin();
-    }
-  }, [initLogin, token, error, isLoading]);
+  const { isLoading, isAuthenticated } = useUser();
 
   if (isAuthenticated) {
     return <>{children}</>;
@@ -36,6 +28,8 @@ const AuthProtectedRoute = ({ children }: Props) => {
 export default AuthProtectedRoute;
 
 const Unauthorized = () => {
+  const { t } = useTranslation();
+
   return (
     <div
       sx={{
@@ -46,7 +40,7 @@ const Unauthorized = () => {
         flexDirection: "column"
       }}
     >
-      <h4>You need to be signed in to view this page.</h4>
+      <h4>{t("auth.unauthorizedMessage")}</h4>
     </div>
   );
 };
