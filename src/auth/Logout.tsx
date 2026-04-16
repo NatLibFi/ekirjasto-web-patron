@@ -63,7 +63,7 @@ export default function Logout(): React.ReactElement {
       if (token && ekirjastoTokenUrl) {
         // Fetch the ekirjasto token
         const fetchedToken = await getEkirjastoToken(
-          token!,
+          token,
           ekirjastoTokenUrl,
           circulationTokenRefreshUrl
         );
