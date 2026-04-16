@@ -1,4 +1,5 @@
 {
+  "auth.unauthorizedMessage": "You need to be signed in to view this page.",
   "book.borrowable": "Available: {{availableCopies}} / {{totalCopies}}",
   "book.differenceInDays": "{{differenceInDays}} days",
   "book.differenceInHours": "{{differenceInHours}} hours",

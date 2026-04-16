@@ -1,4 +1,5 @@
 {
+  "auth.unauthorizedMessage": "Du måste logga in för att se den här sidan",
   "book.borrowable": "Tillgänglig: {{availableCopies}} / {{totalCopies}}",
   "book.differenceInDays": "{{differenceInDays}} dagar",
   "book.differenceInHours": "{{differenceInHours}} timmar",

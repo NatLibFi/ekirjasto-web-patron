@@ -1,4 +1,5 @@
 {
+  "auth.unauthorizedMessage": "Kirjaudu sisään nähdäksesi tämän sivun",
   "book.borrowable": "Saatavissa: {{availableCopies}} / {{totalCopies}}",
   "book.differenceInDays": "{{differenceInDays}} päivää",
   "book.differenceInHours": "{{differenceInHours}} tuntia",
