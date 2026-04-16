@@ -36,12 +36,12 @@ test("shows external links when present in state w/ apropriate attributes", () =
       )
     );
     expect(lnk).toHaveAttribute("rel", "noopener noreferrer");
-    expect(lnk).toHaveAttribute("target", "__blank");
+    expect(lnk).toHaveAttribute("target", "_blank");
   };
 
-  expectExternalLink("Privacy Policy (Opens in a new tab)");
-  expectExternalLink("Terms of Use (Opens in a new tab)");
-  expectExternalLink("About (Opens in a new tab)");
+  expectExternalLink("Privacy Policy Opens in a new tab");
+  expectExternalLink("Terms of Use Opens in a new tab");
+  expectExternalLink("About Opens in a new tab");
 });
 
 describe("toggling SimplyE Branding", () => {

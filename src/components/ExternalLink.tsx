@@ -4,9 +4,10 @@
 // @ts-nocheck
 import { jsx } from "theme-ui";
 import * as React from "react";
-import { VisuallyHidden } from "@ariakit/react";
 import { AnchorButton } from "./Button";
 import { useTranslation } from "next-i18next";
+import { VisuallyHidden } from "@ariakit/react";
+import ExternalLinkIcon from "icons/ExternalLink";
 
 const ExternalLink: React.FC<React.ComponentPropsWithoutRef<"a">> = ({
   children,
@@ -17,12 +18,13 @@ const ExternalLink: React.FC<React.ComponentPropsWithoutRef<"a">> = ({
   return (
     <AnchorButton
       variant="link"
-      target="__blank"
+      target="_blank"
       rel="noopener noreferrer"
       {...props}
     >
       {children}
-      <VisuallyHidden>({t("externalLink.opensInNewTab")})</VisuallyHidden>
+      <ExternalLinkIcon sx={{ ml: 1, mb: 1, fill: "black", height: "13px" }} />
+      <VisuallyHidden>{t("externalLink.opensInNewTab")}</VisuallyHidden>
     </AnchorButton>
   );
 };
