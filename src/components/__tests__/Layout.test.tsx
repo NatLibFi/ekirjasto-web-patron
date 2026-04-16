@@ -12,8 +12,12 @@ describe("Layout nav + structure", () => {
   });
 
   test("my books navigates to /loans", () => {
-    setup(<Layout>Child</Layout>);
-    const myBooks = screen.getAllByRole("link", { name: "My Books" });
+    const utils = setup(<Layout>Child</Layout>, {
+      user: {
+        isAuthenticated: true
+      }
+    });
+    const myBooks = utils.getAllByRole("link", { name: "My Books" });
     myBooks.forEach(ln => expect(ln).toHaveAttribute("href", "/testlib/loans"));
   });
 

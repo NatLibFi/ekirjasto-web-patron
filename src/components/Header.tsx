@@ -121,15 +121,17 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
         </NavButton>
       )}
 
-      <NavButton
-        variant="ghost"
-        color="ui.black"
-        href="/loans"
-        iconLeft={MyBooksIcon}
-        sx={{ mr: 3 }}
-      >
-        {t("header.labelForMyBooksButton")}
-      </NavButton>
+      {isAuthenticated && (
+        <NavButton
+          variant="ghost"
+          color="ui.black"
+          href="/loans"
+          iconLeft={MyBooksIcon}
+          sx={{ mr: 3 }}
+        >
+          {t("header.labelForMyBooksButton")}
+        </NavButton>
+      )}
 
       {isAuthenticated ? (
         <SignOut />
