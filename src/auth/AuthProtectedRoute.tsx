@@ -4,6 +4,7 @@ import { jsx } from "theme-ui";
 import useUser from "components/context/UserContext";
 import { PageLoader } from "components/LoadingIndicator";
 import React from "react";
+import { useTranslation } from "next-i18next";
 
 /**
  * This will show a message if the user tries to access a route they are not permitted to see.
@@ -27,6 +28,8 @@ const AuthProtectedRoute = ({ children }: Props) => {
 export default AuthProtectedRoute;
 
 const Unauthorized = () => {
+  const { t } = useTranslation();
+
   return (
     <div
       sx={{
@@ -37,7 +40,7 @@ const Unauthorized = () => {
         flexDirection: "column"
       }}
     >
-      <h4>You need to be signed in to view this page.</h4>
+      <h4>{t("auth.unauthorizedMessage")}</h4>
     </div>
   );
 };
