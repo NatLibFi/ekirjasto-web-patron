@@ -169,6 +169,7 @@
   "mediumIndicator.labelForBook": "Bok",
   "mediumIndicator.labelForeBook": "E-bok",
   "multiLibraryHome.chooseLibrary": "Välj ett bibliotek",
+  "multiLibraryHome.noLibraries": "Inga bibliotek tillgängliga",
   "myBooks.breadcrumb": "Mina böcker",
   "myBooks.emptyFavorites": "Gå till Katalogen för att lägga till böcker till dina Favoriter.",
   "myBooks.emptyLoansAndHolds": "Besök katalogen för att lägga till böcker i Mina lån.",

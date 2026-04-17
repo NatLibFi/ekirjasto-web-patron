@@ -169,6 +169,7 @@
   "mediumIndicator.labelForBook": "Kirja",
   "mediumIndicator.labelForeBook": "E-kirja",
   "multiLibraryHome.chooseLibrary": "Valitse kirjasto",
+  "multiLibraryHome.noLibraries": "Ei käytettävissä olevia kirjastoja",
   "myBooks.breadcrumb": "Kirjani",
   "myBooks.emptyFavorites": "Sinulla ei ole vielä suosikkeja. Voit lisätä suosikkeja, kun selaat kirjoja.",
   "myBooks.emptyLoansAndHolds": "Sinulla ei ole voimassa olevia lainoja.",

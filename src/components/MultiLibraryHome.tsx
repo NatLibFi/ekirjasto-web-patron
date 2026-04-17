@@ -14,10 +14,26 @@ const MultiLibraryHome: React.FC = () => {
   const slugs = Object.keys(libraries);
   const { t } = useTranslation();
 
-  if (!libraries || slugs.length === 0) return null;
+  // just in case check if we have no libraries
+  // and show user the "No libraries available" page
+  // (this should not happen for E-kirjasto)
+  if (!libraries || slugs.length === 0) {
+    return renderNoLibraries(instanceName, t);
+  }
 
   return renderLibrarySelection(instanceName, t, slugs, libraries);
 };
+
+// helper function that renders the "No libraries available"
+const renderNoLibraries = (instanceName: string, t: any) => (
+  <ThemeUIProvider theme={theme}>
+    <Themed.root sx={{ m: 3 }}>
+      {/* render app name and header only */}
+      <h1>{instanceName}</h1>
+      <h3>{t("multiLibraryHome.noLibraries")}</h3>
+    </Themed.root>
+  </ThemeUIProvider>
+);
 
 // helper function that renders the library selection list
 const renderLibrarySelection = (
