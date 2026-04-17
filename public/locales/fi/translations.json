@@ -199,5 +199,6 @@
   "useBorrow.borrowing": "Lainataan...",
   "useBorrow.reserveBook": "Varaa tämä kirja",
   "useBorrow.reserving": "Varataan...",
-  "useBorrow.signInToBorrow": "Sinun tulee olla kirjautuneena lainataksesi tämän kirjan."
+  "useBorrow.signInToBorrowOrReserve": "Sinun tulee olla kirjautuneena lainataksesi tai varataksesi tämän kirjan.",
+  "useSelectBook.signInToAddToFavorites": "Sinun tulee olla kirjautuneena lisätäksesi tämän kirjan suosikkeihin."
 }

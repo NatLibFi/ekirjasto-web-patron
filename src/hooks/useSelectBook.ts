@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AnyBook } from "interfaces";
 import useUser from "components/context/UserContext";
 import useError from "hooks/useError";
+import { useTranslation } from "next-i18next";
 
 /**
  * Return type for the useSelectBook hook.
@@ -35,6 +36,7 @@ export default function useSelectBook(): UseSelectBookResult {
   const { token, setSelected } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const { error, handleError, setErrorString, clearError } = useError();
+  const { t } = useTranslation();
 
   /**
    * Toggles the selection state of a book by making an API request.
@@ -59,7 +61,7 @@ export default function useSelectBook(): UseSelectBookResult {
     clearError();
 
     if (!token) {
-      setErrorString("You must be signed in to select this book.");
+      setErrorString(t("useSelectBook.signInToAddToFavorites"));
       return false;
     }
 

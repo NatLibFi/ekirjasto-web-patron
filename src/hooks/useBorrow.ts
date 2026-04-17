@@ -25,7 +25,7 @@ export default function useBorrow(isBorrow: boolean) {
   const borrowOrReserve = async (url: string) => {
     clearError();
     if (!token) {
-      setErrorString(t("useBorrow.signInToBorrow"));
+      setErrorString(t("useBorrow.signInToBorrowOrReserve"));
       return;
     }
     setLoading(true);
