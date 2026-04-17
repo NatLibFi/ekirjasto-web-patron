@@ -16,28 +16,40 @@ const MultiLibraryHome: React.FC = () => {
 
   if (!libraries || slugs.length === 0) return null;
 
-  return (
-    <ThemeUIProvider theme={theme}>
-      <Themed.root
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          minHeight: "100vh",
-          m: 3
-        }}
-      >
-        <h1>{instanceName}</h1>
-        <h3>{t("multiLibraryHome.chooseLibrary")}</h3>
-        <ul>
-          {slugs.map(slug => (
-            <li key={slug}>
-              <Link href={`/${slug}`}>/{libraries[slug]?.title}</Link>
-            </li>
-          ))}
-        </ul>
-      </Themed.root>
-    </ThemeUIProvider>
-  );
+  return renderLibrarySelection(instanceName, t, slugs, libraries);
 };
+
+// helper function that renders the library selection list
+const renderLibrarySelection = (
+  instanceName: string,
+  t: any,
+  slugs: string[],
+  libraries: Record<string, { title: string; authDocUrl: string } | undefined>
+) => (
+  <ThemeUIProvider theme={theme}>
+    <Themed.root
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+        m: 3
+      }}
+    >
+      {/* render app name and header */}
+      <h1>{instanceName}</h1>
+      <h3>{t("multiLibraryHome.chooseLibrary")}</h3>
+
+      {/* render list of libraries */}
+      <ul>
+        {slugs.map(slug => (
+          <li key={slug}>
+            {/* render library title as a link leading to library's frontpage */}
+            <Link href={`/${slug}`}>{libraries[slug]?.title}</Link>
+          </li>
+        ))}
+      </ul>
+    </Themed.root>
+  </ThemeUIProvider>
+);
 
 export default MultiLibraryHome;
