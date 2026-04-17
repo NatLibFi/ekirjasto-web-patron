@@ -51,9 +51,9 @@ describe("LanguageSelector", () => {
   });
 
   it.each([
-    ["fi", "Valitse sivun kieli"],
-    ["sv", "Välj sidspråk"],
-    ["en", "Select page language"]
+    ["fi", "Valitse sivuston kieli"],
+    ["sv", "Välj språk"],
+    ["en", "Choose language"]
   ])(
     "should show correct aria-label when locale is %s",
     (locale, ariaLabel) => {
