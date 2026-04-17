@@ -60,7 +60,6 @@ const HeaderFC: React.FC<{ className?: string }> = ({ className }) => {
 };
 
 const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
-  const { libraryWebsite } = library.libraryLinks;
   const { isAuthenticated, isLoading } = useUser();
   const { baseLoginUrl } = useLogin();
   const { t } = useTranslation();
@@ -87,17 +86,15 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
         </AnchorButton>
       ))}
 
-      {libraryWebsite && (
-        <AnchorButton
-          variant="ghost"
-          color="ui.black"
-          href={libraryWebsite.href}
-          iconLeft={BrowseIcon}
-          sx={{ whiteSpace: "initial", ml: 3 }}
-        >
-          {libraryWebsite.title ?? t("header.labelForHome")}
-        </AnchorButton>
-      )}
+      <NavButton
+        variant="ghost"
+        color="ui.black"
+        href="/"
+        iconLeft={BrowseIcon}
+        sx={{ whiteSpace: "initial", ml: 3 }}
+      >
+        {t("header.labelForHome")}
+      </NavButton>
 
       {isAuthenticated ? (
         <NavButton
