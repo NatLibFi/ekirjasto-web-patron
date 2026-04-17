@@ -83,7 +83,7 @@ export function PasskeyCreate() {
         throw new Error("Failed to finish passkey registeration");
       }
 
-      const response = await finishResponse.json();
+      await finishResponse.json();
       //TODO: do something with the response, or just inform that successful
     } catch (err) {
       setError((err as Error).message || "Passkey creation failed");

@@ -73,9 +73,10 @@ export function PasskeyLogin({ redirectURI }: { redirectURI?: string }) {
       const input = document.createElement("input");
       input.type = "hidden";
       input.name = "json";
+      // Ignore lint error for this one line, as the server needs the value to be redirect_uri
+      // eslint-disable-next-line camelcase
       input.value = JSON.stringify({ data, redirect_uri: redirectURI });
       form.appendChild(input);
-
       document.body.appendChild(form);
       form.submit();
     } catch (err) {
