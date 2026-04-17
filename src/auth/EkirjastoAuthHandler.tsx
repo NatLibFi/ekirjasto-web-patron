@@ -1,8 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { Button, jsx } from "theme-ui";
+import { jsx } from "theme-ui";
 import * as React from "react";
 import { ClientEkirjastoMethod } from "interfaces";
+import Button from "components/Button";
 import LoadingIndicator from "components/LoadingIndicator";
 import Stack from "components/Stack";
 import useUser from "components/context/UserContext";
@@ -12,7 +13,7 @@ import { PasskeyLogin } from "./PasskeyLogin";
 
 /**
  * The Ekirjasto Auth handler sends you off to an external website to complete
- * auth.
+ * auth, or user can use passkey
  */
 const EkirjastoAuthHandler: React.FC<{ method: ClientEkirjastoMethod }> = ({
   method
@@ -39,15 +40,16 @@ const EkirjastoAuthHandler: React.FC<{ method: ClientEkirjastoMethod }> = ({
   };
 
   return (
-    <Stack direction="column" sx={{ alignItems: "center" }}>
+    <Stack direction="column" spacing={2} sx={{ alignItems: "center" }}>
       {token ? (
         <LoadingIndicator />
       ) : (
         <>
-          <Button onClick={() => handleLogin('strong')}>Login using Suomi.fi</Button>
-          <PasskeyLogin redirectURI = {authSuccessUrl}/>
+          <Button onClick={() => handleLogin()}>Sign in using Suomi.fi</Button>
+          <PasskeyLogin redirectURI={authSuccessUrl} />
         </>
       )}
+      <p>By signing in, you agree to the End User License Agreement</p>
     </Stack>
   );
 };

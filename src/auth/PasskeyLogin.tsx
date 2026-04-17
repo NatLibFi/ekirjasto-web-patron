@@ -1,36 +1,37 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { Button,jsx } from "theme-ui";
-import { browserSupportsWebAuthn, startAuthentication } from "@simplewebauthn/browser";
+import { jsx } from "theme-ui";
+import Button from "components/Button";
+import {
+  browserSupportsWebAuthn,
+  startAuthentication
+} from "@simplewebauthn/browser";
 import useLibraryContext from "components/context/LibraryContext";
 import { useEffect, useState } from "react";
 import { isSupportedAuthType } from "./AuthenticationHandler";
 import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
 
-
 export function PasskeyLogin({ redirectURI }: { redirectURI?: string }) {
+  const { authMethods } = useLibraryContext();
 
-     const { authMethods } = useLibraryContext();
-    
-        // Get supported methods
-      const supportedAuthMethods = authMethods.filter(m =>
-        isSupportedAuthType(m.type)
-      );
-    
-      // Get ekirjasto auth methog
-      const method = supportedAuthMethods.find(
-        method => method.type === EKIRJASTO_AUTH_TYPE
-      )!;
-    
-      const passkeyLoginStartHref = method.links?.find(
-        link => link.rel === "passkey_login_start"
-      )?.href;
-    
-      const passkeyLoginFinishHref = method.links?.find(
-        link => link.rel === "passkey_login_finish"
-      )?.href;
-    
-    
+  // Get supported methods
+  const supportedAuthMethods = authMethods.filter(m =>
+    isSupportedAuthType(m.type)
+  );
+
+  // Get ekirjasto auth method
+  const method = supportedAuthMethods.find(
+    method => method.type === EKIRJASTO_AUTH_TYPE
+  )!;
+
+  const passkeyLoginStartHref = method.links?.find(
+    link => link.rel === "passkey_login_start"
+  )?.href;
+
+  const passkeyLoginFinishHref = method.links?.find(
+    link => link.rel === "passkey_login_finish"
+  )?.href;
+
   const [isSupported, setIsSupported] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -49,9 +50,9 @@ export function PasskeyLogin({ redirectURI }: { redirectURI?: string }) {
         method: "POST",
         headers: {
           accept: "application/json",
-          "content-type": "application/json",
+          "content-type": "application/json"
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify({})
       });
 
       if (!startResponse.ok) {
@@ -67,7 +68,7 @@ export function PasskeyLogin({ redirectURI }: { redirectURI?: string }) {
       const form = document.createElement("form");
       form.style.display = "none";
       form.method = "post";
-      form.action =passkeyLoginFinishHref!;
+      form.action = passkeyLoginFinishHref!;
 
       const input = document.createElement("input");
       input.type = "hidden";
@@ -89,11 +90,10 @@ export function PasskeyLogin({ redirectURI }: { redirectURI?: string }) {
 
   return (
     <div>
-      <button onClick={handleLogin} disabled={isLoading}>
+      <Button onClick={handleLogin} disabled={isLoading}>
         {isLoading ? "Authenticating…" : "Sign in with a passkey"}
-      </button>
+      </Button>
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }
-
