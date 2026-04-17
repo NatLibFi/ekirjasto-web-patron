@@ -110,6 +110,7 @@
   "footer.hrefElibraryFAQ": "https://www.kansalliskirjasto.fi/sv/e-biblioteket/vanliga-fragor-om-e-biblioteket",
   "footer.hrefElibraryInstructions": "https://www.kansalliskirjasto.fi/sv/e-biblioteket/anvisningar-e-biblioteket",
   "footer.hrefElibraryTermsOfUse": "https://www.kansalliskirjasto.fi/sv/e-biblioteket/e-bibliotekets-anvandarvillkor",
+  "footer.hrefFeedback": "/sv/{{librarySlug}}/feedback",
   "footer.hrefMunicipalitiesParticipatingInElibrary": "https://www.kansalliskirjasto.fi/sv/e-biblioteket/kommuner-som-anslutit-sig-till-e-biblioteket",
   "footer.hrefNatLibFi": "https://www.kansalliskirjasto.fi/sv",
   "footer.hrefPrivacyPolicy": "https://www.kansalliskirjasto.fi/sv/e-biblioteket/dataskydds-och-registerbeskrivning",

@@ -110,6 +110,7 @@
   "footer.hrefElibraryFAQ": "https://www.kansalliskirjasto.fi/en/e-library/e-library-faq",
   "footer.hrefElibraryInstructions": "https://www.kansalliskirjasto.fi/en/e-library/e-library-instructions",
   "footer.hrefElibraryTermsOfUse": "https://www.kansalliskirjasto.fi/en/e-library/e-library-terms-use",
+  "footer.hrefFeedback": "/en/{{librarySlug}}/feedback",
   "footer.hrefMunicipalitiesParticipatingInElibrary": "https://www.kansalliskirjasto.fi/en/e-library/municipalities-participating-e-library",
   "footer.hrefNatLibFi": "https://www.kansalliskirjasto.fi/en",
   "footer.hrefPrivacyPolicy": "https://www.kansalliskirjasto.fi/en/e-library/privacy-policy-data-protection-statement-and-description-data-file",
