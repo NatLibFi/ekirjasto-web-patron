@@ -4,7 +4,7 @@ import { jsx } from "theme-ui";
 import * as React from "react";
 import { LibraryData } from "../interfaces";
 import Search from "./Search";
-import Button, { NavButton, AnchorButton } from "./Button";
+import Button, { NavButton, AnchorButton } from "../components/Button";
 import BrowseIcon from "../icons/Browse";
 import MagazinesIcon from "../icons/Magazines";
 import MyBooksIcon from "../icons/MyBooks";
@@ -133,8 +133,8 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
 
       {isAuthenticated ? (
         <div>
-        <PasskeyCreate />
-        <SignOut />
+          <PasskeyCreate />
+          <SignOut />
         </div>
       ) : isLoading ? (
         <Button loading />
