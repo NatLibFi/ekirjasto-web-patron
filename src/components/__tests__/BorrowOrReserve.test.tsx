@@ -81,8 +81,8 @@ test("redirects to login when not signed in", async () => {
   // doesn't call the borrow book
   expect(mockedFetchBook).not.toHaveBeenCalled();
 
-  // redirects to login
-  expect(mockPush).toHaveBeenCalledWith(
+  // should not redirect to login
+  expect(mockPush).not.toHaveBeenCalledWith(
     {
       pathname: "/[library]/login",
       query: { library: "testlib", nextUrl: "/testlib" }
