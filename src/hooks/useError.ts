@@ -12,7 +12,7 @@ export default function useError() {
   function handleError(e: any) {
     track.error(e);
     if (e instanceof ServerError) {
-      setError(`Error: ${e.info.detail}`);
+      setError(e.info.detail);
       return;
     }
     setError("Error: An unknown error occurred.");
@@ -20,7 +20,7 @@ export default function useError() {
 
   // for internal error states we don't need to track
   function setErrorString(str: string) {
-    setError(`Error: ${str}`);
+    setError(str);
   }
 
   function clearError() {
