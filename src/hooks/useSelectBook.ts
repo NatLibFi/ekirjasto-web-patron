@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { AnyBook } from "interfaces";
 import useUser from "components/context/UserContext";
-import useLogin from "auth/useLogin";
 import useError from "hooks/useError";
 
 /**
@@ -34,7 +33,6 @@ interface UseSelectBookResult {
  */
 export default function useSelectBook(): UseSelectBookResult {
   const { token, setSelected } = useUser();
-  const { initLogin } = useLogin();
   const [isLoading, setIsLoading] = useState(false);
   const { error, handleError, setErrorString, clearError } = useError();
 
@@ -61,7 +59,6 @@ export default function useSelectBook(): UseSelectBookResult {
     clearError();
 
     if (!token) {
-      initLogin();
       setErrorString("You must be signed in to select this book.");
       return false;
     }
