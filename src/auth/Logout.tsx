@@ -81,7 +81,7 @@ export default function Logout(): React.ReactElement {
     if (token && method) {
       fetchEkirjastoToken();
     }
-  }, [token, method]);
+  }, [token, method, fetchEkirjastoToken]);
 
   React.useEffect(() => {
     if (ekirjastoToken && urlWithRedirect) {
