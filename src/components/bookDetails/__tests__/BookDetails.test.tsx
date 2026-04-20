@@ -119,11 +119,32 @@ describe("book details page", () => {
     setup(<BookDetails />);
   });
 
+  test("shows language", () => {
+    mockSwr({ data: fixtures.book });
+    setup(<BookDetails />);
+    expect(screen.getByText("Language:")).toBeInTheDocument();
+    expect(screen.getByText("en")).toBeInTheDocument();
+  });
+
   test("shows book format", () => {
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
     expect(screen.getByText("Book format:")).toBeInTheDocument();
     expect(screen.getByText("ePub")).toBeInTheDocument();
+  });
+
+  test("shows published", () => {
+    mockSwr({ data: fixtures.book });
+    setup(<BookDetails />);
+    expect(screen.getByText("Published:")).toBeInTheDocument();
+    expect(screen.getByText("2016")).toBeInTheDocument();
+  });
+
+  test("shows ISBN", () => {
+    mockSwr({ data: fixtures.book });
+    setup(<BookDetails />);
+    expect(screen.getByText("ISBN:")).toBeInTheDocument();
+    expect(screen.getByText("9780123456789")).toBeInTheDocument();
   });
 
   test("shows accessibility information", () => {
