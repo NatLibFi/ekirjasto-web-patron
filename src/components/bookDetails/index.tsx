@@ -35,14 +35,24 @@ export const BookDetails: React.FC = () => {
   const { catalogUrl } = useLibraryContext();
   const bookUrl = extractParam(query, "bookUrl");
 
-  // define cache key (unique) for SWR based on bookUrl and locale.
-  // note: if bookUrl or locale is missing we don't fetch anything
-  const key = bookUrl && locale ? [bookUrl, locale] : null;
+  // define cache key (unique) for SWR based on
+  // bookUrl, locale and catalogUrl.
+  // note: if bookUrl or locale (or catalogUrl) is missing,
+  // we don't fetch anything
+  const key =
+    bookUrl && locale && catalogUrl
+      ? ([bookUrl, catalogUrl, locale] as const)
+      : null;
 
   // define the fetcher function for SWR.
   // Token is undefined here because authentication
   // is not required the fetch normal book data from backend
-  const fetcher = () => fetchBook(bookUrl, catalogUrl, undefined, locale);
+  const fetcher = (
+    urlForBook: string,
+    urlForCatalog: string,
+    appLocale: string
+  ): Promise<AnyBook> =>
+    fetchBook(urlForBook, urlForCatalog, undefined, appLocale);
 
   // SWR calls fetchBook when it needs new data
   // data is the fetched book and error is any happened error during fetching
@@ -52,7 +62,8 @@ export const BookDetails: React.FC = () => {
   const { loans } = useUser();
   // always use the MyBooks version of the book, if it is available
   // otherwise, just use the fetched data as the book
-  const book = loans?.find(loanedBook => data?.id === loanedBook.id) ?? data;
+  const book: AnyBook =
+    loans?.find(loanedBook => data?.id === loanedBook.id) ?? data;
 
   const subtitle = getSubtitle(book);
   const { t } = useTranslation();
