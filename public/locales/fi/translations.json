@@ -36,6 +36,7 @@
   "bookDetails.headingForAudience": "Kohderyhmä",
   "bookDetails.headingForBookFormat": "Tiedostomuoto",
   "bookDetails.headingForCategories": "Luokat",
+  "bookDetails.headingForIsbn": "ISBN",
   "bookDetails.headingForPublished": "Julkaistu",
   "bookDetails.headingForPublisher": "Kustantaja",
   "bookDetails.labelForComplaintType": "Ongelman tyyppi",

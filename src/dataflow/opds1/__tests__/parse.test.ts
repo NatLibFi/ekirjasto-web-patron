@@ -79,7 +79,7 @@ test("extracts basic book info", () => {
   });
 
   const entry = factory.entry({
-    id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr91",
+    id: "urn:isbn:9780123456789",
     title: "The Mayan Secrets",
     authors: [
       factory.contributor({ name: "Clive Cussler" }),
@@ -179,6 +179,7 @@ test("extracts basic book info", () => {
   expect(book.copies).toBe(borrowLink.copies);
   expect(book.status).toBe("unsupported");
   expect(book.trackOpenBookUrl).toBe("/track-open");
+  expect(book.isbn).toBe("9780123456789");
 });
 
 const basicInfo = {

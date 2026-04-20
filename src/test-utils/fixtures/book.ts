@@ -70,7 +70,8 @@ export function makeFulfillableBooks(n: number): FulfillableBook[] {
 }
 
 export const book: Book = {
-  id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
+  id: "urn:isbn:9780123456789",
+  isbn: "9780123456789",
   relatedUrl: "http://related-url",
   trackOpenBookUrl: "/track-open-book",
   url: "http://test-book-url",

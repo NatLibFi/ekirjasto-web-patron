@@ -337,6 +337,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
 
   const book: Book = {
     id: entry.id,
+    isbn: entry.id && formatIdToIsbn(entry.id),
     title: entry.title,
     accessibility: entry.accessibility,
     series: entry.series,
@@ -543,6 +544,31 @@ function formatDate(inputDate: string): string {
   const year = date.getUTCFullYear();
 
   return `${month} ${day}, ${year}`;
+}
+
+// function that formats bookId to ISBN
+// book id is usually in format "urn:isbn:9780123456789"
+function formatIdToIsbn(bookId: string): string {
+  // first check if the bookId starts with "urn:isbn:"
+  if (!bookId.startsWith("urn:isbn:")) {
+    // not valid bookID, just return empty string
+    return "";
+  }
+
+  // then extract the substring after "urn:isbn:"
+  const isbn = bookId.substring(9);
+
+  // define a test for checking if characters in a string are all numbers
+  const isbnContainsOnlyNumbers = /^\d+$/.test(isbn);
+
+  // check if there are non-digits in isbn candidate
+  if (!isbnContainsOnlyNumbers) {
+    // return empty string
+    return "";
+  }
+
+  // return the valid ISBN
+  return isbn;
 }
 
 function OPDSLinkToLinkData(

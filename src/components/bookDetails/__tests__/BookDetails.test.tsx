@@ -126,6 +126,13 @@ describe("book details page", () => {
     expect(screen.getByText("ePub")).toBeInTheDocument();
   });
 
+  test("shows ISBN", () => {
+    mockSwr({ data: fixtures.book });
+    setup(<BookDetails />);
+    expect(screen.getByText("ISBN:")).toBeInTheDocument();
+    expect(screen.getByText("9780123456789")).toBeInTheDocument();
+  });
+
   test("shows accessibility information", () => {
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);

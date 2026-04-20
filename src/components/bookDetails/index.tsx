@@ -170,6 +170,12 @@ export const BookDetails: React.FC = () => {
                 heading={t("bookDetails.headingForBookFormat")}
                 details={book.format}
               />
+
+              <DetailField
+                heading={t("bookDetails.headingForIsbn")}
+                details={book.isbn}
+              />
+
               <Accessibility book={book} sx={{ mt: 3 }} />
             </div>
 

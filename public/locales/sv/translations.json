@@ -36,6 +36,7 @@
   "bookDetails.headingForAudience": "Målgrupp",
   "bookDetails.headingForBookFormat": "Bokformat",
   "bookDetails.headingForCategories": "Kategorier",
+  "bookDetails.headingForIsbn": "ISBN",
   "bookDetails.headingForPublished": "Utgiven",
   "bookDetails.headingForPublisher": "Utgivare",
   "bookDetails.labelForComplaintType": "Problemtyp",
