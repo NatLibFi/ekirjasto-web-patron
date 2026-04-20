@@ -94,7 +94,7 @@ export function PasskeyCreate() {
   };
 
   if (!isSupported || !method) {
-    return <></>;
+    return <div></div>;
   }
 
   return (
