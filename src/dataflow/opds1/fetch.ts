@@ -7,6 +7,7 @@ import { AnyBook, CollectionData, OPDS1 } from "interfaces";
 import { entryToBook, feedToCollection } from "dataflow/opds1/parse";
 import fetchWithHeaders from "dataflow/fetch";
 import parseSearchData from "dataflow/opds1/parseSearchData";
+import { normaliseLocale } from "../../../appLocales";
 
 const parser = new OPDSParser();
 /**
@@ -47,17 +48,18 @@ export async function fetchOPDS(
  */
 export async function fetchFeed(
   url: string,
-  token?: string
+  token?: string,
+  locale?: string
 ): Promise<OPDSFeed> {
-  const result = await fetchOPDS(url, token, {
-    // Explicitly accept all languages when fetching feeds. Otherwise, the browser will send an
-    // Accept-Language header for its current language, which causes books in other languages to
-    // be filtered out of search results.
-    "Accept-Language": "*"
-  });
+  // define additional headers, including Accept-Language based on locale
+  const additionalHeaders = getAdditionalHeaders(locale);
+
+  const result = await fetchOPDS(url, token, additionalHeaders);
+
   if (result instanceof OPDSFeed) {
     return result;
   }
+
   throw new ApplicationError({
     title: "OPDS Error",
     detail: `Network response was expected to be an OPDS 1.x Feed, but was not parseable as such. Url: ${url}`
@@ -69,12 +71,18 @@ export async function fetchFeed(
  */
 export async function fetchEntry(
   url: string,
-  token?: string
+  token?: string,
+  locale?: string
 ): Promise<OPDSEntry> {
-  const result = await fetchOPDS(url, token);
+  // define additional headers, including Accept-Language based on locale
+  const additionalHeaders = getAdditionalHeaders(locale);
+
+  const result = await fetchOPDS(url, token, additionalHeaders);
+
   if (result instanceof OPDSEntry) {
     return result;
   }
+
   throw new ApplicationError({
     title: "OPDS Error",
     detail: `Network response was expected to be an OPDS 1.x Entry, but was not parseable as such. Url: ${url}`
@@ -86,9 +94,10 @@ export async function fetchEntry(
  */
 export async function fetchCollection(
   url: string,
-  token?: string
+  token?: string,
+  locale?: string
 ): Promise<CollectionData> {
-  const feed = await fetchFeed(url, token);
+  const feed = await fetchFeed(url, token, locale);
   const collection = feedToCollection(feed, url);
   return collection;
 }
@@ -99,9 +108,10 @@ export async function fetchCollection(
 export async function fetchBook(
   url: string,
   catalogUrl: string,
-  token?: string
+  token?: string,
+  locale?: string
 ): Promise<AnyBook> {
-  const entry = await fetchEntry(url, token);
+  const entry = await fetchEntry(url, token, locale);
   const book = entryToBook(entry, catalogUrl);
   return book;
 }
@@ -146,4 +156,21 @@ export async function fetchSearchData(url: string) {
   const text = await response.text();
   const data = await parseSearchData(text, url);
   return data;
+}
+
+// function for defining the additional headers
+// for OPDS requests such as fethcFeed and fetchEntry.
+// Returns a header object
+//   - Accept-Language header:
+//     * is used to forward the user's preferred language
+//     * server should return the content in this language
+function getAdditionalHeaders(locale?: string) {
+  // define a language string
+  // if the locale given as parameter is valid, use that
+  // otherwise just use the app default locale
+  const language: string = normaliseLocale(locale);
+
+  return {
+    "Accept-Language": language
+  };
 }

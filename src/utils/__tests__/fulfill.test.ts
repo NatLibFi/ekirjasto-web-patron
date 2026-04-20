@@ -32,7 +32,11 @@ describe("fulfill", () => {
           /* eslint-enable camelcase */
         );
 
-        const location = await fulfillment.getLocation("catalog-url", "token");
+        const location = await fulfillment.getLocation(
+          "catalog-url",
+          "token",
+          "en"
+        );
 
         expect(fetchMock).toHaveBeenCalledWith("link-url", {
           headers: {

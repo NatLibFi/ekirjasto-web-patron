@@ -5,17 +5,19 @@ import Layout from "../Layout";
 describe("Layout nav + structure", () => {
   test("Library icon button navigates home", () => {
     setup(<Layout>Child</Layout>);
-    const homeButton = screen.getByLabelText(
-      "Library catalog, back to homepage"
-    );
+    const homeButton = screen.getByLabelText("Back to homepage");
 
     // the home button should navigate to "/"
     expect(homeButton.closest("a")).toHaveAttribute("href", "/testlib");
   });
 
   test("my books navigates to /loans", () => {
-    setup(<Layout>Child</Layout>);
-    const myBooks = screen.getAllByRole("link", { name: "My Books" });
+    const utils = setup(<Layout>Child</Layout>, {
+      user: {
+        isAuthenticated: true
+      }
+    });
+    const myBooks = utils.getAllByRole("link", { name: "My Books" });
     myBooks.forEach(ln => expect(ln).toHaveAttribute("href", "/testlib/loans"));
   });
 

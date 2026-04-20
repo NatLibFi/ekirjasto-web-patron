@@ -78,7 +78,7 @@ describe("BorrowableBook", () => {
 
     // the borrow button should be gone now
     await waitForElementToBeRemoved(() => screen.queryByText("Borrowing..."));
-    expect(screen.getByText("Error: Can't do that"));
+    expect(screen.getByText("Can't do that"));
   });
 });
 
@@ -118,7 +118,7 @@ describe("OnHoldBook", () => {
 
     // the borrow button should be gone now
     await waitForElementToBeRemoved(() => screen.queryByText("Borrowing..."));
-    expect(screen.getByText("Error: Can't do that"));
+    expect(screen.getByText("Can't do that"));
   });
 
   test("handles lack of availability.until info", () => {
@@ -207,7 +207,7 @@ describe("ReservableBook", () => {
 
     // the borrow button should be gone now
     await waitForElementToBeRemoved(() => screen.queryByText("Reserving..."));
-    expect(screen.getByText("Error: Can't do that"));
+    expect(screen.getByText("Can't do that"));
   });
 });
 
@@ -249,7 +249,8 @@ describe("reserved", () => {
     expect(mockFetchBook).toHaveBeenCalledWith(
       "/revoke",
       "http://test-cm.com/catalogUrl",
-      "user-token"
+      "user-token",
+      "en"
     );
 
     expect(mockSetBook).toHaveBeenCalledWith(unreservedBook, reservedBook.id);
@@ -277,10 +278,11 @@ describe("reserved", () => {
     expect(mockFetchBook).toHaveBeenCalledWith(
       "/revoke",
       "http://test-cm.com/catalogUrl",
-      "user-token"
+      "user-token",
+      "en"
     );
 
-    expect(await screen.findByText("Error: Can't do that")).toBeInTheDocument();
+    expect(await screen.findByText("Can't do that")).toBeInTheDocument();
     expect(
       await screen.findByRole("button", { name: "Cancel Reservation" })
     ).toBeInTheDocument();
@@ -353,7 +355,8 @@ describe("FulfillableBook", () => {
     expect(mockFetchBook).toHaveBeenCalledWith(
       "/revoke",
       "http://test-cm.com/catalogUrl",
-      "user-token"
+      "user-token",
+      "en"
     );
 
     expect(mockSetBook).toHaveBeenCalledWith(unborrowed, downloadableBook.id);
@@ -515,6 +518,7 @@ describe("FulfillableBook", () => {
     // you fetch the opds entry which should then return you a book with the correct link
     expect(fetchMock).toHaveBeenCalledWith("/indirect", {
       headers: {
+        "Accept-Language": "en",
         Authorization: "user-token",
         "X-Requested-With": "XMLHttpRequest"
       },
@@ -539,9 +543,7 @@ describe("FulfillableBook", () => {
 
     fireEvent.click(downloadButton);
 
-    expect(
-      await screen.findByText("Error: You can't do that")
-    ).toBeInTheDocument();
+    expect(await screen.findByText("You can't do that")).toBeInTheDocument();
   });
 
   test("reattempts downloads without headers upon redirect failure", async () => {

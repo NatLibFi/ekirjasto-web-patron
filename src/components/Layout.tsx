@@ -8,6 +8,7 @@ import * as React from "react";
 import GlobalStyles from "./GlobalStyles";
 import Header from "./Header";
 import Footer from "./Footer";
+import BetaBanner from "./BetaBanner";
 import SkipNavigation from "./SkipNavigation";
 import { ErrorBoundary } from "components/ErrorBoundary";
 
@@ -25,6 +26,7 @@ const Layout = ({ children, hideFooter = false }: Props) => {
     >
       <SkipNavigation />
       <GlobalStyles />
+      <BetaBanner sx={{ width: "100%" }} />
       <Header sx={{ width: "100%" }} />
       <main
         id={CONTENT_ID}

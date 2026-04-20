@@ -47,7 +47,7 @@ test("fetches the proper url for recommendation collection", () => {
   render(<Recommendations book={fixtures.borrowableBook} />);
   expect(mockedSWR).toHaveBeenCalledTimes(1);
   expect(mockedSWR).toHaveBeenCalledWith(
-    ["http://related-url", "user-token"],
+    ["http://related-url", "user-token", "en"],
     fetchCollection
   );
 });

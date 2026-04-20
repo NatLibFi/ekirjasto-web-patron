@@ -28,14 +28,20 @@ test("shows external links when present in state w/ apropriate attributes", () =
   const expectExternalLink = (name: string) => {
     const lnk = utils.getByRole("link", { name });
     expect(lnk).toBeInTheDocument();
-    expect(lnk).toHaveAttribute("href", "/wherever");
+    // check just the beginning of link url
+    expect(lnk).toHaveAttribute(
+      "href",
+      expect.stringMatching(
+        /^https:\/\/www\.kansalliskirjasto\.fi\/en\/e-library\//
+      )
+    );
     expect(lnk).toHaveAttribute("rel", "noopener noreferrer");
-    expect(lnk).toHaveAttribute("target", "__blank");
+    expect(lnk).toHaveAttribute("target", "_blank");
   };
 
-  expectExternalLink("Privacy Policy (Opens in a new tab)");
-  expectExternalLink("Terms of Use (Opens in a new tab)");
-  expectExternalLink("About (Opens in a new tab)");
+  expectExternalLink("Privacy Policy Opens in a new tab");
+  expectExternalLink("Terms of Use Opens in a new tab");
+  expectExternalLink("About Opens in a new tab");
 });
 
 describe("toggling SimplyE Branding", () => {
@@ -46,33 +52,42 @@ describe("toggling SimplyE Branding", () => {
 
     expect(
       utils.getByRole("heading", {
-        name: /download E-kirjasto/i
+        name: /download the e-library app/i
       })
     ).toBeInTheDocument();
 
     expect(
       utils.getByText(
-        "Our mobile app lets you browse, borrow and read from our whole collection of ebooks, audiobooks and magazines right on your phone!"
+        "Read e-books and magazines, and listen to audiobooks on your phone or tablet! Download the E-library app from your mobile device’s app store."
       )
     ).toBeInTheDocument();
 
     // badges
-    const iosbadge = utils.getByRole("link", {
-      name: /download E-kirjasto on the apple app store/i
+    const appStoreBadge = utils.getByRole("link", {
+      name: /Download E-library on the App Store/i
     });
-    expect(iosbadge).toBeInTheDocument();
-    expect(iosbadge).toHaveAttribute(
+    expect(appStoreBadge).toBeInTheDocument();
+    expect(appStoreBadge).toHaveAttribute(
       "href",
       "https://apps.apple.com/fi/app/e-kirjasto/id6471490203"
     );
 
-    const googleBadge = utils.getByRole("link", {
-      name: /get E-kirjasto on the google play store/i
+    const googlePlayBadge = utils.getByRole("link", {
+      name: /Get E-library on Google Play/i
     });
-    expect(googleBadge).toBeInTheDocument();
-    expect(googleBadge).toHaveAttribute(
+    expect(googlePlayBadge).toBeInTheDocument();
+    expect(googlePlayBadge).toHaveAttribute(
       "href",
       "https://play.google.com/store/apps/details?id=fi.kansalliskirjasto.ekirjasto"
     );
   });
+});
+
+test("shows NatLibFi logo in footer", () => {
+  const utils = render(<Footer />);
+  const natLibFiLink = utils.getByRole("link", {
+    name: /national library of finland/i
+  });
+
+  expect(natLibFiLink).toBeInTheDocument();
 });

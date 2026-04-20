@@ -38,7 +38,8 @@ beforeEach(() => {
   window.location.hash = "";
   useRouterSpy.mockReturnValue({
     query: {},
-    replace: jest.fn()
+    replace: jest.fn(),
+    locale: "en"
   } as any);
 });
 
@@ -47,7 +48,7 @@ test("fetches loans when credentials are present", async () => {
   renderUserContext();
 
   expect(mockSWR).toHaveBeenCalledWith(
-    ["/shelf-url", "some-token", "http://opds-spec.org/auth/basic"],
+    ["/shelf-url", "some-token", "en", "http://opds-spec.org/auth/basic"],
     expect.anything(),
     expect.anything()
   );
@@ -85,6 +86,7 @@ test("extracts clever tokens from the url", () => {
     [
       "/shelf-url",
       "Bearer fry6H3",
+      "en",
       "http://librarysimplified.org/authtype/OAuth-with-intermediary"
     ],
     expect.anything(),
@@ -109,7 +111,8 @@ test("extracts SAML tokens from the url", () => {
   window.location = url as any;
   useRouterSpy.mockReturnValue({
     replace: mockReplace,
-    query: { access_token: "saml-token" }
+    query: { access_token: "saml-token" },
+    locale: "en"
   } as any);
   renderUserContext();
 
@@ -129,6 +132,7 @@ test("extracts SAML tokens from the url", () => {
     [
       "/shelf-url",
       "Bearer saml-token",
+      "en",
       "http://librarysimplified.org/authtype/SAML-2.0"
     ],
     expect.anything(),
@@ -159,7 +163,7 @@ test("sign out clears cookies and data", async () => {
 
   // make sure fetch was called and you have the right data
   expect(mockSWR).toHaveBeenCalledWith(
-    ["/shelf-url", "some-token", "http://opds-spec.org/auth/basic"],
+    ["/shelf-url", "some-token", "en", "http://opds-spec.org/auth/basic"],
     expect.anything(),
     expect.anything()
   );
@@ -205,7 +209,7 @@ test("sign in sets cookie", async () => {
   );
 
   expect(mockSWR).toHaveBeenCalledWith(
-    ["/shelf-url", "a-token", "type"],
+    ["/shelf-url", "a-token", "en", "type"],
     expect.anything(),
     expect.anything()
   );

@@ -12,7 +12,7 @@ import { cacheCollectionBooks } from "utils/cache";
 export default function useCollection() {
   const { catalogUrl } = useLibraryContext();
   const { token } = useUser();
-  const { query, pathname } = useRouter();
+  const { locale, query, pathname } = useRouter();
   const collectionUrlParam = extractParam(query, "collectionUrl") ?? null;
   // use catalog url if you're at home
   const isLibraryHome = pathname === "/[library]";
@@ -21,7 +21,7 @@ export default function useCollection() {
   const { data: collection, error, isValidating } = useSWR<
     CollectionData,
     Error | ApplicationError
-  >(collectionUrl ? [collectionUrl, token] : null, fetchCollection);
+  >(collectionUrl ? [collectionUrl, token, locale] : null, fetchCollection);
 
   // make sure unidentified errors are wrapped in an ApplicationError
   let applicationError: ApplicationError | undefined = undefined;

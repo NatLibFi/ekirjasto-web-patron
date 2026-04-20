@@ -9,6 +9,7 @@ import Button from "components/Button";
 import { Text } from "components/Text";
 import useError from "hooks/useError";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 const CancelOrReturn: React.FC<{
   text: string;
@@ -21,6 +22,7 @@ const CancelOrReturn: React.FC<{
   const [loading, setLoading] = React.useState(false);
   const { error, handleError, setErrorString, clearError } = useError();
   const { t } = useTranslation();
+  const { locale } = useRouter();
 
   async function cancelReservation(revokeUrl: string) {
     clearError();
@@ -30,7 +32,7 @@ const CancelOrReturn: React.FC<{
     }
     setLoading(true);
     try {
-      const newBook = await fetchBook(revokeUrl, catalogUrl, token);
+      const newBook = await fetchBook(revokeUrl, catalogUrl, token, locale);
       setBook(newBook, id);
     } catch (e) {
       handleError(e);

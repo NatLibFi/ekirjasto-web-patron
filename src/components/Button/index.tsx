@@ -132,7 +132,7 @@ export const AnchorButton = React.forwardRef<
     <a
       sx={styleProps(color, size, variant)}
       rel={newTab ? "noreferrer noopener" : undefined}
-      target={newTab ? "__blank" : undefined}
+      target={newTab ? "_blank" : undefined}
       ref={ref}
       {...rest}
     >

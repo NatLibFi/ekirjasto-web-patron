@@ -1,6 +1,6 @@
 import { mockUseTranslation } from "test-utils/mockUseTranslation";
 import { render, screen, fireEvent } from "test-utils";
-import LanguageSelector, { Language } from "components/LanguageSelector";
+import LanguageSelector from "components/LanguageSelector";
 import React from "react";
 
 // mock the next/router first
@@ -51,9 +51,9 @@ describe("LanguageSelector", () => {
   });
 
   it.each([
-    [Language.FI, "Valitse sivun kieli"],
-    [Language.SV, "Välj sidspråk"],
-    [Language.EN, "Select page language"]
+    ["fi", "Valitse sivuston kieli"],
+    ["sv", "Välj språk"],
+    ["en", "Choose language"]
   ])(
     "should show correct aria-label when locale is %s",
     (locale, ariaLabel) => {
@@ -67,7 +67,7 @@ describe("LanguageSelector", () => {
   );
 
   it("should render language buttons", () => {
-    setup(Language.FI);
+    setup("fi");
     const buttons = screen.getAllByRole("button");
 
     // there should be exactly three buttons
@@ -87,10 +87,10 @@ describe("LanguageSelector", () => {
   // define test case table
   // that creates three tests cases for each language
   it.each`
-    locale         | ariaLabels
-    ${Language.FI} | ${["Suomi", "Ruotsi", "Englanti"]}
-    ${Language.EN} | ${["Finnish", "Swedish", "English"]}
-    ${Language.SV} | ${["Finska", "Svenska", "Engelska"]}
+    locale  | ariaLabels
+    ${"fi"} | ${["Suomi", "Ruotsi", "Englanti"]}
+    ${"sv"} | ${["Finska", "Svenska", "Engelska"]}
+    ${"en"} | ${["Finnish", "Swedish", "English"]}
   `(
     "should render correct accessible names for button in $langCode",
     ({ locale, ariaLabels }) => {
@@ -106,7 +106,7 @@ describe("LanguageSelector", () => {
   );
 
   it("should select the current language", () => {
-    setup(Language.SV);
+    setup("sv");
 
     // SV button should be selected
     expect(screen.getByText("FI")).not.toHaveAttribute("aria-current");
@@ -115,18 +115,18 @@ describe("LanguageSelector", () => {
   });
 
   it("should call router.push with correct locale when changing language", () => {
-    const { push } = setup(Language.FI);
+    const { push } = setup("fi");
 
     fireEvent.click(screen.getByText("SV"));
 
     // should call router.push with Swedish
     expect(push).toHaveBeenCalledWith("/test", "/test", {
-      locale: Language.SV
+      locale: "sv"
     });
   });
 
   it("should not call router.push when clicking the current language", () => {
-    const { push } = setup(Language.SV);
+    const { push } = setup("sv");
 
     fireEvent.click(screen.getByText("SV"));
 
@@ -144,7 +144,7 @@ describe("LanguageSelector", () => {
 
   it("should not render selector if router is not ready", () => {
     // setup using unready router
-    setup(Language.FI, false);
+    setup("fi", false);
 
     // should not find language selector
     expect(screen.queryByRole("group")).not.toBeInTheDocument();

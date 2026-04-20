@@ -12,14 +12,16 @@ import { fetchCollection } from "dataflow/opds1/fetch";
 import useSWR from "swr";
 import useUser from "components/context/UserContext";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 const Recommendations: React.FC<{ book: AnyBook }> = ({ book }) => {
   const relatedUrl = book.relatedUrl;
   const { token } = useUser();
   const { t } = useTranslation();
+  const { locale } = useRouter();
 
   const { data: recommendations, isValidating } = useSWR(
-    relatedUrl ? [relatedUrl, token] : null,
+    relatedUrl ? [relatedUrl, token, locale] : null,
     fetchCollection
   );
 

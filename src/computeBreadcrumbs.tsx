@@ -1,4 +1,5 @@
 import { CollectionData, LinkData } from "interfaces";
+import { AppLocale, normaliseLocale } from "../appLocales";
 
 // Custom URL comparator to ignore trailing slashes.
 const urlComparator = (
@@ -14,7 +15,10 @@ const urlComparator = (
   return !!(url1 && url2) && url1 === url2;
 };
 
-const computeBreadcrumbs = (collection?: CollectionData): LinkData[] => {
+const computeBreadcrumbs = (
+  collection?: CollectionData,
+  locale?: string
+): LinkData[] => {
   let links: LinkData[] = [];
 
   if (
@@ -39,7 +43,8 @@ const computeBreadcrumbs = (collection?: CollectionData): LinkData[] => {
     links = hierarchyComputeBreadcrumbs(collection, urlComparator);
   }
 
-  return links;
+  const appLocale = normaliseLocale(locale);
+  return localiseLinkTexts(links, appLocale);
 };
 
 export default computeBreadcrumbs;
@@ -92,4 +97,56 @@ export function hierarchyComputeBreadcrumbs(
   });
 
   return links;
+}
+
+// define localisation map for FI, SV and EN locales
+// The keys are collection entrypoints.
+// this map should be used until the breadcrumbs computing is refactored
+const localisationMap: { [key: string]: { [key: string]: string } } = {
+  fi: {
+    All: "E-kirjat ja äänikirjat",
+    Book: "E-kirjat",
+    Audio: "Äänikirjat"
+  },
+  sv: {
+    All: "E-böcker och ljudböcker",
+    Book: "E-böcker",
+    Audio: "Ljudböcker"
+  },
+  en: {
+    All: "E-books and Audiobooks",
+    Book: "E-books",
+    Audio: "Audiobooks"
+  }
+};
+
+// helper function to localise link texts for current locale.
+// Changes the English entrypoint parameters from backend
+// to more descriptive English and gives translations
+// for Finnish and Swedish
+function localiseLinkTexts(
+  links: LinkData[],
+  appLocale: AppLocale | undefined
+): LinkData[] {
+  // just to be safe!
+  if (!appLocale) return links;
+
+  // create a new list for the localised links
+  return links.map(link => {
+    // first check if the link has text property
+    if (link.text) {
+      // then try to get the localised text from the map
+      const localisedText = localisationMap[appLocale][link.text];
+
+      // if there is a match and the localised text exists
+      // return that version of text with this link
+      if (localisedText) {
+        return { ...link, text: localisedText };
+      }
+    }
+
+    // if no link text or matching localisation is found
+    // just return the original link without modifications
+    return link;
+  });
 }

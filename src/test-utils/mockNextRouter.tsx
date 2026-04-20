@@ -6,6 +6,7 @@ import Router from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context.shared-runtime";
 import { NextRouter } from "next/router";
 import { libraryData } from "test-utils/fixtures";
+import { APP_DEFAULT_LOCALE_FOR_TESTING } from "../../appLocales";
 
 /**
  * Mock for the next/Router import.
@@ -37,6 +38,7 @@ export const MockNextRouterContextProvider: React.FC<{
     isFallback = false,
     isLocaleDomain = false,
     isPreview = false,
+    locale = APP_DEFAULT_LOCALE_FOR_TESTING,
     events = {
       on: () => null,
       off: () => null,
@@ -61,6 +63,7 @@ export const MockNextRouterContextProvider: React.FC<{
         isFallback,
         isLocaleDomain,
         isPreview,
+        locale,
         events
       }}
     >

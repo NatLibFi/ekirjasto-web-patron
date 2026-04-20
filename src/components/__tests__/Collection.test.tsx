@@ -40,7 +40,7 @@ test("calls swr to fetch collection", () => {
   });
 
   expect(mockedSWR).toHaveBeenCalledWith(
-    ["/collection", "user-token"],
+    ["/collection", "user-token", "en"],
     fetchCollection
   );
 });

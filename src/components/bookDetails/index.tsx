@@ -28,17 +28,58 @@ import useBreadcrumbContext from "components/context/BreadcrumbContext";
 import useSWR from "swr";
 import useUser from "components/context/UserContext";
 import { useTranslation } from "next-i18next";
+import useLibraryContext from "components/context/LibraryContext";
 
 export const BookDetails: React.FC = () => {
-  const { query } = useRouter();
+  const { locale, query } = useRouter();
+  const { catalogUrl } = useLibraryContext();
   const bookUrl = extractParam(query, "bookUrl");
-  const { data, error } = useSWR(bookUrl ?? null, fetchBook);
+
+  // define cache key (unique) for SWR based on
+  // bookUrl, locale and catalogUrl.
+  // note: if bookUrl or locale (or catalogUrl) is missing,
+  // we don't fetch anything
+  const key =
+    bookUrl && locale && catalogUrl
+      ? ([bookUrl, catalogUrl, locale] as const)
+      : null;
+
+  // define the fetcher function for SWR.
+  // Token is undefined here because authentication
+  // is not required the fetch normal book data from backend
+  const fetcher = (
+    urlForBook: string,
+    urlForCatalog: string,
+    appLocale: string
+  ): Promise<AnyBook> =>
+    fetchBook(urlForBook, urlForCatalog, undefined, appLocale);
+
+  // SWR calls fetchBook when it needs new data
+  // data is the fetched book and error is any happened error during fetching
+  const { data, error } = useSWR(key, fetcher);
+
+  // get user's loaned and reserved books (MyBooks)
   const { loans } = useUser();
-  const { storedBreadcrumbs } = useBreadcrumbContext();
-  // use the loans version if it exists
-  const book = loans?.find(loanedBook => data?.id === loanedBook.id) ?? data;
+  // always use the MyBooks version of the book, if it is available
+  // otherwise, just use the fetched data as the book
+  const book: AnyBook =
+    loans?.find(loanedBook => data?.id === loanedBook.id) ?? data;
+
   const subtitle = getSubtitle(book);
   const { t } = useTranslation();
+
+  // get current breadcrumbs and update function from context
+  const { storedBreadcrumbs, setStoredBreadcrumbs } = useBreadcrumbContext();
+
+  // effect that clears the breadcrumbs whenever book details page is opened.
+  // If the user changes locale in book detail page, the stored breadcrumbs
+  // become outdated. We cannot easily update the breadcrumbs in book detail page,
+  // because they are computed in collection pages on locale change,
+  // so we just clear the breadcrumbs so that wrong language is not used.
+  // Note: this should be only temporary fix for now
+  React.useEffect(() => {
+    setStoredBreadcrumbs([]);
+  }, [setStoredBreadcrumbs]);
 
   if (error) {
     // just throw the error and let it be handled by an error boundary
@@ -125,10 +166,22 @@ export const BookDetails: React.FC = () => {
                 heading={t("bookDetails.headingForAgeRange")}
                 details={book.ageRange?.join(", ")}
               />
+
+              <DetailField
+                heading={t("bookDetails.headingForLanguage")}
+                details={book.language}
+              />
+
               <DetailField
                 heading={t("bookDetails.headingForBookFormat")}
                 details={book.format}
               />
+
+              <DetailField
+                heading={t("bookDetails.headingForIsbn")}
+                details={book.isbn}
+              />
+
               <Accessibility book={book} sx={{ mt: 3 }} />
             </div>
 

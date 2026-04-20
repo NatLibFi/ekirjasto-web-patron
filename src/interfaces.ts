@@ -161,6 +161,7 @@ export type BookAvailability =
 export type Book<Status = EmptyObject> = Readonly<
   Status & {
     id: string;
+    isbn?: string;
     title: string;
     accessibility?: {
       conformance?: {

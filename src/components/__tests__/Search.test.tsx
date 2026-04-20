@@ -47,7 +47,7 @@ test("fetches search description", async () => {
     }
   });
   expect(mockedSWR).toHaveBeenCalledWith(
-    ["/collection", "user-token"],
+    ["/collection", "user-token", "en"],
     expect.anything()
   );
   expect(mockedSWR).toHaveBeenCalledWith("/search-data-url", expect.anything());
@@ -61,7 +61,7 @@ test("searching calls history.push with url", async () => {
     }
   });
   const searchButton = screen.getByText("Search");
-  const input = screen.getByLabelText("Enter search keyword or keywords");
+  const input = screen.getByLabelText("Enter search keyword");
   // act
   await user.type(input, "my search");
   fireEvent.click(searchButton);

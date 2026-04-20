@@ -159,7 +159,7 @@ test("submit by clicking login button", async () => {
       headers: {
         Authorization: `Bearer ${firstToken}`,
         "X-Requested-With": "XMLHttpRequest",
-        "Accept-Language": "*"
+        "Accept-Language": "en"
       },
       method: "GET"
     });
@@ -197,7 +197,7 @@ test("fetch new token if token has expired", async () => {
       headers: {
         Authorization: firstToken,
         "X-Requested-With": "XMLHttpRequest",
-        "Accept-Language": "*"
+        "Accept-Language": "en"
       },
       method: "GET"
     });
