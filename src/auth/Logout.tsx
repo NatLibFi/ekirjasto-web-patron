@@ -30,43 +30,66 @@ export default function Logout(): React.ReactElement {
   );
 
   // Get the ekirjasto auth method
-  const method = authMethods.find(
+  const method = supportedAuthMethods.find(
     method => method.type === EKIRJASTO_AUTH_TYPE
-  )!;
+  );
 
   // Get link for logout
-  const authenticationLogoutHref = method.links?.find(
-    link => link.rel === "logout"
-  )?.href;
+  const authenticationLogoutHref = method
+    ? method.links?.find(link => link.rel === "logout")?.href
+    : undefined;
 
   // Add the redirect link
-  const urlWithRedirect = `${authenticationLogoutHref}&redirect_uri=${encodeURIComponent(
-    logoutRedirectUrl
-  )}`;
+  const urlWithRedirect =
+    authenticationLogoutHref && logoutRedirectUrl
+      ? `${authenticationLogoutHref}&redirect_uri=${encodeURIComponent(
+          logoutRedirectUrl
+        )}`
+      : undefined;
 
-  const fetchEkirjastoToken = async () => {
-    try {
-      // Get the url for the token
-      const ekirjastoTokenUrl = method.links?.find(
-        link => link.rel === "ekirjasto_token"
-      )?.href;
-      // Fetch the ekirjasto token
-      const fetchedToken = await getEkirjastoToken(token!, ekirjastoTokenUrl);
+  // Get the url for the token
+  const ekirjastoTokenUrl = method
+    ? method.links?.find(link => link.rel === "ekirjasto_token")?.href
+    : undefined;
 
-      // Set the fetched token
-      setEkirjastoToken(fetchedToken);
-    } catch (error) {
-      // If the token fetch fails, it is most likely due to 401,
-      // In which case, refresh happens elsewhere
+  // Get the url for circulation token refresh
+  const circulationTokenRefreshUrl = method
+    ? method.links?.find(link => link.rel === "authenticate")?.href
+    : undefined;
+
+  React.useEffect(() => {
+    const fetchEkirjastoToken = async () => {
+      try {
+        //If we have both token and the ekirjastoToken url, fetch the ekirjasto token
+        if (token && ekirjastoTokenUrl) {
+          // Fetch the ekirjasto token
+          const fetchedToken = await getEkirjastoToken(
+            token,
+            ekirjastoTokenUrl,
+            circulationTokenRefreshUrl
+          );
+
+          // Set the fetched token
+          setEkirjastoToken(fetchedToken);
+        }
+      } catch (error) {
+        // If the token fetch fails, it is most likely due to 401,
+        // In which case, refresh happens elsewhere
+      }
+    };
+    if (token && method) {
+      fetchEkirjastoToken();
     }
-  };
+  }, [
+    token,
+    method,
+    ekirjastoTokenUrl,
+    circulationTokenRefreshUrl,
+    getEkirjastoToken
+  ]);
 
   React.useEffect(() => {
-    fetchEkirjastoToken();
-  });
-
-  React.useEffect(() => {
-    if (ekirjastoToken && authenticationLogoutHref) {
+    if (ekirjastoToken && urlWithRedirect) {
       // Set the session cookie
       Cookie.set(LOGOUT_COOKIE_PARAM, ekirjastoToken, {
         path: "/",
@@ -75,18 +98,18 @@ export default function Logout(): React.ReactElement {
         secure: true
       });
 
-      window.location.href = urlWithRedirect;
       signOut();
+      window.location.href = urlWithRedirect;
     }
-  }, [
-    token,
-    signOut,
-    authenticationLogoutHref,
-    urlWithRedirect,
-    ekirjastoToken
-  ]);
+  }, [signOut, urlWithRedirect, ekirjastoToken]);
 
+  // If there is no supported methods
   if (supportedAuthMethods.length === 0) {
+    return <NoAuth />;
+  }
+
+  // If there is no ekirjasto method
+  if (!method) {
     return <NoAuth />;
   }
 
