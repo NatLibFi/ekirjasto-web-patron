@@ -21,18 +21,18 @@ export function PasskeyCreate() {
     isSupportedAuthType(m.type)
   );
 
-  // Get ekirjasto auth methog
+  // Get ekirjasto auth method
   const method = supportedAuthMethods.find(
     method => method.type === EKIRJASTO_AUTH_TYPE
   )!;
 
-  const passkeyRegisterStartHref = method.links?.find(
-    link => link.rel === "passkey_register_start"
-  )?.href;
+  const passkeyRegisterStartHref = method
+    ? method.links?.find(link => link.rel === "passkey_register_start")?.href
+    : undefined;
 
-  const passkeyRegisterFinishHref = method.links?.find(
-    link => link.rel === "passkey_register_finish"
-  )?.href;
+  const passkeyRegisterFinishHref = method
+    ? method.links?.find(link => link.rel === "passkey_register_finish")?.href
+    : undefined;
 
   const [isSupported, setIsSupported] = useState(false);
   const [error, setError] = useState("");
@@ -46,53 +46,55 @@ export function PasskeyCreate() {
     setError("");
     setIsLoading(true);
 
-    try {
-      // Step 1: Request a challenge from the server
-      const startResponse = await fetch(passkeyRegisterStartHref!, {
-        method: "POST",
-        headers: {
-          accept: "application/json",
-          "content-type": "application/json",
-          authorization: token!
-        },
-        body: JSON.stringify({ username: "" })
-      });
+    if (passkeyRegisterStartHref && passkeyRegisterFinishHref) {
+      try {
+        // Step 1: Request a challenge from the server
+        const startResponse = await fetch(passkeyRegisterStartHref, {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+            authorization: token!
+          },
+          body: JSON.stringify({ username: "" })
+        });
 
-      if (!startResponse.ok) {
-        throw new Error("Failed to start passkey registeration");
+        if (!startResponse.ok) {
+          throw new Error("Failed to start passkey registeration");
+        }
+
+        const { publicKey } = await startResponse.json();
+
+        // Step 2: Start the passkey registration using the options we received from the start
+        const data = await startRegistration({ optionsJSON: publicKey });
+
+        // Step 3: Submit the registration response via a POST form
+
+        const finishResponse = await fetch(passkeyRegisterFinishHref, {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+            authorization: token!
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (!finishResponse.ok) {
+          throw new Error("Failed to finish passkey registeration");
+        }
+
+        await finishResponse.json();
+        //TODO: do something with the response, or just inform that successful
+      } catch (err) {
+        setError((err as Error).message || "Passkey creation failed");
+        setIsLoading(false);
       }
-
-      const { publicKey } = await startResponse.json();
-
-      // Step 2: Start the passkey registration using the options we received from the start
-      const data = await startRegistration({ optionsJSON: publicKey });
-
-      // Step 3: Submit the registration response via a POST form
-
-      const finishResponse = await fetch(passkeyRegisterFinishHref!, {
-        method: "POST",
-        headers: {
-          accept: "application/json",
-          "content-type": "application/json",
-          authorization: token!
-        },
-        body: JSON.stringify(data)
-      });
-
-      if (!finishResponse.ok) {
-        throw new Error("Failed to finish passkey registeration");
-      }
-
-      await finishResponse.json();
-      //TODO: do something with the response, or just inform that successful
-    } catch (err) {
-      setError((err as Error).message || "Passkey creation failed");
-      setIsLoading(false);
     }
   };
 
-  if (!isSupported) {
-    return;
+  if (!isSupported || !method) {
+    return <></>;
   }
 
   return (
