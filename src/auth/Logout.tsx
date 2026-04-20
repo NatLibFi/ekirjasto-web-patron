@@ -100,7 +100,10 @@ export default function Logout(): React.ReactElement {
     signOut,
     authenticationLogoutHref,
     urlWithRedirect,
-    ekirjastoToken
+    ekirjastoToken,
+    circulationTokenRefreshUrl,
+    ekirjastoTokenUrl,
+    getEkirjastoToken
   ]);
 
   // If there is no supported methods
