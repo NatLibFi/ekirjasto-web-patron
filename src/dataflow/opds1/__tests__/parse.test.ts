@@ -173,7 +173,7 @@ test("extracts basic book info", () => {
   expect(book.categories).toContain("label 2");
   expect(book.imageUrl).toBe(thumbImageLink.href);
   expect(book.publisher).toBe("Fake Publisher");
-  expect(book.published).toBe("June 8, 2014");
+  expect(book.published).toBe("2014");
   expect(book.language).toBe("en");
   expect(book.availability).toEqual(borrowLink.availability);
   expect(book.holds).toBe(borrowLink.holds);

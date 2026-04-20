@@ -357,7 +357,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
     copies: copies,
     passphrase: passphrases?.unhashedPassphrase,
     publisher: entry.publisher,
-    published: entry.issued && formatDate(entry.issued),
+    published: entry.issued && formatIssuedToPublished(entry.issued),
     categories: categories,
     audience: audience,
     ageRange: ageRange,
@@ -521,29 +521,33 @@ function dedupeBooks(books: AnyBook[]): AnyBook[] {
   return Array.from(bookIndex.values());
 }
 
-function formatDate(inputDate: string): string {
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ];
+// function that formats book's issued date to published
+// returns just the year as string
+// or empty string if published date is not available
+function formatIssuedToPublished(bookIssued: string): string {
+  // just to be safe
+  if (!bookIssued) {
+    // just return an empty string
+    return "";
+  }
 
-  const date = new Date(inputDate);
-  const day = date.getUTCDate();
-  const monthIndex = date.getUTCMonth();
-  const month = monthNames[monthIndex];
-  const year = date.getUTCFullYear();
+  // define regex to find YYYY, YYYY-MM or YYYY-MM-DD
+  const dateMatch = /^(\d{4})(?:-\d{2}(?:-\d{2})?)?$/;
 
-  return `${month} ${day}, ${year}`;
+  // try find the match with the issued date
+  const match = bookIssued.match(dateMatch);
+
+  if (!match) {
+    // no matching format,
+    // just return empty string
+    return "";
+  }
+
+  // year can be found in the match array
+  const yearString = match[1];
+
+  // return just the year
+  return yearString;
 }
 
 // function that formats bookId to ISBN

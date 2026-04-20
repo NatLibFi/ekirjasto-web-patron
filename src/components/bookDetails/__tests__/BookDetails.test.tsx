@@ -133,6 +133,13 @@ describe("book details page", () => {
     expect(screen.getByText("ePub")).toBeInTheDocument();
   });
 
+  test("shows published", () => {
+    mockSwr({ data: fixtures.book });
+    setup(<BookDetails />);
+    expect(screen.getByText("Published:")).toBeInTheDocument();
+    expect(screen.getByText("2016")).toBeInTheDocument();
+  });
+
   test("shows ISBN", () => {
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);
