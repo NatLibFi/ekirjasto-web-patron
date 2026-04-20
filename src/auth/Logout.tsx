@@ -57,31 +57,30 @@ export default function Logout(): React.ReactElement {
     ? method.links?.find(link => link.rel === "authenticate")?.href
     : undefined;
 
-  const fetchEkirjastoToken = async () => {
-    try {
-      //If we have both token and the ekirjastoToken url, fetch the ekirjasto token
-      if (token && ekirjastoTokenUrl) {
-        // Fetch the ekirjasto token
-        const fetchedToken = await getEkirjastoToken(
-          token,
-          ekirjastoTokenUrl,
-          circulationTokenRefreshUrl
-        );
-
-        // Set the fetched token
-        setEkirjastoToken(fetchedToken);
-      }
-    } catch (error) {
-      // If the token fetch fails, it is most likely due to 401,
-      // In which case, refresh happens elsewhere
-    }
-  };
-
   React.useEffect(() => {
+    const fetchEkirjastoToken = async () => {
+      try {
+        //If we have both token and the ekirjastoToken url, fetch the ekirjasto token
+        if (token && ekirjastoTokenUrl) {
+          // Fetch the ekirjasto token
+          const fetchedToken = await getEkirjastoToken(
+            token,
+            ekirjastoTokenUrl,
+            circulationTokenRefreshUrl
+          );
+
+          // Set the fetched token
+          setEkirjastoToken(fetchedToken);
+        }
+      } catch (error) {
+        // If the token fetch fails, it is most likely due to 401,
+        // In which case, refresh happens elsewhere
+      }
+    };
     if (token && method) {
       fetchEkirjastoToken();
     }
-  }, [token, method, fetchEkirjastoToken]);
+  }, [token, method]);
 
   React.useEffect(() => {
     if (ekirjastoToken && urlWithRedirect) {
