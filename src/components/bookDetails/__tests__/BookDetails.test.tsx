@@ -119,6 +119,13 @@ describe("book details page", () => {
     setup(<BookDetails />);
   });
 
+  test("shows language", () => {
+    mockSwr({ data: fixtures.book });
+    setup(<BookDetails />);
+    expect(screen.getByText("Language:")).toBeInTheDocument();
+    expect(screen.getByText("en")).toBeInTheDocument();
+  });
+
   test("shows book format", () => {
     mockSwr({ data: fixtures.book });
     setup(<BookDetails />);

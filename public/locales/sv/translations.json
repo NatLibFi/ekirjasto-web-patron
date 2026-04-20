@@ -37,6 +37,7 @@
   "bookDetails.headingForBookFormat": "Bokformat",
   "bookDetails.headingForCategories": "Kategorier",
   "bookDetails.headingForIsbn": "ISBN",
+  "bookDetails.headingForLanguage": "Språk",
   "bookDetails.headingForPublished": "Utgiven",
   "bookDetails.headingForPublisher": "Utgivare",
   "bookDetails.labelForComplaintType": "Problemtyp",

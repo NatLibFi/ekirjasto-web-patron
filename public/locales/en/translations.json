@@ -37,6 +37,7 @@
   "bookDetails.headingForBookFormat": "Book format",
   "bookDetails.headingForCategories": "Categories",
   "bookDetails.headingForIsbn": "ISBN",
+  "bookDetails.headingForLanguage": "Language",
   "bookDetails.headingForPublished": "Published",
   "bookDetails.headingForPublisher": "Publisher",
   "bookDetails.labelForComplaintType": "Complaint Type",

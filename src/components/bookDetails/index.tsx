@@ -166,6 +166,12 @@ export const BookDetails: React.FC = () => {
                 heading={t("bookDetails.headingForAgeRange")}
                 details={book.ageRange?.join(", ")}
               />
+
+              <DetailField
+                heading={t("bookDetails.headingForLanguage")}
+                details={book.language}
+              />
+
               <DetailField
                 heading={t("bookDetails.headingForBookFormat")}
                 details={book.format}

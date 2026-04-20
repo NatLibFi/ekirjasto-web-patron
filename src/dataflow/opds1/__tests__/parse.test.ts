@@ -168,6 +168,7 @@ test("extracts basic book info", () => {
   expect(book.summary).not.toMatch(/script/);
   expect(book.summary).not.toMatch(/danger/);
   expect(book.categories?.length).toBe(2);
+  expect(book.language).toBe(entry.language);
   expect(book.categories).toContain("label");
   expect(book.categories).toContain("label 2");
   expect(book.imageUrl).toBe(thumbImageLink.href);
