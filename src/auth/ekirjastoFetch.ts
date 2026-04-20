@@ -56,9 +56,12 @@ export async function fetchEkirjastoToken(
         detail: "No URL for token refresh was provided"
       });
     }
-    const { access_token: accessToken } = await fetchEAuthToken(refreshUrl, token)
+    const { access_token: accessToken } = await fetchEAuthToken(
+      refreshUrl,
+      token
+    );
     //set refresh to undef so we don't end up in a loop
-    return fetchEkirjastoToken(url,accessToken, undefined)
+    return fetchEkirjastoToken(url, accessToken, undefined);
   }
 
   return json;
