@@ -27,7 +27,9 @@ export const Collection: React.FC<{
 
   const hasLanes = collection?.lanes && collection.lanes.length > 0;
   const hasBooks = collection?.books && collection.books.length > 0;
-  const pageTitle = isLoading ? "" : title ?? collection?.title ?? "Collection";
+  const pageTitle = isLoading
+    ? ""
+    : title ?? collection?.title ?? t("collection.title");
 
   // get the breadcrumbs context
   const { storedBreadcrumbs, setStoredBreadcrumbs } = useBreadcrumbContext();

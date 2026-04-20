@@ -86,6 +86,7 @@
   "breadcrumbBar.currentLocation": "Aktuell plats:",
   "cancelOrReturn.signIn": "Du måste vara inloggad.",
   "collection.empty": "Denna samling är tom.",
+  "collection.title": "E-bibliotekets samling",
   "ekirjastoLogoGreenENNoBackground.title": "Logotypen för E-bibliotekstjänsten, en rundat stiliserad grön versal E som påminner om till exempel en bok eller en bokhög.",
   "error.error": "Fel",
   "error.returnHome": "Tillbaka till startsidan",

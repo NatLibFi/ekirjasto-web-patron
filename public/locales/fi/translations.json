@@ -86,6 +86,7 @@
   "breadcrumbBar.currentLocation": "Nykyinen sijainti:",
   "cancelOrReturn.signIn": "Sinun tulee olla kirjautuneena.",
   "collection.empty": "Kokoelma on tyhjä.",
+  "collection.title": "E-kirjaston kokoelma",
   "ekirjastoLogoGreenENNoBackground.title": "E-kirjasto-palvelun logo, pyöreämuotoiseksi tyylitelty vihreä iso E-kirjain, joka muistuttaa esimerkiksi kirjaa tai kirjapinoa.",
   "error.error": "Virhe",
   "error.returnHome": "Palaa etusivulle",
