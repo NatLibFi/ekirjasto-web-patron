@@ -3,14 +3,12 @@ import { fetchBook } from "dataflow/opds1/fetch";
 import useUser from "components/context/UserContext";
 import useLibraryContext from "components/context/LibraryContext";
 import useError from "hooks/useError";
-import useLogin from "auth/useLogin";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 
 export default function useBorrow(isBorrow: boolean) {
   const { catalogUrl } = useLibraryContext();
   const { setBook, token } = useUser();
-  const { initLogin } = useLogin();
   const isUnmounted = React.useRef(false);
   const [isLoading, setLoading] = React.useState(false);
   const { error, handleError, setErrorString, clearError } = useError();
@@ -27,8 +25,7 @@ export default function useBorrow(isBorrow: boolean) {
   const borrowOrReserve = async (url: string) => {
     clearError();
     if (!token) {
-      initLogin();
-      setErrorString(t("useBorrow.signInToBorrow"));
+      setErrorString(t("useBorrow.signInToBorrowOrReserve"));
       return;
     }
     setLoading(true);

@@ -30,7 +30,7 @@ const SelectBookButton: React.FC<{
     : t("selectBookCard.addToFavorites");
 
   return (
-    <div>
+    <div sx={{ mt: 1, mb: 1 }}>
       <Button
         onClick={onClick}
         loading={isLoading}
@@ -47,14 +47,19 @@ const SelectBookButton: React.FC<{
       >
         {buttonLabel}
       </Button>
-      {error && <Text sx={{ color: "ui.error", fontSize: "-1" }}>{error}</Text>}
+      {/* render the possible error message below the button */}
+      {error && (
+        <p sx={{ mt: 1, mb: 1 }}>
+          <Text sx={{ color: "ui.error" }}>{error}</Text>
+        </p>
+      )}
     </div>
   );
 };
 
 const SelectBookCard: React.FC<SelectBookProps> = ({ book }) => {
   const { t } = useTranslation();
-  const { isLoading, toggleSelection } = useSelectBook();
+  const { isLoading, error, toggleSelection } = useSelectBook();
   const { selected } = useUser();
   // Initial selection state is checked against the user's selected books
   const isSelected =
@@ -71,6 +76,7 @@ const SelectBookCard: React.FC<SelectBookProps> = ({ book }) => {
         isSelected={isSelected}
         isLoading={isLoading}
         onClick={handleClick}
+        error={error ?? undefined}
       />
     </div>
   );

@@ -75,14 +75,14 @@ test("redirects to login when not signed in", async () => {
 
   // error is there
   expect(
-    screen.getByText("Error: You must be signed in to borrow this book.")
+    screen.getByText("You must be signed in to borrow or reserve this book.")
   ).toBeInTheDocument();
 
   // doesn't call the borrow book
   expect(mockedFetchBook).not.toHaveBeenCalled();
 
-  // redirects to login
-  expect(mockPush).toHaveBeenCalledWith(
+  // should not redirect to login
+  expect(mockPush).not.toHaveBeenCalledWith(
     {
       pathname: "/[library]/login",
       query: { library: "testlib", nextUrl: "/testlib" }
@@ -111,7 +111,7 @@ test("catches and displays server errors", async () => {
   // shows the error, button resets.
   await waitFor(() => {
     expect(
-      screen.getByText("Error: Something happened on the server")
+      screen.getByText("Something happened on the server")
     ).toBeInTheDocument();
     expect(screen.queryByText("Borrowing...")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Borrow" })).toBeInTheDocument();

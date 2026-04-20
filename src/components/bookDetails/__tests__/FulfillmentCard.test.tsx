@@ -78,7 +78,7 @@ describe("BorrowableBook", () => {
 
     // the borrow button should be gone now
     await waitForElementToBeRemoved(() => screen.queryByText("Borrowing..."));
-    expect(screen.getByText("Error: Can't do that"));
+    expect(screen.getByText("Can't do that"));
   });
 });
 
@@ -118,7 +118,7 @@ describe("OnHoldBook", () => {
 
     // the borrow button should be gone now
     await waitForElementToBeRemoved(() => screen.queryByText("Borrowing..."));
-    expect(screen.getByText("Error: Can't do that"));
+    expect(screen.getByText("Can't do that"));
   });
 
   test("handles lack of availability.until info", () => {
@@ -207,7 +207,7 @@ describe("ReservableBook", () => {
 
     // the borrow button should be gone now
     await waitForElementToBeRemoved(() => screen.queryByText("Reserving..."));
-    expect(screen.getByText("Error: Can't do that"));
+    expect(screen.getByText("Can't do that"));
   });
 });
 
@@ -282,7 +282,7 @@ describe("reserved", () => {
       "en"
     );
 
-    expect(await screen.findByText("Error: Can't do that")).toBeInTheDocument();
+    expect(await screen.findByText("Can't do that")).toBeInTheDocument();
     expect(
       await screen.findByRole("button", { name: "Cancel Reservation" })
     ).toBeInTheDocument();
@@ -543,9 +543,7 @@ describe("FulfillableBook", () => {
 
     fireEvent.click(downloadButton);
 
-    expect(
-      await screen.findByText("Error: You can't do that")
-    ).toBeInTheDocument();
+    expect(await screen.findByText("You can't do that")).toBeInTheDocument();
   });
 
   test("reattempts downloads without headers upon redirect failure", async () => {

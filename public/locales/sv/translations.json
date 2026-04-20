@@ -169,6 +169,7 @@
   "mediumIndicator.labelForBook": "Bok",
   "mediumIndicator.labelForeBook": "E-bok",
   "multiLibraryHome.chooseLibrary": "Välj ett bibliotek",
+  "multiLibraryHome.noLibraries": "Inga bibliotek tillgängliga",
   "myBooks.breadcrumb": "Mina böcker",
   "myBooks.emptyFavorites": "Gå till Katalogen för att lägga till böcker till dina Favoriter.",
   "myBooks.emptyLoansAndHolds": "Besök katalogen för att lägga till böcker i Mina lån.",
@@ -198,5 +199,6 @@
   "useBorrow.borrowing": "Lånar...",
   "useBorrow.reserveBook": "Reservera denna bok",
   "useBorrow.reserving": "Reserverar...",
-  "useBorrow.signInToBorrow": "Du måste vara inloggad för att låna denna bok."
+  "useBorrow.signInToBorrowOrReserve": "Du måste vara inloggad för att låna eller reservera denna bok.",
+  "useSelectBook.signInToAddToFavorites": "Du måste vara inloggad för att lägga till denna bok i favoriter."
 }

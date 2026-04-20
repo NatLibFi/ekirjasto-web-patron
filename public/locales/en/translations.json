@@ -169,6 +169,7 @@
   "mediumIndicator.labelForBook": "Book",
   "mediumIndicator.labelForeBook": "eBook",
   "multiLibraryHome.chooseLibrary": "Choose a library",
+  "multiLibraryHome.noLibraries": "No libraries available",
   "myBooks.breadcrumb": "My Books",
   "myBooks.emptyFavorites": "Your favorite books will show up here when you have any selected.",
   "myBooks.emptyLoansAndHolds": "Your books will show up here when you have any loaned or on hold.",
@@ -198,5 +199,6 @@
   "useBorrow.borrowing": "Borrowing...",
   "useBorrow.reserveBook": "Reserve",
   "useBorrow.reserving": "Reserving...",
-  "useBorrow.signInToBorrow": "You must be signed in to borrow this book."
+  "useBorrow.signInToBorrowOrReserve": "You must be signed in to borrow or reserve this book.",
+  "useSelectBook.signInToAddToFavorites": "You must be signed in to add this book to Favorites."
 }
