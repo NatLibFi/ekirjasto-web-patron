@@ -73,7 +73,7 @@
   "bookPassphrase.ariaLabelForCopyButton": "Kopioi kirjan salasana",
   "bookPassphrase.ariaLabelForPassphrase": "Kirjan salasana",
   "bookPassphrase.hidePassphrase": "Piilota salasana",
-  "bookPassphrase.instructionsText": "Jos lataat kirjan, kopioi alla oleva salasana EPUB-lukijaa varten.",
+  "bookPassphrase.instructionsText": "Jos käytät Thorium Reader-lukuohjelmaa, tarvitset alla olevan salasanan lataamasi kirjan avaamiseen.",
   "bookPassphrase.showPassphrase": "Näytä salasana",
   "bookStatus.availableToBorrow": "Tämän kirjan voi lainata",
   "bookStatus.inTheApp": "E-kirjasto-sovelluksessa",

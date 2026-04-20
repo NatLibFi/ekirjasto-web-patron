@@ -73,7 +73,7 @@
   "bookPassphrase.ariaLabelForCopyButton": "Kopiera boklösenord",
   "bookPassphrase.ariaLabelForPassphrase": "Boklösenord",
   "bookPassphrase.hidePassphrase": "Dölj lösenord",
-  "bookPassphrase.instructionsText": "Om du laddar ner boken, kopiera lösenordet nedan för din EPUB-läsare.",
+  "bookPassphrase.instructionsText": "Om du använder läsprogrammet Thorium Reader behöver du lösenordet nedan för att öppna boken du har laddat ner.",
   "bookPassphrase.showPassphrase": "Visa lösenord",
   "bookStatus.availableToBorrow": "Denna bok är tillgånglig föt utlåning",
   "bookStatus.inTheApp": "i E-bibliotekets app",

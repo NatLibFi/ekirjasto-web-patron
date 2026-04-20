@@ -73,7 +73,7 @@
   "bookPassphrase.ariaLabelForCopyButton": "Copy book passphrase",
   "bookPassphrase.ariaLabelForPassphrase": "Book passphrase",
   "bookPassphrase.hidePassphrase": "Hide passphrase",
-  "bookPassphrase.instructionsText": "If you download the book, please copy the password below for your EPUB reader.",
+  "bookPassphrase.instructionsText": "If you are using the Thorium Reader application, you will need the password below to open your downloaded book.",
   "bookPassphrase.showPassphrase": "Show passphrase",
   "bookStatus.availableToBorrow": "This book is available to borrow",
   "bookStatus.inTheApp": "in the E-kirjasto App",
