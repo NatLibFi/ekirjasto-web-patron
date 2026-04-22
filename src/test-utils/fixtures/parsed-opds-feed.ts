@@ -6,7 +6,7 @@ import {
 import { OPDS1 } from "interfaces";
 
 const authDocLink: OPDSLink = {
-  href: "/auth-doc",
+  href: "https://lib-test.e-kirjasto.fi/test-kirjasto/authentication_document",
   rel: OPDS1.AuthDocLinkRelation,
   type: "some-type",
   title: "auth-doc-link-title",

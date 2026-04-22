@@ -14,7 +14,8 @@ export const authDoc: OPDS1.AuthDocument = {
     ...(baseAuthDoc.links ?? []),
     {
       rel: OPDS1.SelfRel,
-      href: "/auth-doc"
+      href:
+        "https://lib-test.e-kirjasto.fi/test-kirjasto/authentication_document"
     },
     {
       rel: OPDS1.CatalogRootRel,
@@ -31,7 +32,8 @@ export const authDocNoCatalogRoot: OPDS1.AuthDocument = {
     ...(baseAuthDoc.links ?? []),
     {
       rel: OPDS1.SelfRel,
-      href: "/auth-doc"
+      href:
+        "https://lib-test.e-kirjasto.fi/test-kirjasto/authentication_document"
     }
   ]
 };
@@ -44,7 +46,8 @@ export const authDocNoCatalogRootHref: OPDS1.AuthDocument = {
     ...(baseAuthDoc.links ?? []),
     {
       rel: OPDS1.SelfRel,
-      href: "/auth-doc"
+      href:
+        "https://lib-test.e-kirjasto.fi/test-kirjasto/authentication_document"
     },
     {
       rel: OPDS1.CatalogRootRel

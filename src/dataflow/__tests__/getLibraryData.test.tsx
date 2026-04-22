@@ -79,8 +79,12 @@ describe("fetchAuthDocument", () => {
       })
     );
 
-    const json = await fetchAuthDocument("/auth-doc");
-    expect(fetchMock).toHaveBeenCalledWith("/auth-doc");
+    const json = await fetchAuthDocument(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/authentication_document"
+    );
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/authentication_document"
+    );
     expect(json).toEqual({
       some: "json"
     });
@@ -123,7 +127,7 @@ describe("buildLibraryData", () => {
     } catch (error) {
       expect(error).toBeInstanceOf(ApplicationError);
       expect(error.message).toBe(
-        "Application Error: No Catalog Root URL present in Auth Document at /auth-doc."
+        "Application Error: No Catalog Root URL present in Auth Document at https://lib-test.e-kirjasto.fi/test-kirjasto/authentication_document."
       );
     }
   });
