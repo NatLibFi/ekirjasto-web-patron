@@ -1,4 +1,4 @@
-const raw = `<feed
+const rawFeed = `<feed
 	xmlns:dcterms="http://purl.org/dc/terms/"
 	xmlns:thr="http://purl.org/syndication/thread/1.0"
 	xmlns:opds="http://opds-spec.org/2010/catalog"
@@ -199,4 +199,4 @@ This work is available for countries where copyright is Life+70 and in the USA.
 	</entry>
 </feed>`;
 
-export default raw;
+export default rawFeed;
