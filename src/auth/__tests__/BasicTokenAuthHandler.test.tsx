@@ -155,14 +155,18 @@ test("submit by clicking login button", async () => {
     });
 
     // Second call to get loans with Bearer Token
-    expect(fetchMock).toHaveBeenNthCalledWith(2, "/shelf-url", {
-      headers: {
-        Authorization: `Bearer ${firstToken}`,
-        "X-Requested-With": "XMLHttpRequest",
-        "Accept-Language": "en"
-      },
-      method: "GET"
-    });
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/loans",
+      {
+        headers: {
+          Authorization: `Bearer ${firstToken}`,
+          "X-Requested-With": "XMLHttpRequest",
+          "Accept-Language": "en"
+        },
+        method: "GET"
+      }
+    );
   });
 });
 
@@ -193,14 +197,18 @@ test("fetch new token if token has expired", async () => {
     expect(fetchMock).toHaveBeenCalledTimes(3);
 
     // attempt fetch with old token
-    expect(fetchMock).toHaveBeenNthCalledWith(1, "/shelf-url", {
-      headers: {
-        Authorization: firstToken,
-        "X-Requested-With": "XMLHttpRequest",
-        "Accept-Language": "en"
-      },
-      method: "GET"
-    });
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      1,
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/loans",
+      {
+        headers: {
+          Authorization: firstToken,
+          "X-Requested-With": "XMLHttpRequest",
+          "Accept-Language": "en"
+        },
+        method: "GET"
+      }
+    );
 
     // get new token with username and password saved in credentials
     expect(fetchMock).toHaveBeenNthCalledWith(3, basicTokenAuthenticationUrl, {
