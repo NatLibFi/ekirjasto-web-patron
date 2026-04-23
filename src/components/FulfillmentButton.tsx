@@ -29,6 +29,9 @@ const FulfillmentButton: React.FC<{
 }> = ({ details, book, isPrimaryAction }) => {
   switch (details.type) {
     case "download":
+      return null;
+    /*
+      Hide DownloadButton for now
       return (
         <DownloadButton
           details={details}
@@ -36,6 +39,7 @@ const FulfillmentButton: React.FC<{
           isPrimaryAction={isPrimaryAction}
         />
       );
+    */
     case "read-online-internal":
       return (
         <ReadOnlineInternal
@@ -141,6 +145,7 @@ const ReadOnlineInternal: React.FC<{
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const DownloadButton: React.FC<{
   details: DownloadFulfillment;
   title: string;
