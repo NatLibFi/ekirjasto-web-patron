@@ -20,7 +20,17 @@ export async function fetchOPDS(
   token?: string,
   additionalHeaders?: { [key: string]: string }
 ): Promise<OPDSEntry | OPDSFeed> {
+  // quick validatation for the url
+  if (!isValidOPDSUrl(url)) {
+    // throw a error -> the url is not allowed
+    throw new ApplicationError({
+      title: "error.titleForOPDSError",
+      detail: "error.notValidOPDSUrl"
+    });
+  }
+
   const response = await fetchWithHeaders(url, token, additionalHeaders);
+
   // If the status code is not in the range 200-299,
   // we still try to parse and throw it.
   if (!response.ok) {
