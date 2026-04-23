@@ -50,7 +50,7 @@ describe("MultiLibraryHome", () => {
     render(<MultiLibraryHome />);
 
     await waitFor(() => {
-      expect(replace).toHaveBeenCalledWith("/lib1");
+      expect(replace).toHaveBeenCalledWith("/testlib");
     });
   });
 
