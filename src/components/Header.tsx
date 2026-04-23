@@ -125,17 +125,16 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
           color="ui.black"
           href="/loans"
           iconLeft={MyBooksIcon}
-          sx={{ mr: 3 }}
+          sx={{ mr: 1 }}
         >
           {t("header.labelForMyBooksButton")}
         </NavButton>
       )}
 
+      {isAuthenticated && <PasskeyCreate />}
+
       {isAuthenticated ? (
-        <div>
-          <PasskeyCreate />
-          <SignOut />
-        </div>
+        <SignOut />
       ) : isLoading ? (
         <Button loading />
       ) : (

@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import BreadcrumbBar from "components/BreadcrumbBar";
 import useLoginRedirectUrl from "auth/useLoginRedirect";
+import { useTranslation } from "next-i18next";
 
 /**
  * Redirects on success
@@ -28,6 +29,7 @@ const LoginWrapper = ({ children }: LoginWrapperProps) => {
   const { catalogName } = useLibraryContext();
   const { push } = useRouter();
   const { successPath } = useLoginRedirectUrl();
+  const { t } = useTranslation();
 
   /**
    * If the user becomes authenticated, we can redirect
@@ -46,9 +48,9 @@ const LoginWrapper = ({ children }: LoginWrapperProps) => {
       }}
     >
       <Head>
-        <title>Sign in</title>
+        <title>{t("loginWrapper.title")}</title>
       </Head>
-      <BreadcrumbBar currentLocation="Sign in" />
+      <BreadcrumbBar currentLocation={t("loginWrapper.title")} />
       <div
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
@@ -58,7 +60,7 @@ const LoginWrapper = ({ children }: LoginWrapperProps) => {
         >
           <div sx={{ textAlign: "center", p: 0 }}>
             <H2>{catalogName}</H2>
-            <h4>Sign in</h4>
+            <h4>{t("loginWrapper.title")}</h4>
           </div>
           {/* when we just become authenticated, we display the
               loading indicator until the page redirects away
@@ -67,7 +69,7 @@ const LoginWrapper = ({ children }: LoginWrapperProps) => {
           {isLoading || isAuthenticated ? (
             <Stack direction="column" sx={{ alignItems: "center" }}>
               <LoadingIndicator />
-              Logging in...
+              {t("loginWrapper.loggingIn")}
             </Stack>
           ) : (
             children

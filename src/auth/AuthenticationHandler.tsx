@@ -4,6 +4,7 @@ import BasicTokenAuthHandler from "./BasicTokenAuthHandler";
 import CleverAuthHandler from "./CleverAuthHandler";
 import EkirjastoAuthHandler from "./EkirjastoAuthHandler";
 import SamlAuthHandler from "./SamlAuthHandler";
+import { useTranslation } from "next-i18next";
 import {
   ClientBasicMethod,
   ClientBasicTokenMethod,
@@ -69,6 +70,7 @@ const AuthenticationHandler: React.ComponentType<AuthHandlerWrapperProps> = ({
   method
 }) => {
   const _AuthHandler = authHandlers[method.type];
+  const { t } = useTranslation();
 
   if (method.type === EkirjastoAuthType && typeof method !== "string") {
     return <_AuthHandler method={method as ClientEkirjastoMethod} />;
@@ -90,7 +92,7 @@ const AuthenticationHandler: React.ComponentType<AuthHandlerWrapperProps> = ({
         detail: `Failed to render what should be a supported authentication method. Is the Login method filtering correctly configured? Method ID: ${method.id}`
       })
     );
-    return <p>This authentication method is not supported.</p>;
+    return <p>{t("authenticationHandler.authenticationMethodNotSupported")}</p>;
   }
 };
 

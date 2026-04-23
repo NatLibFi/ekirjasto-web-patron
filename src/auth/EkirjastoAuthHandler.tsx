@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "theme-ui";
 import * as React from "react";
+import { useTranslation } from "next-i18next";
 import { ClientEkirjastoMethod } from "interfaces";
 import Button from "components/Button";
 import LoadingIndicator from "components/LoadingIndicator";
@@ -20,6 +21,7 @@ const EkirjastoAuthHandler: React.FC<{ method: ClientEkirjastoMethod }> = ({
 }) => {
   const { token } = useUser();
   const { authSuccessUrl } = useLoginRedirectUrl();
+  const { t } = useTranslation();
 
   // Get link for strong authentication
   const authenticationStartHref = method.links?.find(
@@ -39,17 +41,33 @@ const EkirjastoAuthHandler: React.FC<{ method: ClientEkirjastoMethod }> = ({
     }
   };
 
+  const ariaLabelForTOC =
+    t("ekirjastoAuthHandler.endUserAgreementInfoTextWithLink") +
+    t("externalLink.opensInNewTab");
+
   return (
     <Stack direction="column" spacing={2} sx={{ alignItems: "center" }}>
       {token ? (
         <LoadingIndicator />
       ) : (
         <>
-          <Button onClick={() => handleLogin()}>Sign in using Suomi.fi</Button>
+          <Button onClick={() => handleLogin()}>
+            {t("ekirjastoAuthHandler.suomiFiLoginButton")}
+          </Button>
           <PasskeyLogin redirectURI={authSuccessUrl} />
         </>
       )}
-      <p>By signing in, you agree to the End User License Agreement</p>
+      <Stack direction="row" spacing={1}>
+        <p>{t("ekirjastoAuthHandler.endUserAgreementInfoText")}</p>
+        <a
+          href={t("footer.hrefElibraryTermsOfUse")}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={ariaLabelForTOC}
+        >
+          <p>{t("ekirjastoAuthHandler.endUserAgreementInfoTextWithLink")}</p>
+        </a>
+      </Stack>
     </Stack>
   );
 };
