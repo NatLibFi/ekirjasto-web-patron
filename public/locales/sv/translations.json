@@ -88,14 +88,11 @@
   "breadcrumbBar.currentLocation": "Aktuell plats:",
   "cancelOrReturn.signIn": "Du måste vara inloggad.",
   "collection.empty": "Denna samling är tom.",
-<<<<<<< HEAD
   "collection.title": "E-bibliotekets samling",
-=======
   "ekirjastoAuthHandler.endUserAgreementInfo": "Genom att logga in godkänner du slutanvändaravtalet.",
   "ekirjastoAuthHandler.endUserAgreementInfoText": "Genom att logga in godkänner du ",
   "ekirjastoAuthHandler.endUserAgreementInfoTextWithLink": "slutanvändaravtalet.",
   "ekirjastoAuthHandler.suomiFiLoginButton": "Logga in med Suomi.fi",
->>>>>>> da3a32c (Add translations to auth files and fix tests)
   "ekirjastoLogoGreenENNoBackground.title": "Logotypen för E-bibliotekstjänsten, en rundat stiliserad grön versal E som påminner om till exempel en bok eller en bokhög.",
   "error.error": "Fel",
   "error.notValidOPDSUrl": "Den begärda URL:en är inte giltig för OPDS-hämtning.",
