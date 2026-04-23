@@ -11,6 +11,7 @@ import useUser from "components/context/UserContext";
 import useLoginRedirectUrl from "auth/useLoginRedirect";
 import { clientOnly } from "components/ClientOnly";
 import { PasskeyLogin } from "./PasskeyLogin";
+import { useRouter } from "next/router";
 
 /**
  * The Ekirjasto Auth handler sends you off to an external website to complete
@@ -22,16 +23,18 @@ const EkirjastoAuthHandler: React.FC<{ method: ClientEkirjastoMethod }> = ({
   const { token } = useUser();
   const { authSuccessUrl } = useLoginRedirectUrl();
   const { t } = useTranslation();
+  const { locale } = useRouter();
 
   // Get link for strong authentication
   const authenticationStartHref = method.links?.find(
     link => link.rel === "tunnistus_start"
   )?.href;
 
-  //Create link with redirect
-  const urlWithRedirect = `${authenticationStartHref}&redirect_uri=${encodeURIComponent(
-    authSuccessUrl
-  )}`;
+  //Add the redirect and correct locale
+  const urlWithRedirect = `${authenticationStartHref?.replace(
+    "en",
+    locale!
+  )}&redirect_uri=${encodeURIComponent(authSuccessUrl)}`;
 
   // Handle button click
   const handleLogin = async () => {
