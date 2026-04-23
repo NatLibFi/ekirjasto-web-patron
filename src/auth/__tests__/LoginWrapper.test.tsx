@@ -5,12 +5,12 @@ import { mockPush } from "test-utils/mockNextRouter";
 
 test("renders header, subheader, and breadcrumbs", () => {
   const utils = render(<LoginWrapper />);
-  expect(utils.getByRole("heading", { name: "Sign in" })).toBeInTheDocument();
+  expect(utils.getByRole("heading", { name: "Login" })).toBeInTheDocument();
   expect(
     utils.getByRole("heading", { name: "XYZ Public Library" })
   ).toBeInTheDocument();
   expect(
-    utils.getByRole("listitem", { name: "Current location: Sign in" })
+    utils.getByRole("listitem", { name: "Current location: Login" })
   ).toBeInTheDocument();
   expect(
     utils.getByRole("link", { name: "XYZ Public Library" })
