@@ -91,6 +91,7 @@
   "ekirjastoLogoGreenENNoBackground.title": "E-kirjasto-palvelun logo, pyöreämuotoiseksi tyylitelty vihreä iso E-kirjain, joka muistuttaa esimerkiksi kirjaa tai kirjapinoa.",
   "error.error": "Virhe",
   "error.returnHome": "Palaa etusivulle",
+  "error.titleForSomethingWentWrong": "Jotain meni pieleen",
   "error404.titleForPageNotFound": "Sivua ei löytynyt",
   "error404.urlNotAvailable": "Pyydetty url ei ole saatavilla.",
   "errorBoundary.errorComponentDetail": "Jotain meni pieleen. Päivitä sivu ja yritä uudelleen. Jos ongelma jatkuu, ota yhteyttä kirjaston tukeen.",

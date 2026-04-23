@@ -91,6 +91,7 @@
   "ekirjastoLogoGreenENNoBackground.title": "Logotypen för E-bibliotekstjänsten, en rundat stiliserad grön versal E som påminner om till exempel en bok eller en bokhög.",
   "error.error": "Fel",
   "error.returnHome": "Tillbaka till startsidan",
+  "error.titleForSomethingWentWrong": "Något gick fel",
   "error404.titleForPageNotFound": "Sidan hittades inte",
   "error404.urlNotAvailable": "Den begärda url:en är inte tillgänglig.",
   "errorBoundary.errorComponentDetail": "Något gick fel. Uppdatera sidan och försök igen. Om problemet kvarstår, kontakta bibliotekets support.",
