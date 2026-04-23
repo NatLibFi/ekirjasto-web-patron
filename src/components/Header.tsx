@@ -4,7 +4,7 @@ import { jsx } from "theme-ui";
 import * as React from "react";
 import { LibraryData } from "../interfaces";
 import Search from "./Search";
-import Button, { NavButton, AnchorButton } from "./Button";
+import Button, { NavButton, AnchorButton } from "../components/Button";
 import BrowseIcon from "../icons/Browse";
 import MagazinesIcon from "../icons/Magazines";
 import MyBooksIcon from "../icons/MyBooks";
@@ -13,6 +13,7 @@ import Stack from "./Stack";
 import { SignOut } from "./SignOut";
 import useUser from "components/context/UserContext";
 import useLogin from "auth/useLogin";
+import { PasskeyCreate } from "auth/PasskeyCreate";
 import { useTranslation } from "next-i18next";
 import LanguageSelector from "components/LanguageSelector";
 import EkirjastoHeaderLogo from "components/logosAndBadges/EkirjastoHeaderLogo";
@@ -131,7 +132,10 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
       )}
 
       {isAuthenticated ? (
-        <SignOut />
+        <div>
+          <PasskeyCreate />
+          <SignOut />
+        </div>
       ) : isLoading ? (
         <Button loading />
       ) : (
