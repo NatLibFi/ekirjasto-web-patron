@@ -40,22 +40,27 @@ describe("book details page", () => {
     ).toBeInTheDocument();
   });
 
-  test("rethrows SWR errors to be caught by error boundary", async () => {
-    try {
-      mockSwr({
-        error: new ServerError("url", 418, {
-          detail: "Something",
-          title: "you messed up",
-          status: 418
-        })
-      });
-    } catch (err) {
-      expect(() =>
-        setup(<BookDetails />, {
-          router: { query: { bookUrl: "/book-url" } }
-        })
-      ).toThrowError(ServerError);
-    }
+  test("renders error component when error occurs", () => {
+    // mock SWR error to create an error
+    mockSwr({
+      error: new ServerError("url", 418, {
+        status: 418,
+        title: "Teapot at your service",
+        detail: "No coffee available"
+      })
+    });
+
+    // BookDetails component should show the ErrorComponent now
+    render(<BookDetails />);
+
+    expect(
+      screen.getByText(
+        content =>
+          content.includes("418") &&
+          content.includes("Error") &&
+          content.includes("Teapot at your service")
+      )
+    ).toBeInTheDocument();
   });
 
   test("shows categories", () => {

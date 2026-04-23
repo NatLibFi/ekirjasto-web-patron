@@ -29,6 +29,7 @@ import useSWR from "swr";
 import useUser from "components/context/UserContext";
 import { useTranslation } from "next-i18next";
 import useLibraryContext from "components/context/LibraryContext";
+import ErrorComponent from "components/Error";
 
 export const BookDetails: React.FC = () => {
   const { locale, query } = useRouter();
@@ -81,10 +82,8 @@ export const BookDetails: React.FC = () => {
     setStoredBreadcrumbs([]);
   }, [setStoredBreadcrumbs]);
 
-  if (error) {
-    // just throw the error and let it be handled by an error boundary
-    throw error;
-  }
+  // if error, handle and display it in page for user
+  if (error) return <ErrorComponent info={error?.info} />;
 
   if (!book) return <PageLoader />;
 
