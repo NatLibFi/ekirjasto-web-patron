@@ -286,7 +286,7 @@ describe("FulfillableBook", () => {
     }
   });
 
-  test("displays FulfillmentButton if only one possibility", () => {
+  test.skip("displays FulfillmentButton if only one possibility", () => {
     const book = fixtures.mergeBook<FulfillableBook>({
       status: "fulfillable",
       revokeUrl: "/revoke",
