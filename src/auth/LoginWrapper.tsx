@@ -46,9 +46,9 @@ const LoginWrapper = ({ children }: LoginWrapperProps) => {
       }}
     >
       <Head>
-        <title>Sign in</title>
+        <title>Login</title>
       </Head>
-      <BreadcrumbBar currentLocation="Sign in" />
+      <BreadcrumbBar currentLocation="Login" />
       <div
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
@@ -58,7 +58,7 @@ const LoginWrapper = ({ children }: LoginWrapperProps) => {
         >
           <div sx={{ textAlign: "center", p: 0 }}>
             <H2>{catalogName}</H2>
-            <h4>Sign in</h4>
+            <h4>Login</h4>
           </div>
           {/* when we just become authenticated, we display the
               loading indicator until the page redirects away
