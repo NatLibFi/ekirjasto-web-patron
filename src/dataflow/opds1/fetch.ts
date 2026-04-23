@@ -8,6 +8,7 @@ import { entryToBook, feedToCollection } from "dataflow/opds1/parse";
 import fetchWithHeaders from "dataflow/fetch";
 import parseSearchData from "dataflow/opds1/parseSearchData";
 import { normaliseLocale } from "../../../appLocales";
+import { APP_CONFIG } from "utils/env";
 
 const parser = new OPDSParser();
 /**
@@ -173,4 +174,70 @@ function getAdditionalHeaders(locale?: string) {
   return {
     "Accept-Language": language
   };
+}
+
+/**
+ * Function that checks the URL given as parameter.
+ * Returns true if the url starts with
+ * any of the allowed library OPDS base URLs
+ * Note: for E-kirjasto prod this should normally be
+ * "https://lib.e-kirjasto.fi/ekirjasto"
+ */
+export function isValidOPDSUrl(url: string): boolean {
+  // first get allowed base URLs for OPDS fetches
+  const allowedUrlBases = getAllowedOPDSUrlBases();
+
+  // check if no (allowed) bases are found
+  if (allowedUrlBases.length === 0) {
+    // no allowed url bases found, just return false
+    // note: this should not happen for E-kirjasto
+    return false;
+  }
+
+  // check if the url starts with any of the allowed base URLs
+  // is true if at least one base url matches
+  const isValid = allowedUrlBases.some(urlBase => url.startsWith(urlBase));
+
+  // return the result of the url validation
+  return isValid;
+}
+
+/**
+ * Function that returns all allowed base URLs for OPDS requests.
+ * Allowed base urls are extracted from the library's authDocUrl.
+ */
+function getAllowedOPDSUrlBases(): string[] {
+  // first get the list of libraries objects from app configuration
+  const libraries = APP_CONFIG.libraries;
+
+  if (!libraries) {
+    // no libraries found
+    // just return empty list
+    return [];
+  }
+
+  // map through all libraries' authDocUrl
+  // and remove the string end
+  const urlBases = Object.values(libraries).map(library => {
+    if (!library) {
+      // no library, just skip
+      return null;
+    }
+
+    if (typeof library.authDocUrl !== "string") {
+      // wrong type, just skip
+      return null;
+    }
+
+    // remove "/authentication_document" from the string end
+    return library.authDocUrl.replace(/\/authentication_document$/, "");
+  });
+
+  // filter out all empty strings, non-strings and nulls (invalid base urls)
+  const allowedUrlBases = urlBases.filter(
+    (urlBase): urlBase is string => !!urlBase
+  );
+
+  // return the filtered list
+  return allowedUrlBases;
 }
