@@ -499,7 +499,7 @@ describe("FulfillableBook", () => {
       ...downloadableBook,
       fulfillmentLinks: [
         {
-          url: "/indirect",
+          url: "https://lib-test.e-kirjasto.fi/test-kirjasto/indirect",
           indirectionType:
             "application/atom+xml;type=entry;profile=opds-catalog",
           contentType:
@@ -516,14 +516,17 @@ describe("FulfillableBook", () => {
     fireEvent.click(downloadButton);
 
     // you fetch the opds entry which should then return you a book with the correct link
-    expect(fetchMock).toHaveBeenCalledWith("/indirect", {
-      headers: {
-        "Accept-Language": "en",
-        Authorization: "user-token",
-        "X-Requested-With": "XMLHttpRequest"
-      },
-      method: "GET"
-    });
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/indirect",
+      {
+        headers: {
+          "Accept-Language": "en",
+          Authorization: "user-token",
+          "X-Requested-With": "XMLHttpRequest"
+        },
+        method: "GET"
+      }
+    );
 
     // some error will be shown because we didn't mock fetch for this,
     // and we need to await it or our test will

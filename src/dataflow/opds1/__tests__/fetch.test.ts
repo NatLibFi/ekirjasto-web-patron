@@ -20,32 +20,47 @@ describe("fetchOPDS", () => {
    */
   test("fetches with headers", async () => {
     fetchMock.once(rawOpdsEntry);
-    await fetchOPDS("/some-url");
-    expect(fetchMock).toHaveBeenCalledWith("/some-url", {
-      headers: { "X-Requested-With": "XMLHttpRequest" },
-      method: "GET"
-    });
+    await fetchOPDS("https://lib-test.e-kirjasto.fi/test-kirjasto/some-url");
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/some-url",
+      {
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+        method: "GET"
+      }
+    );
 
     fetchMock.once(rawOpdsEntry);
-    await fetchOPDS("/some-url", "some-token");
-    expect(fetchMock).toHaveBeenCalledWith("/some-url", {
-      headers: {
-        "X-Requested-With": "XMLHttpRequest",
-        Authorization: "some-token"
-      },
-      method: "GET"
-    });
+    await fetchOPDS(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/some-url",
+      "some-token"
+    );
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/some-url",
+      {
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+          Authorization: "some-token"
+        },
+        method: "GET"
+      }
+    );
   });
 
   test("throws FetchError if fetch rejects", async () => {
     fetchMock.mockReject(
-      new ServerError("/some-url", 418, {
-        detail: "you screwed it up",
-        title: "wrong",
-        status: 418
-      })
+      new ServerError(
+        "https://lib-test.e-kirjasto.fi/test-kirjasto/some-url",
+        418,
+        {
+          detail: "you screwed it up",
+          title: "wrong",
+          status: 418
+        }
+      )
     );
-    await expect(fetchOPDS("/some-url")).rejects.toThrow(FetchError);
+    await expect(
+      fetchOPDS("https://lib-test.e-kirjasto.fi/test-kirjasto/some-url")
+    ).rejects.toThrow(FetchError);
   });
 
   test("throws server error if response not okay", async () => {
@@ -57,19 +72,25 @@ describe("fetchOPDS", () => {
       }),
       { status: 418 }
     );
-    await expect(fetchOPDS("/some-url")).rejects.toThrow(ServerError);
+    await expect(
+      fetchOPDS("https://lib-test.e-kirjasto.fi/test-kirjasto/some-url")
+    ).rejects.toThrow(ServerError);
   });
 
   test("parses response into opds feed", async () => {
     fetchMock.mockResponseOnce(rawOpdsFeed);
 
-    const feed = await fetchOPDS("/some-url");
+    const feed = await fetchOPDS(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/some-url"
+    );
     expect(feed).toBeInstanceOf(OPDSFeed);
   });
 
   test("throws application error if it cannot parse", async () => {
     fetchMock.mockResponseOnce("blah blah blah");
-    await expect(fetchOPDS("/some-url")).rejects.toThrow(ApplicationError);
+    await expect(
+      fetchOPDS("https://lib-test.e-kirjasto.fi/test-kirjasto/some-url")
+    ).rejects.toThrow(ApplicationError);
   });
 });
 
@@ -77,13 +98,17 @@ describe("fetchFeed", () => {
   test("throws application error if returned value is not a feed", async () => {
     fetchMock.mockResponseOnce(rawOpdsEntry);
 
-    await expect(fetchFeed("/some-url")).rejects.toThrow(ApplicationError);
+    await expect(
+      fetchFeed("https://lib-test.e-kirjasto.fi/test-kirjasto/some-url")
+    ).rejects.toThrow(ApplicationError);
   });
 
   test("doesn't throw if response is feed", async () => {
     fetchMock.mockResponseOnce(rawOpdsFeed);
 
-    const feed = await fetchFeed("/some-url");
+    const feed = await fetchFeed(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/some-url"
+    );
     expect(feed).toBeInstanceOf(OPDSFeed);
   });
 });
@@ -92,13 +117,17 @@ describe("fetchEntry", () => {
   test("throws application error if returned value is not an entry", async () => {
     fetchMock.mockResponseOnce(rawOpdsFeed);
 
-    await expect(fetchEntry("/some-url")).rejects.toThrow(ApplicationError);
+    await expect(
+      fetchEntry("https://lib-test.e-kirjasto.fi/test-kirjasto/some-url")
+    ).rejects.toThrow(ApplicationError);
   });
 
   test("doesn't throw if response is entry", async () => {
     fetchMock.mockResponseOnce(rawOpdsEntry);
 
-    const entry = await fetchEntry("/some-url");
+    const entry = await fetchEntry(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/some-url"
+    );
     expect(entry).toBeInstanceOf(OPDSEntry);
   });
 });
@@ -107,7 +136,9 @@ describe("fetchCollection", () => {
   test("parses feed into collection", async () => {
     fetchMock.mockResponseOnce(rawOpdsFeed);
 
-    const collection = await fetchCollection("http://somewhere");
+    const collection = await fetchCollection(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/collectionMock"
+    );
     expect(collection.books).toHaveLength(6);
   });
 });
@@ -116,7 +147,10 @@ describe("fetchBook", () => {
   test("parses enry into book", async () => {
     fetchMock.mockResponseOnce(rawOpdsEntry);
 
-    const book = await fetchBook("/somwhere", "http://catalog.com");
+    const book = await fetchBook(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/bookMock",
+      "http://catalog.com"
+    );
     expect(book.authors).toHaveLength(2);
   });
 });

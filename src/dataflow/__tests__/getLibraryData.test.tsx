@@ -16,25 +16,32 @@ import { fetchFeed } from "dataflow/opds1/fetch";
 describe("fetching catalog", () => {
   test("calls fetch with catalog url", async () => {
     fetchMock.mockResponseOnce(rawCatalog);
-    await fetchFeed("some-url");
-    expect(fetchMock).toHaveBeenCalledWith("some-url", {
-      headers: {
-        "X-Requested-With": "XMLHttpRequest",
-        "Accept-Language": "fi"
-      },
-      method: "GET"
-    });
+    await fetchFeed("https://lib-test.e-kirjasto.fi/test-kirjasto/some-url");
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/some-url",
+      {
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+          "Accept-Language": "fi"
+        },
+        method: "GET"
+      }
+    );
   });
 
   test("properly parses fetched catalog", async () => {
     fetchMock.mockResponseOnce(rawCatalog);
-    const catalog = await fetchFeed("some-url");
+    const catalog = await fetchFeed(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/some-url"
+    );
     expect(catalog).toMatchSnapshot();
   });
 
   test("Throws error if catalog is not correct format", async () => {
     fetchMock.mockResponseOnce("something invalid");
-    const promise = fetchFeed("a url somewhere");
+    const promise = fetchFeed(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/some-url"
+    );
     await expect(promise).rejects.toThrow(ApplicationError);
     await expect(promise).rejects.toThrow(
       "Could not parse fetch response into an OPDS Feed or Entry"
@@ -43,10 +50,12 @@ describe("fetching catalog", () => {
 
   test("Throws error if fetch fails", async () => {
     fetchMock.mockRejectOnce(new Error("Something wrong"));
-    const promise = fetchFeed("not a valid url");
+    const promise = fetchFeed(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/not a valid url"
+    );
     await expect(promise).rejects.toThrow(Error);
     await expect(promise).rejects.toThrowErrorMatchingInlineSnapshot(
-      `"Fetch Error: The fetch promise for the requested resource was rejected. This is probably an offline, CORS, or other network error. Requested URL: not a valid url"`
+      `"Fetch Error: The fetch promise for the requested resource was rejected. This is probably an offline, CORS, or other network error. Requested URL: https://lib-test.e-kirjasto.fi/test-kirjasto/not a valid url"`
     );
   });
 });
@@ -92,7 +101,9 @@ describe("fetchAuthDocument", () => {
 
   test("passes fetch errors through", async () => {
     fetchMock.mockRejectOnce(new Error("Something not right"));
-    const promise = fetchAuthDocument("/some-url");
+    const promise = fetchAuthDocument(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto"
+    );
     await expect(promise).rejects.toThrow(Error);
     await expect(promise).rejects.toThrowErrorMatchingInlineSnapshot(
       `"Something not right"`
