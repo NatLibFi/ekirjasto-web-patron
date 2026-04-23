@@ -27,31 +27,31 @@ const MagazinesFixedContent: React.FC = () => {
 
   const [ekirjastoToken, setEkirjastoToken] = React.useState<string>("");
 
-  const fetchEkirjastoToken = async () => {
-    try {
-      // Get the ekirjasto auth method
-      const ekirMethod = authMethods.find(
-        method => method.type === EKIRJASTO_AUTH_TYPE
-      );
-      // Get the url for the token
-      const ekirjastoTokenUrl = ekirMethod.links.find(
-        link => link.rel === "ekirjasto_token"
-      )?.href;
-      // Fetch the ekirjasto token
-      const fetchedToken = await getEkirjastoToken(token, ekirjastoTokenUrl);
-
-      // Set the fetched token
-      setEkirjastoToken(fetchedToken);
-    } catch (error) {
-      // If the token fetch fails, it is most likely due to 401, which will be picked up
-      // elsewhere and causes a reload of the magazines page
-    }
-  };
-
   // Fetch the ekirjasto token when we show the magazines page
   React.useEffect(() => {
+    const fetchEkirjastoToken = async () => {
+      try {
+        // Get the ekirjasto auth method
+        const ekirMethod = authMethods.find(
+          method => method.type === EKIRJASTO_AUTH_TYPE
+        );
+        // Get the url for the token
+        const ekirjastoTokenUrl = ekirMethod.links.find(
+          link => link.rel === "ekirjasto_token"
+        )?.href;
+        // Fetch the ekirjasto token
+        const fetchedToken = await getEkirjastoToken(token, ekirjastoTokenUrl);
+
+        // Set the fetched token
+        setEkirjastoToken(fetchedToken);
+      } catch (error) {
+        // If the token fetch fails, it is most likely due to 401, which will be picked up
+        // elsewhere and causes a reload of the magazines page
+      }
+    };
+
     fetchEkirjastoToken();
-  }, []);
+  }, [token, getEkirjastoToken, authMethods]);
 
   const storageKey = React.useMemo(
     () => `${MAGAZINE_CONFIG.STORAGE_KEY_PREFIX}${slug ?? "default"}`,
