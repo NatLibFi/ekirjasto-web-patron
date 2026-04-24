@@ -21,6 +21,7 @@ import downloadFile from "dataflow/download";
 import useError from "hooks/useError";
 import useLinkUtils from "hooks/useLinkUtils";
 import { useTranslation } from "next-i18next";
+import Stack from "components/Stack";
 
 const FulfillmentButton: React.FC<{
   details: AnyFullfillment;
@@ -154,6 +155,7 @@ const DownloadButton: React.FC<{
   const { t } = useTranslation();
   const { locale } = useRouter();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function download() {
     setLoading(true);
     clearError();
@@ -178,10 +180,13 @@ const DownloadButton: React.FC<{
     setLoading(false);
   }
 
+  const downloadDisabledMessage: string = t("fulfill.downloadNotAvailable");
+
   return (
-    <>
+    <Stack>
       <Button
-        onClick={download}
+        // onClick={download}
+        disabled={true}
         {...getButtonStyles(isPrimaryAction)}
         iconLeft={SvgDownload}
         loading={loading}
@@ -190,6 +195,9 @@ const DownloadButton: React.FC<{
         {t(buttonLabel)}
       </Button>
       {error && <Text sx={{ color: "ui.error" }}>{error}</Text>}
-    </>
+      <Text sx={{ color: "ui.error", fontSize: "-1" }}>
+        {downloadDisabledMessage}
+      </Text>
+    </Stack>
   );
 };

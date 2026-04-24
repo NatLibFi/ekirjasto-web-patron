@@ -125,6 +125,7 @@
   "fulfill.downloadEPUB": "Ladda ner EPUB",
   "fulfill.downloadLCPEPUB": "Ladda ner LCP EPUB",
   "fulfill.downloadLCPPDF": "Ladda ner LCP PDF",
+  "fulfill.downloadNotAvailable": "Det är för närvarande inte möjligt att ladda ner boken.",
   "fulfill.downloadPDF": "Ladda ner PDF",
   "fulfill.readOnline": "Läs i webbläsaren",
   "fulfillmentButton.downloading": "Laddar ner...",
