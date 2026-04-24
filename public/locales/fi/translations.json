@@ -125,6 +125,7 @@
   "fulfill.downloadEPUB": "Lataa EPUB",
   "fulfill.downloadLCPEPUB": "Lataa LCP EPUB",
   "fulfill.downloadLCPPDF": "Lataa LCP PDF",
+  "fulfill.downloadNotAvailable": "Kirjan lataaminen ei ole toistaiseksi käytettävissä.",
   "fulfill.downloadPDF": "Lataa PDF",
   "fulfill.readOnline": "Lue selaimessa",
   "fulfillmentButton.downloading": "Ladataan...",
