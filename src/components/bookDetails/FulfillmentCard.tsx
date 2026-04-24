@@ -102,34 +102,16 @@ const AccessCard: React.FC<{
           {t("bookDetails.readOnComputer")}
         </Text>
       )}
-
       {isFulfillable && (
-        <Stack sx={{ flexWrap: "wrap", gap: 2 }}>
-          {/* first render all buttons that are not download */}
-          {fulfillments
-            .filter(details => details.type !== "download")
-            .map(details => (
-              <FulfillmentButton
-                key={details.id}
-                details={details}
-                book={book}
-                isPrimaryAction={!redirectUser}
-              />
-            ))}
-
-          {/* then find and render the download button last */}
-          {fulfillments.find(details => details.type === "download") && (
+        <Stack sx={{ flexWrap: "wrap" }}>
+          {fulfillments.map(details => (
             <FulfillmentButton
-              key={
-                fulfillments.find(details => details.type === "download")!.id
-              }
-              details={
-                fulfillments.find(details => details.type === "download")!
-              }
+              key={details.id}
+              details={details}
               book={book}
               isPrimaryAction={!redirectUser}
             />
-          )}
+          ))}
         </Stack>
       )}
     </>

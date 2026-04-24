@@ -292,19 +292,19 @@ const BookListCTA: React.FC<{ book: AnyBook }> = ({ book }) => {
           text={t("bookList.return")}
         />
 
-        {/* render "Read online" button also, if available */}
-        {readOnlineFulfillment && (
+        {/* then render "Download LCP EPUB" button, if available */}
+        {downloadFulfillment && (
           <FulfillmentButton
-            details={readOnlineFulfillment}
+            details={downloadFulfillment}
             book={book}
             isPrimaryAction
           />
         )}
 
-        {/* then render "Download LCP EPUB" button, if available */}
-        {downloadFulfillment && (
+        {/* render "Read online" button also, if available */}
+        {readOnlineFulfillment && (
           <FulfillmentButton
-            details={downloadFulfillment}
+            details={readOnlineFulfillment}
             book={book}
             isPrimaryAction
           />
