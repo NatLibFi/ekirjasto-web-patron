@@ -125,7 +125,6 @@
   "fulfill.downloadEPUB": "Download EPUB",
   "fulfill.downloadLCPEPUB": "Download LCP EPUB",
   "fulfill.downloadLCPPDF": "Download LCP PDF",
-  "fulfill.downloadNotAvailable": "Book download is currently unavailable.",
   "fulfill.downloadPDF": "Download PDF",
   "fulfill.readOnline": "Read Online",
   "fulfillmentButton.downloading": "Downloading...",

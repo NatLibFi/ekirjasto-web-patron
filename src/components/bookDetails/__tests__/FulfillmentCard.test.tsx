@@ -461,7 +461,7 @@ describe("FulfillableBook", () => {
     expect(screen.getByText("Ready to Read!")).toBeInTheDocument();
   });
 
-  test.skip("shows download options", async () => {
+  test("shows download options", async () => {
     setup(<FulfillmentCard book={downloadableBook} />);
     const downloadButton = await screen.findByText("Download EPUB");
     expect(downloadButton).toBeInTheDocument();
@@ -470,7 +470,7 @@ describe("FulfillableBook", () => {
     expect(PDFButton).toBeInTheDocument();
   });
 
-  test.skip("download button shows loading indicator fetches book", async () => {
+  test("download button shows loading indicator fetches book", async () => {
     setup(<FulfillmentCard book={downloadableBook} />);
     const downloadButton = screen.getByText("Download EPUB");
     expect(downloadButton).toBeInTheDocument();
@@ -494,7 +494,7 @@ describe("FulfillableBook", () => {
     });
   });
 
-  test.skip("download button fetches opds entry to indirectly fulfill book", async () => {
+  test("download button fetches opds entry to indirectly fulfill book", async () => {
     const bookWithIndirect = mergeBook<FulfillableBook>({
       ...downloadableBook,
       fulfillmentLinks: [
@@ -531,7 +531,7 @@ describe("FulfillableBook", () => {
     await screen.findByText(/error:/i);
   });
 
-  test.skip("shows download error message", async () => {
+  test("shows download error message", async () => {
     const problem: ProblemDocument = {
       detail: "You can't do that",
       title: "Wrong!",
@@ -546,7 +546,7 @@ describe("FulfillableBook", () => {
     expect(await screen.findByText("You can't do that")).toBeInTheDocument();
   });
 
-  test.skip("reattempts downloads without headers upon redirect failure", async () => {
+  test("reattempts downloads without headers upon redirect failure", async () => {
     // redirect the user
     fetchMock.once("Bad headers dude!", {
       status: 301,
