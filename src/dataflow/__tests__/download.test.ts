@@ -26,6 +26,12 @@ describe("downloadFile", () => {
     fetchMock.mockRejectOnce();
     fetchMock.mockResponseOnce("nice job");
 
+    // when this test is run, we do not want to show
+    // the console warning from the downloadFile function
+    const consoleWarnSpy = jest
+      .spyOn(console, "warn")
+      .mockImplementation(() => {});
+
     await downloadFile(
       "some-url",
       "title",
@@ -49,6 +55,8 @@ describe("downloadFile", () => {
       },
       method: "GET"
     });
+
+    consoleWarnSpy.mockRestore();
   });
 
   test("should retry the request to the redirected url, without any headers, if there is an error response after a redirect", async () => {

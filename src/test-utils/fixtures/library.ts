@@ -27,8 +27,8 @@ export const libraryData: LibraryData = {
     }
   ],
   libraryLinks: {},
-  shelfUrl: "/shelf-url",
-  selectedUrl: "/selected_books",
+  shelfUrl: "https://lib-test.e-kirjasto.fi/test-kirjasto/loans",
+  selectedUrl: "https://lib-test.e-kirjasto.fi/test-kirjasto/selected_books",
   authMethods: [basicAuthMethod, createSamlMethod(0), cleverAuthMethod],
   feedbackUrl: "https://test.fi/palaute/"
 };

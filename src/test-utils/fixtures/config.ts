@@ -8,7 +8,11 @@ export const config: AppConfig = {
   showMedium: true,
   openebooks: null,
   libraries: {
-    lib1: { title: "lib1", authDocUrl: "http://lib1.com" }
+    testlib: {
+      title: "Test Library 1",
+      authDocUrl:
+        "https://lib-test.e-kirjasto.fi/test-kirjasto/authentication_document"
+    }
   },
   mediaSupport: {
     "application/epub+zip": "show",

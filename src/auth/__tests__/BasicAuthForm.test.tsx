@@ -111,14 +111,17 @@ test("submit by clicking login button", async () => {
     );
 
     // we also trigger a loans request with the cookie
-    expect(fetchMock).toHaveBeenCalledWith("/shelf-url", {
-      headers: {
-        Authorization: token,
-        "X-Requested-With": "XMLHttpRequest",
-        "Accept-Language": "en"
-      },
-      method: "GET"
-    });
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/loans",
+      {
+        headers: {
+          Authorization: token,
+          "X-Requested-With": "XMLHttpRequest",
+          "Accept-Language": "en"
+        },
+        method: "GET"
+      }
+    );
   });
 });
 
@@ -155,14 +158,17 @@ test("displays server error", async () => {
     </UserProvider>
   );
 
-  expect(fetchMock).toHaveBeenCalledWith("/shelf-url", {
-    headers: {
-      Authorization: "token",
-      "X-Requested-With": "XMLHttpRequest",
-      "Accept-Language": "en"
-    },
-    method: "GET"
-  });
+  expect(fetchMock).toHaveBeenCalledWith(
+    "https://lib-test.e-kirjasto.fi/test-kirjasto/loans",
+    {
+      headers: {
+        Authorization: "token",
+        "X-Requested-With": "XMLHttpRequest",
+        "Accept-Language": "en"
+      },
+      method: "GET"
+    }
+  );
   const serverError = await screen.findByText(
     "Invalid Credentials: Wrong username."
   );
@@ -237,13 +243,16 @@ test("submits with no password input", async () => {
     );
 
     // we also trigger a loans request with the cookie
-    expect(fetchMock).toHaveBeenCalledWith("/shelf-url", {
-      headers: {
-        Authorization: token,
-        "X-Requested-With": "XMLHttpRequest",
-        "Accept-Language": "en"
-      },
-      method: "GET"
-    });
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/loans",
+      {
+        headers: {
+          Authorization: token,
+          "X-Requested-With": "XMLHttpRequest",
+          "Accept-Language": "en"
+        },
+        method: "GET"
+      }
+    );
   });
 });

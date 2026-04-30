@@ -17,7 +17,7 @@ export const feedWithoutCatalog: OPDS2.LibraryRegistryFeed = {
 };
 
 const authDocLink: OPDS2.AuthDocumentLink = {
-  href: "/auth-doc",
+  href: "https://lib-test.e-kirjasto.fi/test-kirjasto/authentication_document",
   type: "application/vnd.opds.authentication.v1.0+json",
   rel: "http://opds-spec.org/auth/document"
 };

@@ -48,7 +48,12 @@ test("fetches loans when credentials are present", async () => {
   renderUserContext();
 
   expect(mockSWR).toHaveBeenCalledWith(
-    ["/shelf-url", "some-token", "en", "http://opds-spec.org/auth/basic"],
+    [
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/loans",
+      "some-token",
+      "en",
+      "http://opds-spec.org/auth/basic"
+    ],
     expect.anything(),
     expect.anything()
   );
@@ -84,7 +89,7 @@ test("extracts clever tokens from the url", () => {
   );
   expect(mockSWR).toHaveBeenCalledWith(
     [
-      "/shelf-url",
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/loans",
       "Bearer fry6H3",
       "en",
       "http://librarysimplified.org/authtype/OAuth-with-intermediary"
@@ -130,7 +135,7 @@ test("extracts SAML tokens from the url", () => {
 
   expect(mockSWR).toHaveBeenCalledWith(
     [
-      "/shelf-url",
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/loans",
       "Bearer saml-token",
       "en",
       "http://librarysimplified.org/authtype/SAML-2.0"
@@ -163,7 +168,12 @@ test("sign out clears cookies and data", async () => {
 
   // make sure fetch was called and you have the right data
   expect(mockSWR).toHaveBeenCalledWith(
-    ["/shelf-url", "some-token", "en", "http://opds-spec.org/auth/basic"],
+    [
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/loans",
+      "some-token",
+      "en",
+      "http://opds-spec.org/auth/basic"
+    ],
     expect.anything(),
     expect.anything()
   );
@@ -209,7 +219,12 @@ test("sign in sets cookie", async () => {
   );
 
   expect(mockSWR).toHaveBeenCalledWith(
-    ["/shelf-url", "a-token", "en", "type"],
+    [
+      "https://lib-test.e-kirjasto.fi/test-kirjasto/loans",
+      "a-token",
+      "en",
+      "type"
+    ],
     expect.anything(),
     expect.anything()
   );
