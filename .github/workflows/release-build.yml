@@ -38,12 +38,12 @@ jobs:
           fetch-depth: 0
           ref: refs/tags/${{ steps.validate_tag.outputs.release_tag }}
 
-      - name: Resolve release commit and verify origin/prod ancestry
+      - name: Resolve release commit and verify origin/main ancestry
         id: git_checks
         shell: bash
         run: |
           set -euo pipefail
-          git fetch --no-tags origin +refs/heads/prod:refs/remotes/origin/prod
+          git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main
 
           RELEASE_TAG="${{ steps.validate_tag.outputs.release_tag }}"
           RELEASE_COMMIT="$(git rev-list -n 1 "${RELEASE_TAG}^{commit}")"
@@ -52,8 +52,8 @@ jobs:
             exit 1
           fi
 
-          if ! git merge-base --is-ancestor "${RELEASE_COMMIT}" origin/prod; then
-            echo "Release commit ${RELEASE_COMMIT} is not reachable from origin/prod" >&2
+          if ! git merge-base --is-ancestor "${RELEASE_COMMIT}" origin/main; then
+            echo "Release commit ${RELEASE_COMMIT} is not reachable from origin/main" >&2
             exit 1
           fi
 
@@ -106,7 +106,7 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME }}:${{ steps.validate_tag.outputs.release_tag }}
             ${{ env.IMAGE_NAME }}:sha-${{ steps.git_checks.outputs.short_sha }}
-            ${{ env.IMAGE_NAME }}:prod
+            ${{ env.IMAGE_NAME }}:latest
 
       - name: Write build metadata
         shell: bash
@@ -115,7 +115,7 @@ jobs:
           {
             "image": "${IMAGE_NAME}",
             "release_tag": "${{ steps.validate_tag.outputs.release_tag }}",
-            "channel_tag": "prod",
+            "channel_tag": "latest",
             "sha_tag": "sha-${{ steps.git_checks.outputs.short_sha }}",
             "digest": "${{ steps.build.outputs.digest }}",
             "commit": "${{ steps.git_checks.outputs.release_commit }}",
@@ -133,7 +133,7 @@ jobs:
             echo "- Image: \`${IMAGE_NAME}\`"
             echo "- Tag: \`${{ steps.validate_tag.outputs.release_tag }}\`"
             echo "- Tag: \`sha-${{ steps.git_checks.outputs.short_sha }}\`"
-            echo "- Tag: \`prod\`"
+            echo "- Tag: \`latest\`"
             echo "- Digest: \`${{ steps.build.outputs.digest }}\`"
             echo "- Commit: \`${{ steps.git_checks.outputs.release_commit }}\`"
             echo "- Actor: \`${GITHUB_ACTOR}\`"
@@ -164,7 +164,7 @@ jobs:
               `- Image: \`${process.env.IMAGE_NAME}\``,
               `- Version tag: \`${process.env.RELEASE_TAG}\``,
               `- SHA tag: \`sha-${process.env.SHORT_SHA}\``,
-              "- Channel tag: `prod`",
+              "- Channel tag: `latest`",
               `- Digest: \`${process.env.DIGEST}\``,
               `- Commit: \`${process.env.RELEASE_COMMIT}\``,
               `- Built at: \`${process.env.BUILT_AT}\``
