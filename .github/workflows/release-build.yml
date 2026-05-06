@@ -77,22 +77,22 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Enforce immutable release tags
+      - name: Enforce immutable release tags or retag existing sha
         shell: bash
         run: |
           set -euo pipefail
-
           VERSION_TAG="${{ steps.validate_tag.outputs.release_tag }}"
           SHA_TAG="sha-${{ steps.git_checks.outputs.short_sha }}"
 
           if docker buildx imagetools inspect "${IMAGE_NAME}:${VERSION_TAG}" >/dev/null 2>&1; then
-            echo "Immutable tag already exists: ${IMAGE_NAME}:${VERSION_TAG}" >&2
+            echo "Immutable version tag already exists: ${IMAGE_NAME}:${VERSION_TAG}" >&2
             exit 1
           fi
 
+          # SHA tag may already exist from Dev Build — that's ok, same commit
           if docker buildx imagetools inspect "${IMAGE_NAME}:${SHA_TAG}" >/dev/null 2>&1; then
-            echo "Immutable tag already exists: ${IMAGE_NAME}:${SHA_TAG}" >&2
-            exit 1
+            echo "SHA tag already exists from dev build — will retag, not rebuild"
+            echo "sha_exists=true" >> "$GITHUB_ENV"
           fi
 
       - name: Build and push release image
@@ -102,11 +102,20 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: true
+          push: ${{ env.sha_exists != 'true' }}  # skip push if already built
           tags: |
             ${{ env.IMAGE_NAME }}:${{ steps.validate_tag.outputs.release_tag }}
             ${{ env.IMAGE_NAME }}:sha-${{ steps.git_checks.outputs.short_sha }}
             ${{ env.IMAGE_NAME }}:latest
+
+      - name: Retag existing image if sha already existed
+        if: env.sha_exists == 'true'
+        shell: bash
+        run: |
+          docker buildx imagetools create \
+            --tag "${IMAGE_NAME}:${{ steps.validate_tag.outputs.release_tag }}" \
+            --tag "${IMAGE_NAME}:latest" \
+            "${IMAGE_NAME}:sha-${{ steps.git_checks.outputs.short_sha }}"
 
       - name: Write build metadata
         shell: bash
