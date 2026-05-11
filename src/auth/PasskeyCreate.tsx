@@ -72,7 +72,7 @@ export function PasskeyCreate() {
         const body = {
           username: "",
           data: data
-        }
+        };
 
         // Step 3: Submit the registration response via a POST form
 
