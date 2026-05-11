@@ -68,6 +68,12 @@ export function PasskeyCreate() {
         // Step 2: Start the passkey registration using the options we received from the start
         const data = await startRegistration({ optionsJSON: publicKey });
 
+        // Add expected username to the body
+        const body = {
+          username: "",
+          data: data
+        }
+
         // Step 3: Submit the registration response via a POST form
 
         const finishResponse = await fetch(passkeyRegisterFinishHref, {
@@ -77,7 +83,7 @@ export function PasskeyCreate() {
             "content-type": "application/json",
             authorization: token!
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify(body)
         });
 
         if (!finishResponse.ok) {
