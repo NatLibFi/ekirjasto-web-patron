@@ -3,19 +3,19 @@
 import { jsx } from "theme-ui";
 import * as React from "react";
 import Modal from "./Modal";
-import { useDialogStore, DialogDisclosure } from "@ariakit/react/dialog";
+import { useDialogStore } from "@ariakit/react/dialog";
 import Button from "./Button";
 import Stack from "./Stack";
 import { useTranslation } from "next-i18next";
 
 interface InfoProps {
   info?: string;
-  isError?: boolean
+  isError?: boolean;
 }
 
 export const InfoPopup: React.FC<InfoProps> = ({
-    info = "Something went wrong",
-    isError = true
+  info = "Something went wrong",
+  isError = true
 }: InfoProps) => {
   const { t } = useTranslation();
   const dialog = useDialogStore();
@@ -24,7 +24,7 @@ export const InfoPopup: React.FC<InfoProps> = ({
     if (info) {
       dialog.show();
     }
-  }, [info]);
+  }, [dialog, info]);
   return (
     <>
       <Modal

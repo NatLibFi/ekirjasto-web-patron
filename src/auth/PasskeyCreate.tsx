@@ -119,7 +119,12 @@ export function PasskeyCreate() {
           : t("passkeyCreate.passkeyRegistrationButton")}
       </Button>
       {error && <InfoPopup info={error} />}
-      {isSuccessful && <InfoPopup info={t("passkeyCreate.passkeyRegistrationSuccessful")} isError = {false} />}
+      {isSuccessful && (
+        <InfoPopup
+          info={t("passkeyCreate.passkeyRegistrationSuccessful")}
+          isError={false}
+        />
+      )}
     </div>
   );
 }
