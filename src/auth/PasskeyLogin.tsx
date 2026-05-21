@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { isSupportedAuthType } from "./AuthenticationHandler";
 import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
 import { useTranslation } from "next-i18next";
+import { InfoPopup } from "components/InfoPopup";
 
 export function PasskeyLogin({ redirectURI }: { redirectURI?: string }) {
   const { authMethods } = useLibraryContext();
@@ -100,7 +101,7 @@ export function PasskeyLogin({ redirectURI }: { redirectURI?: string }) {
           ? t("passkeyLogin.passkeyAuthenticating")
           : t("passkeyLogin.passkeyLoginButton")}
       </Button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <InfoPopup info={error} />}
     </div>
   );
 }

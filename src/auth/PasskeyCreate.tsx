@@ -12,6 +12,7 @@ import { isSupportedAuthType } from "./AuthenticationHandler";
 import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
 import useUser from "components/context/UserContext";
 import { useTranslation } from "next-i18next";
+import { InfoPopup } from "components/InfoPopup";
 
 export function PasskeyCreate() {
   const { authMethods } = useLibraryContext();
@@ -39,6 +40,7 @@ export function PasskeyCreate() {
   const [isSupported, setIsSupported] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccessful, setIsSuccessful] = useState(false);
 
   useEffect(() => {
     setIsSupported(browserSupportsWebAuthn());
@@ -88,6 +90,8 @@ export function PasskeyCreate() {
 
         await finishResponse.json();
         //TODO: do something with the response, or just inform that successful
+        setIsSuccessful(true);
+        setIsLoading(false);
       } catch (err) {
         setError(
           (err as Error).message || t("passkeyCreate.passkeyRegistrationFail")
@@ -114,7 +118,8 @@ export function PasskeyCreate() {
           ? t("passkeyCreate.passkeyRegistrationLoad")
           : t("passkeyCreate.passkeyRegistrationButton")}
       </Button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <InfoPopup info={error} />}
+      {isSuccessful && <InfoPopup info={t("passkeyCreate.passkeyRegistrationSuccessful")} isError = {false} />}
     </div>
   );
 }
