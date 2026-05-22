@@ -89,7 +89,7 @@
   "cancelOrReturn.signIn": "Sinun tulee olla kirjautuneena.",
   "collection.empty": "Kokoelma on tyhjä.",
   "collection.title": "E-kirjaston kokoelma",
-  "ekirjastoAuthHandler.endUserAgreementInfo": "Kirjautumalla sisään hyväksyt ",
+  "ekirjastoAuthHandler.endUserAgreementInfo": "Kirjautumalla sisään hyväksyt loppukäyttäjän lisenssisopimuksen.",
   "ekirjastoAuthHandler.endUserAgreementInfoText": "Kirjautumalla sisään hyväksyt ",
   "ekirjastoAuthHandler.endUserAgreementInfoTextWithLink": "loppukäyttäjän lisenssisopimuksen.",
   "ekirjastoAuthHandler.suomiFiLoginButton": "Kirjaudu sisään Suomi.fi-tunnistuksella",
