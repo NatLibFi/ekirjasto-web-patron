@@ -91,7 +91,7 @@ export function PasskeyLogin({ redirectURI }: { redirectURI?: string }) {
   };
 
   if (!isSupported) {
-    return <p>{t("passkeyLogin.passkeyNotSupported") as string}</p>;
+    return <p>{t("passkeyLogin.passkeyNotSupported")}</p>;
   }
 
   return (
