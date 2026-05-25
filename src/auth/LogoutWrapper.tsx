@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import BreadcrumbBar from "components/BreadcrumbBar";
 import useLoginRedirectUrl from "auth/useLoginRedirect";
+import { useTranslation } from "next-i18next";
 
 /**
  * Redirects on successful logout
@@ -28,6 +29,7 @@ const LogoutWrapper = ({ children }: LogoutWrapperProps) => {
   const { catalogName } = useLibraryContext();
   const { push } = useRouter();
   const { successPath } = useLoginRedirectUrl();
+  const { t } = useTranslation();
 
   /**
    * If the user is unauthenticated, we can redirect
@@ -38,7 +40,6 @@ const LogoutWrapper = ({ children }: LogoutWrapperProps) => {
       push(successPath, undefined, { shallow: true });
     }
   }, [isAuthenticated, push, successPath]);
-
   return (
     <div
       sx={{
@@ -46,9 +47,9 @@ const LogoutWrapper = ({ children }: LogoutWrapperProps) => {
       }}
     >
       <Head>
-        <title>Logout</title>
+        <title>{t("logoutWrapper.logoutTitle")}</title>
       </Head>
-      <BreadcrumbBar currentLocation="Logout" />
+      <BreadcrumbBar currentLocation={t("logoutWrapper.logoutTitle")} />
       <div
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
@@ -58,7 +59,7 @@ const LogoutWrapper = ({ children }: LogoutWrapperProps) => {
         >
           <div sx={{ textAlign: "center", p: 0 }}>
             <H2>{catalogName}</H2>
-            <h4>Logout</h4>
+            <h4>{t("logoutWrapper.logoutTitle")}</h4>
           </div>
           {/* when we just become unauthenticated, we display the
               loading indicator until the page redirects away
@@ -67,7 +68,7 @@ const LogoutWrapper = ({ children }: LogoutWrapperProps) => {
           {isLoading || !isAuthenticated ? (
             <Stack direction="column" sx={{ alignItems: "center" }}>
               <LoadingIndicator />
-              Logging out...
+              {t("logoutWrapper.logoutLoading")}
             </Stack>
           ) : (
             children

@@ -23,7 +23,7 @@ test("shows loading indicator when user state is loading", () => {
       isLoading: true
     }
   });
-  expect(utils.getByText("Logging in...")).toBeInTheDocument();
+  expect(utils.getByText("Signing in...")).toBeInTheDocument();
   expect(utils.queryByText("child")).not.toBeInTheDocument();
 });
 

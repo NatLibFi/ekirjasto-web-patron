@@ -10,9 +10,12 @@ import useLibraryContext from "components/context/LibraryContext";
 import { useEffect, useState } from "react";
 import { isSupportedAuthType } from "./AuthenticationHandler";
 import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
+import { useTranslation } from "next-i18next";
+import { InfoPopup } from "components/InfoPopup";
 
 export function PasskeyLogin({ redirectURI }: { redirectURI?: string }) {
   const { authMethods } = useLibraryContext();
+  const { t } = useTranslation();
 
   // Get supported methods
   const supportedAuthMethods = authMethods.filter(m =>
@@ -56,7 +59,7 @@ export function PasskeyLogin({ redirectURI }: { redirectURI?: string }) {
       });
 
       if (!startResponse.ok) {
-        throw new Error("Failed to start passkey authentication");
+        throw new Error(t("passkeyLogin.passkeyAuthenticationStartFail"));
       }
 
       const { publicKey } = await startResponse.json();
@@ -80,21 +83,25 @@ export function PasskeyLogin({ redirectURI }: { redirectURI?: string }) {
       document.body.appendChild(form);
       form.submit();
     } catch (err) {
-      setError((err as Error).message || "Authentication failed");
+      setError(
+        (err as Error).message || t("passkeyLogin.passkeyAuthenticationFailed")
+      );
       setIsLoading(false);
     }
   };
 
   if (!isSupported) {
-    return <p>Passkeys are not supported in this browser.</p>;
+    return <p>{t("passkeyLogin.passkeyNotSupported")}</p>;
   }
 
   return (
     <div>
       <Button onClick={handleLogin} disabled={isLoading}>
-        {isLoading ? "Authenticating…" : "Sign in with a passkey"}
+        {isLoading
+          ? t("passkeyLogin.passkeyAuthenticating")
+          : t("passkeyLogin.passkeyLoginButton")}
       </Button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <InfoPopup info={error} />}
     </div>
   );
 }

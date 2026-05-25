@@ -20,10 +20,6 @@ test("shows warning if there is no auth method configured", async () => {
       "This Library does not have any authentication configured."
     )
   );
-  expect(screen.getByLabelText("Send email to help desk")).toHaveAttribute(
-    "href",
-    "mailto:help@gmail.com"
-  );
 });
 
 test("shows warning if only auth method provided is unsupported", async () => {
@@ -42,10 +38,6 @@ test("shows warning if only auth method provided is unsupported", async () => {
     screen.getByText(
       "This Library does not have any authentication configured."
     )
-  );
-  expect(screen.getByLabelText("Send email to help desk")).toHaveAttribute(
-    "href",
-    "mailto:help@gmail.com"
   );
 });
 

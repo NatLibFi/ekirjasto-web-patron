@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "theme-ui";
 import * as React from "react";
+import { useTranslation } from "next-i18next";
 import { ClientEkirjastoMethod } from "interfaces";
 import Button from "components/Button";
 import LoadingIndicator from "components/LoadingIndicator";
@@ -10,6 +11,7 @@ import useUser from "components/context/UserContext";
 import useLoginRedirectUrl from "auth/useLoginRedirect";
 import { clientOnly } from "components/ClientOnly";
 import { PasskeyLogin } from "./PasskeyLogin";
+import { useRouter } from "next/router";
 
 /**
  * The Ekirjasto Auth handler sends you off to an external website to complete
@@ -20,16 +22,19 @@ const EkirjastoAuthHandler: React.FC<{ method: ClientEkirjastoMethod }> = ({
 }) => {
   const { token } = useUser();
   const { authSuccessUrl } = useLoginRedirectUrl();
+  const { t } = useTranslation();
+  const { locale } = useRouter();
 
   // Get link for strong authentication
   const authenticationStartHref = method.links?.find(
     link => link.rel === "tunnistus_start"
   )?.href;
 
-  //Create link with redirect
-  const urlWithRedirect = `${authenticationStartHref}&redirect_uri=${encodeURIComponent(
-    authSuccessUrl
-  )}`;
+  //Add the redirect and correct locale
+  const urlWithRedirect = `${authenticationStartHref?.replace(
+    "en",
+    locale!
+  )}&redirect_uri=${encodeURIComponent(authSuccessUrl)}`;
 
   // Handle button click
   const handleLogin = async () => {
@@ -39,17 +44,33 @@ const EkirjastoAuthHandler: React.FC<{ method: ClientEkirjastoMethod }> = ({
     }
   };
 
+  const ariaLabelForTOC =
+    t("ekirjastoAuthHandler.endUserAgreementInfoTextWithLink") +
+    t("externalLink.opensInNewTab");
+
   return (
     <Stack direction="column" spacing={2} sx={{ alignItems: "center" }}>
       {token ? (
         <LoadingIndicator />
       ) : (
         <>
-          <Button onClick={() => handleLogin()}>Sign in using Suomi.fi</Button>
+          <Button onClick={() => handleLogin()}>
+            {t("ekirjastoAuthHandler.suomiFiLoginButton")}
+          </Button>
           <PasskeyLogin redirectURI={authSuccessUrl} />
         </>
       )}
-      <p>By signing in, you agree to the End User License Agreement</p>
+      <Stack direction="row" spacing={1}>
+        <p>{t("ekirjastoAuthHandler.endUserAgreementInfoText")}</p>
+        <a
+          href={t("footer.hrefElibraryTermsOfUse")}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={ariaLabelForTOC}
+        >
+          <p>{t("ekirjastoAuthHandler.endUserAgreementInfoTextWithLink")}</p>
+        </a>
+      </Stack>
     </Stack>
   );
 };

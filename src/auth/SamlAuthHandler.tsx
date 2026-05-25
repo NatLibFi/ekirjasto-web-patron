@@ -1,5 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
+/* eslint-disable i18next/no-literal-string */
 import { jsx } from "theme-ui";
 import * as React from "react";
 import { ClientSamlMethod } from "interfaces";

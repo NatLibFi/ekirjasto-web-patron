@@ -11,10 +11,13 @@ import { useEffect, useState } from "react";
 import { isSupportedAuthType } from "./AuthenticationHandler";
 import { EKIRJASTO_AUTH_TYPE } from "utils/constants";
 import useUser from "components/context/UserContext";
+import { useTranslation } from "next-i18next";
+import { InfoPopup } from "components/InfoPopup";
 
 export function PasskeyCreate() {
   const { authMethods } = useLibraryContext();
   const { token } = useUser();
+  const { t } = useTranslation();
 
   // Get supported methods
   const supportedAuthMethods = authMethods.filter(m =>
@@ -37,6 +40,7 @@ export function PasskeyCreate() {
   const [isSupported, setIsSupported] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccessful, setIsSuccessful] = useState(false);
 
   useEffect(() => {
     setIsSupported(browserSupportsWebAuthn());
@@ -60,7 +64,7 @@ export function PasskeyCreate() {
         });
 
         if (!startResponse.ok) {
-          throw new Error("Failed to start passkey registeration");
+          throw new Error(t("passkeyCreate.passkeyRegistrationStartFail"));
         }
 
         const { publicKey } = await startResponse.json();
@@ -87,13 +91,17 @@ export function PasskeyCreate() {
         });
 
         if (!finishResponse.ok) {
-          throw new Error("Failed to finish passkey registeration");
+          throw new Error(t("passkeyCreate.passkeyRegistrationFinishFail"));
         }
 
         await finishResponse.json();
         //TODO: do something with the response, or just inform that successful
+        setIsSuccessful(true);
+        setIsLoading(false);
       } catch (err) {
-        setError((err as Error).message || "Passkey creation failed");
+        setError(
+          (err as Error).message || t("passkeyCreate.passkeyRegistrationFail")
+        );
         setIsLoading(false);
       }
     }
@@ -110,10 +118,19 @@ export function PasskeyCreate() {
         color="ui.black"
         onClick={handleCreate}
         disabled={isLoading}
+        sx={{ mr: 3 }}
       >
-        {isLoading ? "Authenticating…" : "Register a passkey"}
+        {isLoading
+          ? t("passkeyCreate.passkeyRegistrationLoad")
+          : t("passkeyCreate.passkeyRegistrationButton")}
       </Button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <InfoPopup info={error} />}
+      {isSuccessful && (
+        <InfoPopup
+          info={t("passkeyCreate.passkeyRegistrationSuccessful")}
+          isError={false}
+        />
+      )}
     </div>
   );
 }
