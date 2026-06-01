@@ -1,6 +1,3 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx } from "theme-ui";
 import * as React from "react";
 import {
   AnyFullfillment,
@@ -11,7 +8,7 @@ import {
 import { FulfillableBook } from "interfaces";
 import track from "analytics/track";
 import SvgDownload from "icons/Download";
-import ArrowForward from "icons/ArrowForward";
+import SvgExternalLink from "icons/ExternalOpen";
 import { useRouter } from "next/router";
 import { Text } from "components/Text";
 import Button from "components/Button";
@@ -21,6 +18,7 @@ import downloadFile from "dataflow/download";
 import useError from "hooks/useError";
 import useLinkUtils from "hooks/useLinkUtils";
 import { useTranslation } from "next-i18next";
+import Stack from "./Stack";
 
 const FulfillmentButton: React.FC<{
   details: AnyFullfillment;
@@ -97,17 +95,18 @@ const ReadOnlineExternal: React.FC<{
 
       // we are about to open the book, so send a track event
       track.openBook(trackOpenBookUrl);
-      window.open(externalReaderUrl, "_self");
+      setLoading(false);
+      window.open(externalReaderUrl);
     } catch (e) {
       setLoading(false);
       handleError(e);
     }
   }
   return (
-    <>
+    <Stack sx={{ flexWrap: "wrap" }}>
       <Button
         {...getButtonStyles(isPrimaryAction)}
-        iconLeft={ArrowForward}
+        iconLeft={SvgExternalLink}
         onClick={open}
         loading={loading}
         loadingText={t("fulfillmentButton.opening")}
@@ -115,7 +114,7 @@ const ReadOnlineExternal: React.FC<{
         {t(details.buttonLabel)}
       </Button>
       {error && <Text sx={{ color: "ui.error" }}>{error}</Text>}
-    </>
+    </Stack>
   );
 };
 
