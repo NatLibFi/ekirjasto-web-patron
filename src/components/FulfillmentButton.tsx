@@ -1,3 +1,6 @@
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import { jsx } from "theme-ui";
 import * as React from "react";
 import {
   AnyFullfillment,
@@ -18,7 +21,6 @@ import downloadFile from "dataflow/download";
 import useError from "hooks/useError";
 import useLinkUtils from "hooks/useLinkUtils";
 import { useTranslation } from "next-i18next";
-import Stack from "./Stack";
 
 const FulfillmentButton: React.FC<{
   details: AnyFullfillment;
@@ -103,7 +105,7 @@ const ReadOnlineExternal: React.FC<{
     }
   }
   return (
-    <Stack sx={{ flexWrap: "wrap" }}>
+    <>
       <Button
         {...getButtonStyles(isPrimaryAction)}
         iconLeft={SvgExternalLink}
@@ -114,7 +116,7 @@ const ReadOnlineExternal: React.FC<{
         {t(details.buttonLabel)}
       </Button>
       {error && <Text sx={{ color: "ui.error" }}>{error}</Text>}
-    </Stack>
+    </>
   );
 };
 
