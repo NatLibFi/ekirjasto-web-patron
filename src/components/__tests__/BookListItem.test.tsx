@@ -7,7 +7,8 @@ import {
   FulfillableBook,
   OnHoldBook,
   ReservableBook,
-  ReservedBook
+  ReservedBook,
+  UnavailableBook
 } from "interfaces";
 import { mergeBook, mockSetBook } from "test-utils/fixtures";
 import { MOCK_DATE_STRING } from "test-utils/mockToDateString";
@@ -333,5 +334,85 @@ describe("FulfillableBook", () => {
     });
     setup(<BookListItem book={withoutAvailability} />);
     expect(screen.getByText("Ready to Read!")).toBeInTheDocument();
+  });
+});
+
+describe("UnavailableBook (no copies in license pool)", () => {
+  const unavailableBook = fixtures.mergeBook<UnavailableBook>({
+    status: "unavailable",
+    copies: {
+      total: 0,
+      available: 0
+    }
+  });
+
+  test("shows 'not available' status and no action buttons", () => {
+    setup(<BookListItem book={unavailableBook} />);
+    expect(screen.getByText("This book is not available")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Borrow" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Reserve" })
+    ).not.toBeInTheDocument();
+  });
+});
+
+describe("recentlyRevokedBooks behavior", () => {
+  const borrowableBook = fixtures.mergeBook<BorrowableBook>({
+    status: "borrowable",
+    borrowUrl: "/borrow",
+    copies: {
+      total: 1,
+      available: 1
+    }
+  });
+
+  test("renders the book normally when it is not in recentlyRevokedBooks", () => {
+    setup(<BookListItem book={borrowableBook} />, {
+      user: {
+        isAuthenticated: true,
+        loans: [],
+        recentlyRevokedBooks: []
+      }
+    });
+    expect(
+      screen.getByRole("link", { name: borrowableBook.title })
+    ).toBeInTheDocument();
+  });
+
+  test("hides the book when it is in recentlyRevokedBooks", () => {
+    const revokedAsUnavailable = fixtures.mergeBook<UnavailableBook>({
+      status: "unavailable",
+      copies: { total: 0, available: 0 }
+    });
+    setup(<BookListItem book={borrowableBook} />, {
+      user: {
+        isAuthenticated: true,
+        loans: [],
+        recentlyRevokedBooks: [revokedAsUnavailable]
+      }
+    });
+    expect(
+      screen.queryByRole("link", { name: borrowableBook.title })
+    ).not.toBeInTheDocument();
+  });
+
+  test("does not hide other books that were not revoked", () => {
+    const otherBook = fixtures.mergeBook<UnavailableBook>({
+      id: "some-other-id",
+      status: "unavailable",
+      copies: { total: 0, available: 0 }
+    });
+    setup(<BookListItem book={borrowableBook} />, {
+      user: {
+        isAuthenticated: true,
+        loans: [],
+        recentlyRevokedBooks: [otherBook]
+      }
+    });
+    expect(
+      screen.getByRole("link", { name: borrowableBook.title })
+    ).toBeInTheDocument();
   });
 });

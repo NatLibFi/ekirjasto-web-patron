@@ -229,3 +229,122 @@ test("sign in sets cookie", async () => {
     expect.anything()
   );
 });
+
+describe("setBook", () => {
+  beforeEach(() => {
+    // reset to authenticated state with an empty loans array
+    mockAuthenticatedOnce();
+    mockSWR.mockReturnValue(
+      makeSwrResponse<any>({
+        data: [],
+        mutate: mutateMock as any
+      }) as any
+    );
+  });
+
+  test("adds book to recentlyRevokedBooks when revoke makes it unavailable", () => {
+    let extracted: any = null;
+    function Extractor() {
+      const ctx = useUser();
+      extracted = ctx;
+      return null;
+    }
+
+    setup(
+      <UserProvider>
+        <Extractor />
+      </UserProvider>
+    );
+
+    const unavailableBook = {
+      ...fixtures.book,
+      status: "unavailable" as const,
+      copies: { total: 0, available: 0 }
+    };
+
+    act(() => extracted.setBook(unavailableBook, fixtures.book.id));
+
+    expect(extracted.recentlyRevokedBooks).toHaveLength(1);
+    expect(extracted.recentlyRevokedBooks[0].id).toBe(fixtures.book.id);
+    expect(extracted.recentlyRevokedBooks[0].status).toBe("unavailable");
+  });
+
+  test("does NOT add book to recentlyRevokedBooks when revoked book is still available", () => {
+    let extracted: any = null;
+    function Extractor() {
+      const ctx = useUser();
+      extracted = ctx;
+      return null;
+    }
+
+    setup(
+      <UserProvider>
+        <Extractor />
+      </UserProvider>
+    );
+
+    const availableBook = {
+      ...fixtures.book,
+      status: "borrowable" as const,
+      copies: { total: 5, available: 5 }
+    };
+
+    act(() => extracted.setBook(availableBook, fixtures.book.id));
+
+    expect(extracted.recentlyRevokedBooks).toHaveLength(0);
+  });
+
+  test("does NOT add book to recentlyRevokedBooks when borrowing (no id passed)", () => {
+    let extracted: any = null;
+    function Extractor() {
+      const ctx = useUser();
+      extracted = ctx;
+      return null;
+    }
+
+    setup(
+      <UserProvider>
+        <Extractor />
+      </UserProvider>
+    );
+
+    // Borrowing a book that happens to come back unavailable
+    // should not be tracked as a revoke
+    const unavailableBook = {
+      ...fixtures.book,
+      status: "unavailable" as const,
+      copies: { total: 0, available: 0 }
+    };
+
+    act(() => extracted.setBook(unavailableBook));
+
+    expect(extracted.recentlyRevokedBooks).toHaveLength(0);
+  });
+
+  test("deduplicates books in recentlyRevokedBooks", () => {
+    let extracted: any = null;
+    function Extractor() {
+      const ctx = useUser();
+      extracted = ctx;
+      return null;
+    }
+
+    setup(
+      <UserProvider>
+        <Extractor />
+      </UserProvider>
+    );
+
+    const unavailableBook = {
+      ...fixtures.book,
+      status: "unavailable" as const,
+      copies: { total: 0, available: 0 }
+    };
+
+    // revoke the same book twice
+    act(() => extracted.setBook(unavailableBook, fixtures.book.id));
+    act(() => extracted.setBook(unavailableBook, fixtures.book.id));
+
+    expect(extracted.recentlyRevokedBooks).toHaveLength(1);
+  });
+});
