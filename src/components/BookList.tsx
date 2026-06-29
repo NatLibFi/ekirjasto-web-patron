@@ -125,12 +125,24 @@ export const BookList: React.FC<{
 export const BookListItem: React.FC<{
   book: AnyBook;
 }> = ({ book: collectionBook }) => {
-  const { loans } = useUser();
+  const { loans, recentlyRevokedBooks } = useUser();
+  const { t } = useTranslation();
+
+  // Hide the book if it was recently revoked and became unavailable due to expired licenses.
+  // Books are only added to recentlyRevokedBooks when status is "unavailable",
+  // so the presence here is enough.
+  const wasRevoked = recentlyRevokedBooks?.some(
+    revoked => revoked.id === collectionBook.id
+  );
+
+  if (wasRevoked) {
+    return null;
+  }
+
   // if the book exists in loans, use that version
   const loanedBook = loans?.find(loan => loan.id === collectionBook.id);
   const book = loanedBook ?? collectionBook;
   const subtitle = getSubtitle(book);
-  const { t } = useTranslation();
 
   return (
     <li
