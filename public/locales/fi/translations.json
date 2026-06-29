@@ -85,6 +85,7 @@
   "bookStatus.reserved": "Sinulla on tämä kirja varattuna",
   "bookStatus.unavailable": "Voit varata tämän kirjan.",
   "bookStatus.unsupported": "Muotoa ei tueta",
+  "bookStatus.unavailableExpired": "Tämä kirja ei ole saatavilla",
   "breadcrumbBar.currentLocation": "Nykyinen sijainti:",
   "cancelOrReturn.signIn": "Sinun tulee olla kirjautuneena.",
   "collection.empty": "Kokoelma on tyhjä.",

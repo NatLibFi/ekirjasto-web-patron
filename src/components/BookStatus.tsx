@@ -36,6 +36,8 @@ const BookStatus: React.FC<{ book: AnyBook }> = ({ book }) => {
       ? t("bookStatus.readyToBorrow")
       : status === "fulfillable"
       ? t("bookStatus.readyToRead", { companionAppPart })
+      : status === "unavailable"
+      ? t("bookStatus.unavailableExpired")
       : t("bookStatus.unsupported");
 
   return (

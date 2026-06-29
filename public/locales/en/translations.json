@@ -85,6 +85,7 @@
   "bookStatus.reserved": "You have this book on hold",
   "bookStatus.unavailable": "This book is available to place on hold",
   "bookStatus.unsupported": "Unsupported",
+  "bookStatus.unavailableExpired": "This book is not available",
   "breadcrumbBar.currentLocation": "Current location: ",
   "cancelOrReturn.signIn": "You must be signed in.",
   "collection.empty": "This collection is empty.",
