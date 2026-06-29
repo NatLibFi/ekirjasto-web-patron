@@ -372,6 +372,15 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): AnyBook {
     raw: entry.unparsed
   };
 
+  // If no copies available, book is unavailable (cannot borrow, reserve, or do anything with it because its license has expired). This is a special case that should be handled first.
+  // This check should come FIRST before any other status checks
+  if (copies?.total === 0 && availability?.status === "unavailable") {
+    return {
+      ...book,
+      status: "unavailable"
+    };
+  }
+
   // It's fulfillable
   if (
     supportedFulfillmentLinks.length > 0 ||
