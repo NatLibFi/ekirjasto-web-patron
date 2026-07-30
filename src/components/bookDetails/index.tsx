@@ -61,7 +61,6 @@ export const BookDetails: React.FC = () => {
 
   // get user's loaned books (MyBooks)
   const { loans, recentlyRevokedBooks } = useUser();
-  const router = useRouter();
 
   // Check if this book was recently revoked.
   // We trust this over the SWR data, because the book details endpoint
@@ -76,13 +75,6 @@ export const BookDetails: React.FC = () => {
     revokedBook ??
     loans?.find(loanedBook => data?.id === loanedBook.id) ??
     data;
-
-  // Redirect if the book's license was expired when this  revoke happens (and is therefore unavailable)
-  React.useEffect(() => {
-    if (revokedBook) {
-      router.push("/");
-    }
-  }, [revokedBook, router]);
 
   const subtitle = getSubtitle(book);
   const { t } = useTranslation();

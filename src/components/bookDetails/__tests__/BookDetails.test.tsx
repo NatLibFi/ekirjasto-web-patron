@@ -237,62 +237,6 @@ describe("book details page", () => {
   });
 });
 
-describe("revoked book redirect behavior", () => {
-  test("redirects to home when book is in recentlyRevokedBooks", async () => {
-    const push = jest.fn();
-    const revokedBook = { ...fixtures.book, status: "unavailable" as const };
-    mockSwr({ data: fixtures.book });
-
-    setup(<BookDetails />, {
-      router: { query: { bookUrl: "/book-url" }, push },
-      user: {
-        isAuthenticated: true,
-        loans: [],
-        recentlyRevokedBooks: [revokedBook]
-      }
-    });
-
-    await waitFor(() => expect(push).toHaveBeenCalledWith("/"));
-  });
-
-  test("does not redirect when book is not in recentlyRevokedBooks", () => {
-    const push = jest.fn();
-    mockSwr({ data: fixtures.book });
-
-    setup(<BookDetails />, {
-      router: { query: { bookUrl: "/book-url" }, push },
-      user: {
-        isAuthenticated: true,
-        loans: [],
-        recentlyRevokedBooks: []
-      }
-    });
-
-    expect(push).not.toHaveBeenCalled();
-  });
-
-  test("does not redirect when a different book is in recentlyRevokedBooks", () => {
-    const push = jest.fn();
-    const otherRevokedBook = {
-      ...fixtures.book,
-      id: "some-other-id",
-      status: "unavailable" as const
-    };
-    mockSwr({ data: fixtures.book });
-
-    setup(<BookDetails />, {
-      router: { query: { bookUrl: "/book-url" }, push },
-      user: {
-        isAuthenticated: true,
-        loans: [],
-        recentlyRevokedBooks: [otherRevokedBook]
-      }
-    });
-
-    expect(push).not.toHaveBeenCalled();
-  });
-});
-
 /**
  * mock fetchComplaintTypes and postComplaint
  */
