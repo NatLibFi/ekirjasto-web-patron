@@ -2,6 +2,7 @@ import { renderHook } from "@testing-library/react-hooks";
 import fetchMock from "jest-fetch-mock";
 import useSelectBook from "hooks/useSelectBook";
 import * as UserContext from "components/context/UserContext";
+import { FulfillableBook } from "interfaces";
 import { fixtures } from "test-utils";
 
 jest.mock("components/context/UserContext");
@@ -9,7 +10,12 @@ jest.mock("components/context/UserContext");
 const mockSetSelected = jest.fn();
 const mockUseUser = UserContext.default as jest.Mock;
 
-const testBook = fixtures.book;
+const testBook = fixtures.mergeBook<FulfillableBook>({
+  ...fixtures.book,
+  status: "fulfillable",
+  fulfillmentLinks: [],
+  revokeUrl: "/revoke"
+});
 
 beforeEach(() => {
   fetchMock.resetMocks();
