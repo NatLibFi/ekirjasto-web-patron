@@ -90,7 +90,11 @@ export default function useSelectBook(): UseSelectBookResult {
       }
 
       // Update the user context's selected books list
-      setSelected(book, book.id);
+      if (currentlySelected) {
+        setSelected(book, book.id); // remove
+      } else {
+        setSelected(book); // add
+      }
       return true;
     } catch (e: any) {
       handleError(e);

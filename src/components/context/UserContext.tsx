@@ -234,12 +234,17 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   function setSelected(book: AnyBook, id?: string) {
     const existing = selectedData ?? [];
 
-    // if the id exists, remove that book and set the new one
-    const withoutOldBook = existing.filter(book => book.id !== id);
-    const newData: AnyBook[] = [...withoutOldBook, book];
-    // The 'false' parameter tells SWR NOT to revalidate/refetch from the API after this update,
-    // so the new favorite stays in the cache instead of being overwritten by stale API data.
-    mutateSelected(newData, false);
+    if (id) {
+      // REMOVE case: filter out the book with the given id, do not re-add it
+      mutateSelected(
+        existing.filter(b => b.id !== id),
+        false
+      );
+    } else {
+      // ADD case: replace any existing entry for this book, then append
+      const withoutOld = existing.filter(b => b.id !== book.id);
+      mutateSelected([...withoutOld, book], false);
+    }
   }
 
   /**
