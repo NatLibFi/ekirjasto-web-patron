@@ -148,7 +148,7 @@ export const BookDetails: React.FC = () => {
 
             <FulfillmentCard book={book} sx={{ mt: 3 }} />
 
-            <SelectBookCard book={book} />
+            {!revokedBook && <SelectBookCard book={book} />}
 
             <BookPassphrase book={book} />
 
