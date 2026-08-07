@@ -156,6 +156,16 @@ export function getSubtitle(book: AnyBook): string | null {
   return subtitle;
 }
 
+export function getFormat(book: AnyBook, t: TFunction): string | null {
+  const format = book?.format;
+  if(!format) return null;
+  if(format === "Audiobook"){
+    return t("mediumIndicator.labelForAudiobook");
+  } else {
+    return format;
+  }
+}
+
 export function queueString(book: AnyBook) {
   const holds = book.holds?.total;
   return typeof holds === "number"

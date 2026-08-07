@@ -89,6 +89,8 @@
   "cancelOrReturn.signIn": "You must be signed in.",
   "collection.empty": "This collection is empty.",
   "collection.title": "E-library collection",
+  "collection.search": "Search",
+  "collection.noResult": "No search results.",
   "ekirjastoAuthHandler.endUserAgreementInfo": "By signing in, you agree to the End User License Agreement.",
   "ekirjastoAuthHandler.endUserAgreementInfoText": "By signing in, you agree to the ",
   "ekirjastoAuthHandler.endUserAgreementInfoTextWithLink": "End User License Agreement.",

@@ -4,7 +4,7 @@
 // @ts-nocheck
 import { APP_CONFIG } from "utils/env";
 import { fetchBook } from "dataflow/opds1/fetch";
-import { getAuthors, getSubtitle } from "utils/book";
+import { getAuthors, getFormat, getSubtitle } from "utils/book";
 import { H1, Text } from "components/Text";
 import { jsx } from "theme-ui";
 import { PageLoader } from "../LoadingIndicator";
@@ -68,6 +68,8 @@ export const BookDetails: React.FC = () => {
 
   const subtitle = getSubtitle(book);
   const { t } = useTranslation();
+
+  const bookFormat = getFormat(book, t);
 
   // get current breadcrumbs and update function from context
   const { storedBreadcrumbs, setStoredBreadcrumbs } = useBreadcrumbContext();
@@ -173,7 +175,7 @@ export const BookDetails: React.FC = () => {
 
               <DetailField
                 heading={t("bookDetails.headingForBookFormat")}
-                details={book.format}
+                details={bookFormat}
               />
 
               <DetailField
