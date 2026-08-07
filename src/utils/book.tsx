@@ -158,8 +158,8 @@ export function getSubtitle(book: AnyBook): string | null {
 
 export function getFormat(book: AnyBook, t: TFunction): string | null {
   const format = book?.format;
-  if(!format) return null;
-  if(format === "Audiobook"){
+  if (!format) return null;
+  if (format === "Audiobook") {
     return t("mediumIndicator.labelForAudiobook");
   } else {
     return format;
