@@ -7,7 +7,8 @@ import {
   OnHoldBook,
   ReservableBook,
   ReservedBook,
-  UnsupportedBook
+  UnsupportedBook,
+  UnavailableBook
 } from "interfaces";
 import { Book, Headset } from "../icons";
 import { TFunction } from "next-i18next";
@@ -114,6 +115,9 @@ export function getAvailabilityString(
       const fulfillableString = t("book.fulfillable", { availableFor });
       return fulfillableString;
 
+    case "unavailable":
+      return null;
+
     case "unsupported":
       return null;
   }
@@ -185,6 +189,10 @@ export function bookIsOnHold(book: AnyBook): book is OnHoldBook {
 
 export function bookIsBorrowable(book: AnyBook): book is BorrowableBook {
   return book.status === "borrowable";
+}
+
+export function bookIsUnavailable(book: AnyBook): book is UnavailableBook {
+  return book.status === "unavailable";
 }
 
 export function bookIsAudiobook(book: AnyBook): boolean {

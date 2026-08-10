@@ -243,12 +243,17 @@ export type UnsupportedBook = Book<{
   status: "unsupported";
 }>;
 
+export type UnavailableBook = Book<{
+  status: "unavailable";
+}>;
+
 export type AnyBook =
   | BorrowableBook
   | OnHoldBook
   | ReservableBook
   | ReservedBook
   | FulfillableBook
+  | UnavailableBook
   | UnsupportedBook;
 
 /**

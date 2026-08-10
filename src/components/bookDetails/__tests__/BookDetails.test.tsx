@@ -235,6 +235,43 @@ describe("book details page", () => {
       screen.getByLabelText(`Current location: ${fixtures.book.title}`)
     ).toBeInTheDocument();
   });
+
+  test("hides SelectBookCard when book is recently revoked", () => {
+    const revokedBook = merge<AnyBook>(fixtures.book, {
+      status: "unavailable"
+    });
+    mockSwr({ data: revokedBook });
+
+    setup(<BookDetails />, {
+      user: {
+        recentlyRevokedBooks: [revokedBook]
+      }
+    });
+
+    // SelectBookCard should not be rendered
+    expect(
+      screen.queryByRole("button", {
+        name: `Add ${revokedBook.title} to Favorites`
+      })
+    ).not.toBeInTheDocument();
+  });
+
+  test("shows SelectBookCard when book is not recently revoked", () => {
+    mockSwr({ data: fixtures.book });
+
+    setup(<BookDetails />, {
+      user: {
+        recentlyRevokedBooks: []
+      }
+    });
+
+    // SelectBookCard should be rendered - look for the "Add to Favorites" button
+    expect(
+      screen.getByRole("button", {
+        name: `Add ${fixtures.book.title} to Favorites`
+      })
+    ).toBeInTheDocument();
+  });
 });
 
 /**

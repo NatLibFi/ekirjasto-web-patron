@@ -84,6 +84,7 @@
   "bookStatus.readyToRead": "Ready to Read{{companionAppPart}}!",
   "bookStatus.reserved": "You have this book on hold",
   "bookStatus.unavailable": "This book is available to place on hold",
+  "bookStatus.unavailableExpired": "This book is not available",
   "bookStatus.unsupported": "Unsupported",
   "breadcrumbBar.currentLocation": "Current location: ",
   "cancelOrReturn.signIn": "You must be signed in.",

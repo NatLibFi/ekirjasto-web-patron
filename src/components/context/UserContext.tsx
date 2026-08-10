@@ -15,6 +15,7 @@ type Status = "authenticated" | "loading" | "unauthenticated";
 export type UserState = {
   loans: AnyBook[] | undefined;
   selected: AnyBook[] | undefined;
+  recentlyRevokedBooks: AnyBook[];
   status: Status;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -59,6 +60,13 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     authMethods
   );
   const [error, setError] = React.useState<ServerError | null>(null);
+  // Track recently revoked books that became unavailable (0 copies, license expired).
+  // This is needed because the revoke response indicates the book is unavailable,
+  // but subsequent fetches from the book details endpoint may return stale "available" data.
+  // BookDetails uses this to detect revocation and redirect.
+  const [recentlyRevokedBooks, setRecentlyRevokedBooks] = React.useState<
+    AnyBook[]
+  >([]);
 
   const shouldRevalidate = () => {
     if (credentials?.methodType === BasicTokenAuthType) {
@@ -187,21 +195,56 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   }
 
   function setBook(book: AnyBook, id?: string) {
+    // Get the current loans array from SWR cache, or empty array if undefined
     const existing = loansData ?? [];
 
-    // if the id exists, remove that book and set the new one
-    const withoutOldBook = existing.filter(book => book.id !== id);
-    const newData: AnyBook[] = [...withoutOldBook, book];
-    mutate(newData);
+    let newData: AnyBook[];
+
+    if (id) {
+      // REVOKE CASE: Remove the book with the specified id from loans
+      newData = existing.filter(existingBook => existingBook.id !== id);
+
+      // If the revoke response indicates the book is now unavailable (0 copies),
+      // track it so BookDetails can detect and redirect.
+      // We trust the revoke response over potentially stale book details endpoint data.
+      if (book.status === "unavailable") {
+        setRecentlyRevokedBooks(prev => {
+          // Avoid duplicates
+          const withoutOld = prev.filter(b => b.id !== id);
+          return [...withoutOld, book];
+        });
+      }
+    } else {
+      // BORROW/RESERVE CASE: Add or update the book in loans
+      // Remove any existing book with the same id first (in case it's an update)
+      const withoutOld = existing.filter(
+        existingBook => existingBook.id !== book.id
+      );
+      // Add the new/updated book
+      newData = [...withoutOld, book];
+    }
+
+    // Update the loans SWR cache with the new data.
+    // This triggers an update to all components using loans (like MyBooks list).
+    // The 'false' parameter tells SWR NOT to revalidate/refetch from the API after this update,
+    // so the data stays as we set it instead of being overwritten by stale API data.
+    mutate(newData, false);
   }
 
   function setSelected(book: AnyBook, id?: string) {
     const existing = selectedData ?? [];
 
-    // if the id exists, remove that book and set the new one
-    const withoutOldBook = existing.filter(book => book.id !== id);
-    const newData: AnyBook[] = [...withoutOldBook, book];
-    mutateSelected(newData);
+    if (id) {
+      // REMOVE case: filter out the book with the given id, do not re-add it
+      mutateSelected(
+        existing.filter(b => b.id !== id),
+        false
+      );
+    } else {
+      // ADD case: replace any existing entry for this book, then append
+      const withoutOld = existing.filter(b => b.id !== book.id);
+      mutateSelected([...withoutOld, book], false);
+    }
   }
 
   /**
@@ -222,6 +265,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     isLoading,
     loans: isAuthenticated ? loansData ?? [] : undefined,
     selected: isAuthenticated ? selectedData ?? [] : undefined,
+    recentlyRevokedBooks,
     refetchLoans: mutate,
     signIn,
     signOut,

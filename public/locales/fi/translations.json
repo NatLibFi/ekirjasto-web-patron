@@ -84,6 +84,7 @@
   "bookStatus.readyToRead": "Valmis luettavaksi{{companionAppPart}}!",
   "bookStatus.reserved": "Sinulla on tämä kirja varattuna",
   "bookStatus.unavailable": "Voit varata tämän kirjan.",
+  "bookStatus.unavailableExpired": "Tämä kirja ei ole saatavilla",
   "bookStatus.unsupported": "Muotoa ei tueta",
   "breadcrumbBar.currentLocation": "Nykyinen sijainti:",
   "cancelOrReturn.signIn": "Sinun tulee olla kirjautuneena.",

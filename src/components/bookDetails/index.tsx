@@ -59,12 +59,22 @@ export const BookDetails: React.FC = () => {
   // data is the fetched book and error is any happened error during fetching
   const { data, error } = useSWR(key, fetcher);
 
-  // get user's loaned and reserved books (MyBooks)
-  const { loans } = useUser();
-  // always use the MyBooks version of the book, if it is available
-  // otherwise, just use the fetched data as the book
+  // get user's loaned books (MyBooks)
+  const { loans, recentlyRevokedBooks } = useUser();
+
+  // Check if this book was recently revoked.
+  // We trust this over the SWR data, because the book details endpoint
+  // may return stale "available" data right after revoke.
+  // Books are only added to recentlyRevokedBooks when status is "unavailable" (license has expired).
+  const revokedBook = recentlyRevokedBooks?.find(
+    revoked => revoked.id === data?.id
+  );
+
+  // Get the book to display, prioritizing recently revoked > loans > SWR data
   const book: AnyBook =
-    loans?.find(loanedBook => data?.id === loanedBook.id) ?? data;
+    revokedBook ??
+    loans?.find(loanedBook => data?.id === loanedBook.id) ??
+    data;
 
   const subtitle = getSubtitle(book);
   const { t } = useTranslation();
@@ -138,7 +148,7 @@ export const BookDetails: React.FC = () => {
 
             <FulfillmentCard book={book} sx={{ mt: 3 }} />
 
-            <SelectBookCard book={book} />
+            {!revokedBook && <SelectBookCard book={book} />}
 
             <BookPassphrase book={book} />
 

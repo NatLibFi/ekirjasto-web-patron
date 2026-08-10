@@ -7,7 +7,8 @@ import {
   bookIsReservable,
   bookIsReserved,
   bookIsOnHold,
-  bookIsFulfillable
+  bookIsFulfillable,
+  bookIsUnavailable
 } from "utils/book";
 import withErrorBoundary from "../ErrorBoundary";
 import Stack from "components/Stack";
@@ -70,6 +71,10 @@ const FulfillmentContent: React.FC<{
   }
   if (bookIsFulfillable(book)) {
     return <AccessCard links={book.fulfillmentLinks} book={book} />;
+  }
+  if (bookIsUnavailable(book)) {
+    // If the book is unavailable, we don't show anything.
+    return null;
   }
   return <Text>{t("bookDetails.notSupported")}</Text>;
 };
