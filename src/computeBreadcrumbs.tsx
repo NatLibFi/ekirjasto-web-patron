@@ -106,17 +106,20 @@ const localisationMap: { [key: string]: { [key: string]: string } } = {
   fi: {
     All: "E-kirjat ja äänikirjat",
     Book: "E-kirjat",
-    Audio: "Äänikirjat"
+    Audio: "Äänikirjat",
+    Search: "Haku"
   },
   sv: {
     All: "E-böcker och ljudböcker",
     Book: "E-böcker",
-    Audio: "Ljudböcker"
+    Audio: "Ljudböcker",
+    Search: "Sök"
   },
   en: {
     All: "E-books and Audiobooks",
     Book: "E-books",
-    Audio: "Audiobooks"
+    Audio: "Audiobooks",
+    Search: "Search"
   }
 };
 

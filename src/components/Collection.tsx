@@ -60,6 +60,43 @@ export const Collection: React.FC<{
       detail: "Cannot render collection on page without collectionUrl"
     });
 
+  // Add a special handling for search results
+  if (pageTitle === "Search") {
+    return (
+      <div
+        sx={{
+          flex: "1 1 auto",
+          display: "flex",
+          flexDirection: "column"
+        }}
+      >
+        <Head>
+          <title>{t("collection.search")}</title>
+        </Head>
+        <BreadcrumbBar breadcrumbs={storedBreadcrumbs} />
+        <PageTitle collection={collection}>{t("collection.search")}</PageTitle>
+        {isLoading ? (
+          <PageLoader />
+        ) : hasLanes ? (
+          <LanesView lanes={collection?.lanes ?? []} />
+        ) : hasBooks ? (
+          <InfiniteBookList firstPageUrl={collectionUrl} />
+        ) : (
+          <div
+            sx={{
+              display: "flex",
+              flex: "1 1 auto",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <Text variant="text.callouts">{t("collection.noResult")}</Text>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div
       sx={{
