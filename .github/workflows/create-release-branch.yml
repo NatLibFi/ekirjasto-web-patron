@@ -1,0 +1,71 @@
+name: Create release branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_name:
+        description: "Release name, esim. 1.5"
+        required: true
+        type: string
+      base_tag:
+        description: "Nykyinen tuotantotagi, esim. v1.4.0"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Create release branch from production tag
+        run: |
+          git checkout "${{ inputs.base_tag }}"
+          git checkout -b "release/${{ inputs.release_name }}"
+
+      - name: Find PRs marked for next release
+        id: prs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr list \
+            --state merged \
+            --label "release:next" \
+            --base main \
+            --limit 100 \
+            --json number,title,mergeCommit,mergedAt \
+            --jq 'sort_by(.mergedAt)[] | [.number, .mergeCommit.oid, .title] | @tsv' \
+            > prs.txt
+
+          echo "PRs selected for release:"
+          cat prs.txt
+
+          if [ ! -s prs.txt ]; then
+            echo "No PRs found with label release:next"
+            exit 1
+          fi
+
+      - name: Cherry-pick selected PRs
+        run: |
+          while IFS=$'\t' read -r pr sha title
+          do
+            echo "Cherry-picking PR #$pr: $title ($sha)"
+            git cherry-pick "$sha"
+          done < prs.txt
+
+      - name: Push release branch
+        run: |
+          git push origin "release/${{ inputs.release_name }}"
