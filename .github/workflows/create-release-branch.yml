@@ -11,6 +11,17 @@ on:
         description: "Nykyinen tuotantotagi, esim. v1.4.0"
         required: true
         type: string
+        
+  workflow_call:
+    inputs:
+      release_name:
+        description: "Release name, esim. v1.5.0"
+        required: true
+        type: string
+      base_tag:
+        description: "Nykyinen tuotantotagi, esim. v1.4.0"
+        required: true
+        type: string
 
 permissions:
   contents: write
