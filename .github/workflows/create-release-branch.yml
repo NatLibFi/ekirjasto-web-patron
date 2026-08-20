@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       release_name:
-        description: "Release name, esim. 1.5"
+        description: "Release name, esim. v1.5.0"
         required: true
         type: string
       base_tag:
