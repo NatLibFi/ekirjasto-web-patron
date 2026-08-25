@@ -112,6 +112,7 @@ const ReadOnlineExternal: React.FC<{
         onClick={open}
         loading={loading}
         loadingText={t("fulfillmentButton.opening")}
+        style={{ marginBottom: "8px" }}
       >
         {t(details.buttonLabel)}
       </Button>
@@ -146,6 +147,7 @@ const DownloadButton: React.FC<{
   details: DownloadFulfillment;
   title: string;
   isPrimaryAction: boolean;
+  style?: React.CSSProperties;
 }> = ({ details, title, isPrimaryAction }) => {
   const { buttonLabel } = details;
   const [loading, setLoading] = React.useState(false);
@@ -187,6 +189,7 @@ const DownloadButton: React.FC<{
         iconLeft={SvgDownload}
         loading={loading}
         loadingText={t("fulfillmentButton.downloading")}
+        style={{ marginBottom: "8px" }}
       >
         {t(buttonLabel)}
       </Button>
