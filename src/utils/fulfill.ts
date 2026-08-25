@@ -141,8 +141,6 @@ export function getFulfillmentFromLink(link: FulfillmentLink): AnyFullfillment {
 export function getFulfillmentsFromBook(
   book: FulfillableBook
 ): SupportedFulfillment[] {
-  // we don't support any audiobooks whatsoever right now
-  if (bookIsAudiobook(book)) return [];
   const links = book.fulfillmentLinks;
   const dedupedLinks = dedupeLinks(links);
   const supported = dedupedLinks
