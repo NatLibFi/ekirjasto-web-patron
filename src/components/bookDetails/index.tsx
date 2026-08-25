@@ -17,7 +17,7 @@ import BookPassphrase from "./BookPassphrase";
 import BreadcrumbBar from "../BreadcrumbBar";
 import DetailField from "../BookMetaDetail";
 import extractParam from "dataflow/utils";
-import FulfillmentCard from "./FulfillmentCard";
+import FulfillmentCard from "../FulfillmentCard";
 import Head from "next/head";
 import MediumIndicator from "components/MediumIndicator";
 import Recommendations from "./Recommendations";
