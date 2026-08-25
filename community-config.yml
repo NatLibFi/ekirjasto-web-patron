@@ -25,9 +25,9 @@ media_support:
   # AxisNow document (read online in Webpub Viewer) - not supported in community version
   # application/vnd.librarysimplified.axisnow+json: show
   # Audiobooks
-  application/audiobook+json: redirect
+  application/audiobook+json: unsupported
   application/vnd.overdrive.circulation.api+json;profile=audiobook: redirect
-  application/audiobook+json;profile="http://www.feedbooks.com/audiobooks/access-restriction": redirect
+  application/audiobook+json;profile="http://www.feedbooks.com/audiobooks/access-restriction": unsupported
   application/vnd.librarysimplified.findaway.license+json: redirect
 
   ### INDIRECT TYPES
