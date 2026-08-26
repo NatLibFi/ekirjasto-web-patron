@@ -26,10 +26,12 @@ jobs:
         run: |
           set -euo pipefail
           RELEASE_TAG="${{ github.event.release.tag_name }}"
+
           if [[ ! "${RELEASE_TAG}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "Release tag must match vX.Y.Z. Got: ${RELEASE_TAG}" >&2
             exit 1
           fi
+
           echo "release_tag=${RELEASE_TAG}" >> "$GITHUB_OUTPUT"
 
       - name: Checkout repository
@@ -38,22 +40,31 @@ jobs:
           fetch-depth: 0
           ref: refs/tags/${{ steps.validate_tag.outputs.release_tag }}
 
-      - name: Resolve release commit and verify origin/main ancestry
+      - name: Resolve release commit and verify release branch HEAD
         id: git_checks
         shell: bash
         run: |
           set -euo pipefail
-          git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main
 
           RELEASE_TAG="${{ steps.validate_tag.outputs.release_tag }}"
+          RELEASE_BRANCH="release/${RELEASE_TAG}"
+
+          git fetch --no-tags origin \
+            "+refs/heads/${RELEASE_BRANCH}:refs/remotes/origin/${RELEASE_BRANCH}"
+
           RELEASE_COMMIT="$(git rev-list -n 1 "${RELEASE_TAG}^{commit}")"
+
           if [[ -z "${RELEASE_COMMIT}" ]]; then
             echo "Unable to resolve commit for ${RELEASE_TAG}" >&2
             exit 1
           fi
 
-          if ! git merge-base --is-ancestor "${RELEASE_COMMIT}" origin/main; then
-            echo "Release commit ${RELEASE_COMMIT} is not reachable from origin/main" >&2
+          BRANCH_COMMIT="$(git rev-parse "origin/${RELEASE_BRANCH}")"
+
+          if [[ "${RELEASE_COMMIT}" != "${BRANCH_COMMIT}" ]]; then
+            echo "Release tag ${RELEASE_TAG} does not point to the HEAD of ${RELEASE_BRANCH}" >&2
+            echo "Tag commit:    ${RELEASE_COMMIT}" >&2
+            echo "Branch commit: ${BRANCH_COMMIT}" >&2
             exit 1
           fi
 
@@ -81,6 +92,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
           VERSION_TAG="${{ steps.validate_tag.outputs.release_tag }}"
           SHA_TAG="sha-${{ steps.git_checks.outputs.short_sha }}"
 
@@ -102,7 +114,7 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: ${{ env.sha_exists != 'true' }}  # skip push if already built
+          push: ${{ env.sha_exists != 'true' }}
           tags: |
             ${{ env.IMAGE_NAME }}:${{ steps.validate_tag.outputs.release_tag }}
             ${{ env.IMAGE_NAME }}:sha-${{ steps.git_checks.outputs.short_sha }}
@@ -180,6 +192,7 @@ jobs:
             ].join("\n");
 
             const release = context.payload.release;
+
             const { data: currentRelease } = await github.rest.repos.getRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -187,22 +200,38 @@ jobs:
             });
 
             const lines = (currentRelease.body || "").split("\n");
-            const markerIndex = lines.findIndex(line => line.trim() === marker);
+            const markerIndex = lines.findIndex(
+              line => line.trim() === marker
+            );
 
             let body;
+
             if (markerIndex >= 0) {
               let sectionEnd = lines.length;
+
               for (let i = markerIndex + 1; i < lines.length; i += 1) {
                 if (lines[i].startsWith("### ")) {
                   sectionEnd = i;
                   break;
                 }
               }
-              lines.splice(markerIndex, sectionEnd - markerIndex, ...section.split("\n"));
-              body = lines.join("\n").replace(/\n{3,}/g, "\n\n").trimEnd();
+
+              lines.splice(
+                markerIndex,
+                sectionEnd - markerIndex,
+                ...section.split("\n")
+              );
+
+              body = lines
+                .join("\n")
+                .replace(/\n{3,}/g, "\n\n")
+                .trimEnd();
             } else {
               const existingBody = (currentRelease.body || "").trimEnd();
-              body = existingBody ? `${existingBody}\n\n${section}` : section;
+
+              body = existingBody
+                ? `${existingBody}\n\n${section}`
+                : section;
             }
 
             await github.rest.repos.updateRelease({
