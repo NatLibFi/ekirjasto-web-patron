@@ -11,7 +11,6 @@ import {
   LcpDrmMediaType,
   ExternalReaderMediaType
 } from "types/opds1";
-import { bookIsAudiobook } from "utils/book";
 import { APP_CONFIG } from "utils/env";
 import { typeMap } from "utils/file";
 

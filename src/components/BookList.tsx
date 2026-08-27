@@ -3,38 +3,20 @@
 import { jsx } from "theme-ui";
 import * as React from "react";
 import { truncateString, stripHTML } from "../utils/string";
-import {
-  bookIsBorrowable,
-  bookIsFulfillable,
-  bookIsReservable,
-  bookIsReserved,
-  bookIsOnHold,
-  getAuthors,
-  getSubtitle
-} from "../utils/book";
+import { getAuthors, getSubtitle } from "../utils/book";
 import Lane from "./Lane";
 import Button, { NavButton } from "./Button";
 import LoadingIndicator from "./LoadingIndicator";
 import { H2, Text } from "./Text";
 import BookCover from "./BookCover";
-import BorrowOrReserve from "./BorrowOrReserve";
 import { AnyBook, CollectionData, LaneData } from "interfaces";
 import { fetchCollection } from "dataflow/opds1/fetch";
 import useSWRInfinite from "swr/infinite";
 import useUser from "components/context/UserContext";
 import FulfillmentCard from "./FulfillmentCard";
 import Stack from "components/Stack";
-import CancelOrReturn from "components/CancelOrReturn";
-import FulfillmentButton from "components/FulfillmentButton";
-import {
-  DownloadFulfillment,
-  getFulfillmentFromLink,
-  ReadExternalFulfillment
-} from "utils/fulfill";
-import BookStatus from "components/BookStatus";
 import Link from "./Link";
 import { APP_CONFIG } from "utils/env";
-import SelectBookCard from "./SelectBookCard";
 import { useTranslation, TFunction } from "next-i18next";
 import { useRouter } from "next/router";
 
@@ -199,7 +181,6 @@ export const BookListItem: React.FC<{
           </div>
 
           <FulfillmentCard book={book} />
-          <SelectBookCard book={book} />
           <Description
             book={book}
             sx={{ display: ["none", "none", "block"] }}

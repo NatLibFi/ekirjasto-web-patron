@@ -22,7 +22,6 @@ import Head from "next/head";
 import MediumIndicator from "components/MediumIndicator";
 import Recommendations from "./Recommendations";
 import ReportProblem from "./ReportProblem";
-import SelectBookCard from "../SelectBookCard";
 import Summary from "./Summary";
 import useBreadcrumbContext from "components/context/BreadcrumbContext";
 import useSWR from "swr";
@@ -149,8 +148,6 @@ export const BookDetails: React.FC = () => {
             {APP_CONFIG.showMedium && <MediumIndicator book={book} />}
 
             <FulfillmentCard book={book} sx={{ mt: 3 }} />
-
-            {!revokedBook && <SelectBookCard book={book} />}
 
             <BookPassphrase book={book} />
 

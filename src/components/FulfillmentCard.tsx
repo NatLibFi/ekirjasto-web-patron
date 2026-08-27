@@ -21,14 +21,11 @@ import Stack from "components/Stack";
 import { Text } from "components/Text";
 import BorrowOrReserve from "components/BorrowOrReserve";
 import FulfillmentButton from "components/FulfillmentButton";
-import {
-  getFulfillmentsFromBook,
-  shouldRedirectToCompanionApp
-} from "utils/fulfill";
 import BookStatus from "components/BookStatus";
-import { AnyBook, FulfillableBook, FulfillmentLink } from "interfaces";
+import { AnyBook } from "interfaces";
 import CancelOrReturn from "components/CancelOrReturn";
 import { useTranslation } from "next-i18next";
+import SelectBookCard from "./SelectBookCard";
 
 const FulfillmentCard: React.FC<{ book: AnyBook }> = ({ book }) => {
   const { t } = useTranslation();
@@ -46,6 +43,7 @@ const FulfillmentCard: React.FC<{ book: AnyBook }> = ({ book }) => {
       <Stack direction="column" sx={{ my: 3, alignItems: "flex-start" }}>
         <BookStatus book={book} />
         <FulfillmentContent book={book} />
+        <SelectBookCard book={book} />
       </Stack>
     </div>
   );
@@ -76,7 +74,6 @@ const FulfillmentContent: React.FC<{
     return <BorrowOrReserve url={book.borrowUrl} isBorrow />;
   }
   if (bookIsFulfillable(book)) {
-    console.log("Book is fulfillable, fulfillment links:", book.fulfillmentLinks);
     return <AccessCard links={book.fulfillmentLinks} book={book} />;
   }
   if (bookIsUnavailable(book)) {
@@ -144,44 +141,44 @@ const AccessCard: React.FC<{ book: AnyBook }> = ({ book }) => {
         fulfillment.type === "read-online-external"
     );
 
-  return (
-    <>
-      <CancelOrReturn
-        url={book.revokeUrl}
-        loadingText={t('fulfill.returning')}
-        id={book.id}
-        text={t('fulfill.return')}
-      />
+    return (
+      <>
+        <CancelOrReturn
+          url={book.revokeUrl}
+          loadingText={t("fulfill.returning")}
+          id={book.id}
+          text={t("fulfill.return")}
+        />
 
-      <Stack 
-        sx={{
-        display: "flex",
-        flexDirection: ["column", "row"],
-        alignItems: "flex-start",
-        }}
+        <Stack
+          sx={{
+            display: "flex",
+            flexDirection: ["column", "row"],
+            alignItems: "flex-start",
+            "row-gap": "8px"
+          }}
+        >
+          {/* Render "Download" button if available */}
+          {downloadFulfillment && (
+            <FulfillmentButton
+              details={downloadFulfillment}
+              book={book}
+              isPrimaryAction
+            />
+          )}
 
-      >
-        {/* Render "Download" button if available */}
-        {downloadFulfillment && (
-          <FulfillmentButton
-            details={downloadFulfillment}
-            book={book}
-            isPrimaryAction
-          />
-        )}
-
-        {/* Render "Read online" button if available */}
-        {readOnlineFulfillment && (
-          <FulfillmentButton
-            details={readOnlineFulfillment}
-            book={book}
-            isPrimaryAction
-          />
-        )}
-
-      </Stack>
-    </>
-  );}
+          {/* Render "Read online" button if available */}
+          {readOnlineFulfillment && (
+            <FulfillmentButton
+              details={readOnlineFulfillment}
+              book={book}
+              isPrimaryAction
+            />
+          )}
+        </Stack>
+      </>
+    );
+  }
 
   // this book is not
   // borrowable, reservable, on hold, reserved or fulfillable,

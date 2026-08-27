@@ -33,7 +33,7 @@ media_support:
   ### INDIRECT TYPES
   # OPDS Entry Indirection type
   application/atom+xml;type=entry;profile=opds-catalog:
-    text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media": show
+    text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media": show # Streaming deMarque ebooks and audio books
 
   # Bearer Token Exchange
   application/vnd.librarysimplified.bearer-token+json:
@@ -42,10 +42,10 @@ media_support:
   
   # LCP DRM
   application/vnd.readium.lcp.license.v1.0+json:
-    application/pdf: show 
-    application/epub+zip: show
-    application/audiobook+lcp: show
-    text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media": show
+    application/pdf: show # All downloadable PDFs
+    application/epub+zip: show # All downloadable ebooks
+    application/audiobook+lcp: redirect # All downloadable audiobooks
+    text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media": show # Streaming ellibs ebooks and audiobooks
 
 # defines the companion app for the instance.
 companion_app: E-kirjasto
