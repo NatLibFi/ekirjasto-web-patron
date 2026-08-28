@@ -74,7 +74,7 @@ const FulfillmentContent: React.FC<{
     return <BorrowOrReserve url={book.borrowUrl} isBorrow />;
   }
   if (bookIsFulfillable(book)) {
-    return <AccessCard links={book.fulfillmentLinks} book={book} />;
+    return <AccessCard book={book} />;
   }
   if (bookIsUnavailable(book)) {
     // If the book is unavailable, we don't show anything.
