@@ -1,0 +1,46 @@
+name: Publish release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_name:
+        description: "Release name, esim. v1.5.0"
+        required: true
+        type: string
+      base_tag:
+        description: "Nykyinen tuotantotagi, esim. v1.4.0"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  create-release-branch:
+    name: Create release branch
+    uses: ./.github/workflows/create-release-branch.yml
+    with:
+      release_name: ${{ inputs.release_name }}
+      base_tag: ${{ inputs.base_tag }}
+
+  publish-github-release:
+    name: Publish GitHub Release
+    needs: create-release-branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Publish GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_NAME: ${{ inputs.release_name }}
+        run: |
+          set -euo pipefail
+
+          gh release create "${RELEASE_NAME}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --target "release/${RELEASE_NAME}" \
+            --title "${RELEASE_NAME}" \
+            --generate-notes
