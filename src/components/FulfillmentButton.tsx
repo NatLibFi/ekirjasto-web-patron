@@ -141,7 +141,9 @@ const ReadOnlineInternal: React.FC<{
   }
   return (
     <Button {...getButtonStyles(isPrimaryAction)} onClick={open}>
-      {isAudiobook ? t("fulfillmentButton.listen") : t("fulfillmentButton.read")}
+      {isAudiobook
+        ? t("fulfillmentButton.listen")
+        : t("fulfillmentButton.read")}
     </Button>
   );
 };
