@@ -295,10 +295,9 @@ jobs:
 
           for pr in "${RELEASE_PRS[@]}"
           do
-            echo "Marking PR #${pr} as released"
+            echo "Adding ${RELEASED_LABEL} label to PR #${pr}"
 
             gh pr edit "${pr}" \
-              --remove-label "${RELEASE_LABEL}" \
               --add-label "${RELEASED_LABEL}"
           done
 
