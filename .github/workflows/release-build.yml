@@ -15,9 +15,12 @@ jobs:
   build-release-image:
     name: Build and Publish Release Image
     runs-on: ubuntu-latest
+
     permissions:
       contents: write
+      issues: write
       packages: write
+      pull-requests: write
 
     steps:
       - name: Validate release tag format
@@ -25,6 +28,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
           RELEASE_TAG="${{ github.event.release.tag_name }}"
 
           if [[ ! "${RELEASE_TAG}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -124,6 +128,8 @@ jobs:
         if: env.sha_exists == 'true'
         shell: bash
         run: |
+          set -euo pipefail
+
           docker buildx imagetools create \
             --tag "${IMAGE_NAME}:${{ steps.validate_tag.outputs.release_tag }}" \
             --tag "${IMAGE_NAME}:latest" \
@@ -132,6 +138,8 @@ jobs:
       - name: Write build metadata
         shell: bash
         run: |
+          set -euo pipefail
+
           cat > build-metadata.json <<JSON
           {
             "image": "${IMAGE_NAME}",
@@ -148,6 +156,8 @@ jobs:
       - name: Publish workflow summary
         shell: bash
         run: |
+          set -euo pipefail
+
           {
             echo "## Release Image Published"
             echo
@@ -193,11 +203,12 @@ jobs:
 
             const release = context.payload.release;
 
-            const { data: currentRelease } = await github.rest.repos.getRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              release_id: release.id
-            });
+            const { data: currentRelease } =
+              await github.rest.repos.getRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: release.id
+              });
 
             const lines = (currentRelease.body || "").split("\n");
             const markerIndex = lines.findIndex(
@@ -240,3 +251,55 @@ jobs:
               release_id: release.id,
               body
             });
+
+      - name: Mark released pull requests
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.validate_tag.outputs.release_tag }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          RELEASE_LABEL="release:${RELEASE_TAG}"
+          RELEASED_LABEL="released"
+
+          echo "Finding PRs with label ${RELEASE_LABEL}"
+
+          mapfile -t RELEASE_PRS < <(
+            gh pr list \
+              --state merged \
+              --base main \
+              --label "${RELEASE_LABEL}" \
+              --limit 1000 \
+              --json number \
+              --jq '.[].number'
+          )
+
+          if [[ "${#RELEASE_PRS[@]}" -eq 0 ]]; then
+            echo "No merged PRs found with label ${RELEASE_LABEL}" >&2
+            exit 1
+          fi
+
+          if ! gh label list \
+            --limit 1000 \
+            --json name \
+            --jq '.[].name' |
+            grep -Fxq "${RELEASED_LABEL}"
+          then
+            echo "Creating label ${RELEASED_LABEL}"
+
+            gh label create "${RELEASED_LABEL}" \
+              --color "0E8A16" \
+              --description "Included in a published release"
+          fi
+
+          for pr in "${RELEASE_PRS[@]}"
+          do
+            echo "Marking PR #${pr} as released"
+
+            gh pr edit "${pr}" \
+              --remove-label "${RELEASE_LABEL}" \
+              --add-label "${RELEASED_LABEL}"
+          done
+
+          echo "Marked ${#RELEASE_PRS[@]} PR(s) as released"
