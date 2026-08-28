@@ -42,6 +42,7 @@ const FulfillmentButton: React.FC<{
           details={details}
           isPrimaryAction={isPrimaryAction}
           trackOpenBookUrl={book.trackOpenBookUrl}
+          isAudiobook={book.format === "Audiobook"}
         />
       );
     case "read-online-external":
@@ -50,6 +51,7 @@ const FulfillmentButton: React.FC<{
           details={details}
           isPrimaryAction={isPrimaryAction}
           trackOpenBookUrl={book.trackOpenBookUrl}
+          isAudiobook={book.format === "Audiobook"}
         />
       );
     case "unsupported":
@@ -74,8 +76,9 @@ function getButtonStyles(isPrimaryAction: boolean) {
 const ReadOnlineExternal: React.FC<{
   details: ReadExternalFulfillment;
   isPrimaryAction: boolean;
+  isAudiobook: boolean;
   trackOpenBookUrl: string | null;
-}> = ({ details, isPrimaryAction, trackOpenBookUrl }) => {
+}> = ({ details, isPrimaryAction, trackOpenBookUrl, isAudiobook }) => {
   const { catalogUrl } = useLibraryContext();
   const { token } = useUser();
   const [loading, setLoading] = React.useState(false);
@@ -113,7 +116,7 @@ const ReadOnlineExternal: React.FC<{
         loading={loading}
         loadingText={t("fulfillmentButton.opening")}
       >
-        {t(details.buttonLabel)}
+        {isAudiobook ? t("fulfill.listenOnline") : t(details.buttonLabel)}
       </Button>
       {error && <Text sx={{ color: "ui.error" }}>{error}</Text>}
     </>
@@ -123,8 +126,9 @@ const ReadOnlineExternal: React.FC<{
 const ReadOnlineInternal: React.FC<{
   details: ReadInternalFulfillment;
   trackOpenBookUrl: string | null;
+  isAudiobook: boolean;
   isPrimaryAction: boolean;
-}> = ({ details, isPrimaryAction, trackOpenBookUrl }) => {
+}> = ({ details, isPrimaryAction, trackOpenBookUrl, isAudiobook }) => {
   const router = useRouter();
   const { buildMultiLibraryLink } = useLinkUtils();
 
@@ -137,7 +141,7 @@ const ReadOnlineInternal: React.FC<{
   }
   return (
     <Button {...getButtonStyles(isPrimaryAction)} onClick={open}>
-      {t("fulfillmentButton.read")}
+      {isAudiobook ? t("fulfillmentButton.listen") : t("fulfillmentButton.read")}
     </Button>
   );
 };
