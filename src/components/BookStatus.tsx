@@ -34,6 +34,8 @@ const BookStatus: React.FC<{ book: AnyBook }> = ({ book }) => {
       ? t("bookStatus.reserved")
       : status === "on-hold"
       ? t("bookStatus.readyToBorrow")
+      : status === "fulfillable" && book.format === "Audiobook"
+      ? t("bookStatus.readyToListen", { companionAppPart })
       : status === "fulfillable"
       ? t("bookStatus.readyToRead", { companionAppPart })
       : status === "unavailable"
