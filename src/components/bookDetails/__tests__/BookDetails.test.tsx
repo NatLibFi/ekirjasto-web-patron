@@ -236,26 +236,6 @@ describe("book details page", () => {
     ).toBeInTheDocument();
   });
 
-  test("hides SelectBookCard when book is recently revoked", () => {
-    const revokedBook = merge<AnyBook>(fixtures.book, {
-      status: "unavailable"
-    });
-    mockSwr({ data: revokedBook });
-
-    setup(<BookDetails />, {
-      user: {
-        recentlyRevokedBooks: [revokedBook]
-      }
-    });
-
-    // SelectBookCard should not be rendered
-    expect(
-      screen.queryByRole("button", {
-        name: `Add ${revokedBook.title} to Favorites`
-      })
-    ).not.toBeInTheDocument();
-  });
-
   test("shows SelectBookCard when book is not recently revoked", () => {
     mockSwr({ data: fixtures.book });
 

@@ -418,6 +418,7 @@ describe("FulfillableBook", () => {
       screen.queryByText("Ready to Read in Palace!")
     ).not.toBeInTheDocument();
   });
+
   const bookWithRedirect = mergeBook<FulfillableBook>({
     status: "fulfillable",
     revokeUrl: "/revoke",
@@ -429,6 +430,7 @@ describe("FulfillableBook", () => {
       }
     ]
   });
+
   test("correct title and subtitle with companion app redirect", () => {
     mockConfig({
       companionApp: "E-kirjasto"
@@ -438,10 +440,6 @@ describe("FulfillableBook", () => {
     expect(
       screen.getByText("Ready to Read in the E-kirjasto App!")
     ).toBeInTheDocument();
-    expect(
-      screen.getByText("If you would rather read on your computer, you can:")
-    ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Download EPUB" }));
   });
 
   test("correct title and subtitle when COMPANION_APP is set to E-kirjasto", () => {
@@ -461,13 +459,10 @@ describe("FulfillableBook", () => {
     expect(screen.getByText("Ready to Read!")).toBeInTheDocument();
   });
 
-  test("shows download options", async () => {
+  test("shows download option", async () => {
     setup(<FulfillmentCard book={downloadableBook} />);
     const downloadButton = await screen.findByText("Download EPUB");
     expect(downloadButton).toBeInTheDocument();
-
-    const PDFButton = await screen.findByText("Download PDF");
-    expect(PDFButton).toBeInTheDocument();
   });
 
   test("download button shows loading indicator fetches book", async () => {

@@ -3,37 +3,20 @@
 import { jsx } from "theme-ui";
 import * as React from "react";
 import { truncateString, stripHTML } from "../utils/string";
-import {
-  bookIsBorrowable,
-  bookIsFulfillable,
-  bookIsReservable,
-  bookIsReserved,
-  bookIsOnHold,
-  getAuthors,
-  getSubtitle
-} from "../utils/book";
+import { getAuthors, getSubtitle } from "../utils/book";
 import Lane from "./Lane";
 import Button, { NavButton } from "./Button";
 import LoadingIndicator from "./LoadingIndicator";
 import { H2, Text } from "./Text";
 import BookCover from "./BookCover";
-import BorrowOrReserve from "./BorrowOrReserve";
 import { AnyBook, CollectionData, LaneData } from "interfaces";
 import { fetchCollection } from "dataflow/opds1/fetch";
 import useSWRInfinite from "swr/infinite";
 import useUser from "components/context/UserContext";
+import FulfillmentCard from "./FulfillmentCard";
 import Stack from "components/Stack";
-import CancelOrReturn from "components/CancelOrReturn";
-import FulfillmentButton from "components/FulfillmentButton";
-import {
-  DownloadFulfillment,
-  getFulfillmentFromLink,
-  ReadExternalFulfillment
-} from "utils/fulfill";
-import BookStatus from "components/BookStatus";
 import Link from "./Link";
 import { APP_CONFIG } from "utils/env";
-import SelectBookCard from "./SelectBookCard";
 import { useTranslation, TFunction } from "next-i18next";
 import { useRouter } from "next/router";
 
@@ -197,9 +180,7 @@ export const BookListItem: React.FC<{
             </Text>
           </div>
 
-          <BookStatus book={book} />
-          <BookListCTA book={book} />
-          <SelectBookCard book={book} />
+          <FulfillmentCard book={book} />
           <Description
             book={book}
             sx={{ display: ["none", "none", "block"] }}
@@ -234,101 +215,6 @@ const Description: React.FC<{ book: AnyBook; className?: string }> = ({
       </NavButton>
     </div>
   );
-};
-
-// Render the main action buttons for book list, for example
-// Borrow, Reserve, Download, Read online, Cancel and Return
-//
-// Note: adding or removing book from Favorites is a secondary action
-// and handled separately via SelectBookCard component
-const BookListCTA: React.FC<{ book: AnyBook }> = ({ book }) => {
-  const { t } = useTranslation();
-
-  if (bookIsBorrowable(book)) {
-    return <BorrowOrReserve url={book.borrowUrl} isBorrow />;
-  }
-
-  if (bookIsReservable(book)) {
-    return <BorrowOrReserve url={book.reserveUrl} isBorrow={false} />;
-  }
-
-  if (bookIsOnHold(book)) {
-    return <BorrowOrReserve url={book.borrowUrl} isBorrow />;
-  }
-
-  if (bookIsReserved(book)) {
-    return (
-      <CancelOrReturn
-        url={book.revokeUrl}
-        id={book.id}
-        text={t("bookList.cancelReservation")}
-        loadingText={t("bookList.cancelling")}
-      />
-    );
-  }
-
-  if (bookIsFulfillable(book)) {
-    // E-library has currently two possible fulfillment
-    // options for a book: download and read online.
-    // We show buttons for these options in the book list
-    // if they are available for the book,
-    // as well as the cancel reservation/return book button.
-
-    // first filter the links that should be shown
-    // and then extract Fulfillments from them
-    const showableFulfillments = book.fulfillmentLinks
-      .filter(link => link.supportLevel === "show")
-      .map(getFulfillmentFromLink);
-
-    // find the first fulfillment that is a DownloadFulfillment
-    // that has a type property 'download'
-    const downloadFulfillment = showableFulfillments.find(
-      (fulfillment): fulfillment is DownloadFulfillment =>
-        fulfillment.type === "download"
-    );
-
-    // find the first fulfillment that is a ReadExternalFulfillment
-    // and has a type property 'read-online-external'
-    const readOnlineFulfillment = showableFulfillments.find(
-      (fulfillment): fulfillment is ReadExternalFulfillment =>
-        fulfillment.type === "read-online-external"
-    );
-
-    return (
-      <>
-        {/* first render "Return" book button */}
-        <CancelOrReturn
-          url={book.revokeUrl}
-          loadingText={t("bookList.returning")}
-          id={book.id}
-          text={t("bookList.return")}
-        />
-
-        {/* then render "Download LCP EPUB" button, if available */}
-        {downloadFulfillment && (
-          <FulfillmentButton
-            details={downloadFulfillment}
-            book={book}
-            isPrimaryAction
-          />
-        )}
-
-        {/* render "Read online" button also, if available */}
-        {readOnlineFulfillment && (
-          <FulfillmentButton
-            details={readOnlineFulfillment}
-            book={book}
-            isPrimaryAction
-          />
-        )}
-      </>
-    );
-  }
-
-  // this book is not
-  // borrowable, reservable, on hold, reserved or fulfillable,
-  // so just return null instead of main action buttons
-  return null;
 };
 
 export const LanesView: React.FC<{ lanes: LaneData[] }> = ({ lanes }) => {
