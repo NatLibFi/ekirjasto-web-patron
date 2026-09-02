@@ -3,6 +3,7 @@
   "authenticationHandler.authenticationMethodNotSupported": "Tätä kirjautumistapaa ei tueta.",
   "badges.ariaLabelForAppStoreLink": "Lataa E-kirjasto App Storesta",
   "badges.ariaLabelForGooglePlayLink": "Lataa E-kirjasto Google Playsta",
+  "betaBanner.ariaLabelForCloseButton": "Sulje banneri",
   "betaBanner.hrefInfoAndroid": "https://play.google.com/store/apps/details?id=fi.kansalliskirjasto.ekirjasto&hl=fi",
   "betaBanner.hrefInfoEkirjasto": "https://www.kansalliskirjasto.fi/fi/e-kirjasto/e-kirjasto-kirjasto-aina-mukanasi",
   "betaBanner.hrefInfoIos": "https://apps.apple.com/fi/app/e-kirjasto/id6471490203?l=fi",
