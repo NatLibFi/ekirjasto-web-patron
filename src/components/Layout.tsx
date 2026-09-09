@@ -23,7 +23,7 @@ interface Props {
 const Layout = ({
   children,
   hideFooter = false,
-  bannerInitiallyVisible
+  bannerInitiallyVisible = true
 }: Props) => {
   return (
     <Themed.root
