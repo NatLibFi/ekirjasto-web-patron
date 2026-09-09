@@ -28,7 +28,9 @@ describe("Layout nav + structure", () => {
   });
 
   test("provides a working skip nav link", async () => {
-    const { user } = setup(<Layout bannerInitiallyVisible={false}>Child</Layout>);
+    const { user } = setup(
+      <Layout bannerInitiallyVisible={false}>Child</Layout>
+    );
     const skipNav = screen.getByText("Skip to content").closest("a");
     const main = screen.getByRole("main");
 
