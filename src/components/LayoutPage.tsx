@@ -8,17 +8,19 @@ import { AppProps } from "dataflow/withAppProps";
 type AppPropsWithChildren = AppProps & {
   children?: React.ReactNode;
   hideFooter?: boolean;
+  bannerInitiallyVisible: boolean;
 };
 
 const LayoutPage = ({
   children,
   library,
   error,
-  hideFooter
+  hideFooter,
+  bannerInitiallyVisible
 }: AppPropsWithChildren) => {
   return (
     <Page library={library} error={error}>
-      <Layout hideFooter={hideFooter}>{children}</Layout>
+      <Layout hideFooter={hideFooter} bannerInitiallyVisible={bannerInitiallyVisible}>{children}</Layout>
     </Page>
   );
 };

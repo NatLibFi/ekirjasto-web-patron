@@ -11,9 +11,13 @@ import ApplicationError from "errors";
 import useLogin from "auth/useLogin";
 import AuthenticationHandler from "../../../auth/AuthenticationHandler";
 
-const LoginHandlerPage: NextPage<AppProps> = ({ library, error }) => {
+type PageProps = AppProps & {
+  bannerInitiallyVisible: boolean;
+};
+
+const LoginHandlerPage: NextPage<PageProps> = ({ library, error, bannerInitiallyVisible }) => {
   return (
-    <LayoutPage library={library} error={error}>
+    <LayoutPage library={library} error={error} bannerInitiallyVisible={bannerInitiallyVisible}>
       <LoginWrapper>
         <LoginComponent />
       </LoginWrapper>

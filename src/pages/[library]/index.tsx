@@ -4,9 +4,13 @@ import { NextPage, GetStaticProps, GetStaticPaths } from "next";
 import LayoutPage from "components/LayoutPage";
 import withAppProps, { AppProps } from "dataflow/withAppProps";
 
-const LibraryHome: NextPage<AppProps> = ({ library, error }) => {
+type PageProps = AppProps & {
+  bannerInitiallyVisible: boolean;
+};
+
+const LibraryHome: NextPage<PageProps> = ({ library, error, bannerInitiallyVisible }) => {
   return (
-    <LayoutPage library={library} error={error}>
+    <LayoutPage library={library} error={error} bannerInitiallyVisible={bannerInitiallyVisible}>
       <Collection title={library?.catalogName} />
     </LayoutPage>
   );

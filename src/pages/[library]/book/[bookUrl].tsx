@@ -4,9 +4,13 @@ import withAppProps, { AppProps } from "dataflow/withAppProps";
 import LayoutPage from "components/LayoutPage";
 import { NextPage, GetStaticProps, GetStaticPaths } from "next";
 
-const BookPage: NextPage<AppProps> = ({ library, error }) => {
+type PageProps = AppProps & {
+  bannerInitiallyVisible: boolean;
+};
+
+const BookPage: NextPage<PageProps> = ({ library, error, bannerInitiallyVisible }) => {
   return (
-    <LayoutPage library={library} error={error}>
+    <LayoutPage library={library} error={error} bannerInitiallyVisible={bannerInitiallyVisible}>
       <BookDetails />
     </LayoutPage>
   );

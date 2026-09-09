@@ -17,16 +17,17 @@ export const CONTENT_ID = "cpw-content";
 interface Props {
   children: React.ReactNode;
   hideFooter?: boolean;
+  bannerInitiallyVisible: boolean;
 }
 
-const Layout = ({ children, hideFooter = false }: Props) => {
+const Layout = ({ children, hideFooter = false, bannerInitiallyVisible }: Props) => {
   return (
     <Themed.root
       sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
       <SkipNavigation />
       <GlobalStyles />
-      <BetaBanner sx={{ width: "100%" }} />
+      <BetaBanner sx={{ width: "100%" }} initiallyVisible = {bannerInitiallyVisible} />
       <Header sx={{ width: "100%" }} />
       <main
         id={CONTENT_ID}

@@ -4,6 +4,7 @@
 import { jsx } from "theme-ui";
 import * as React from "react";
 import { H3, Text } from "components/Text";
+import Cookie from "js-cookie";
 import Stack from "components/Stack";
 import { useTranslation } from "next-i18next";
 import ExternalLinkIcon from "icons/ExternalLink";
@@ -20,25 +21,29 @@ const stackStyle = {
 };
 
 interface BetaBannerProps {
-  // no props yet
+  initiallyVisible: boolean;
 }
 
-const BetaBanner: React.FC<BetaBannerProps> = () => {
+const BetaBanner: React.FC<BetaBannerProps> = ({initiallyVisible}) => {
   const { t } = useTranslation();
-  const [isVisible, setIsVisible] = useState(true);
-
-  // Check local storage when the component mounts
-  useEffect(() => {
-    const closedBanner = localStorage.getItem("bannerClosed");
-    if (closedBanner) {
-      setIsVisible(false); // Set it to false if the banner was closed previously
-    }
-  }, []);
+  const [isVisible, setIsVisible] = useState(initiallyVisible);
 
   const handleClose = () => {
-    setIsVisible(false); // Hide the banner
-    localStorage.setItem("bannerClosed", "true"); // Store the info that the banner is closed
+    //Hide the banner
+    setIsVisible(false);
+
+    //Set a cookie that keeps the banner closed
+    Cookie.set("bannerClosed", "true", {
+      expires: 365,
+      path: "/",
+      sameSite: "lax",
+    });
+    
   };
+
+  if (!isVisible) {
+    return null;
+  }
 
   // define info texts for beta banner
   const welcomeText = t("betaBanner.infoWelcome");
@@ -68,8 +73,7 @@ const BetaBanner: React.FC<BetaBannerProps> = () => {
   const hrefForInfoIos = t("betaBanner.hrefInfoIos");
 
   return (
-    <>
-      {isVisible && (
+    
         <Stack direction="column" sx={stackStyle}>
           <H3>{welcomeText}</H3>
           <Button
@@ -128,8 +132,6 @@ const BetaBanner: React.FC<BetaBannerProps> = () => {
             </a>
           </Stack>
         </Stack>
-      )}
-    </>
   );
 };
 
