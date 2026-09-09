@@ -20,7 +20,12 @@ const LayoutPage = ({
 }: AppPropsWithChildren) => {
   return (
     <Page library={library} error={error}>
-      <Layout hideFooter={hideFooter} bannerInitiallyVisible={bannerInitiallyVisible}>{children}</Layout>
+      <Layout
+        hideFooter={hideFooter}
+        bannerInitiallyVisible={bannerInitiallyVisible}
+      >
+        {children}
+      </Layout>
     </Page>
   );
 };

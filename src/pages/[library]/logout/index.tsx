@@ -14,9 +14,17 @@ type PageProps = AppProps & {
   bannerInitiallyVisible: boolean;
 };
 
-const LogoutPage: NextPage<PageProps> = ({ library, error, bannerInitiallyVisible }) => {
+const LogoutPage: NextPage<PageProps> = ({
+  library,
+  error,
+  bannerInitiallyVisible
+}) => {
   return (
-    <LayoutPage library={library} error={error} bannerInitiallyVisible={bannerInitiallyVisible}>
+    <LayoutPage
+      library={library}
+      error={error}
+      bannerInitiallyVisible={bannerInitiallyVisible}
+    >
       <LogoutWrapper>
         <Logout />
       </LogoutWrapper>

@@ -11,9 +11,17 @@ type PageProps = AppProps & {
   bannerInitiallyVisible: boolean;
 };
 
-const LoginPage: NextPage<PageProps> = ({ library, error, bannerInitiallyVisible}) => {
+const LoginPage: NextPage<PageProps> = ({
+  library,
+  error,
+  bannerInitiallyVisible
+}) => {
   return (
-    <LayoutPage library={library} error={error} bannerInitiallyVisible={bannerInitiallyVisible}>
+    <LayoutPage
+      library={library}
+      error={error}
+      bannerInitiallyVisible={bannerInitiallyVisible}
+    >
       <LoginWrapper>
         {APP_CONFIG.openebooks ? <OpenEbooksLoginPicker /> : <Login />}
       </LoginWrapper>

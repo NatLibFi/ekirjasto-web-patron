@@ -28,7 +28,7 @@ type MyAppProps = AppProps & {
 const MyApp = ({
   Component,
   pageProps,
-  bannerInitiallyVisible,
+  bannerInitiallyVisible
 }: MyAppProps) => {
   return (
     <ErrorBoundary>
@@ -60,11 +60,12 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   // If there is no cookie, or some info is missing, the banner should be visible (bannerInitiallyVIsible = true) ,
   // but it should be hidden if there is a cookie and its value is true (bannerInitiallyVIsible = false)
   const bannerInitiallyVisible = req
-    ? parse(req.headers.cookie ?? "").bannerClosed !== "true" : true;
+    ? parse(req.headers.cookie ?? "").bannerClosed !== "true"
+    : true;
 
   return {
     ...appProps,
-    bannerInitiallyVisible,
+    bannerInitiallyVisible
   };
 };
 

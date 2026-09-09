@@ -10,7 +10,7 @@ import { useTranslation } from "next-i18next";
 import ExternalLinkIcon from "icons/ExternalLink";
 import { Icon, IconNames } from "@nypl/design-system-react-components";
 import Button from "components/Button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // define style for the Stack component
 const stackStyle = {
@@ -24,7 +24,7 @@ interface BetaBannerProps {
   initiallyVisible: boolean;
 }
 
-const BetaBanner: React.FC<BetaBannerProps> = ({initiallyVisible}) => {
+const BetaBanner: React.FC<BetaBannerProps> = ({ initiallyVisible }) => {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(initiallyVisible);
 
@@ -36,9 +36,8 @@ const BetaBanner: React.FC<BetaBannerProps> = ({initiallyVisible}) => {
     Cookie.set("bannerClosed", "true", {
       expires: 365,
       path: "/",
-      sameSite: "lax",
+      sameSite: "lax"
     });
-    
   };
 
   if (!isVisible) {
@@ -73,65 +72,60 @@ const BetaBanner: React.FC<BetaBannerProps> = ({initiallyVisible}) => {
   const hrefForInfoIos = t("betaBanner.hrefInfoIos");
 
   return (
-    
-        <Stack direction="column" sx={stackStyle}>
-          <H3>{welcomeText}</H3>
-          <Button
-            variant="ghost"
-            color="ui.gray.dark"
-            onClick={handleClose}
-            sx={{ position: "absolute", top: 2, right: 2 }}
-            aria-label={t("betaBanner.ariaLabelForCloseButton")}
-          >
-            <Icon
-              decorative={false}
-              name={IconNames.close}
-              sx={{ fontSize: 18 }}
-            />
-          </Button>
-          <Text>{infoEbooksAndMagazinesText}</Text>
-          <Text>{infoAudiobooksText}</Text>
-          <Stack direction="row">
-            <a
-              href={hrefForInfoEkirjasto}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={ariaLabelForInfoEkirjasto}
-            >
-              <Text>{ekirjastoText}</Text>
-              <ExternalLinkIcon sx={{ ml: 1, fill: "#0576d3" }} />
-            </a>
-            <a
-              href={hrefForInfoWeb}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={ariaLabelForInfoWeb}
-            >
-              <Text>{webText}</Text>
-              <ExternalLinkIcon sx={{ ml: 1, fill: "#0576d3" }} />
-            </a>
-          </Stack>
-          <Stack direction="row">
-            <a
-              href={hrefForInfoAndroid}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={ariaLabelForInfoAndroid}
-            >
-              <Text>{androidText}</Text>
-              <ExternalLinkIcon sx={{ ml: 1, fill: "#0576d3" }} />
-            </a>
-            <a
-              href={hrefForInfoIos}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={ariaLabelForInfoIos}
-            >
-              <Text>{iosText}</Text>
-              <ExternalLinkIcon sx={{ ml: 1, fill: "#0576d3" }} />
-            </a>
-          </Stack>
-        </Stack>
+    <Stack direction="column" sx={stackStyle}>
+      <H3>{welcomeText}</H3>
+      <Button
+        variant="ghost"
+        color="ui.gray.dark"
+        onClick={handleClose}
+        sx={{ position: "absolute", top: 2, right: 2 }}
+        aria-label={t("betaBanner.ariaLabelForCloseButton")}
+      >
+        <Icon decorative={false} name={IconNames.close} sx={{ fontSize: 18 }} />
+      </Button>
+      <Text>{infoEbooksAndMagazinesText}</Text>
+      <Text>{infoAudiobooksText}</Text>
+      <Stack direction="row">
+        <a
+          href={hrefForInfoEkirjasto}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={ariaLabelForInfoEkirjasto}
+        >
+          <Text>{ekirjastoText}</Text>
+          <ExternalLinkIcon sx={{ ml: 1, fill: "#0576d3" }} />
+        </a>
+        <a
+          href={hrefForInfoWeb}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={ariaLabelForInfoWeb}
+        >
+          <Text>{webText}</Text>
+          <ExternalLinkIcon sx={{ ml: 1, fill: "#0576d3" }} />
+        </a>
+      </Stack>
+      <Stack direction="row">
+        <a
+          href={hrefForInfoAndroid}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={ariaLabelForInfoAndroid}
+        >
+          <Text>{androidText}</Text>
+          <ExternalLinkIcon sx={{ ml: 1, fill: "#0576d3" }} />
+        </a>
+        <a
+          href={hrefForInfoIos}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={ariaLabelForInfoIos}
+        >
+          <Text>{iosText}</Text>
+          <ExternalLinkIcon sx={{ ml: 1, fill: "#0576d3" }} />
+        </a>
+      </Stack>
+    </Stack>
   );
 };
 

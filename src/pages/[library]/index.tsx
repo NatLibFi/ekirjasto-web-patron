@@ -8,9 +8,17 @@ type PageProps = AppProps & {
   bannerInitiallyVisible: boolean;
 };
 
-const LibraryHome: NextPage<PageProps> = ({ library, error, bannerInitiallyVisible }) => {
+const LibraryHome: NextPage<PageProps> = ({
+  library,
+  error,
+  bannerInitiallyVisible
+}) => {
   return (
-    <LayoutPage library={library} error={error} bannerInitiallyVisible={bannerInitiallyVisible}>
+    <LayoutPage
+      library={library}
+      error={error}
+      bannerInitiallyVisible={bannerInitiallyVisible}
+    >
       <Collection title={library?.catalogName} />
     </LayoutPage>
   );

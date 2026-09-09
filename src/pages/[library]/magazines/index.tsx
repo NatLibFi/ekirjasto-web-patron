@@ -152,10 +152,19 @@ type PageProps = AppProps & {
   bannerInitiallyVisible: boolean;
 };
 
-const MagazinesFixedPage: NextPage<PageProps> = ({ library, error, bannerInitiallyVisible }) => {
+const MagazinesFixedPage: NextPage<PageProps> = ({
+  library,
+  error,
+  bannerInitiallyVisible
+}) => {
   const { t } = useTranslation();
   return (
-    <LayoutPage library={library} error={error} hideFooter bannerInitiallyVisible={bannerInitiallyVisible}>
+    <LayoutPage
+      library={library}
+      error={error}
+      hideFooter
+      bannerInitiallyVisible={bannerInitiallyVisible}
+    >
       <>
         <Head>
           <title>{t("magazines.HTMLtitleForMagazines")}</title>
