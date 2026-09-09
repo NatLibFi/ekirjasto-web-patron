@@ -4,7 +4,7 @@ import Layout from "../Layout";
 
 describe("Layout nav + structure", () => {
   test("Library icon button navigates home", () => {
-    setup(<Layout>Child</Layout>);
+    setup(<Layout bannerInitiallyVisible={false}>Child</Layout>);
     const homeButton = screen.getByLabelText("Back to homepage");
 
     // the home button should navigate to "/"
@@ -12,7 +12,7 @@ describe("Layout nav + structure", () => {
   });
 
   test("my books navigates to /loans", () => {
-    const utils = setup(<Layout>Child</Layout>, {
+    const utils = setup(<Layout bannerInitiallyVisible={false}>Child</Layout>, {
       user: {
         isAuthenticated: true
       }
@@ -22,13 +22,15 @@ describe("Layout nav + structure", () => {
   });
 
   test("displays children within main", () => {
-    setup(<Layout>Some children</Layout>);
+    setup(<Layout bannerInitiallyVisible={false}>Some children</Layout>);
     const main = screen.getByRole("main");
     expect(main).toHaveTextContent("Some children");
   });
 
   test("provides a working skip nav link", async () => {
-    const { user } = setup(<Layout>Child</Layout>);
+    const { user } = setup(
+      <Layout bannerInitiallyVisible={false}>Child</Layout>
+    );
     const skipNav = screen.getByText("Skip to content").closest("a");
     const main = screen.getByRole("main");
 
@@ -41,7 +43,7 @@ describe("Layout nav + structure", () => {
   });
 
   test("provides global styles", () => {
-    setup(<Layout>Some children</Layout>);
+    setup(<Layout bannerInitiallyVisible={false}>Some children</Layout>);
     expect(document.body).toHaveStyle("margin: 0;");
   });
 });

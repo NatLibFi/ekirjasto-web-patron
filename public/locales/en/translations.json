@@ -3,6 +3,7 @@
   "authenticationHandler.authenticationMethodNotSupported": "This authentication method is not supported.",
   "badges.ariaLabelForAppStoreLink": "Download E-library on the App Store",
   "badges.ariaLabelForGooglePlayLink": "Get E-library on Google Play",
+  "betaBanner.ariaLabelForCloseButton": "Close banner",
   "betaBanner.hrefInfoAndroid": "https://play.google.com/store/apps/details?id=fi.kansalliskirjasto.ekirjasto",
   "betaBanner.hrefInfoEkirjasto": "https://www.kansalliskirjasto.fi/en/e-library/e-library-always-you",
   "betaBanner.hrefInfoIos": "https://apps.apple.com/fi/app/e-kirjasto/id6471490203",

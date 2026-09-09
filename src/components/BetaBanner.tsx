@@ -4,9 +4,13 @@
 import { jsx } from "theme-ui";
 import * as React from "react";
 import { H3, Text } from "components/Text";
+import Cookie from "js-cookie";
 import Stack from "components/Stack";
 import { useTranslation } from "next-i18next";
 import ExternalLinkIcon from "icons/ExternalLink";
+import { Icon, IconNames } from "@nypl/design-system-react-components";
+import Button from "components/Button";
+import { useState } from "react";
 
 // define style for the Stack component
 const stackStyle = {
@@ -16,13 +20,29 @@ const stackStyle = {
   padding: 3
 };
 
-// define props for the BookPassphraseCopyButton component
 interface BetaBannerProps {
-  // no props yet
+  initiallyVisible: boolean;
 }
 
-const BetaBanner: React.FC<BetaBannerProps> = () => {
+const BetaBanner: React.FC<BetaBannerProps> = ({ initiallyVisible }) => {
   const { t } = useTranslation();
+  const [isVisible, setIsVisible] = useState(initiallyVisible);
+
+  const handleClose = () => {
+    //Hide the banner
+    setIsVisible(false);
+
+    //Set a cookie that keeps the banner closed
+    Cookie.set("bannerClosed", "true", {
+      expires: 365,
+      path: "/",
+      sameSite: "lax"
+    });
+  };
+
+  if (!isVisible) {
+    return null;
+  }
 
   // define info texts for beta banner
   const welcomeText = t("betaBanner.infoWelcome");
@@ -54,6 +74,15 @@ const BetaBanner: React.FC<BetaBannerProps> = () => {
   return (
     <Stack direction="column" sx={stackStyle}>
       <H3>{welcomeText}</H3>
+      <Button
+        variant="ghost"
+        color="ui.gray.dark"
+        onClick={handleClose}
+        sx={{ position: "absolute", top: 2, right: 2 }}
+        aria-label={t("betaBanner.ariaLabelForCloseButton")}
+      >
+        <Icon decorative={false} name={IconNames.close} sx={{ fontSize: 18 }} />
+      </Button>
       <Text>{infoEbooksAndMagazinesText}</Text>
       <Text>{infoAudiobooksText}</Text>
       <Stack direction="row">

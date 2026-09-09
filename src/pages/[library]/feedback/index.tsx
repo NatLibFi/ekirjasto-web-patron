@@ -10,7 +10,12 @@ const FeedbackPage: NextPage<AppProps> = ({ library, error }) => {
   const { t } = useTranslation();
   // The footer is hidden.
   return (
-    <LayoutPage library={library} error={error} hideFooter={true}>
+    <LayoutPage
+      library={library}
+      error={error}
+      hideFooter={true}
+      bannerInitiallyVisible={false}
+    >
       <BreadcrumbBar currentLocation={t("feedback.title")} />
       <Feedback />
     </LayoutPage>

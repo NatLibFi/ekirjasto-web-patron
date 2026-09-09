@@ -9,7 +9,7 @@ const StatisticsPage: NextPage<AppProps> = ({ library, error }) => {
   const { t } = useTranslation();
 
   return (
-    <LayoutPage library={library} error={error}>
+    <LayoutPage library={library} error={error} bannerInitiallyVisible={false}>
       <Head>
         <meta name="robots" content="noindex" />
       </Head>

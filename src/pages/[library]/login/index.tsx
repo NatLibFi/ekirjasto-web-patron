@@ -7,9 +7,21 @@ import Login from "auth/Login";
 import OpenEbooksLoginPicker from "auth/OpenEbooksLoginPicker";
 import { APP_CONFIG } from "utils/env";
 
-const LoginPage: NextPage<AppProps> = ({ library, error }) => {
+type PageProps = AppProps & {
+  bannerInitiallyVisible: boolean;
+};
+
+const LoginPage: NextPage<PageProps> = ({
+  library,
+  error,
+  bannerInitiallyVisible
+}) => {
   return (
-    <LayoutPage library={library} error={error}>
+    <LayoutPage
+      library={library}
+      error={error}
+      bannerInitiallyVisible={bannerInitiallyVisible}
+    >
       <LoginWrapper>
         {APP_CONFIG.openebooks ? <OpenEbooksLoginPicker /> : <Login />}
       </LoginWrapper>

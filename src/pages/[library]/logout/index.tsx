@@ -10,9 +10,21 @@ import LayoutPage from "components/LayoutPage";
 import withAppProps, { AppProps } from "dataflow/withAppProps";
 import Logout from "auth/Logout";
 
-const LogoutPage: NextPage<AppProps> = ({ library, error }) => {
+type PageProps = AppProps & {
+  bannerInitiallyVisible: boolean;
+};
+
+const LogoutPage: NextPage<PageProps> = ({
+  library,
+  error,
+  bannerInitiallyVisible
+}) => {
   return (
-    <LayoutPage library={library} error={error}>
+    <LayoutPage
+      library={library}
+      error={error}
+      bannerInitiallyVisible={bannerInitiallyVisible}
+    >
       <LogoutWrapper>
         <Logout />
       </LogoutWrapper>
