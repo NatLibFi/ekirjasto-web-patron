@@ -57,6 +57,10 @@ const BetaBanner: React.FC<BetaBannerProps> = () => {
   const hrefForInfoAndroid = t("betaBanner.hrefInfoAndroid");
   const hrefForInfoIos = t("betaBanner.hrefInfoIos");
 
+  // do not render the banner if not needed
+  if (!isMounted) return null;
+  if (!isVisible) return null;
+
   return (
     <Stack direction="column" sx={stackStyle}>
       <H3>{welcomeText}</H3>
