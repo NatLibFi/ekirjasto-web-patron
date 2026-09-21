@@ -3,6 +3,7 @@
   "authenticationHandler.authenticationMethodNotSupported": "Denna autentiseringsmetod stöds inte.",
   "badges.ariaLabelForAppStoreLink": "Hämta E-biblioteket i App Store",
   "badges.ariaLabelForGooglePlayLink": "Ladda E-biblioteket ned på Google Play",
+  "betaBanner.ariaLabelForCloseButton": "Stäng banner",
   "betaBanner.hrefInfoAndroid": "https://play.google.com/store/apps/details?id=fi.kansalliskirjasto.ekirjasto&hl=sv",
   "betaBanner.hrefInfoEkirjasto": "https://www.kansalliskirjasto.fi/sv/e-biblioteket/e-biblioteket-alltid-med-dig",
   "betaBanner.hrefInfoIos": "https://apps.apple.com/fi/app/e-kirjasto/id6471490203?l=fi",
