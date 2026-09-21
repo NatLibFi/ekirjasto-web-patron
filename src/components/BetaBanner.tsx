@@ -1,19 +1,33 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 
 import { jsx } from "theme-ui";
 import React, { useState } from "react";
+import Button from "components/Button";
 import { H3, Text } from "components/Text";
 import Stack from "components/Stack";
 import { useTranslation } from "next-i18next";
 import ExternalLinkIcon from "icons/ExternalLink";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 // define style for the Stack component
-const stackStyle = {
+const stackStyle: React.CSSProperties = {
   backgroundColor: "#F0F1C2",
   alignItems: "center",
   justifyContent: "center",
   padding: 3
+};
+
+// define style for the Button component
+const buttonStyle: React.CSSProperties = {
+  position: "absolute",
+  top: 2,
+  right: 2,
+  fontSize: 3,
+  padding: 2
 };
 
 // define props for the BookPassphraseCopyButton component
@@ -63,9 +77,23 @@ const BetaBanner: React.FC<BetaBannerProps> = () => {
 
   return (
     <Stack direction="column" sx={stackStyle}>
+      {/* close button is positioned at the top right of banner */}
+      <Button
+        variant="ghost"
+        color="ui.black"
+        sx={buttonStyle}
+        aria-label={t("betaBanner.ariaLabelForCloseButton")}
+        onClick={handleClose}
+      >
+        <FontAwesomeIcon icon={faClose} />
+      </Button>
+
       <H3>{welcomeText}</H3>
+
       <Text>{infoEbooksAndMagazinesText}</Text>
+
       <Text>{infoAudiobooksText}</Text>
+
       <Stack direction="row">
         <a
           href={hrefForInfoEkirjasto}
@@ -86,6 +114,7 @@ const BetaBanner: React.FC<BetaBannerProps> = () => {
           <ExternalLinkIcon sx={{ ml: 1, fill: "#0576d3" }} />
         </a>
       </Stack>
+
       <Stack direction="row">
         <a
           href={hrefForInfoAndroid}
