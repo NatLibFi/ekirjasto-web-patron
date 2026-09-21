@@ -4,7 +4,7 @@
 // @ts-nocheck
 
 import { jsx } from "theme-ui";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Button from "components/Button";
 import { H3, Text } from "components/Text";
 import Stack from "components/Stack";
@@ -29,6 +29,9 @@ const buttonStyle: React.CSSProperties = {
   fontSize: 3,
   padding: 2
 };
+
+// define key name for browser session storage
+const STORAGE_KEY = "beta-banner-closed";
 
 // define props for the BookPassphraseCopyButton component
 interface BetaBannerProps {
@@ -70,6 +73,47 @@ const BetaBanner: React.FC<BetaBannerProps> = () => {
   const hrefForInfoWeb = t("betaBanner.hrefInfoWeb");
   const hrefForInfoAndroid = t("betaBanner.hrefInfoAndroid");
   const hrefForInfoIos = t("betaBanner.hrefInfoIos");
+
+  // function that is used when component mounts
+  useEffect(() => {
+    // set as mounted to allow rendering
+    setIsMounted(true);
+
+    // try to read sessionStorage safely to decide if banner should be shown
+    try {
+      if (typeof window !== "undefined" && window.sessionStorage) {
+        // read the value from browser session storage,
+        // user has closed the banner if key value is true
+        const closed = window.sessionStorage.getItem(STORAGE_KEY) === "true";
+
+        if (!closed) {
+          // because user has not closed the banner we should show it
+          setIsVisible(true);
+        }
+      } else {
+        // if sessionStorage is unavailable, just hide the banner
+        setIsVisible(false);
+      }
+    } catch (e) {
+      // if there is an error, just hide the banner
+      setIsVisible(false);
+    }
+  }, []);
+
+  // function that handles user closing the banner
+  const handleClose = useCallback(() => {
+    // try to read sessionStorage safely
+    try {
+      if (typeof window !== "undefined" && window.sessionStorage) {
+        // save the state to browser's session storage with key
+        window.sessionStorage.setItem(STORAGE_KEY, "true");
+      }
+    } catch (e) {
+      // do nothing
+    }
+    // banner is now hidden
+    setIsVisible(false);
+  }, []);
 
   // do not render the banner if not needed
   if (!isMounted) return null;
