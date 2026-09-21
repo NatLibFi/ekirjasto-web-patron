@@ -33,12 +33,7 @@ const buttonStyle: React.CSSProperties = {
 // define key name for browser session storage
 const STORAGE_KEY = "beta-banner-closed";
 
-// define props for the BookPassphraseCopyButton component
-interface BetaBannerProps {
-  // no props yet
-}
-
-const BetaBanner: React.FC<BetaBannerProps> = () => {
+const BetaBanner: React.FC = () => {
   const { t } = useTranslation();
 
   // define state for banner visibility, set default state as false
