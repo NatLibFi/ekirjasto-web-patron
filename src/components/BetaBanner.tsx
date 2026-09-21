@@ -2,7 +2,7 @@
 /** @jsx jsx */
 
 import { jsx } from "theme-ui";
-import * as React from "react";
+import React, { useState } from "react";
 import { H3, Text } from "components/Text";
 import Stack from "components/Stack";
 import { useTranslation } from "next-i18next";
@@ -23,6 +23,12 @@ interface BetaBannerProps {
 
 const BetaBanner: React.FC<BetaBannerProps> = () => {
   const { t } = useTranslation();
+
+  // define state for banner visibility, set default state as false
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+
+  // define state for client mounting, set default state as false
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
   // define info texts for beta banner
   const welcomeText = t("betaBanner.infoWelcome");
