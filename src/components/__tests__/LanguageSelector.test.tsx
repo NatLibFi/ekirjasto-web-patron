@@ -58,30 +58,24 @@ describe("LanguageSelector", () => {
     "should show correct aria-label when locale is %s",
     (locale, ariaLabel) => {
       setup(locale);
-      // stack should have correct translated aria-label
-      expect(screen.getByRole("group")).toHaveAttribute(
+      // The select should have a translated accessible label.
+      expect(screen.getByRole("combobox")).toHaveAttribute(
         "aria-label",
         ariaLabel
       );
     }
   );
 
-  it("should render language buttons", () => {
+  it("should list Finnish first, followed by Swedish and English", () => {
     setup("fi");
-    const buttons = screen.getAllByRole("button");
+    const options = screen.getAllByRole("option");
 
-    // there should be exactly three buttons
-    expect(buttons).toHaveLength(3);
-
-    // there should be a FI, SV and EN button
-    expect(screen.getByText("FI")).toBeInTheDocument();
-    expect(screen.getByText("SV")).toBeInTheDocument();
-    expect(screen.getByText("EN")).toBeInTheDocument();
-
-    // the order of buttons should be FI, SV, EN
-    expect(buttons[0]).toHaveTextContent("FI");
-    expect(buttons[1]).toHaveTextContent("SV");
-    expect(buttons[2]).toHaveTextContent("EN");
+    expect(options).toHaveLength(3);
+    expect(options.map(option => option.getAttribute("value"))).toEqual([
+      "fi",
+      "sv",
+      "en"
+    ]);
   });
 
   // define test case table
@@ -92,14 +86,14 @@ describe("LanguageSelector", () => {
     ${"sv"} | ${["Finska", "Svenska", "Engelska"]}
     ${"en"} | ${["Finnish", "Swedish", "English"]}
   `(
-    "should render correct accessible names for button in $langCode",
+    "should render correct option names in $locale",
     ({ locale, ariaLabels }) => {
       setup(locale);
 
       ariaLabels.forEach(ariaLabel =>
-        // each button should have translated aria-labels
+        // Each option should have a translated name.
         expect(
-          screen.getByRole("button", { name: ariaLabel })
+          screen.getByRole("option", { name: ariaLabel })
         ).toBeInTheDocument()
       );
     }
@@ -108,16 +102,15 @@ describe("LanguageSelector", () => {
   it("should select the current language", () => {
     setup("sv");
 
-    // SV button should be selected
-    expect(screen.getByText("FI")).not.toHaveAttribute("aria-current");
-    expect(screen.getByText("SV")).toHaveAttribute("aria-current", "true");
-    expect(screen.getByText("EN")).not.toHaveAttribute("aria-current");
+    expect(screen.getByRole("combobox")).toHaveValue("sv");
   });
 
   it("should call router.push with correct locale when changing language", () => {
     const { push } = setup("fi");
 
-    fireEvent.click(screen.getByText("SV"));
+    fireEvent.change(screen.getByRole("combobox"), {
+      target: { value: "sv" }
+    });
 
     // should call router.push with Swedish
     expect(push).toHaveBeenCalledWith("/test", "/test", {
@@ -125,10 +118,12 @@ describe("LanguageSelector", () => {
     });
   });
 
-  it("should not call router.push when clicking the current language", () => {
+  it("should not call router.push when selecting the current language", () => {
     const { push } = setup("sv");
 
-    fireEvent.click(screen.getByText("SV"));
+    fireEvent.change(screen.getByRole("combobox"), {
+      target: { value: "sv" }
+    });
 
     // should not call router.push because Swedish is already locale
     expect(push).not.toHaveBeenCalled();
@@ -139,7 +134,7 @@ describe("LanguageSelector", () => {
     setup("de");
 
     // should not find language selector
-    expect(screen.queryByRole("group")).not.toBeInTheDocument();
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
   });
 
   it("should not render selector if router is not ready", () => {
@@ -147,6 +142,6 @@ describe("LanguageSelector", () => {
     setup("fi", false);
 
     // should not find language selector
-    expect(screen.queryByRole("group")).not.toBeInTheDocument();
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
   });
 });

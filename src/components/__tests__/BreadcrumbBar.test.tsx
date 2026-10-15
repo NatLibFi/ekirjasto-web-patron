@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render } from "test-utils";
+import { render, fireEvent } from "test-utils";
 import BreadcrumbBar from "../BreadcrumbBar";
 
 // we make this a function because the breadcrumbs bar pops the last
@@ -61,4 +61,42 @@ test("renders children", () => {
     </BreadcrumbBar>
   );
   expect(utils.getByText("Hi Im here")).toBeInTheDocument();
+});
+
+test("dismisses the notice without hiding the breadcrumbs", () => {
+  const utils = render(<BreadcrumbBar currentLocation="Current page" />, {
+    library: { serviceAlert: { enabled: true } }
+  });
+
+  expect(utils.getByRole("status")).toHaveTextContent(
+    "Dismissible E-library service disruption notice"
+  );
+  fireEvent.click(utils.getByRole("button", { name: "Dismiss notice" }));
+
+  expect(utils.queryByRole("status")).not.toBeInTheDocument();
+  expect(utils.getByText("Current page")).toBeInTheDocument();
+});
+
+test.each([
+  [undefined, "Dismissible E-library service disruption notice"],
+  [{ enabled: false, message: "Test notice" }, "Test notice"]
+])(
+  "shows the service alert for testing regardless of the setting: %p",
+  (serviceAlert, expected) => {
+    const utils = render(<BreadcrumbBar />, { library: { serviceAlert } });
+    expect(utils.getByRole("status")).toHaveTextContent(expected);
+  }
+);
+
+test.each([
+  ["Service unavailable", "Service unavailable"],
+  [{ en: "English notice", fi: "Finnish notice" }, "English notice"],
+  [{ fi: "Finnish notice" }, "Dismissible E-library service disruption notice"],
+  ["   ", "Dismissible E-library service disruption notice"]
+])("uses the configured message or fallback: %p", (message, expected) => {
+  const utils = render(<BreadcrumbBar />, {
+    router: { locale: "en" },
+    library: { serviceAlert: { enabled: true, message } }
+  });
+  expect(utils.getByRole("status")).toHaveTextContent(expected);
 });

@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import type { AppLocale } from "../../appLocales";
 
 /**
  * Typings for OPDS 1.2. This is a working document and it
@@ -264,7 +265,13 @@ export interface Announcement {
   content: string;
 }
 
+export interface ServiceAlertConfig {
+  enabled: boolean;
+  message?: string | Partial<Record<AppLocale, string>>;
+}
+
 export interface AuthDocument {
+  serviceAlert?: ServiceAlertConfig;
   id: string;
   title: string;
   // used to display text prompt to authenticating user

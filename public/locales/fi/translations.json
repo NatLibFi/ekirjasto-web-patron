@@ -1,4 +1,6 @@
 {
+  "alertBar.close": "Sulje ilmoitus",
+  "alertBar.message": "E-kirjaston pois ruksittava häiriöviesti",
   "auth.unauthorizedMessage": "Kirjaudu sisään nähdäksesi tämän sivun",
   "authenticationHandler.authenticationMethodNotSupported": "Tätä kirjautumistapaa ei tueta.",
   "badges.ariaLabelForAppStoreLink": "Lataa E-kirjasto App Storesta",
@@ -150,8 +152,10 @@
   "fulfillmentButton.opening": "Avataan...",
   "fulfillmentButton.read": "Lue",
   "header.ariaLabelForLibraryCatalogLink": "Takaisin etusivulle",
+  "header.labelForAboutButton": "Tietoa",
   "header.labelForHelpButton": "Info",
   "header.labelForHome": "Etusivu",
+  "header.labelForInstructionsButton": "Käyttöohje",
   "header.labelForMagazinesButton": "Lehdet",
   "header.labelForMagazinesPreviewButton": "Lehdet",
   "header.labelForMyBooksButton": "Kirjani",

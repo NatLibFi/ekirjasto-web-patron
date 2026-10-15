@@ -112,6 +112,18 @@ describe("fetchAuthDocument", () => {
 });
 
 describe("buildLibraryData", () => {
+  test.each([true, false])(
+    "preserves service alert settings when enabled is %p",
+    enabled => {
+      const serviceAlert = { enabled, message: { fi: "Test notice" } };
+      const library = buildLibraryData(
+        { ...fixtures.authDoc, serviceAlert },
+        "librarySlug"
+      );
+      expect(library.serviceAlert).toEqual(serviceAlert);
+    }
+  );
+
   test("returns correct response", () => {
     const library = buildLibraryData(fixtures.authDoc, "librarySlug");
     expect(library).toEqual({

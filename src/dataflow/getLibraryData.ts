@@ -91,6 +91,7 @@ export function buildLibraryData(
   const feedbackUrl = authDoc.links?.find(link => link.rel === "feedback")
     ?.href;
   return {
+    ...(authDoc.serviceAlert ? { serviceAlert: authDoc.serviceAlert } : {}),
     slug: librarySlug,
     catalogUrl,
     shelfUrl: shelfUrl ?? null,
