@@ -65,38 +65,53 @@ test("renders children", () => {
 
 test("dismisses the notice without hiding the breadcrumbs", () => {
   const utils = render(<BreadcrumbBar currentLocation="Current page" />, {
-    library: { serviceAlert: { enabled: true } }
+    library: {
+      serviceAlert: { enabled: true, message: { en: "Test service notice" } }
+    }
   });
 
-  expect(utils.getByRole("status")).toHaveTextContent(
-    "Dismissible E-library service disruption notice"
-  );
+  expect(utils.getByRole("status")).toHaveTextContent("Test service notice");
   fireEvent.click(utils.getByRole("button", { name: "Dismiss notice" }));
 
   expect(utils.queryByRole("status")).not.toBeInTheDocument();
   expect(utils.getByText("Current page")).toBeInTheDocument();
 });
 
+test("does not show an alert when no message is configured", () => {
+  const utils = render(<BreadcrumbBar />);
+  expect(utils.queryByRole("status")).not.toBeInTheDocument();
+});
+
+test("shows a configured alert message even if the enabled flag is false", () => {
+  const utils = render(<BreadcrumbBar />, {
+    library: {
+      serviceAlert: { enabled: false, message: { en: "Test notice" } }
+    }
+  });
+  expect(utils.getByRole("status")).toHaveTextContent("Test notice");
+});
+
 test.each([
-  [undefined, "Dismissible E-library service disruption notice"],
-  [{ enabled: false, message: "Test notice" }, "Test notice"]
+  ["Service unavailable", "Service unavailable"],
+  [{ en: "English notice", fi: "Finnish notice" }, "English notice"]
 ])(
-  "shows the service alert for testing regardless of the setting: %p",
-  (serviceAlert, expected) => {
-    const utils = render(<BreadcrumbBar />, { library: { serviceAlert } });
+  "uses the configured message for the current locale: %p",
+  (message, expected) => {
+    const utils = render(<BreadcrumbBar />, {
+      router: { locale: "en" },
+      library: { serviceAlert: { enabled: true, message } }
+    });
     expect(utils.getByRole("status")).toHaveTextContent(expected);
   }
 );
 
-test.each([
-  ["Service unavailable", "Service unavailable"],
-  [{ en: "English notice", fi: "Finnish notice" }, "English notice"],
-  [{ fi: "Finnish notice" }, "Dismissible E-library service disruption notice"],
-  ["   ", "Dismissible E-library service disruption notice"]
-])("uses the configured message or fallback: %p", (message, expected) => {
-  const utils = render(<BreadcrumbBar />, {
-    router: { locale: "en" },
-    library: { serviceAlert: { enabled: true, message } }
-  });
-  expect(utils.getByRole("status")).toHaveTextContent(expected);
-});
+test.each([{ fi: "Finnish notice" }, "   "])(
+  "does not show the alert when the current locale has no message: %p",
+  message => {
+    const utils = render(<BreadcrumbBar />, {
+      router: { locale: "en" },
+      library: { serviceAlert: { enabled: true, message } }
+    });
+    expect(utils.queryByRole("status")).not.toBeInTheDocument();
+  }
+);

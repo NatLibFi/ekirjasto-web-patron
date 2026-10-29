@@ -51,7 +51,9 @@ const AlertBar: React.FC<AlertBarProps> = ({ children, backgroundColor }) => {
       >
         {children}
       </div>
-      <div sx={{ display: "flex", alignItems: "center", gap: 3, flexShrink: 0 }}>
+      <div
+        sx={{ display: "flex", alignItems: "center", gap: 3, flexShrink: 0 }}
+      >
         <button
           type="button"
           aria-expanded={isExpanded}

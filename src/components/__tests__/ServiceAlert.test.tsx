@@ -20,9 +20,10 @@ test("renders, expands, and closes the configured service alert", () => {
   expect(status).toBeInTheDocument();
   expect(status).toHaveTextContent("Service update");
   expect(status).toHaveTextContent("Read more information.");
-  expect(
-    utils.getByRole("link", { name: "more information" })
-  ).toHaveAttribute("href", "https://example.com");
+  expect(utils.getByRole("link", { name: "more information" })).toHaveAttribute(
+    "href",
+    "https://example.com"
+  );
 
   const expandButton = utils.getByRole("button", { name: "Expand" });
   expect(expandButton).toHaveAttribute("aria-expanded", "false");

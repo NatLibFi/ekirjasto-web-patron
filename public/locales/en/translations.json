@@ -1,7 +1,7 @@
 {
   "alertBar.close": "Dismiss notice",
-  "alertBar.expand": "Expand",
   "alertBar.collapse": "Hide service notice",
+  "alertBar.expand": "Expand",
   "alertBar.message": "Dismissible E-library service disruption notice",
   "auth.unauthorizedMessage": "You need to be signed in to view this page.",
   "authenticationHandler.authenticationMethodNotSupported": "This authentication method is not supported.",

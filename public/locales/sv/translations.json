@@ -1,7 +1,7 @@
 {
   "alertBar.close": "Stäng meddelandet",
-  "alertBar.expand": "Visa mer",
   "alertBar.collapse": "Dölj driftmeddelandet",
+  "alertBar.expand": "Visa mer",
   "alertBar.message": "Stängbart meddelande om driftstörning i E-biblioteket",
   "auth.unauthorizedMessage": "Du måste logga in för att se den här sidan",
   "authenticationHandler.authenticationMethodNotSupported": "Denna autentiseringsmetod stöds inte.",
