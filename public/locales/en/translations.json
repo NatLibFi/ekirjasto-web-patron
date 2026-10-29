@@ -1,5 +1,7 @@
 {
   "alertBar.close": "Dismiss notice",
+  "alertBar.expand": "Expand",
+  "alertBar.collapse": "Hide service notice",
   "alertBar.message": "Dismissible E-library service disruption notice",
   "auth.unauthorizedMessage": "You need to be signed in to view this page.",
   "authenticationHandler.authenticationMethodNotSupported": "This authentication method is not supported.",
@@ -117,7 +119,7 @@
   "footer.accessibilityStatement": "Accessibility Statement",
   "footer.appDescription": "Read e-books and magazines, and listen to audiobooks on your phone or tablet! Download the E-library app from your mobile device’s app store.",
   "footer.collectionPolicy": "Collection Policy",
-  "footer.downloadEkirjasto": "Download the E-library app!",
+  "footer.downloadEkirjasto": "Download from the app store",
   "footer.faq": "Frequently Asked Questions",
   "footer.feedback": "Feedback",
   "footer.forLibrarians": "More info for library professionals",

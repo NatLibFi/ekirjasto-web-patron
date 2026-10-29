@@ -1,5 +1,7 @@
 {
   "alertBar.close": "Sulje ilmoitus",
+  "alertBar.expand": "Laajenna",
+  "alertBar.collapse": "Pienennä",
   "alertBar.message": "E-kirjaston pois ruksittava häiriöviesti",
   "auth.unauthorizedMessage": "Kirjaudu sisään nähdäksesi tämän sivun",
   "authenticationHandler.authenticationMethodNotSupported": "Tätä kirjautumistapaa ei tueta.",
@@ -117,7 +119,7 @@
   "footer.accessibilityStatement": "Saavutettavuusseloste",
   "footer.appDescription": "Lue e-kirjoja ja lehtiä sekä kuuntele äänikirjoja puhelimellasi tai tabletillasi! Lataa E-kirjasto-sovellus mobiililaitteesi sovelluskaupasta.",
   "footer.collectionPolicy": "Kokoelmapolitiikka",
-  "footer.downloadEkirjasto": "Lataa E-kirjasto-sovellus!",
+  "footer.downloadEkirjasto": "Lataa sovelluskaupasta",
   "footer.faq": "UKK",
   "footer.feedback": "Palaute",
   "footer.forLibrarians": "Kirjastoammattilaisille",

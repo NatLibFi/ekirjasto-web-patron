@@ -35,6 +35,7 @@ const BreadcrumbBar: React.FC<{
 
   return (
     <>
+      <ServiceAlert />
       <div
         className={className}
         sx={{
@@ -76,7 +77,6 @@ const BreadcrumbBar: React.FC<{
         </List>
         {children}
       </div>
-      <ServiceAlert />
     </>
   );
 };
