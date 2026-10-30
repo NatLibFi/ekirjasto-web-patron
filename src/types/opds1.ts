@@ -183,7 +183,10 @@ type AuthDocLinkRelations =
   | "invite"
   | "passkey_register_start"
   | "passkey_register_finish"
-  | "feedback";
+  | "feedback"
+  | "content"
+  | "news"
+  | "faq";
 
 export interface AuthDocumentLink extends Link {
   rel: AuthDocLinkRelations;

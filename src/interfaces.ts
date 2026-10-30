@@ -132,6 +132,24 @@ export interface LibraryData {
   shelfUrl: string | null;
   selectedUrl: string | null;
   feedbackUrl: string | null;
+  editorialContentLinks?: {
+    news?: OPDS1.Link;
+    faq?: OPDS1.Link;
+  };
+}
+
+export interface EditorialItem {
+  id: string;
+  group_id: string;
+  type: "news" | "faq";
+  title: string;
+  intro_html: string;
+  body_html: string;
+  language: string;
+  published_at?: string;
+  created_at?: string;
+  updated_at?: string;
+  slug: string;
 }
 
 /**
