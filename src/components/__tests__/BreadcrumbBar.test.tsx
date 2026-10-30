@@ -54,6 +54,23 @@ test("adds current location", () => {
   expect(currentLoc.closest("a")).toBeNull();
 });
 
+test("uses internal navigation for app paths", () => {
+  const utils = render(
+    <BreadcrumbBar
+      breadcrumbs={[
+        { text: "News", url: "/testlib/news" },
+        { text: "Article", url: "/testlib/news/article" }
+      ]}
+      currentLocation="Article"
+    />
+  );
+
+  expect(utils.getByRole("link", { name: "News" })).toHaveAttribute(
+    "href",
+    "/testlib/news"
+  );
+});
+
 test("renders children", () => {
   const utils = render(
     <BreadcrumbBar>
