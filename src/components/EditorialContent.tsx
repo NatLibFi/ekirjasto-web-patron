@@ -47,10 +47,10 @@ export const EditorialList: React.FC<{
     {!error && data && items.length === 0 && <p sx={{ px: [3, 5] }}>{t("editorial.empty")}</p>}
     <section sx={{ px: [3, 5], pb: 5 }}>
       {type === "faq" ? items.map(item => (
-        <details key={item.id} sx={{ mb: 3 }}>
-          <summary>{item.title}</summary>
+        <article key={item.id} sx={{ mb: 4 }}>
+          <h2>{item.title}</h2>
           <SafeHtml html={item.body_html} />
-        </details>
+        </article>
       )) : items.map(item => (
         <article key={item.id} sx={{ mb: 4 }}>
           <h2><a href={`/${library.slug}/news/${item.group_id}`}>{item.title}</a></h2>
