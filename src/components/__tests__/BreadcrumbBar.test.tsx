@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render } from "test-utils";
+import { render, fireEvent } from "test-utils";
 import BreadcrumbBar from "../BreadcrumbBar";
 
 // we make this a function because the breadcrumbs bar pops the last
@@ -62,3 +62,72 @@ test("renders children", () => {
   );
   expect(utils.getByText("Hi Im here")).toBeInTheDocument();
 });
+
+test("dismisses the notice without hiding the breadcrumbs", () => {
+  const utils = render(<BreadcrumbBar currentLocation="Current page" />, {
+    library: {
+      announcements: [
+        { id: "notice-1", content: { en: "Test service notice" } }
+      ]
+    }
+  });
+
+  expect(utils.getByRole("status")).toHaveTextContent("Test service notice");
+  fireEvent.click(utils.getByRole("button", { name: "Dismiss notice" }));
+
+  expect(utils.queryByRole("status")).not.toBeInTheDocument();
+  expect(utils.getByText("Current page")).toBeInTheDocument();
+});
+
+test("does not show an alert when no message is configured", () => {
+  const utils = render(<BreadcrumbBar />);
+  expect(utils.queryByRole("status")).not.toBeInTheDocument();
+});
+
+test("shows the configured alert message", () => {
+  const utils = render(<BreadcrumbBar />, {
+    library: {
+      announcements: [{ id: "notice-1", content: { en: "Test notice" } }]
+    }
+  });
+  expect(utils.getByRole("status")).toHaveTextContent("Test notice");
+});
+
+test.each([
+  ["Service unavailable", "Service unavailable"],
+  [{ en: "English notice", fi: "Finnish notice" }, "English notice"]
+])(
+  "uses the configured message for the current locale: %p",
+  (message, expected) => {
+    const utils = render(<BreadcrumbBar />, {
+      router: { locale: "en" },
+      library: {
+        announcements: [
+          {
+            id: "notice-1",
+            content: typeof message === "string" ? { en: message } : message
+          }
+        ]
+      }
+    });
+    expect(utils.getByRole("status")).toHaveTextContent(expected);
+  }
+);
+
+test.each([{ fi: "Finnish notice" }, "   "])(
+  "does not show the alert when the current locale has no message: %p",
+  message => {
+    const utils = render(<BreadcrumbBar />, {
+      router: { locale: "en" },
+      library: {
+        announcements: [
+          {
+            id: "notice-1",
+            content: typeof message === "string" ? { en: message } : message
+          }
+        ]
+      }
+    });
+    expect(utils.queryByRole("status")).not.toBeInTheDocument();
+  }
+);

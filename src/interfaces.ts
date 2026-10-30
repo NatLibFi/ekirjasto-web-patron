@@ -118,6 +118,7 @@ export interface AuthCredentials {
 }
 
 export interface LibraryData {
+  announcements?: OPDS1.Announcement[];
   slug: string;
   catalogUrl: string;
   catalogName: string;
