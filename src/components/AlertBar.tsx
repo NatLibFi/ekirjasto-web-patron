@@ -43,9 +43,10 @@ const AlertBar: React.FC<AlertBarProps> = ({ children, backgroundColor }) => {
           flex: 1,
           minWidth: 0,
           ...(!isExpanded && {
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap"
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 1,
+            overflow: "hidden"
           })
         }}
       >
