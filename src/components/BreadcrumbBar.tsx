@@ -23,12 +23,12 @@ const BreadcrumbBar: React.FC<{
 
   const { catalogUrl, catalogName } = useLibraryContext();
 
+  // Keep the current page separate from navigable breadcrumb links and fall back to the catalog root.
+  const lastItem = currentLocation ?? breadcrumbs.pop()?.text;
   const breadcrumbsWithAtLeastOne =
-    breadcrumbs && breadcrumbs.length > 0
+    crumbsIn && crumbsIn.length > 0
       ? breadcrumbs
       : [{ text: catalogName, url: catalogUrl }];
-
-  const lastItem = currentLocation ?? breadcrumbs?.pop()?.text;
 
   const { t } = useTranslation();
 
