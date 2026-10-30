@@ -61,7 +61,7 @@ test("renders a news list and sanitizes introductory HTML", () => {
   expect(utils.queryByText("alert('xss')")).not.toBeInTheDocument();
 });
 
-test("renders FAQ answers as expandable sections", () => {
+test("renders FAQ answers as visible articles", () => {
   mockedSWR.mockReturnValue(
     makeSwrResponse({
       data: {
@@ -77,7 +77,7 @@ test("renders FAQ answers as expandable sections", () => {
     }
   );
 
-  expect(utils.getByText("Question").closest("details")).toBeInTheDocument();
+  expect(utils.getByRole("heading", { name: "Question" })).toBeInTheDocument();
 });
 
 test("renders unavailable detail content for a not-found response", () => {
