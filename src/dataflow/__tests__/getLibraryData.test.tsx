@@ -266,4 +266,23 @@ describe("buildLibraryData", () => {
 
     expect(library.logoUrl).toBe("/logo");
   });
+
+  test("extracts editorial content links", () => {
+    const library = buildLibraryData(
+      {
+        ...fixtures.authDoc,
+        links: [
+          ...(fixtures.authDoc.links ?? []),
+          { rel: "news", href: "https://content.test/news" },
+          { rel: "faq", href: "https://content.test/faq" }
+        ]
+      },
+      "librarySlug"
+    );
+
+    expect(library.editorialContentLinks).toEqual({
+      news: { rel: "news", href: "https://content.test/news" },
+      faq: { rel: "faq", href: "https://content.test/faq" }
+    });
+  });
 });
