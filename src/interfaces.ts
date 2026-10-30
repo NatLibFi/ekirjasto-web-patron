@@ -118,7 +118,7 @@ export interface AuthCredentials {
 }
 
 export interface LibraryData {
-  serviceAlert?: OPDS1.ServiceAlertConfig;
+  announcements?: OPDS1.Announcement[];
   slug: string;
   catalogUrl: string;
   catalogName: string;

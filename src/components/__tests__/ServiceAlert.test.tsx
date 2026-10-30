@@ -9,10 +9,7 @@ test("renders, expands, and closes the configured service alert", () => {
   const utils = render(<ServiceAlert />, {
     router: { locale: "en" },
     library: {
-      serviceAlert: {
-        enabled: true,
-        message: { en: message }
-      }
+      announcements: [{ id: "announcement-1", content: { en: message } }]
     }
   });
 

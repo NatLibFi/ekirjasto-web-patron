@@ -262,16 +262,10 @@ export type ServerAuthMethod =
 
 export interface Announcement {
   id: string;
-  content: string;
-}
-
-export interface ServiceAlertConfig {
-  enabled: boolean;
-  message?: string | Partial<Record<AppLocale, string>>;
+  content: Partial<Record<AppLocale, string>>;
 }
 
 export interface AuthDocument {
-  serviceAlert?: ServiceAlertConfig;
   id: string;
   title: string;
   // used to display text prompt to authenticating user

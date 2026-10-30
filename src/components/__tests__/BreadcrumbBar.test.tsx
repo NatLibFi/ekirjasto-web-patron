@@ -66,7 +66,9 @@ test("renders children", () => {
 test("dismisses the notice without hiding the breadcrumbs", () => {
   const utils = render(<BreadcrumbBar currentLocation="Current page" />, {
     library: {
-      serviceAlert: { enabled: true, message: { en: "Test service notice" } }
+      announcements: [
+        { id: "notice-1", content: { en: "Test service notice" } }
+      ]
     }
   });
 
@@ -82,10 +84,10 @@ test("does not show an alert when no message is configured", () => {
   expect(utils.queryByRole("status")).not.toBeInTheDocument();
 });
 
-test("shows a configured alert message even if the enabled flag is false", () => {
+test("shows the configured alert message", () => {
   const utils = render(<BreadcrumbBar />, {
     library: {
-      serviceAlert: { enabled: false, message: { en: "Test notice" } }
+      announcements: [{ id: "notice-1", content: { en: "Test notice" } }]
     }
   });
   expect(utils.getByRole("status")).toHaveTextContent("Test notice");
@@ -99,7 +101,14 @@ test.each([
   (message, expected) => {
     const utils = render(<BreadcrumbBar />, {
       router: { locale: "en" },
-      library: { serviceAlert: { enabled: true, message } }
+      library: {
+        announcements: [
+          {
+            id: "notice-1",
+            content: typeof message === "string" ? { en: message } : message
+          }
+        ]
+      }
     });
     expect(utils.getByRole("status")).toHaveTextContent(expected);
   }
@@ -110,7 +119,14 @@ test.each([{ fi: "Finnish notice" }, "   "])(
   message => {
     const utils = render(<BreadcrumbBar />, {
       router: { locale: "en" },
-      library: { serviceAlert: { enabled: true, message } }
+      library: {
+        announcements: [
+          {
+            id: "notice-1",
+            content: typeof message === "string" ? { en: message } : message
+          }
+        ]
+      }
     });
     expect(utils.queryByRole("status")).not.toBeInTheDocument();
   }

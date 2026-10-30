@@ -9,38 +9,40 @@ import useLibraryContext from "./context/LibraryContext";
 import AlertBar from "./AlertBar";
 
 const ServiceAlert: React.FC = () => {
-  const { serviceAlert } = useLibraryContext();
+  const { announcements } = useLibraryContext();
   const { locale } = useRouter();
 
-  // Temporarily show the alert regardless of the admin setting for testing.
+  const messages = announcements?.flatMap(announcement => {
+    const message =
+      locale && isAppLocale(locale)
+        ? announcement.content?.[locale]?.trim()
+        : undefined;
+    return message ? [{ id: announcement.id, message }] : [];
+  });
 
-  const configuredMessage =
-    typeof serviceAlert?.message === "string"
-      ? serviceAlert.message
-      : locale && isAppLocale(locale)
-      ? serviceAlert?.message?.[locale]
-      : undefined;
-  const message = configuredMessage?.trim();
-
-  if (!message) return null;
+  if (!messages?.length) return null;
 
   return (
-    <AlertBar key={message} backgroundColor="#FFDCDD">
-      <div
-        sx={{
-          "& p": { m: 0 },
-          "& p + p": { mt: 2 },
-          "& a": { color: "inherit", textDecoration: "underline" },
-          "& strong, & b": { fontWeight: "bold" }
-        }}
-        dangerouslySetInnerHTML={{
-          __html: DOMPurify.sanitize(message, {
-            ALLOWED_TAGS: ["a", "p", "strong", "b", "br"],
-            ALLOWED_ATTR: ["href", "title", "target", "rel"]
-          })
-        }}
-      />
-    </AlertBar>
+    <>
+      {messages.map(({ id, message }) => (
+        <AlertBar key={id} backgroundColor="#FFDCDD">
+          <div
+            sx={{
+              "& p": { m: 0 },
+              "& p + p": { mt: 2 },
+              "& a": { color: "inherit", textDecoration: "underline" },
+              "& strong, & b": { fontWeight: "bold" }
+            }}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(message, {
+                ALLOWED_TAGS: ["a", "p", "strong", "b", "br"],
+                ALLOWED_ATTR: ["href", "title", "target", "rel"]
+              })
+            }}
+          />
+        </AlertBar>
+      ))}
+    </>
   );
 };
 
