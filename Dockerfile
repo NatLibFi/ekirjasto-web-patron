@@ -1,5 +1,5 @@
 # build environment
-FROM node:20.18.1-bookworm-slim
+FROM node:22.23.4-bookworm-slim
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
@@ -10,7 +10,7 @@ WORKDIR /app
 # Copy package files and install ALL dependencies
 COPY package*.json ./
 COPY .npmrc ./
-RUN npm install
+RUN npm ci
 
 # Copy application source
 COPY . ./

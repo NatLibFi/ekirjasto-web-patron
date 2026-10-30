@@ -77,7 +77,7 @@ All commit must be GPG signed. See instructions in [Github documentation](https:
 
 ## Installing Dependencies
 
-Run `npm install` in this repository to install the dependencies. If you get errors, you may be using the wrong Node version. We define our node version in `.nvmrc`. You can use [Node Version Manager](https://github.com/nvm-sh/nvm) to pick that up or manually install that version. It's possible that older versions will work, but the version in `.nvmrc` is the version all our tests and QA are run on.
+Run `nvm install && nvm use && npm ci`.
 
 ## Running the Application
 

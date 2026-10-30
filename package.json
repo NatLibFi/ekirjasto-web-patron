@@ -1,12 +1,22 @@
 {
-  "name": "@thepalaceproject/web-patron",
-  "description": "Patron UI for The Palace Project",
+  "name": "ekirjasto-web-patron",
+  "description": "E-kirjasto patron web application",
+  "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/ThePalaceProject/web-patron.git"
+    "url": "https://github.com/NatLibFi/ekirjasto-web-patron.git"
   },
-  "author": "The Palace Project",
+  "author": "National Library of Finland",
   "license": "Apache-2.0",
+  "homepage": "https://github.com/NatLibFi/ekirjasto-web-patron#readme",
+  "bugs": {
+    "url": "https://github.com/NatLibFi/ekirjasto-web-patron/issues"
+  },
+  "engines": {
+    "node": "^22.23.4",
+    "npm": "^10.9.9"
+  },
+  "packageManager": "npm@10.9.9",
   "scripts": {
     "dev": "next dev",
     "dev:https": "node dev-server.js",
@@ -17,6 +27,7 @@
     "test": "jest --watch",
     "test:ci": "npm run lint && npm run translations:ci && jest --ci",
     "test:integration": "cypress open",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint \"*/**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"*/**/*.{ts,tsx}\" --fix",
     "generate-icons": "npx @svgr/cli --template src/icons/_template.js --typescript --icon --ext tsx --svg-props 'fill=currentColor' -d src/icons src/icons",
@@ -58,9 +69,8 @@
     "js-cookie": "^2.2.1",
     "lodash": "^4.18.1",
     "moment": "^2.30.1",
-    "next": "^15.5.15",
+    "next": "^15.5.28",
     "next-i18next": "^12.1.0",
-    "next-transpile-modules": "^10.0.1",
     "node-fetch": "^2.7.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -77,8 +87,8 @@
     "@axe-core/react": "^4.11.1",
     "@babel/core": "^7.26.0",
     "@fetch-mock/jest": "^0.2.6",
-    "@next/bundle-analyzer": "^14.2.35",
-    "@next/eslint-plugin-next": "^15.5.15",
+    "@next/bundle-analyzer": "^15.5.28",
+    "@next/eslint-plugin-next": "^15.5.28",
     "@storybook/addon-actions": "^8.4.0",
     "@storybook/addon-essentials": "^8.4.0",
     "@storybook/addon-links": "^8.4.0",
@@ -94,7 +104,7 @@
     "@types/history": "^4.7.11",
     "@types/jest": "^26.0.15",
     "@types/js-cookie": "^2.2.7",
-    "@types/node": "^18.19.130",
+    "@types/node": "22.9.3",
     "@types/pako": "^1.0.7",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.7",
@@ -127,6 +137,9 @@
     "webpack-bugsnag-plugins": "^1.8.0"
   },
   "overrides": {
+    "@thepalaceproject/webpub-viewer": {
+      "url-polyfill": "https://codeload.github.com/webcomponents/URL/tar.gz/1c4ffab3dabbad711328cf5ac6780612c4878a6c"
+    },
     "@typescript-eslint/typescript-estree": {
       "minimatch": "9.0.7"
     },
