@@ -90,6 +90,10 @@ export function buildLibraryData(
   const catalogUrl = getCatalogUrl(authDoc);
   const feedbackUrl = authDoc.links?.find(link => link.rel === "feedback")
     ?.href;
+  const editorialContentLinks = {
+    news: authDoc.links?.find(link => link.rel === "news"),
+    faq: authDoc.links?.find(link => link.rel === "faq")
+  };
   return {
     ...(authDoc.announcements ? { announcements: authDoc.announcements } : {}),
     slug: librarySlug,
@@ -108,6 +112,9 @@ export function buildLibraryData(
     headerLinks,
     libraryLinks,
     feedbackUrl: feedbackUrl ?? null,
+    ...(editorialContentLinks.news || editorialContentLinks.faq
+      ? { editorialContentLinks }
+      : {}),
     authMethods
   };
 }

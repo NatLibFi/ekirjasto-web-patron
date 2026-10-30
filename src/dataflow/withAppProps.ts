@@ -1,4 +1,4 @@
-import { LibraryData, OPDS1 } from "../interfaces";
+import { LibraryData, OPDS1, EditorialItem } from "../interfaces";
 import { GetStaticProps, GetStaticPropsContext } from "next";
 import {
   getAuthDocUrl,
@@ -14,12 +14,16 @@ import { APP_DEFAULT_LOCALE } from "../../appLocales";
 
 export type AppProps = {
   library?: LibraryData;
+  news?: EditorialItem[];
   error?: OPDS1.ProblemDocument;
   _locale?: string;
 };
 
 export default function withAppProps(
-  pageGetStaticProps?: GetStaticProps,
+  pageGetStaticProps?: (
+    ctx: GetStaticPropsContext<ParsedUrlQuery>,
+    library: LibraryData
+  ) => ReturnType<GetStaticProps> | Promise<ReturnType<GetStaticProps>>,
   defaultLibSlug?: string
 ): GetStaticProps<AppProps> {
   return async (ctx: GetStaticPropsContext<ParsedUrlQuery>) => {
@@ -37,7 +41,9 @@ export default function withAppProps(
       const authDocument = await fetchAuthDocument(authDocUrl);
       const library = buildLibraryData(authDocument, librarySlug);
       // fetch the static props for the page
-      const pageResult = (await pageGetStaticProps?.(ctx)) ?? { props: {} };
+      const pageResult = (await pageGetStaticProps?.(ctx, library)) ?? {
+        props: {}
+      };
       const pageProps = "props" in pageResult ? pageResult.props : {};
 
       // define the translation file namespaces
