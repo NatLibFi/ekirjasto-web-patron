@@ -56,12 +56,12 @@ test("renders a news list and sanitizes introductory HTML", () => {
   expect(utils.getByRole("heading", { name: "News" })).toBeInTheDocument();
   expect(utils.getByRole("link", { name: "Library news" })).toHaveAttribute(
     "href",
-    "/testlib/news/news-group-1"
+    "/testlib/news/library-news"
   );
   expect(utils.queryByText("alert('xss')")).not.toBeInTheDocument();
 });
 
-test("renders FAQ answers as visible articles", () => {
+test("links FAQ items by slug", () => {
   mockedSWR.mockReturnValue(
     makeSwrResponse({
       data: {
@@ -77,7 +77,10 @@ test("renders FAQ answers as visible articles", () => {
     }
   );
 
-  expect(utils.getByRole("heading", { name: "Question" })).toBeInTheDocument();
+  expect(utils.getByRole("link", { name: "Question" })).toHaveAttribute(
+    "href",
+    "/testlib/faq/library-news"
+  );
 });
 
 test("renders unavailable detail content for a not-found response", () => {
@@ -88,7 +91,11 @@ test("renders unavailable detail content for a not-found response", () => {
   );
 
   const utils = render(
-    <EditorialDetail library={editorialLibrary} identifier="missing" />,
+    <EditorialDetail
+      library={editorialLibrary}
+      type="news"
+      identifier="missing"
+    />,
     { library }
   );
 

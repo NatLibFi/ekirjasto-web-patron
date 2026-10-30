@@ -48,12 +48,12 @@ export const EditorialList: React.FC<{
     <section sx={{ px: [3, 5], pb: 5 }}>
       {type === "faq" ? items.map(item => (
         <article key={item.id} sx={{ mb: 4 }}>
-          <h2>{item.title}</h2>
-          <SafeHtml html={item.body_html} />
+          <h2><a href={`/${library.slug}/faq/${encodeURIComponent(item.slug)}`}>{item.title}</a></h2>
+          {item.intro_html && <SafeHtml html={item.intro_html} />}
         </article>
       )) : items.map(item => (
         <article key={item.id} sx={{ mb: 4 }}>
-          <h2><a href={`/${library.slug}/news/${item.group_id}`}>{item.title}</a></h2>
+          <h2><a href={`/${library.slug}/news/${encodeURIComponent(item.slug)}`}>{item.title}</a></h2>
           {item.published_at && <time dateTime={item.published_at}>{new Date(item.published_at).toLocaleDateString(i18n.language)}</time>}
           {item.intro_html && <SafeHtml html={item.intro_html} />}
         </article>
@@ -64,10 +64,14 @@ export const EditorialList: React.FC<{
 
 export const EditorialDetail: React.FC<{
   library: LibraryData;
+  type: "news" | "faq";
   identifier: string;
-}> = ({ library, identifier }) => {
+}> = ({ library, type, identifier }) => {
   const { t, i18n } = useTranslation();
-  const url = localizedEditorialUrl(library.editorialContentLinks?.news?.href, i18n.language);
+  const link = type === "news"
+    ? library.editorialContentLinks?.news
+    : library.editorialContentLinks?.faq;
+  const url = localizedEditorialUrl(link?.href, i18n.language);
   const detailUrl = url ? (() => {
     const parsed = new URL(url);
     parsed.pathname = `${parsed.pathname.replace(/\/$/, "")}/${encodeURIComponent(identifier)}`;
@@ -83,7 +87,7 @@ export const EditorialDetail: React.FC<{
     : undefined;
   return <LayoutPage library={library}>
     <BreadcrumbBar
-      breadcrumbs={[{ text: t("editorial.news"), url: `/${library.slug}/news` }]}
+      breadcrumbs={[{ text: t(`editorial.${type}`), url: `/${library.slug}/${type}` }]}
       currentLocation={data?.title}
     />
     <div sx={{ width: "100%", maxWidth: 1100, mx: "auto" }}>
@@ -127,7 +131,7 @@ export const NewsWidget: React.FC<{
     <section sx={{ px: [3, 5], pb: 4 }} aria-labelledby="news-widget-title">
       <h2 id="news-widget-title">{t("editorial.currentNews")}</h2>
       {items.map(item => <article key={item.group_id}>
-        <a href={`/${library.slug}/news/${encodeURIComponent(item.group_id)}`}>
+        <a href={`/${library.slug}/news/${encodeURIComponent(item.slug)}`}>
           <h3>{item.title}</h3>
         </a>
         {item.intro_html && <SafeHtml html={item.intro_html} />}
