@@ -6,7 +6,7 @@ import { EditorialDetail } from "components/EditorialContent";
 type Props = AppProps & { identifier?: string };
 const NewsDetailPage: NextPage<Props> = ({ library, error, identifier }) => {
   if (!library || error || !identifier)
-    return <p>{error?.detail || "Could not load news"}</p>;
+    return <p>{error?.detail || "Loading..."}</p>;
   return <EditorialDetail library={library} identifier={identifier} />;
 };
 export const getStaticProps: GetStaticProps = async ctx => {
