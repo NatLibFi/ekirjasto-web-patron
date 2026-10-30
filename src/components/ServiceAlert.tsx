@@ -8,6 +8,8 @@ import { isAppLocale } from "../../appLocales";
 import useLibraryContext from "./context/LibraryContext";
 import AlertBar from "./AlertBar";
 
+const ALLOWED_URI_REGEXP = /^(?:(?:https?:|mailto:)|[^a-z]|[a-z+.-]+(?:[^a-z+.-:]|$))/i;
+
 const ServiceAlert: React.FC = () => {
   const { announcements } = useLibraryContext();
   const { locale } = useRouter();
@@ -25,24 +27,59 @@ const ServiceAlert: React.FC = () => {
   return (
     <>
       {messages.map(({ id, message }) => (
-        <AlertBar key={id} backgroundColor="#FFDCDD">
-          <div
-            sx={{
-              "& p": { m: 0 },
-              "& p + p": { mt: 2 },
-              "& a": { color: "inherit", textDecoration: "underline" },
-              "& strong, & b": { fontWeight: "bold" }
-            }}
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(message, {
-                ALLOWED_TAGS: ["a", "p", "strong", "b", "br"],
-                ALLOWED_ATTR: ["href", "title", "target", "rel"]
-              })
-            }}
-          />
-        </AlertBar>
+        <SanitizedAnnouncement key={id} id={id} message={message} />
       ))}
     </>
+  );
+};
+
+const SanitizedAnnouncement: React.FC<{ id: string; message: string }> = ({
+  id,
+  message
+}) => {
+  const [sanitized, setSanitized] = React.useState<{
+    message: string;
+    html: string;
+  } | null>(null);
+
+  React.useEffect(() => {
+    setSanitized({
+      message,
+      html: DOMPurify.sanitize(message, {
+        ALLOWED_TAGS: [
+          "p",
+          "br",
+          "strong",
+          "em",
+          "h1",
+          "h2",
+          "h3",
+          "h4",
+          "ul",
+          "ol",
+          "li",
+          "a"
+        ],
+        ALLOWED_ATTR: ["href", "title"],
+        ALLOWED_URI_REGEXP
+      })
+    });
+  }, [message]);
+
+  if (sanitized?.message !== message) return null;
+
+  return (
+    <AlertBar key={id} backgroundColor="#FFDCDD">
+      <div
+        sx={{
+          "& p": { m: 0 },
+          "& p + p": { mt: 2 },
+          "& a": { color: "inherit", textDecoration: "underline" },
+          "& strong, & b": { fontWeight: "bold" }
+        }}
+        dangerouslySetInnerHTML={{ __html: sanitized.html }}
+      />
+    </AlertBar>
   );
 };
 
