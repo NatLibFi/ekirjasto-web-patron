@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 # build environment
 FROM node:22.23.4-bookworm-slim
 
@@ -10,7 +11,8 @@ WORKDIR /app
 # Copy package files and install ALL dependencies
 COPY package*.json ./
 COPY .npmrc ./
-RUN npm ci
+RUN --mount=type=cache,target=/root/.npm \
+    CYPRESS_INSTALL_BINARY=0 npm ci
 
 # Copy application source
 COPY . ./

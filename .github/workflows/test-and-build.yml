@@ -62,5 +62,14 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Cache Next.js build
+        if: matrix.name == 'Production Build'
+        uses: actions/cache@v6.1.0
+        with:
+          path: _next/cache
+          key: ${{ runner.os }}-next-${{ hashFiles('.nvmrc', 'package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-next-${{ hashFiles('.nvmrc', 'package-lock.json') }}-
+
       - name: ${{ matrix.name }}
         run: ${{ matrix.command }}

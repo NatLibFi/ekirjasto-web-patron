@@ -39,8 +39,10 @@ jobs:
           platforms: linux/amd64
           load: true
           tags: local/ekirjasto-web-patron:smoke
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: |
+            type=gha,scope=patron-smoke
+            type=gha,scope=patron-image
+          cache-to: type=gha,mode=max,scope=patron-smoke
 
       - name: Run container smoke test
         shell: bash
@@ -53,7 +55,10 @@ jobs:
           # Release port 3000 if in use.
           docker ps -q --filter "publish=3000" | xargs -r docker rm -f
 
-          docker run -d --name patron-smoke -p 3000:3000 local/ekirjasto-web-patron:smoke
+          docker run -d --name patron-smoke -p 3000:3000 \
+            -e CONFIG_FILE=.github/fixtures/build.yml \
+            -e NEXT_TELEMETRY_DISABLED=1 \
+            local/ekirjasto-web-patron:smoke
 
           # Poll for up to ~12.5 min (150 × 5 s)
           for attempt in {1..150}; do

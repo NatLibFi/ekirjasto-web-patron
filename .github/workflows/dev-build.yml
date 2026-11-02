@@ -64,6 +64,8 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
+          cache-from: type=gha,scope=patron-image
+          cache-to: type=gha,mode=max,scope=patron-image
           tags: |
             ${{ env.IMAGE_NAME }}:sha-${{ steps.vars.outputs.short_sha }}
             ${{ env.IMAGE_NAME }}:dev
