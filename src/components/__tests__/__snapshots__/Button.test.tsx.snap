@@ -6,6 +6,9 @@ exports[`LinkButton renders correct element 1`] = `
   font-size: 0.875rem;
   font-weight: 300;
   line-height: 1.5;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
   display: inline-flex;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -70,11 +73,14 @@ exports[`NavButton renders correct element 1`] = `
 .emotion-0 {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: var(--theme-ui-colors-ui-white);
+  color: inherit;
   font-family: Asap,Arial;
   font-size: 0.875rem;
   font-weight: 300;
   line-height: 1.5;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
   display: inline-flex;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -96,9 +102,12 @@ exports[`NavButton renders correct element 1`] = `
   border: 0;
   border-radius: 2px;
   cursor: pointer;
+  -webkit-text-decoration: none;
+  text-decoration: none;
   background-color: var(--theme-ui-colors-brand-primary);
   height: 32px;
   min-width: 32px;
+  color: var(--theme-ui-colors-ui-white);
   fill: var(--theme-ui-colors-ui-white);
 }
 
@@ -144,6 +153,9 @@ exports[`variants filled (default) 1`] = `
   font-size: 0.875rem;
   font-weight: 300;
   line-height: 1.5;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
   display: inline-flex;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -210,6 +222,9 @@ exports[`variants ghost 1`] = `
   font-size: 0.875rem;
   font-weight: 700;
   line-height: 1.5;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
   display: inline-flex;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -262,6 +277,9 @@ exports[`variants ghost 1`] = `
 
 exports[`variants link 1`] = `
 .emotion-0 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
   display: inline-flex;
   -webkit-appearance: none;
   -moz-appearance: none;

@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders as expected 1`] = `
-.emotion-3 {
+.emotion-0 {
   margin-bottom: 8px;
 }
 
-.emotion-0 {
+.emotion-1 {
   font-size: 0.875rem;
   font-weight: 500;
   margin-right: 8px;
@@ -17,7 +17,7 @@ exports[`renders as expected 1`] = `
   position: relative;
 }
 
-.emotion-1 {
+.emotion-3 {
   border-radius: 2px;
   border: 1px solid #bdbdbd;
   padding-left: 8px;
@@ -32,36 +32,36 @@ exports[`renders as expected 1`] = `
   display: block;
 }
 
-.emotion-1::-webkit-input-placeholder {
+.emotion-3::-webkit-input-placeholder {
   font-style: normal;
   color: var(--theme-ui-colors-ui-gray-dark);
   font-size: 0.875rem;
 }
 
-.emotion-1::-moz-placeholder {
+.emotion-3::-moz-placeholder {
   font-style: normal;
   color: var(--theme-ui-colors-ui-gray-dark);
   font-size: 0.875rem;
 }
 
-.emotion-1:-ms-input-placeholder {
+.emotion-3:-ms-input-placeholder {
   font-style: normal;
   color: var(--theme-ui-colors-ui-gray-dark);
   font-size: 0.875rem;
 }
 
-.emotion-1::placeholder {
+.emotion-3::placeholder {
   font-style: normal;
   color: var(--theme-ui-colors-ui-gray-dark);
   font-size: 0.875rem;
 }
 
 <div
-  class="emotion-3"
+  class="emotion-0"
   role="group"
 >
   <label
-    class="emotion-0"
+    class="emotion-1"
     for="input-name"
   >
     Email
@@ -72,7 +72,7 @@ exports[`renders as expected 1`] = `
     <input
       aria-describedby="input-name-errors"
       aria-label="input-name input"
-      class="emotion-1"
+      class="emotion-3"
       id="input-name"
       name="input-name"
       type="text"

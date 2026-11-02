@@ -54,6 +54,9 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
 
+      - name: Install project npm version
+        run: npm install --global npm@12.2.1
+
       - name: Verify toolchain
         run: |
           node --version

@@ -77,7 +77,7 @@ All commit must be GPG signed. See instructions in [Github documentation](https:
 
 ## Installing Dependencies
 
-Run `nvm install && nvm use && npm ci`.
+Run `nvm install && nvm use && npm install --global npm@12.2.1 && npm ci`.
 
 ## Running the Application
 
