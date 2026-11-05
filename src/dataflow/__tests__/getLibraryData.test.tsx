@@ -112,6 +112,24 @@ describe("fetchAuthDocument", () => {
 });
 
 describe("buildLibraryData", () => {
+  test("preserves announcements from the authentication document", () => {
+    const announcements = [
+      {
+        id: "announcement-1",
+        content: {
+          en: "English notice",
+          fi: "Finnish notice",
+          sv: "Swedish notice"
+        }
+      }
+    ];
+    const library = buildLibraryData(
+      { ...fixtures.authDoc, announcements },
+      "librarySlug"
+    );
+    expect(library.announcements).toEqual(announcements);
+  });
+
   test("returns correct response", () => {
     const library = buildLibraryData(fixtures.authDoc, "librarySlug");
     expect(library).toEqual({
