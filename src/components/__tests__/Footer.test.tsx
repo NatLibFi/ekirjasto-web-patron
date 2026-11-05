@@ -51,16 +51,10 @@ describe("toggling SimplyE Branding", () => {
     const utils = render(<Footer />);
 
     expect(
-      utils.getByRole("heading", {
-        name: /download the e-library app/i
-      })
-    ).toBeInTheDocument();
-
-    expect(
-      utils.getByText(
+      utils.queryByText(
         "Read e-books and magazines, and listen to audiobooks on your phone or tablet! Download the E-library app from your mobile device’s app store."
       )
-    ).toBeInTheDocument();
+    ).not.toBeInTheDocument();
 
     // badges
     const appStoreBadge = utils.getByRole("link", {
@@ -83,11 +77,15 @@ describe("toggling SimplyE Branding", () => {
   });
 });
 
-test("shows NatLibFi logo in footer", () => {
+test("shows only the requested footer links", () => {
   const utils = render(<Footer />);
-  const natLibFiLink = utils.getByRole("link", {
-    name: /national library of finland/i
-  });
+  const links = utils.getAllByRole("link");
 
-  expect(natLibFiLink).toBeInTheDocument();
+  expect(links).toHaveLength(10);
+  expect(
+    utils.queryByRole("link", { name: /municipalities participating/i })
+  ).not.toBeInTheDocument();
+  expect(
+    utils.queryByRole("link", { name: /more for librarians/i })
+  ).not.toBeInTheDocument();
 });

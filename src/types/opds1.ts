@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import type { AppLocale } from "../../appLocales";
 
 /**
  * Typings for OPDS 1.2. This is a working document and it
@@ -261,7 +262,7 @@ export type ServerAuthMethod =
 
 export interface Announcement {
   id: string;
-  content: string;
+  content: Partial<Record<AppLocale, string>>;
 }
 
 export interface AuthDocument {
