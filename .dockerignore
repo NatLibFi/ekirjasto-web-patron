@@ -9,6 +9,7 @@ wallaby.js
 dist
 lib
 .next
+_next
 .gitignore
 README.md
 .eslintcache

@@ -7,7 +7,7 @@ import { LibraryData } from "../interfaces";
 import "./mockScrollTo";
 import * as fixtures from "./fixtures";
 import userEvent from "@testing-library/user-event";
-import serializer from "jest-emotion";
+import { createSerializer } from "@emotion/jest";
 import { MockNextRouterContextProvider } from "./mockNextRouter";
 import { NextRouter } from "next/router";
 import { enableFetchMocks } from "jest-fetch-mock";
@@ -30,7 +30,7 @@ jest.mock("next-i18next", () => ({
 }));
 
 enableFetchMocks();
-expect.addSnapshotSerializer(serializer);
+expect.addSnapshotSerializer(createSerializer());
 
 // standard config mock
 beforeEach(() => {

@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`select matches snapshot 1`] = `
-.emotion-2 {
+.emotion-0 {
   position: relative;
 }
 
-.emotion-0 {
+.emotion-1 {
   -webkit-appearance: none;
   -moz-appearance: none;
   -ms-appearance: none;
@@ -23,7 +23,7 @@ exports[`select matches snapshot 1`] = `
   line-height: 1.5;
 }
 
-.emotion-1 {
+.emotion-2 {
   position: absolute;
   height: 100%;
   width: 1.75rem;
@@ -32,17 +32,17 @@ exports[`select matches snapshot 1`] = `
 }
 
 <div
-  class="emotion-2"
+  class="emotion-0"
 >
   <select
-    class="emotion-0"
+    class="emotion-1"
   >
     <option>
       op 1
     </option>
   </select>
   <svg
-    class="emotion-1"
+    class="emotion-2"
     fill="currentColor"
     height="1em"
     viewBox="0 0 24 24"

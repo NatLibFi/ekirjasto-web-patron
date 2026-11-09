@@ -39,7 +39,7 @@ jobs:
           echo "release_tag=${RELEASE_TAG}" >> "$GITHUB_OUTPUT"
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
           ref: refs/tags/${{ steps.validate_tag.outputs.release_tag }}
@@ -80,13 +80,13 @@ jobs:
           echo "built_at=${BUILT_AT}" >> "$GITHUB_OUTPUT"
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4.4.0
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4.4.1
 
       - name: Login to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4.7.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -113,12 +113,15 @@ jobs:
 
       - name: Build and push release image
         id: build
-        uses: docker/build-push-action@v6
+        if: env.sha_exists != 'true'
+        uses: docker/build-push-action@v7.4.0
         with:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: ${{ env.sha_exists != 'true' }}
+          push: true
+          cache-from: type=gha,scope=patron-image
+          cache-to: type=gha,mode=max,scope=patron-image
           tags: |
             ${{ env.IMAGE_NAME }}:${{ steps.validate_tag.outputs.release_tag }}
             ${{ env.IMAGE_NAME }}:sha-${{ steps.git_checks.outputs.short_sha }}
@@ -135,6 +138,17 @@ jobs:
             --tag "${IMAGE_NAME}:latest" \
             "${IMAGE_NAME}:sha-${{ steps.git_checks.outputs.short_sha }}"
 
+      - name: Resolve published image digest
+        id: image
+        shell: bash
+        env:
+          VERSION_TAG: ${{ steps.validate_tag.outputs.release_tag }}
+        run: |
+          set -euo pipefail
+          DIGEST="$(docker buildx imagetools inspect "${IMAGE_NAME}:${VERSION_TAG}" | awk '$1 == "Digest:" { print $2 }')"
+          [[ "${DIGEST}" =~ ^sha256:[0-9a-f]{64}$ ]]
+          echo "digest=${DIGEST}" >> "$GITHUB_OUTPUT"
+
       - name: Write build metadata
         shell: bash
         run: |
@@ -146,7 +160,7 @@ jobs:
             "release_tag": "${{ steps.validate_tag.outputs.release_tag }}",
             "channel_tag": "latest",
             "sha_tag": "sha-${{ steps.git_checks.outputs.short_sha }}",
-            "digest": "${{ steps.build.outputs.digest }}",
+            "digest": "${{ steps.image.outputs.digest }}",
             "commit": "${{ steps.git_checks.outputs.release_commit }}",
             "actor": "${GITHUB_ACTOR}",
             "built_at": "${{ steps.git_checks.outputs.built_at }}"
@@ -165,26 +179,26 @@ jobs:
             echo "- Tag: \`${{ steps.validate_tag.outputs.release_tag }}\`"
             echo "- Tag: \`sha-${{ steps.git_checks.outputs.short_sha }}\`"
             echo "- Tag: \`latest\`"
-            echo "- Digest: \`${{ steps.build.outputs.digest }}\`"
+            echo "- Digest: \`${{ steps.image.outputs.digest }}\`"
             echo "- Commit: \`${{ steps.git_checks.outputs.release_commit }}\`"
             echo "- Actor: \`${GITHUB_ACTOR}\`"
             echo "- Built at (UTC): \`${{ steps.git_checks.outputs.built_at }}\`"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload build metadata artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: release-build-metadata
           path: build-metadata.json
 
       - name: Append container artifact details to release notes
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9.0.0
         env:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
           RELEASE_TAG: ${{ steps.validate_tag.outputs.release_tag }}
           SHORT_SHA: ${{ steps.git_checks.outputs.short_sha }}
           RELEASE_COMMIT: ${{ steps.git_checks.outputs.release_commit }}
-          DIGEST: ${{ steps.build.outputs.digest }}
+          DIGEST: ${{ steps.image.outputs.digest }}
           BUILT_AT: ${{ steps.git_checks.outputs.built_at }}
         with:
           script: |
