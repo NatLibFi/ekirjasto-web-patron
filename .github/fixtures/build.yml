@@ -1,0 +1,5 @@
+# Required by the CI production build via CONFIG_FILE.
+# Empty libraries keep config loading independent of external services.
+instance_name: Dependency verification
+libraries: {}
+media_support: {}
