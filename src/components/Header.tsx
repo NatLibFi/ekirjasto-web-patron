@@ -87,6 +87,25 @@ const HeaderLinks: React.FC<{ library: LibraryData }> = ({ library }) => {
         </AnchorButton>
       ))}
 
+      {library && (
+        <>
+          <AnchorButton
+            variant="ghost"
+            color="ui.black"
+            href={`/${library.slug}/news`}
+          >
+            {t("header.labelForNewsButton")}
+          </AnchorButton>
+          <AnchorButton
+            variant="ghost"
+            color="ui.black"
+            href={`/${library.slug}/faq`}
+          >
+            {t("header.labelForFaqButton")}
+          </AnchorButton>
+        </>
+      )}
+
       <NavButton
         variant="ghost"
         color="ui.black"
