@@ -382,6 +382,66 @@ describe("FulfillableBook", () => {
     expect(readOnline).toBeInTheDocument();
   });
 
+  test("shows info and a feedback link for an indirectly fulfilled audiobook (case DeMarque)", () => {
+    const indirectAudiobook = mergeBook<FulfillableBook>({
+      status: "fulfillable",
+      format: "Audiobook",
+      revokeUrl: "/revoke",
+      fulfillmentLinks: [
+        {
+          url: "/indirect-audiobook",
+          indirectionType:
+            "application/atom+xml;type=entry;profile=opds-catalog",
+          contentType:
+            'text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media"',
+          supportLevel: "show"
+        }
+      ]
+    });
+
+    setup(<FulfillmentCard book={indirectAudiobook} />);
+
+    expect(
+      screen.getByText(
+        /Listening to foreign-language audiobooks in the browser/
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("status", { name: "Audiobook listening information" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", {
+        name: "Send feedback about audiobook listening"
+      })
+    ).toHaveAttribute("href", "/en/testlib/feedback");
+  });
+
+  test("hides the info for non-audiobooks with OPDS entry indirection (case DeMarque ebooks)", () => {
+    const indirectlyFulfilledEbook = mergeBook<FulfillableBook>({
+      status: "fulfillable",
+      format: "ePub",
+      revokeUrl: "/revoke",
+      fulfillmentLinks: [
+        {
+          url: "/indirect-audiobook",
+          indirectionType:
+            "application/atom+xml;type=entry;profile=opds-catalog",
+          contentType:
+            'text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media"',
+          supportLevel: "show"
+        }
+      ]
+    });
+
+    setup(<FulfillmentCard book={indirectlyFulfilledEbook} />);
+
+    expect(
+      screen.queryByText(
+        /Listening to foreign-language audiobooks in the browser/
+      )
+    ).not.toBeInTheDocument();
+  });
+
   test("external read online tracks open_book event", async () => {
     const readOnlineBook = mergeBook<FulfillableBook>({
       status: "fulfillable",
