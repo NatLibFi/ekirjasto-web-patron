@@ -22,10 +22,11 @@ import { Text } from "components/Text";
 import BorrowOrReserve from "components/BorrowOrReserve";
 import FulfillmentButton from "components/FulfillmentButton";
 import BookStatus from "components/BookStatus";
-import { AnyBook } from "interfaces";
+import { AnyBook, OPDS1 } from "interfaces";
 import CancelOrReturn from "components/CancelOrReturn";
 import { useTranslation } from "next-i18next";
 import SelectBookCard from "./SelectBookCard";
+import useLibraryContext from "components/context/LibraryContext";
 
 const FulfillmentCard: React.FC<{ book: AnyBook }> = ({ book }) => {
   const { t } = useTranslation();
@@ -90,6 +91,7 @@ const FulfillmentContent: React.FC<{
 // and handled separately via SelectBookCard component
 const AccessCard: React.FC<{ book: AnyBook }> = ({ book }) => {
   const { t } = useTranslation();
+  const library = useLibraryContext();
 
   if (bookIsBorrowable(book)) {
     return <BorrowOrReserve url={book.borrowUrl} isBorrow />;
@@ -141,6 +143,12 @@ const AccessCard: React.FC<{ book: AnyBook }> = ({ book }) => {
         fulfillment.type === "read-online-external"
     );
 
+    const hasIndirectAudiobook =
+      book.format === "Audiobook" &&
+      book.fulfillmentLinks.some(
+        link => link.indirectionType === OPDS1.OPDSEntryMediaType
+      );
+
     return (
       <>
         <CancelOrReturn
@@ -176,6 +184,31 @@ const AccessCard: React.FC<{ book: AnyBook }> = ({ book }) => {
             />
           )}
         </Stack>
+        {hasIndirectAudiobook && (
+          <div
+            role="status"
+            aria-label={t("fulfill.indirectAudiobookInfoAriaLabel")}
+            sx={{
+              mt: 2,
+              p: 2,
+              backgroundColor: "white",
+              border: "1px solid",
+              borderColor: "brand.primary",
+              color: "ui.gray.extraDark"
+            }}
+          >
+            <div>{t("fulfill.indirectAudiobookInfo")}</div>
+            <div sx={{ mt: 1 }}>
+              <a
+                href={t("footer.hrefFeedback", { librarySlug: library.slug })}
+                aria-label={t("fulfill.indirectAudiobookFeedbackLinkAriaLabel")}
+                sx={{ color: "brand.primary", textDecoration: "underline" }}
+              >
+                {t("fulfill.indirectAudiobookFeedbackLink")}
+              </a>
+            </div>
+          </div>
+        )}
       </>
     );
   }
